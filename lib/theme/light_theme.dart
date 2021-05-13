@@ -9,4 +9,5 @@ final lightTheme = ThemeData(
   buttonColor: SatorColor.interactive,
   // fontFamily:
   // textTheme: textTheme.copyWith()
+
 );
