@@ -7,7 +7,7 @@ final lightTheme = ThemeData(
   primaryColor: SatorColor.brand,
   accentColor: SatorColor.darkAccent,
   buttonColor: SatorColor.interactive,
-  // fontFamily:
-  // textTheme: textTheme.copyWith()
+  fontFamily: 'Inter',
+  textTheme: textTheme.copyWith(bodyText1: TextStyle(color: SatorColor.brand)),
 
 );
