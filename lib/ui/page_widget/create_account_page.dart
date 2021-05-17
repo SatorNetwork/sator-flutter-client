@@ -32,6 +32,16 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      Text(
+                        'txt_create_account'.tr,
+                        style: TextStyle(
+                            color: SatorColor.textBlack,
+                            fontSize: 34.0,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      SizedBox(
+                        height: 32,
+                      ),
                       InputTextField(
                         inputTitle: 'txt_email_address'.tr,
                         controller: controller.emailController,
