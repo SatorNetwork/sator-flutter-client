@@ -5,15 +5,13 @@ import 'package:satorio/controller/splash_controller.dart';
 
 class SplashPage extends GetView<SplashController> {
   @override
-  @override
   Widget build(BuildContext context) {
+    controller.checkSomething();
     return Scaffold(
       appBar: AppBar(
         title: Text('Some title'),
       ),
-      body: Container(
-      ),
+      body: Container(),
     );
   }
-
 }
