@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/onboading_controller.dart';
-import 'package:satorio/model/onboarding_data.dart';
-import 'package:satorio/theme/sator_color.dart';
-import 'package:satorio/theme/text_theme.dart';
+import 'package:satorio/data/model/onboarding_data.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingPage extends GetView<OnBoardingController> {
@@ -69,7 +69,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
           child: Text(
             data.description,
             textAlign: TextAlign.center,
-            style: textTheme.subtitle1.copyWith(color: SatorColor.darkAccent),
+            style: textTheme.subtitle2.copyWith(color: SatorColor.darkAccent),
           ),
         ),
       ],

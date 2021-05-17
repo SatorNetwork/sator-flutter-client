@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:satorio/binding/onboarding_binding.dart';
-import 'package:satorio/view/onboardinga_page.dart';
+import 'package:satorio/ui/page_widget/onboardinga_page.dart';
 
 class SplashController extends GetxController {
   void checkSomething() {
