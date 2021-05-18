@@ -24,7 +24,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     String token = _authDataSource.getAuthToken();
     if (token != null && token.isNotEmpty)
-      headers['Authorization'] = 'JWT $token';
+      headers['Authorization'] = 'Bearer $token';
 
     return headers;
   }
@@ -85,17 +85,35 @@ class ApiDataSourceImpl implements ApiDataSource {
       headers: response.headers,
       body: response.body,
     );
+
+    print('--------');
+    // utf8Response.request.headers.forEach((key, value) {
+    //   print('$key = $value');
+    // });
+
     print(
         '${utf8Response.request.method.toUpperCase()} ${utf8Response.request.url} ${utf8Response.statusCode}');
+
+    // print('${utf8Response.bodyString}');
+    print('--------');
 
     return utf8Response;
   }
 
   @override
+  Future<bool> isTokenExist() async {
+    String token = _authDataSource.getAuthToken();
+    ;
+    return token != null && token.isNotEmpty;
+  }
+
+  @override
   Future<bool> signIn(String email, String password) {
-    return _requestPost('auth/login', SignInRequest(email, password),
-            headers: _getHeaders())
-        .then((Response response) {
+    return _requestPost(
+      'auth/login',
+      SignInRequest(email, password),
+      headers: _getHeaders(),
+    ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
       _authDataSource.storeAuthToken(token);
@@ -105,9 +123,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> signUp(String email, String password, String username) {
-    return _requestPost('auth/signup', SignUpRequest(email, password, username),
-            headers: _getHeaders())
-        .then((Response response) {
+    return _requestPost(
+      'auth/signup',
+      SignUpRequest(email, password, username),
+      headers: _getHeaders(),
+    ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
       _authDataSource.storeAuthToken(token);
@@ -117,9 +137,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> refreshToken() {
-    return _requestPost('auth/refresh-token', EmptyRequest(),
-            headers: _getHeaders())
-        .then((Response response) {
+    return _requestPost(
+      'auth/refresh-token',
+      EmptyRequest(),
+      headers: _getHeaders(),
+    ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
       _authDataSource.storeAuthToken(token);

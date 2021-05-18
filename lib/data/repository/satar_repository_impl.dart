@@ -9,6 +9,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   SatorioRepositoryImpl(this._apiDataSource, this._localDataSource);
 
   @override
+  Future<bool> isTokenValid() {
+    return _apiDataSource.isTokenExist().then((isTokenExist) {
+      if (isTokenExist)
+        return _apiDataSource.refreshToken();
+      else
+        return isTokenExist;
+    });
+  }
+
+  @override
   Future<bool> signIn(String email, String password) {
     return _apiDataSource.signIn(email, password);
   }

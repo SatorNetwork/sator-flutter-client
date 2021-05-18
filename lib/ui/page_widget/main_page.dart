@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/splash_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
 
-class SplashPage extends GetView<SplashController> {
+class MainPage extends GetView<MainController> {
   @override
   Widget build(BuildContext context) {
-    controller.checkToken();
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Main Page'),
+      ),
       body: Container(),
     );
   }

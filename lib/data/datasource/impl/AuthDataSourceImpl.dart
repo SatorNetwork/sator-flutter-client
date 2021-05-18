@@ -8,7 +8,7 @@ class AuthDataSourceImpl implements AuthDataSource {
 
   @override
   void clearAll() {
-    _storage.erase();
+    _storage.write(_token, '');
   }
 
   @override
@@ -19,6 +19,5 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   void storeAuthToken(String token) {
     _storage.write(_token, token);
-    print('storeAuthToken = $token');
   }
 }

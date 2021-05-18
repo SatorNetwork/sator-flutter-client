@@ -4,5 +4,5 @@ class AuthResponse {
   const AuthResponse(this.accessToken);
 
   factory AuthResponse.fromJson(Map json) =>
-      AuthResponse(json['data']['access_token'] as String);
+      AuthResponse(json['access_token'] as String);
 }

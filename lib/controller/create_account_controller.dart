@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/main_page.dart';
 
 class CreateAccountController extends GetxController {
   final TextEditingController emailController = TextEditingController();
@@ -13,7 +15,7 @@ class CreateAccountController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   void toTermsOfService() {
-    // TODO: Do something
+    // TODO: move to Terms?
   }
 
   void toSignIn() {
@@ -22,10 +24,15 @@ class CreateAccountController extends GetxController {
 
   void createAccount() {
     _satorioRepository
-        .signUp(emailController.text, passwordController.text,
-            usernameController.text,)
+        .signUp(
+      emailController.text,
+      passwordController.text,
+      usernameController.text,
+    )
         .then((isSuccess) {
-      // TODO : move to main
+      if (isSuccess) {
+        Get.offAll(() => MainPage(), binding: MainBinding());
+      }
     });
   }
 }
