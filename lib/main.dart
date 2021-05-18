@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/app_binding.dart';
 import 'package:satorio/controller/splash_controller.dart';
 import 'package:satorio/translation/sator_translation.dart';
 import 'package:satorio/ui/page_widget/splash_page.dart';
@@ -12,6 +13,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]).then((_) {
     runApp(GetMaterialApp(
+      initialBinding: AppBinding(),
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.noTransition,
       transitionDuration: Duration(seconds: 0),

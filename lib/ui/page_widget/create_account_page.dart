@@ -18,8 +18,8 @@ class CreateAccountPage extends GetView<CreateAccountController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height -
-              (MediaQuery.of(context).padding.top + kToolbarHeight),
+          height: Get.mediaQuery.size.height -
+              (Get.mediaQuery.padding.top + kToolbarHeight),
           color: Colors.white,
           child: Stack(
             children: [
@@ -54,6 +54,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       Obx(() => InputTextField(
                             inputTitle: 'txt_password'.tr,
                             controller: controller.passwordController,
+                            hintText: 'txt_password_hint'.tr,
                             obscureText: controller.passwordObscured.value,
                             keyboardType: TextInputType.emailAddress,
                             icon: Icon(
@@ -93,7 +94,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                                           fontWeight: FontWeight.w500),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          controller.termsOfService();
+                                          controller.toTermsOfService();
                                         },
                                     ),
                                   ]),
@@ -109,37 +110,38 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         onPressed: () {
                           controller.createAccount();
                         },
-                      )
+                      ),
                     ],
                   ),
                 ),
               ),
               Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: RichText(
-                      text: TextSpan(
-                          text: 'txt_already_member'.tr,
-                          style: TextStyle(
-                              color: SatorColor.textBlack,
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.w400),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'txt_sign_in'.tr,
-                              style: TextStyle(
-                                  color: SatorColor.interactive,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.w600),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  controller.signIn();
-                                },
-                            ),
-                          ]),
-                    ),
-                  ))
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: RichText(
+                    text: TextSpan(
+                        text: 'txt_already_member'.tr,
+                        style: TextStyle(
+                            color: SatorColor.textBlack,
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w400),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: 'txt_sign_in'.tr,
+                            style: TextStyle(
+                                color: SatorColor.interactive,
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w600),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                controller.toSignIn();
+                              },
+                          ),
+                        ]),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

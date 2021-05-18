@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/onboading_controller.dart';
-import 'package:satorio/data/model/onboarding_data.dart';
+import 'package:satorio/domain/entities/onboarding_data.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

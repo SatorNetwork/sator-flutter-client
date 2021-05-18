@@ -8,12 +8,12 @@ class CreateAccountController extends GetxController {
   final RxBool termsOfServiceCheck = false.obs;
   final RxBool passwordObscured = true.obs;
 
-  void termsOfService() {
+  void toTermsOfService() {
     // TODO: Do something
   }
 
-  void signIn() {
-    // TODO: Move To Sign In
+  void toSignIn() {
+    Get.back();
   }
 
   void createAccount() {
