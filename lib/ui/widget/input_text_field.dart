@@ -30,7 +30,7 @@ class InputTextField extends StatelessWidget {
         Text(
           inputTitle,
           style: textTheme.headline5.copyWith(
-            color: SatorColor.textBlack,
+            color: SatorioColor.textBlack,
           ),
         ),
         SizedBox(
@@ -40,7 +40,7 @@ class InputTextField extends StatelessWidget {
           height: 44,
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
           decoration: BoxDecoration(
-            color: SatorColor.inputGrey,
+            color: SatorioColor.inputGrey,
             borderRadius: BorderRadius.circular(6),
           ),
           child: TextFormField(

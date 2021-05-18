@@ -15,7 +15,7 @@ class LoginPage extends GetView<LoginController> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: SatorColor.darkAccent),
+        iconTheme: IconThemeData(color: SatorioColor.darkAccent),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -63,7 +63,7 @@ class LoginPage extends GetView<LoginController> {
                                       controller.passwordObscured.value
                                           ? Icons.visibility_off_outlined
                                           : Icons.remove_red_eye_outlined,
-                                      color: SatorColor.darkAccent),
+                                      color: SatorioColor.darkAccent),
                                   onPressedIcon: () {
                                     controller.passwordObscured.toggle();
                                   },
@@ -78,7 +78,7 @@ class LoginPage extends GetView<LoginController> {
                               child: Text(
                                 'txt_forgot_password'.tr,
                                 style: textTheme.headline5.copyWith(
-                                  color: SatorColor.textBlack,
+                                  color: SatorioColor.textBlack,
                                 ),
                               ),
                             ),
@@ -106,14 +106,14 @@ class LoginPage extends GetView<LoginController> {
                     text: TextSpan(
                         text: 'txt_not_member'.tr,
                         style: TextStyle(
-                            color: SatorColor.textBlack,
+                            color: SatorioColor.textBlack,
                             fontSize: 17.0,
                             fontWeight: FontWeight.w400),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'txt_create_account'.tr,
                             style: TextStyle(
-                                color: SatorColor.interactive,
+                                color: SatorioColor.interactive,
                                 fontSize: 17.0,
                                 fontWeight: FontWeight.w600),
                             recognizer: TapGestureRecognizer()

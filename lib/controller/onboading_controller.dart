@@ -2,14 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
-import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 
 class OnBoardingController extends GetxController {
   final PageController pageController = PageController();
   final RxBool isLastPage = false.obs;
-
-  final SatorRepositoryInterface satorRepository = Get.find();
 
   List<OnBoardingData> data = [
     OnBoardingData(
@@ -31,7 +28,6 @@ class OnBoardingController extends GetxController {
 
   @override
   void onInit() {
-    satorRepository.fun();
     pageController.addListener(_listener);
   }
 

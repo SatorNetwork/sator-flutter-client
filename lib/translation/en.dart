@@ -4,6 +4,7 @@ const Map<String, String> en = {
   'txt_email_address': 'Email address',
   'txt_password': 'Password',
   'txt_password_hint': '6+ characters',
+  'txt_username': 'Username',
   'txt_create_account': 'Create Account',
   'txt_terms_of_service_description':
       'Creating an account means you’re okay with our ',

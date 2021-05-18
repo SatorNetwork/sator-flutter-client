@@ -21,7 +21,7 @@ void main() async {
       opaqueRoute: null,
       popGesture: null,
       theme: lightTheme,
-      translations: SatorTranslation(),
+      translations: SatorioTranslation(),
       locale: Locale('en'),
       fallbackLocale: Locale('en'),
       home: SplashPage(),

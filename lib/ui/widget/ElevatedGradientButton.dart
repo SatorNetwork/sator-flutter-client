@@ -6,8 +6,8 @@ class ElevatedGradientButton extends StatelessWidget {
   const ElevatedGradientButton(
       {this.text,
       this.onPressed,
-      this.leftColor = SatorColor.interactive,
-      this.endColor = SatorColor.darkAccent});
+      this.leftColor = SatorioColor.interactive,
+      this.endColor = SatorioColor.darkAccent});
 
   final String text;
   final Function onPressed;

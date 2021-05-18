@@ -4,10 +4,10 @@ import 'package:satorio/ui/theme/text_theme.dart';
 
 final lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: SatorColor.brand,
-  accentColor: SatorColor.darkAccent,
-  buttonColor: SatorColor.interactive,
+  primaryColor: SatorioColor.brand,
+  accentColor: SatorioColor.darkAccent,
+  buttonColor: SatorioColor.interactive,
   fontFamily: 'Inter',
-  textTheme: textTheme.copyWith(bodyText1: TextStyle(color: SatorColor.brand)),
-
+  textTheme:
+      textTheme.copyWith(bodyText1: TextStyle(color: SatorioColor.brand)),
 );

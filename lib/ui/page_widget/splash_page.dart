@@ -8,9 +8,9 @@ class SplashPage extends GetView<SplashController> {
   Widget build(BuildContext context) {
     controller.checkSomething();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Some title'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('Some title'),
+      // ),
       body: Container(),
     );
   }

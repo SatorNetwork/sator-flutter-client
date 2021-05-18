@@ -2,14 +2,19 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
-class SatorRepositoryImpl implements SatorRepositoryInterface {
+class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
   final LocalDataSource _localDataSource;
 
-  SatorRepositoryImpl(this._apiDataSource, this._localDataSource);
+  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource);
 
-  void fun() {
-    print('${_apiDataSource.runtimeType}');
-    print('${_localDataSource.runtimeType}');
+  @override
+  Future<bool> signIn(String email, String password) {
+    return _apiDataSource.signIn(email, password);
+  }
+
+  @override
+  Future<bool> signUp(String email, String password, String username) {
+    return _apiDataSource.signUp(email, password, username);
   }
 }

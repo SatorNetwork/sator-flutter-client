@@ -44,7 +44,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
               child: Obx(() => Text(
                     controller.isLastPage.value ? 'txt_join'.tr : 'txt_next'.tr,
                     style: textTheme.bodyText1
-                        .copyWith(color: SatorColor.darkAccent),
+                        .copyWith(color: SatorioColor.darkAccent),
                   )),
             ),
           )
@@ -62,14 +62,14 @@ class OnBoardingPage extends GetView<OnBoardingController> {
         ),
         Text(
           data.title,
-          style: textTheme.headline2.copyWith(color: SatorColor.darkAccent),
+          style: textTheme.headline2.copyWith(color: SatorioColor.darkAccent),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text(
             data.description,
             textAlign: TextAlign.center,
-            style: textTheme.subtitle2.copyWith(color: SatorColor.darkAccent),
+            style: textTheme.subtitle2.copyWith(color: SatorioColor.darkAccent),
           ),
         ),
       ],

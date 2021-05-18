@@ -14,7 +14,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: SatorColor.darkAccent),
+        iconTheme: IconThemeData(color: SatorioColor.darkAccent),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -35,7 +35,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       Text(
                         'txt_create_account'.tr,
                         style: TextStyle(
-                            color: SatorColor.textBlack,
+                            color: SatorioColor.textBlack,
                             fontSize: 34.0,
                             fontWeight: FontWeight.w700),
                       ),
@@ -56,18 +56,25 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                             controller: controller.passwordController,
                             hintText: 'txt_password_hint'.tr,
                             obscureText: controller.passwordObscured.value,
-                            keyboardType: TextInputType.emailAddress,
                             icon: Icon(
                                 controller.passwordObscured.value
                                     ? Icons.visibility_off_outlined
                                     : Icons.remove_red_eye_outlined,
-                                color: SatorColor.darkAccent),
+                                color: SatorioColor.darkAccent),
                             onPressedIcon: () {
                               controller.passwordObscured.toggle();
                             },
                           )),
                       SizedBox(
-                        height: 100,
+                        height: 16,
+                      ),
+                      InputTextField(
+                        inputTitle: 'txt_username'.tr,
+                        controller: controller.usernameController,
+                        obscureText: false,
+                      ),
+                      SizedBox(
+                        height: 16,
                       ),
                       Row(
                         children: [
@@ -82,14 +89,14 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                               text: TextSpan(
                                   text: 'txt_terms_of_service_description'.tr,
                                   style: TextStyle(
-                                      color: SatorColor.textBlack,
+                                      color: SatorioColor.textBlack,
                                       fontSize: 17.0,
                                       fontWeight: FontWeight.w400),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text: 'txt_terms_of_service'.tr,
                                       style: TextStyle(
-                                          color: SatorColor.interactive,
+                                          color: SatorioColor.interactive,
                                           fontSize: 17.0,
                                           fontWeight: FontWeight.w500),
                                       recognizer: TapGestureRecognizer()
@@ -123,14 +130,14 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                     text: TextSpan(
                         text: 'txt_already_member'.tr,
                         style: TextStyle(
-                            color: SatorColor.textBlack,
+                            color: SatorioColor.textBlack,
                             fontSize: 17.0,
                             fontWeight: FontWeight.w400),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'txt_sign_in'.tr,
                             style: TextStyle(
-                                color: SatorColor.interactive,
+                                color: SatorioColor.interactive,
                                 fontSize: 17.0,
                                 fontWeight: FontWeight.w600),
                             recognizer: TapGestureRecognizer()
