@@ -125,7 +125,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(24.0),
                   child: RichText(
                     text: TextSpan(
                         text: 'txt_already_member'.tr,

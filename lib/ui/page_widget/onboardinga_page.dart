@@ -24,7 +24,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(32.0),
               child: SmoothPageIndicator(
                 controller: controller.pageController,
                 count: controller.data.length,
@@ -39,13 +39,16 @@ class OnBoardingPage extends GetView<OnBoardingController> {
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: TextButton(
-              onPressed: () => controller.nextOrJoin(),
-              child: Obx(() => Text(
-                    controller.isLastPage.value ? 'txt_join'.tr : 'txt_next'.tr,
-                    style: textTheme.bodyText1
-                        .copyWith(color: SatorioColor.darkAccent),
-                  )),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TextButton(
+                onPressed: () => controller.nextOrJoin(),
+                child: Obx(() => Text(
+                      controller.isLastPage.value ? 'txt_join'.tr : 'txt_next'.tr,
+                      style: textTheme.bodyText1
+                          .copyWith(color: SatorioColor.darkAccent),
+                    )),
+              ),
             ),
           )
         ],
