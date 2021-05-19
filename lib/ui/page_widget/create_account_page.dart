@@ -51,6 +51,14 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       SizedBox(
                         height: 16,
                       ),
+                      InputTextField(
+                        inputTitle: 'txt_username'.tr,
+                        controller: controller.usernameController,
+                        obscureText: false,
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
                       Obx(() => InputTextField(
                             inputTitle: 'txt_password'.tr,
                             controller: controller.passwordController,
@@ -65,14 +73,6 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                               controller.passwordObscured.toggle();
                             },
                           )),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      InputTextField(
-                        inputTitle: 'txt_username'.tr,
-                        controller: controller.usernameController,
-                        obscureText: false,
-                      ),
                       SizedBox(
                         height: 16,
                       ),
