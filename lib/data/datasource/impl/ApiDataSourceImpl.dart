@@ -7,6 +7,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/model/auth_response.dart';
 import 'package:satorio/data/model/empty_request.dart';
+import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
@@ -94,7 +95,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     print(
         '${utf8Response.request.method.toUpperCase()} ${utf8Response.request.url} ${utf8Response.statusCode}');
 
-    // print('${utf8Response.bodyString}');
+    print('${utf8Response.bodyString}');
     print('--------');
 
     return utf8Response;
@@ -146,6 +147,16 @@ class ApiDataSourceImpl implements ApiDataSource {
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
       _authDataSource.storeAuthToken(token);
       return token != null && token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<ProfileModel> profile() {
+    return _requestGet(
+      'profile',
+      headers: _getHeaders(),
+    ).then((Response response) {
+      return ProfileModel.fromJson(json.decode(response.bodyString));
     });
   }
 }

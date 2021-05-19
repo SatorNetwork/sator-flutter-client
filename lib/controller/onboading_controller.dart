@@ -34,7 +34,6 @@ class OnBoardingController extends GetxController {
   @override
   void onClose() {
     pageController.removeListener(_listener);
-    pageController.dispose();
   }
 
   _listener() {

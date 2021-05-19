@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/widget/ElevatedGradientButton.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
 class CreateAccountPage extends GetView<CreateAccountController> {

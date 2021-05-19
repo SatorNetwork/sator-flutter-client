@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
-import 'package:satorio/ui/widget/ElevatedGradientButton.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
 class LoginPage extends GetView<LoginController> {

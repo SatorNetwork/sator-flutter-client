@@ -13,4 +13,10 @@ const Map<String, String> en = {
   'txt_sign_in': 'Sign In',
   'txt_forgot_password': 'Forgot password?',
   'txt_not_member': 'Not a member? ',
+  'txt_home': 'Home',
+  'txt_challenge': 'Challenge',
+  'txt_profile': 'Profile',
+  'txt_rewards': 'Rewards',
+  'txt_wallet': 'Wallet',
+  'txt_badges': 'Badges'
 };
