@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
 
 class CreateAccountController extends GetxController {
@@ -19,7 +21,7 @@ class CreateAccountController extends GetxController {
   }
 
   void toSignIn() {
-    Get.back();
+    Get.off(() => LoginPage(), binding: LoginBinding());
   }
 
   void createAccount() {

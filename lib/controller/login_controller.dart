@@ -15,7 +15,7 @@ class LoginController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   void toCreateAccount() {
-    Get.to(() => CreateAccountPage(), binding: CreateAccountBinding());
+    Get.off(() => CreateAccountPage(), binding: CreateAccountBinding());
   }
 
   void toForgotPassword() {
