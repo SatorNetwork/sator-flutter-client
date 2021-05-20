@@ -1,4 +1,5 @@
 const Map<String, String> en = {
+  'txt_oops': 'Oops!',
   'txt_next': 'Next',
   'txt_join': 'Join',
   'txt_email_address': 'Email address',
