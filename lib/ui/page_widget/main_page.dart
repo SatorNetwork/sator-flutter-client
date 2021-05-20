@@ -22,19 +22,27 @@ class MainPage extends GetView<MainController> {
             fixedColor: SatorioColor.brand,
             items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: Icon(
+                  Icons.home,
+                ),
                 label: 'txt_home'.tr,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.alarm),
+                icon: Icon(
+                  Icons.alarm,
+                ),
                 label: 'txt_challenge'.tr,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
+                icon: Icon(
+                  Icons.account_circle,
+                ),
                 label: 'txt_profile'.tr,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.assistant_photo),
+                icon: Icon(
+                  Icons.assistant_photo,
+                ),
                 label: 'txt_rewards'.tr,
               ),
             ],

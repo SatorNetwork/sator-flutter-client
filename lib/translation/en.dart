@@ -18,5 +18,6 @@ const Map<String, String> en = {
   'txt_profile': 'Profile',
   'txt_rewards': 'Rewards',
   'txt_wallet': 'Wallet',
-  'txt_badges': 'Badges'
+  'txt_badges': 'Badges',
+  'txt_challenges': 'Challenges'
 };

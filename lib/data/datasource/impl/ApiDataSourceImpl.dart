@@ -156,7 +156,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'profile',
       headers: _getHeaders(),
     ).then((Response response) {
-      return ProfileModel.fromJson(json.decode(response.bodyString));
+      return ProfileModel.fromJson(json.decode(response.bodyString)['data']);
     });
   }
 }
