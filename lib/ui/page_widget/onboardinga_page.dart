@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/onboading_controller.dart';
-import 'package:satorio/model/onboarding_data.dart';
-import 'package:satorio/theme/sator_color.dart';
-import 'package:satorio/theme/text_theme.dart';
+import 'package:satorio/domain/entities/onboarding_data.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingPage extends GetView<OnBoardingController> {
@@ -24,7 +24,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(32.0),
               child: SmoothPageIndicator(
                 controller: controller.pageController,
                 count: controller.data.length,
@@ -39,13 +39,16 @@ class OnBoardingPage extends GetView<OnBoardingController> {
           ),
           Align(
             alignment: Alignment.bottomRight,
-            child: TextButton(
-              onPressed: () => controller.nextOrJoin(),
-              child: Obx(() => Text(
-                    controller.isLastPage.value ? 'txt_join'.tr : 'txt_next'.tr,
-                    style: textTheme.bodyText1
-                        .copyWith(color: SatorColor.darkAccent),
-                  )),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TextButton(
+                onPressed: () => controller.nextOrJoin(),
+                child: Obx(() => Text(
+                      controller.isLastPage.value ? 'txt_join'.tr : 'txt_next'.tr,
+                      style: textTheme.bodyText1
+                          .copyWith(color: SatorioColor.darkAccent),
+                    )),
+              ),
             ),
           )
         ],
@@ -62,14 +65,14 @@ class OnBoardingPage extends GetView<OnBoardingController> {
         ),
         Text(
           data.title,
-          style: textTheme.headline2.copyWith(color: SatorColor.darkAccent),
+          style: textTheme.headline2.copyWith(color: SatorioColor.darkAccent),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Text(
             data.description,
             textAlign: TextAlign.center,
-            style: textTheme.subtitle1.copyWith(color: SatorColor.darkAccent),
+            style: textTheme.subtitle2.copyWith(color: SatorioColor.darkAccent),
           ),
         ),
       ],
