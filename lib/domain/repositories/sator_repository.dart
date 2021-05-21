@@ -1,4 +1,5 @@
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/wallet_balance.dart';
 
 abstract class SatorioRepository {
   Future<bool> isTokenValid();
@@ -8,4 +9,6 @@ abstract class SatorioRepository {
   Future<bool> signUp(String email, String password, String username);
 
   Future<Profile> profile();
+
+  Future<WalletBalance> walletBalance();
 }

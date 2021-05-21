@@ -11,6 +11,7 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
+import 'package:satorio/data/model/wallet_balance_model.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -157,6 +158,17 @@ class ApiDataSourceImpl implements ApiDataSource {
       headers: _getHeaders(),
     ).then((Response response) {
       return ProfileModel.fromJson(json.decode(response.bodyString)['data']);
+    });
+  }
+
+  @override
+  Future<WalletBalanceModel> walletBalance() {
+    return _requestGet(
+      'wallet/balance',
+      headers: _getHeaders(),
+    ).then((Response response) {
+      return WalletBalanceModel.fromJson(
+          json.decode(response.bodyString)['data']);
     });
   }
 }

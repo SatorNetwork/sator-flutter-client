@@ -12,6 +12,9 @@ class ProfileModel extends Profile implements ToJsonInterface {
       );
 
   @override
-  Map toJson() =>
-      {'id': this.id, 'first_name': firstName, 'last_name': lastName};
+  Map toJson() => {
+        'id': this.id,
+        'first_name': firstName,
+        'last_name': lastName,
+      };
 }

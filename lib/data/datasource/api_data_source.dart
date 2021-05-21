@@ -1,4 +1,5 @@
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/wallet_balance_model.dart';
 
 abstract class ApiDataSource {
   Future<bool> isTokenExist();
@@ -10,4 +11,6 @@ abstract class ApiDataSource {
   Future<bool> refreshToken();
 
   Future<ProfileModel> profile();
+
+  Future<WalletBalanceModel> walletBalance();
 }

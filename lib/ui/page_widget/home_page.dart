@@ -19,28 +19,30 @@ class HomePage extends GetView<HomeController> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '302 SAO',
-                  style: TextStyle(
-                    color: SatorioColor.darkAccent,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Text(
-                  '2,456.25 USD',
-                  style: TextStyle(
-                    color: SatorioColor.darkAccent,
-                    fontSize: 13.0,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
+            child: Obx(() =>
+                controller.walletBalanceRx.value== null ? Container():
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      controller.walletBalanceRx.value.sao.displayedValue,
+                      style: TextStyle(
+                        color: SatorioColor.darkAccent,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w700,
+                        ),
+                    ),
+                    Text(
+                      controller.walletBalanceRx.value.usd.displayedValue,
+                      style: TextStyle(
+                        color: SatorioColor.darkAccent,
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                )),
           ),
         ],
         bottom: TabBar(
@@ -242,8 +244,7 @@ class HomePage extends GetView<HomeController> {
         Align(
           alignment: Alignment.bottomLeft,
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 18, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,

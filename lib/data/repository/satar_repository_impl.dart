@@ -1,6 +1,7 @@
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/wallet_balance.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
@@ -32,5 +33,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<Profile> profile() {
     return _apiDataSource.profile();
+  }
+
+  @override
+  Future<WalletBalance> walletBalance() {
+    return _apiDataSource.walletBalance();
   }
 }
