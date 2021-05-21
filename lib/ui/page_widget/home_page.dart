@@ -165,7 +165,7 @@ class HomePage extends GetView<HomeController> {
           padding: const EdgeInsets.only(bottom: 24),
           shrinkWrap: true,
           physics: ScrollPhysics(),
-          itemBuilder: (context, index) => _categoryItem(),
+          itemBuilder: (context, index) => _category(),
         ),
       ],
     );
@@ -179,7 +179,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _categoryItem() {
+  Widget _category() {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -218,50 +218,54 @@ class HomePage extends GetView<HomeController> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 24),
               itemCount: 6,
-              itemBuilder: (context, index) => Stack(
-                children: [
-                  Container(
-                    width: 201,
-                    height: 168,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image(
-                        image: NetworkImage('https://picsum.photos/201/168'),
-                      ),
-                    ),
+              itemBuilder: (context, index) => _categoryItem(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _categoryItem() {
+    return Stack(
+      children: [
+        Container(
+          width: 201,
+          height: 168,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image(
+              image: NetworkImage('https://picsum.photos/201/168'),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 18, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Peaky Blinders'.toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w700,
                   ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 18, vertical: 20),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Peaky Blinders'.toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 9),
-                          Text(
-                            'Ranked 12,024',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                ),
+                SizedBox(height: 9),
+                Text(
+                  'Ranked 12,024',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
