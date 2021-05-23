@@ -10,7 +10,7 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: SatorioColor.brand,
+        backgroundColor: Colors.white,
         title: SvgPicture.asset(
           'images/logo_name.svg',
           height: kToolbarHeight * 0.5,
@@ -19,30 +19,30 @@ class HomePage extends GetView<HomeController> {
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
-            child: Obx(() =>
-                controller.walletBalanceRx.value== null ? Container():
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      controller.walletBalanceRx.value.sao.displayedValue,
-                      style: TextStyle(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w700,
+            child: Obx(() => controller.walletBalanceRx.value == null
+                ? Container()
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        controller.walletBalanceRx.value.sao.displayedValue,
+                        style: TextStyle(
+                          color: SatorioColor.darkAccent,
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w700,
                         ),
-                    ),
-                    Text(
-                      controller.walletBalanceRx.value.usd.displayedValue,
-                      style: TextStyle(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w400,
                       ),
-                    ),
-                  ],
-                )),
+                      Text(
+                        controller.walletBalanceRx.value.usd.displayedValue,
+                        style: TextStyle(
+                          color: SatorioColor.darkAccent,
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  )),
           ),
         ],
         bottom: TabBar(
