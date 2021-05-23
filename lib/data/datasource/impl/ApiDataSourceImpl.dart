@@ -6,9 +6,11 @@ import 'package:get/get_connect/connect.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/model/auth_response.dart';
 import 'package:satorio/data/model/empty_request.dart';
 import 'package:satorio/data/model/error_response.dart';
+import 'package:satorio/data/model/error_validation_response.dart';
 import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
@@ -96,12 +98,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     print(
         '${utf8Response.request.method.toUpperCase()} ${utf8Response.request.url} ${utf8Response.statusCode}');
 
-    // print('${utf8Response.bodyString}');
+    print('${utf8Response.bodyString}');
     print('--------');
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
         case 422:
+          ErrorValidationResponse errorValidationResponse =
+              ErrorValidationResponse.fromJson(
+                  json.decode(utf8Response.bodyString));
+          throw ApiValidationException(errorValidationResponse.validation);
           break;
         default:
           ErrorResponse errorResponse =
@@ -117,7 +123,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<bool> isTokenExist() async {
     String token = _authDataSource.getAuthToken();
-    ;
     return token != null && token.isNotEmpty;
   }
 

@@ -13,6 +13,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   _handleException(Exception exception) {
     if (exception is ApiErrorException) {
       Get.snackbar('txt_oops'.tr, exception.errorMessage);
+    } else {
+      throw exception;
     }
   }
 
