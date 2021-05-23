@@ -4,9 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/text_theme.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingPage extends GetView<OnBoardingController> {
   @override
@@ -22,32 +19,22 @@ class OnBoardingPage extends GetView<OnBoardingController> {
                 _onBoardingDataWidget(controller.data[index]),
           ),
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.topRight,
             child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: SmoothPageIndicator(
-                controller: controller.pageController,
-                count: controller.data.length,
-                effect: ExpandingDotsEffect(
-                  offset: 0,
-                  dotHeight: 10,
-                  dotWidth: 10,
-                  expansionFactor: 2,
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: EdgeInsets.only(
+                  top: Get.mediaQuery.padding.top + 12, right: 12),
               child: TextButton(
-                onPressed: () => controller.nextOrJoin(),
-                child: Obx(() => Text(
-                      controller.isLastPage.value ? 'txt_join'.tr : 'txt_next'.tr,
-                      style: textTheme.bodyText1
-                          .copyWith(color: SatorioColor.darkAccent),
-                    )),
+                onPressed: () => controller.skip(),
+                child: Obx(
+                  () => Text(
+                    'txt_skip'.tr,
+                    style: TextStyle(
+                      color: controller.data[controller.pageRx.value].textColor,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
               ),
             ),
           )
@@ -57,25 +44,54 @@ class OnBoardingPage extends GetView<OnBoardingController> {
   }
 
   Widget _onBoardingDataWidget(OnBoardingData data) {
-    return Column(
-      children: [
-        SvgPicture.asset(
-          data.assetName,
-          height: Get.height * 0.6,
-        ),
-        Text(
-          data.title,
-          style: textTheme.headline2.copyWith(color: SatorioColor.darkAccent),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Text(
-            data.description,
-            textAlign: TextAlign.center,
-            style: textTheme.subtitle2.copyWith(color: SatorioColor.darkAccent),
+    return Container(
+      color: data.backgroundColor,
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                SizedBox(height: 183),
+                SvgPicture.asset(
+                  data.assetName,
+                  width: 164,
+                ),
+                SizedBox(height: 61),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    data.text,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: data.textColor,
+                      fontSize: 34.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 81),
+              child: RawMaterialButton(
+                onPressed: () => controller.nextOrJoin(),
+                fillColor: data.buttonColor,
+                shape: CircleBorder(),
+                padding: EdgeInsets.all(26.0),
+                child: Icon(
+                  Icons.chevron_right,
+                  size: 48,
+                  color: data.backgroundColor,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

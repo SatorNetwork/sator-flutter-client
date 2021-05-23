@@ -32,7 +32,7 @@ class LoginPage extends GetView<LoginController> {
                   child: Column(
                     children: [
                       SvgPicture.asset(
-                        'images/on_boarding.svg',
+                        'images/logo.svg',
                         height: 90,
                         alignment: Alignment.center,
                       ),

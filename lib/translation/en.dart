@@ -1,6 +1,5 @@
 const Map<String, String> en = {
-  'txt_next': 'Next',
-  'txt_join': 'Join',
+  'txt_skip': 'Skip',
   'txt_email_address': 'Email address',
   'txt_password': 'Password',
   'txt_password_hint': '6+ characters',
