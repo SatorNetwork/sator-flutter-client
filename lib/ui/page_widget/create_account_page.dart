@@ -11,6 +11,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -18,8 +19,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: Get.mediaQuery.size.height -
-              (Get.mediaQuery.padding.top + kToolbarHeight),
+          height: Get.mediaQuery.size.height - Get.mediaQuery.padding.top,
           color: Colors.white,
           child: Stack(
             children: [
@@ -42,20 +42,23 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       SizedBox(
                         height: 32,
                       ),
-                      InputTextField(
-                        inputTitle: 'txt_email_address'.tr,
-                        controller: controller.emailController,
-                        obscureText: false,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
+                      Obx(() => InputTextField(
+                            inputTitle: 'txt_email_address'.tr,
+                            controller: controller.emailController,
+                            obscureText: false,
+                            errorText: controller.validationRx.value['email'],
+                            keyboardType: TextInputType.emailAddress,
+                          )),
                       SizedBox(
                         height: 16,
                       ),
-                      InputTextField(
-                        inputTitle: 'txt_username'.tr,
-                        controller: controller.usernameController,
-                        obscureText: false,
-                      ),
+                      Obx(() => InputTextField(
+                            inputTitle: 'txt_username'.tr,
+                            controller: controller.usernameController,
+                            obscureText: false,
+                            errorText:
+                                controller.validationRx.value['username'],
+                          )),
                       SizedBox(
                         height: 16,
                       ),
@@ -64,6 +67,8 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                             controller: controller.passwordController,
                             hintText: 'txt_password_hint'.tr,
                             obscureText: controller.passwordObscured.value,
+                            errorText:
+                                controller.validationRx.value['password'],
                             icon: Icon(
                                 controller.passwordObscured.value
                                     ? Icons.visibility_off_outlined
