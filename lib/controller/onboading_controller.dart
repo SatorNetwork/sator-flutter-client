@@ -51,11 +51,11 @@ class OnBoardingController extends GetxController {
 
   void nextOrJoin() {
     if (pageRx.value == data.length - 1) {
-      Get.off(() => CreateAccountPage(), binding: CreateAccountBinding());
+      skip();
     } else {
       pageController.nextPage(
         duration: Duration(milliseconds: 250),
-        curve: Curves.easeIn,
+        curve: Curves.easeInOut,
       );
     }
   }
