@@ -19,10 +19,6 @@ class LoginController extends GetxController with ValidationMixin {
     Get.off(() => CreateAccountPage(), binding: CreateAccountBinding());
   }
 
-  void toForgotPassword() {
-    // TODO: move to ForgotPassword screen
-  }
-
   void signIn() {
     _satorioRepository
         .signIn(emailController.text, passwordController.text)

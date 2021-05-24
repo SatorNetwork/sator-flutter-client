@@ -26,7 +26,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
               Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 132),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 124),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,

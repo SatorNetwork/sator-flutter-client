@@ -10,6 +10,7 @@ const Map<String, String> en = {
   'txt_terms_of_service': 'Terms of Service',
   'txt_already_member': 'Already a member? ',
   'txt_sign_in': 'Sign In',
+  'txt_login': 'Login',
   'txt_forgot_password': 'Forgot password?',
   'txt_not_member': 'Not a member? ',
 

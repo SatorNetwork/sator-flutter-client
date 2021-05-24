@@ -7,9 +7,6 @@ mixin ValidationMixin {
   void handleValidationException(Exception exception) {
     if (exception is ApiValidationException) {
       validationRx.value = exception.validationMap;
-      exception.validationMap.forEach((key, value) {
-        print('$key = $value');
-      });
     }
   }
 }
