@@ -3,8 +3,7 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
-import 'package:satorio/ui/page_widget/profile_page.dart';
-import 'package:satorio/ui/page_widget/rewards_page.dart';
+import 'package:satorio/ui/page_widget/some_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class MainPage extends GetView<MainController> {
@@ -18,32 +17,38 @@ class MainPage extends GetView<MainController> {
             onTap: (index) {
               controller.selectedBottomTabIndex.value = index;
             },
-            unselectedItemColor: SatorioColor.darkAccent,
-            fixedColor: SatorioColor.brand,
+            unselectedItemColor: SatorioColor.mortar,
+            fixedColor: Colors.black,
             items: [
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.home,
+                  Icons.home_rounded,
                 ),
-                label: 'txt_home'.tr,
+                label: '',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.alarm,
+                  Icons.videocam_rounded,
                 ),
-                label: 'txt_challenge'.tr,
+                label: '',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.account_circle,
+                  Icons.crop_square_rounded,
                 ),
-                label: 'txt_profile'.tr,
+                label: '',
               ),
               BottomNavigationBarItem(
                 icon: Icon(
-                  Icons.assistant_photo,
+                  Icons.image_rounded,
                 ),
-                label: 'txt_rewards'.tr,
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.account_balance_wallet_rounded,
+                ),
+                label: '',
               ),
             ],
           )),
@@ -53,7 +58,8 @@ class MainPage extends GetView<MainController> {
   final List<Widget> _bodyContent = [
     HomePage(),
     ChallengePage(),
-    ProfilePage(),
-    RewardsPage()
+    SomePage(),
+    SomePage(),
+    SomePage()
   ];
 }

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -9,268 +11,395 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: SvgPicture.asset(
-          'images/logo_name.svg',
-          height: kToolbarHeight * 0.5,
-          color: SatorioColor.darkAccent,
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
-            child: Obx(() => controller.walletBalanceRx.value == null
-                ? Container()
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        controller.walletBalanceRx.value.sao.displayedValue,
+      extendBodyBehindAppBar: true,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+              color: SatorioColor.darkAccent,
+              height: 190,
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 76),
+                      child: Obx(
+                        () => Text(
+                          controller.profileRx.value == null
+                              ? ''
+                              : controller.profileRx.value.fullName,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 32.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 67, right: 20),
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: 5,
+                          color: Colors.white.withOpacity(0.12),
+                        ),
+                      ),
+                      child: Center(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: SatorioColor.casablanca,
+                          ),
+                          child: Center(
+                            child: Text(
+                              '#1',
+                              style: TextStyle(
+                                color: SatorioColor.raw_umber,
+                                fontSize: 21.0,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 158),
+              height: 115,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
+                ),
+                color: SatorioColor.interactive,
+              ),
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 21, left: 20),
+                      child: Text(
+                        'txt_wallet'.tr,
                         style: TextStyle(
-                          color: SatorioColor.darkAccent,
-                          fontSize: 16.0,
+                          color: Colors.white,
+                          fontSize: 24.0,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      Text(
-                        controller.walletBalanceRx.value.usd.displayedValue,
-                        style: TextStyle(
-                          color: SatorioColor.darkAccent,
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )),
-          ),
-        ],
-        bottom: TabBar(
-          controller: controller.tabController,
-          labelPadding: const EdgeInsets.symmetric(vertical: 10),
-          indicatorColor: Colors.transparent,
-          unselectedLabelColor: SatorioColor.darkAccent,
-          unselectedLabelStyle: TextStyle(
-            color: SatorioColor.darkAccent,
-            fontSize: 22.0,
-            fontWeight: FontWeight.w400,
-          ),
-          labelColor: SatorioColor.darkAccent,
-          labelStyle: TextStyle(
-            color: SatorioColor.darkAccent,
-            fontSize: 22.0,
-            fontWeight: FontWeight.w700,
-          ),
-          tabs: [
-            Text('txt_profile'.tr),
-            Text('txt_wallet'.tr),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: controller.tabController,
-        children: [
-          _profileTabContent(),
-          _walletTabContent(),
-        ],
-      ),
-    );
-  }
-
-  Widget _profileTabContent() {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 24, top: 27, right: 24),
-          child: Obx(() => Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    foregroundColor: Colors.transparent,
-                    backgroundColor: Colors.transparent,
-                    foregroundImage:
-                        NetworkImage('https://picsum.photos/60/60'),
-                    child: SvgPicture.asset(
-                      'images/profile_placeholder.svg',
-                      width: 60,
-                      height: 60,
                     ),
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      controller.profileRx.value != null
-                          ? controller.profileRx.value.fullName
-                          : 'Empty Name',
-                      style: TextStyle(
-                        color: SatorioColor.textBlack,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                    decoration: BoxDecoration(
-                      color: SatorioColor.inputGrey,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      'super fun'.toUpperCase(),
-                      style: TextStyle(
-                        color: SatorioColor.textBlack,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w600,
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20, top: 16),
+                      child: Obx(
+                        () => controller.walletBalanceRx.value == null
+                            ? Container()
+                            : Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    controller.walletBalanceRx.value.sao
+                                        .displayedValue,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  Text(
+                                    controller.walletBalanceRx.value.usd
+                                        .displayedValue,
+                                    style: TextStyle(
+                                      color: Colors.white.withOpacity(0.7),
+                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
                       ),
                     ),
                   )
                 ],
-              )),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 32, left: 24),
-          child: Text(
-            'txt_badges'.tr,
-            style: TextStyle(
-              color: SatorioColor.textBlack,
-              fontSize: 22.0,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Container(
-            height: 70,
-            child: ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 24,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              scrollDirection: Axis.horizontal,
-              itemCount: 8,
-              itemBuilder: (context, index) => SvgPicture.asset(
-                'images/badge.svg',
-                height: 46,
-                width: 46,
               ),
             ),
-          ),
+            Container(
+              margin: const EdgeInsets.only(top: 231),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
+                ),
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 32, left: 20),
+                    child: Text(
+                      'txt_badges'.tr,
+                      style: TextStyle(
+                        color: SatorioColor.textBlack,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    height: 100,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        String assetName;
+                        switch (index % 3) {
+                          case 0:
+                            assetName = 'images/badge1.svg';
+                            break;
+                          case 1:
+                            assetName = 'images/badge2.svg';
+                            break;
+                          case 2:
+                            assetName = 'images/badge3.svg';
+                            break;
+                        }
+                        return _badgeItem(assetName);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 24, left: 20, right: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'txt_challenges'.tr,
+                            style: TextStyle(
+                              color: SatorioColor.textBlack,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 32,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    height: 168,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return _challengeItem();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 24, left: 20, right: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'txt_nfts'.tr,
+                            style: TextStyle(
+                              color: SatorioColor.textBlack,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          size: 32,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 16),
+                    height: 168,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: 10,
+                      itemBuilder: (context, index) {
+                        return _nftsItem();
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  )
+                ],
+              ),
+            )
+          ],
         ),
-        ListView.builder(
-          itemCount: 3,
-          padding: const EdgeInsets.only(bottom: 24),
-          shrinkWrap: true,
-          physics: ScrollPhysics(),
-          itemBuilder: (context, index) => _category(),
-        ),
-      ],
-    );
-  }
-
-  Widget _walletTabContent() {
-    return Container(
-      child: Center(
-        child: Text('Wallet Tab Content'),
       ),
     );
   }
 
-  Widget _category() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20, left: 24, right: 20),
-          child: Stack(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'txt_challenges'.tr,
-                  style: TextStyle(
-                    color: SatorioColor.textBlack,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Icon(
-                  Icons.chevron_right,
-                ),
-              ),
-            ],
-          ),
+  Widget _badgeItem(String assetName) {
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(17),
+        color: SatorioColor.alice_blue,
+      ),
+      child: Center(
+        child: SvgPicture.asset(
+          assetName,
+          width: 40,
+          height: 40,
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 16),
-          child: Container(
-            height: 168,
-            child: ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              itemCount: 6,
-              itemBuilder: (context, index) => _categoryItem(),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 
-  Widget _categoryItem() {
-    return Stack(
-      children: [
-        Container(
-          width: 201,
-          height: 168,
-          child: ClipRRect(
+  Widget _challengeItem() {
+    double width = Get.width - 20 - 32;
+    return Container(
+      width: width,
+      height: 168,
+      child: Stack(
+        children: [
+          ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image(
-              image: NetworkImage('https://picsum.photos/201/168'),
+              image: NetworkImage('https://picsum.photos/${width.round()}/168'),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Peaky Blinders'.toUpperCase(),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w700,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Hold on for dear life',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(height: 9),
-                Text(
-                  'Ranked 12,024',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: SatorioColor.lavender_rose,
+                    ),
+                    child: Text(
+                      'Rank #1',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
+    );
+  }
+
+  Widget _nftsItem() {
+    double width = Get.width - 20 - 32;
+    return Container(
+      width: width,
+      height: 168,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image(
+              image: NetworkImage('https://picsum.photos/${width.round()}/168'),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Hold on for dear life',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: SatorioColor.lavender_rose,
+                    ),
+                    child: Text(
+                      'Rank #1',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

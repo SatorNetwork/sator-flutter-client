@@ -105,7 +105,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<bool> isTokenExist() async {
     String token = _authDataSource.getAuthToken();
-    ;
     return token != null && token.isNotEmpty;
   }
 

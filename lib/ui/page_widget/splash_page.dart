@@ -7,7 +7,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 class SplashPage extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
-    controller.checkToken();
+    controller.dummy();
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -33,7 +33,7 @@ class SplashPage extends GetView<SplashController> {
                   Text(
                     'Curabitur posuere, dolor quis commodo vulputate, odio nunc maximus ex, sed faucibus elit ex',
                     style: TextStyle(
-                      color: Colors.white.withAlpha(201),
+                      color: Colors.white.withOpacity(0.79),
                       fontSize: 18.0,
                       fontWeight: FontWeight.w400,
                     ),
