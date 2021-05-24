@@ -10,6 +10,7 @@ class InputTextField extends StatelessWidget {
       this.keyboardType = TextInputType.text,
       this.hintText,
       this.obscureText,
+      this.errorText,
       this.icon,
       this.onPressedIcon});
 
@@ -18,6 +19,7 @@ class InputTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final String hintText;
   final bool obscureText;
+  final String errorText;
   final Icon icon;
   final Function onPressedIcon;
 
@@ -37,7 +39,6 @@ class InputTextField extends StatelessWidget {
           height: 3,
         ),
         Container(
-          height: 44,
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
           decoration: BoxDecoration(
             color: SatorioColor.inputGrey,
@@ -53,6 +54,7 @@ class InputTextField extends StatelessWidget {
             ),
             decoration: InputDecoration(
               hintText: hintText,
+              errorText: errorText,
               suffixIcon: icon == null
                   ? Container(
                       width: 30,

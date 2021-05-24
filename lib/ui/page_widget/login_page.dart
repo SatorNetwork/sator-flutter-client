@@ -39,12 +39,12 @@ class LoginPage extends GetView<LoginController> {
                       SizedBox(
                         height: 68,
                       ),
-                      InputTextField(
-                        inputTitle: 'txt_email_address'.tr,
-                        controller: controller.emailController,
-                        obscureText: false,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
+                      Obx(() => InputTextField(
+                          inputTitle: 'txt_email_address'.tr,
+                          controller: controller.emailController,
+                          obscureText: false,
+                          keyboardType: TextInputType.emailAddress,
+                          errorText: controller.validationRx.value['email'])),
                       SizedBox(
                         height: 16,
                       ),
@@ -59,6 +59,8 @@ class LoginPage extends GetView<LoginController> {
                                   obscureText:
                                       controller.passwordObscured.value,
                                   keyboardType: TextInputType.emailAddress,
+                                  errorText:
+                                      controller.validationRx.value['password'],
                                   icon: Icon(
                                       controller.passwordObscured.value
                                           ? Icons.visibility_off_outlined
