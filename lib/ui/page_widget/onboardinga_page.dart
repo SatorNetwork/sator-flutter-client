@@ -78,6 +78,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 81),
               child: RawMaterialButton(
+                elevation: 0,
                 onPressed: () => controller.nextOrJoin(),
                 fillColor: data.buttonColor,
                 shape: CircleBorder(),

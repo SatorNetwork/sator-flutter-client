@@ -11,23 +11,22 @@ class CreateAccountPage extends GetView<CreateAccountController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: Get.mediaQuery.size.height -
-              (Get.mediaQuery.padding.top + kToolbarHeight),
+          height: Get.mediaQuery.size.height - Get.mediaQuery.padding.top,
           color: Colors.white,
           child: Stack(
             children: [
               Align(
-                alignment: Alignment.center,
+                alignment: Alignment.topCenter,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 132),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -74,7 +73,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                             },
                           )),
                       SizedBox(
-                        height: 16,
+                        height: 28,
                       ),
                       Row(
                         children: [
@@ -110,7 +109,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         ],
                       ),
                       SizedBox(
-                        height: 32,
+                        height: 24,
                       ),
                       ElevatedGradientButton(
                         text: 'txt_create_account'.tr,
