@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/widget/ElevatedGradientButton.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
 class CreateAccountPage extends GetView<CreateAccountController> {
@@ -13,7 +13,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
       ),
@@ -24,10 +24,9 @@ class CreateAccountPage extends GetView<CreateAccountController> {
           child: Stack(
             children: [
               Align(
-                alignment: Alignment.center,
+                alignment: Alignment.topCenter,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 124),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -79,7 +78,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                             },
                           )),
                       SizedBox(
-                        height: 16,
+                        height: 28,
                       ),
                       Row(
                         children: [
@@ -115,7 +114,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         ],
                       ),
                       SizedBox(
-                        height: 32,
+                        height: 24,
                       ),
                       ElevatedGradientButton(
                         text: 'txt_create_account'.tr,

@@ -4,8 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/text_theme.dart';
-import 'package:satorio/ui/widget/ElevatedGradientButton.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
 class LoginPage extends GetView<LoginController> {
@@ -32,7 +31,7 @@ class LoginPage extends GetView<LoginController> {
                   child: Column(
                     children: [
                       SvgPicture.asset(
-                        'images/on_boarding.svg',
+                        'images/logo.svg',
                         height: 90,
                         alignment: Alignment.center,
                       ),
@@ -48,50 +47,28 @@ class LoginPage extends GetView<LoginController> {
                       SizedBox(
                         height: 16,
                       ),
-                      Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Obx(() => InputTextField(
-                                  inputTitle: 'txt_password'.tr,
-                                  controller: controller.passwordController,
-                                  hintText: 'txt_password_hint'.tr,
-                                  obscureText:
-                                      controller.passwordObscured.value,
-                                  keyboardType: TextInputType.emailAddress,
-                                  errorText:
-                                      controller.validationRx.value['password'],
-                                  icon: Icon(
-                                      controller.passwordObscured.value
-                                          ? Icons.visibility_off_outlined
-                                          : Icons.remove_red_eye_outlined,
-                                      color: SatorioColor.darkAccent),
-                                  onPressedIcon: () {
-                                    controller.passwordObscured.toggle();
-                                  },
-                                )),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: InkWell(
-                              onTap: () {
-                                controller.toForgotPassword();
-                              },
-                              child: Text(
-                                'txt_forgot_password'.tr,
-                                style: textTheme.headline5.copyWith(
-                                  color: SatorioColor.textBlack,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      Obx(() => InputTextField(
+                            inputTitle: 'txt_password'.tr,
+                            controller: controller.passwordController,
+                            hintText: 'txt_password_hint'.tr,
+                            obscureText: controller.passwordObscured.value,
+                            keyboardType: TextInputType.emailAddress,
+                            errorText:
+                                controller.validationRx.value['password'],
+                            icon: Icon(
+                                controller.passwordObscured.value
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.remove_red_eye_outlined,
+                                color: SatorioColor.darkAccent),
+                            onPressedIcon: () {
+                              controller.passwordObscured.toggle();
+                            },
+                          )),
                       SizedBox(
                         height: 32,
                       ),
                       ElevatedGradientButton(
-                        text: 'txt_sign_in'.tr,
+                        text: 'txt_login'.tr,
                         onPressed: () {
                           controller.signIn();
                         },

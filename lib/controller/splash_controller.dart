@@ -8,8 +8,15 @@ import 'package:satorio/ui/page_widget/onboardinga_page.dart';
 class SplashController extends GetxController {
   SatorioRepository _satorioRepository = Get.find();
 
-  void checkToken() {
-    Future.delayed(Duration(milliseconds: 500), () {
+  @override
+  void onInit() {
+    _checkToken();
+  }
+
+  void dummy() {}
+
+  void _checkToken() {
+    Future.delayed(Duration(milliseconds: 1000), () {
       _satorioRepository.isTokenValid().then((isTokenValid) {
         if (isTokenValid) {
           Get.offAll(() => MainPage(), binding: MainBinding());

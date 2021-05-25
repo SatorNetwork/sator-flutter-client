@@ -3,19 +3,21 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
-import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/model/auth_response.dart';
 import 'package:satorio/data/model/empty_request.dart';
 import 'package:satorio/data/model/error_response.dart';
 import 'package:satorio/data/model/error_validation_response.dart';
+import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/ui/page_widget/login_page.dart';
+import 'package:satorio/data/model/wallet_balance_model.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -113,9 +115,8 @@ class ApiDataSourceImpl implements ApiDataSource {
           break;
         case 401:
           ErrorResponse errorResponse =
-          ErrorResponse.fromJson(json.decode(utf8Response.bodyString));
-          Get.offAll(() => LoginPage(), binding: LoginBinding());
-          throw ApiErrorException(errorResponse.error);
+              ErrorResponse.fromJson(json.decode(utf8Response.bodyString));
+          throw ApiUnauthorizedException(errorResponse.error);
           break;
         default:
           ErrorResponse errorResponse =
@@ -174,5 +175,52 @@ class ApiDataSourceImpl implements ApiDataSource {
       _authDataSource.storeAuthToken(token);
       return token != null && token.isNotEmpty;
     });
+  }
+
+  @override
+  Future<ProfileModel> profile() {
+    return _requestGet(
+      'profile',
+      headers: _getHeaders(),
+    ).then((Response response) {
+      return ProfileModel.fromJson(json.decode(response.bodyString)['data']);
+    });
+  }
+
+  @override
+  Future<WalletBalanceModel> walletBalance() {
+    return _requestGet(
+      'wallet/balance',
+      headers: _getHeaders(),
+    ).then((Response response) {
+      return WalletBalanceModel.fromJson(
+          json.decode(response.bodyString)['data']);
+    });
+  }
+
+  @override
+  Future<List<ShowModel>> shows({int page}) {
+    Map<String, String> query;
+    if (page != null) {
+      query = {};
+      query['page'] = page.toString();
+    }
+
+    return _requestGet('shows', headers: _getHeaders(), query: query)
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString);
+      if (jsonData is Iterable)
+        return (jsonData as Iterable)
+            .map((element) => ShowModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<void> logout() async {
+    _authDataSource.clearAll();
+    return;
   }
 }

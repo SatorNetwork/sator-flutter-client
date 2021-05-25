@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/text_theme.dart';
 
 class InputTextField extends StatelessWidget {
   InputTextField(
@@ -31,8 +30,10 @@ class InputTextField extends StatelessWidget {
       children: [
         Text(
           inputTitle,
-          style: textTheme.headline5.copyWith(
+          style: TextStyle(
             color: SatorioColor.textBlack,
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
         ),
         SizedBox(
@@ -49,8 +50,10 @@ class InputTextField extends StatelessWidget {
             obscureText: obscureText,
             keyboardType: keyboardType,
             textInputAction: TextInputAction.next,
-            style: textTheme.bodyText2.copyWith(
+            style: TextStyle(
               color: Colors.black,
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
             ),
             decoration: InputDecoration(
               hintText: hintText,
@@ -63,8 +66,10 @@ class InputTextField extends StatelessWidget {
                       onPressed: onPressedIcon,
                       icon: icon,
                     ),
-              hintStyle: textTheme.bodyText2.copyWith(
+              hintStyle: TextStyle(
                 color: Colors.black.withOpacity(0.5),
+                fontSize: 17,
+                fontWeight: FontWeight.w400,
               ),
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
