@@ -226,23 +226,28 @@ class HomePage extends GetView<HomeController> {
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 24, left: 20, right: 10),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'txt_challenges'.tr,
-                            style: TextStyle(
-                              color: SatorioColor.textBlack,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.w700,
+                    child: InkWell(
+                      onTap: () {
+                        controller.toShows();
+                      },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'txt_challenges'.tr,
+                              style: TextStyle(
+                                color: SatorioColor.textBlack,
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
-                        ),
-                        Icon(
-                          Icons.chevron_right,
-                          size: 32,
-                        ),
-                      ],
+                          Icon(
+                            Icons.chevron_right,
+                            size: 32,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(

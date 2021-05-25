@@ -41,53 +41,59 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       SizedBox(
                         height: 32,
                       ),
-                      Obx(() => InputTextField(
-                            inputTitle: 'txt_email_address'.tr,
-                            controller: controller.emailController,
-                            obscureText: false,
-                            errorText: controller.validationRx.value['email'],
-                            keyboardType: TextInputType.emailAddress,
-                          )),
+                      Obx(
+                        () => InputTextField(
+                          inputTitle: 'txt_email_address'.tr,
+                          controller: controller.emailController,
+                          obscureText: false,
+                          errorText: controller.validationRx.value['email'],
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                      ),
                       SizedBox(
                         height: 16,
                       ),
-                      Obx(() => InputTextField(
-                            inputTitle: 'txt_username'.tr,
-                            controller: controller.usernameController,
-                            obscureText: false,
-                            errorText:
-                                controller.validationRx.value['username'],
-                          )),
+                      Obx(
+                        () => InputTextField(
+                          inputTitle: 'txt_username'.tr,
+                          controller: controller.usernameController,
+                          obscureText: false,
+                          errorText: controller.validationRx.value['username'],
+                        ),
+                      ),
                       SizedBox(
                         height: 16,
                       ),
-                      Obx(() => InputTextField(
-                            inputTitle: 'txt_password'.tr,
-                            controller: controller.passwordController,
-                            hintText: 'txt_password_hint'.tr,
-                            obscureText: controller.passwordObscured.value,
-                            errorText:
-                                controller.validationRx.value['password'],
-                            icon: Icon(
-                                controller.passwordObscured.value
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.remove_red_eye_outlined,
-                                color: SatorioColor.darkAccent),
-                            onPressedIcon: () {
-                              controller.passwordObscured.toggle();
-                            },
-                          )),
+                      Obx(
+                        () => InputTextField(
+                          inputTitle: 'txt_password'.tr,
+                          controller: controller.passwordController,
+                          hintText: 'txt_password_hint'.tr,
+                          obscureText: controller.passwordObscured.value,
+                          errorText: controller.validationRx.value['password'],
+                          icon: Icon(
+                              controller.passwordObscured.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.remove_red_eye_outlined,
+                              color: SatorioColor.darkAccent),
+                          onPressedIcon: () {
+                            controller.passwordObscured.toggle();
+                          },
+                        ),
+                      ),
                       SizedBox(
                         height: 28,
                       ),
                       Row(
                         children: [
-                          Obx(() => Checkbox(
-                                value: controller.termsOfServiceCheck.value,
-                                onChanged: (value) {
-                                  controller.termsOfServiceCheck.toggle();
-                                },
-                              )),
+                          Obx(
+                            () => Checkbox(
+                              value: controller.termsOfServiceCheck.value,
+                              onChanged: (value) {
+                                controller.termsOfServiceCheck.toggle();
+                              },
+                            ),
+                          ),
                           Flexible(
                             child: RichText(
                               text: TextSpan(

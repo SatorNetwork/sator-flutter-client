@@ -38,32 +38,35 @@ class LoginPage extends GetView<LoginController> {
                       SizedBox(
                         height: 68,
                       ),
-                      Obx(() => InputTextField(
-                          inputTitle: 'txt_email_address'.tr,
-                          controller: controller.emailController,
-                          obscureText: false,
-                          keyboardType: TextInputType.emailAddress,
-                          errorText: controller.validationRx.value['email'])),
+                      Obx(
+                        () => InputTextField(
+                            inputTitle: 'txt_email_address'.tr,
+                            controller: controller.emailController,
+                            obscureText: false,
+                            keyboardType: TextInputType.emailAddress,
+                            errorText: controller.validationRx.value['email']),
+                      ),
                       SizedBox(
                         height: 16,
                       ),
-                      Obx(() => InputTextField(
-                            inputTitle: 'txt_password'.tr,
-                            controller: controller.passwordController,
-                            hintText: 'txt_password_hint'.tr,
-                            obscureText: controller.passwordObscured.value,
-                            keyboardType: TextInputType.emailAddress,
-                            errorText:
-                                controller.validationRx.value['password'],
-                            icon: Icon(
-                                controller.passwordObscured.value
-                                    ? Icons.visibility_off_outlined
-                                    : Icons.remove_red_eye_outlined,
-                                color: SatorioColor.darkAccent),
-                            onPressedIcon: () {
-                              controller.passwordObscured.toggle();
-                            },
-                          )),
+                      Obx(
+                        () => InputTextField(
+                          inputTitle: 'txt_password'.tr,
+                          controller: controller.passwordController,
+                          hintText: 'txt_password_hint'.tr,
+                          obscureText: controller.passwordObscured.value,
+                          keyboardType: TextInputType.emailAddress,
+                          errorText: controller.validationRx.value['password'],
+                          icon: Icon(
+                              controller.passwordObscured.value
+                                  ? Icons.visibility_off_outlined
+                                  : Icons.remove_red_eye_outlined,
+                              color: SatorioColor.darkAccent),
+                          onPressedIcon: () {
+                            controller.passwordObscured.toggle();
+                          },
+                        ),
+                      ),
                       SizedBox(
                         height: 32,
                       ),
