@@ -3,6 +3,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
@@ -57,6 +58,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<WalletBalance> walletBalance() {
     return _apiDataSource
         .walletBalance()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<Show>> shows({int page}) {
+    return _apiDataSource
+        .shows(page: page)
         .catchError((value) => _handleException(value));
   }
 }

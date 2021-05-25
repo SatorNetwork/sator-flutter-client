@@ -17,7 +17,7 @@ class MainPage extends GetView<MainController> {
             onTap: (index) {
               controller.selectedBottomTabIndex.value = index;
             },
-            unselectedItemColor: SatorioColor.mortar,
+            unselectedItemColor: SatorioColor.grey,
             fixedColor: Colors.black,
             items: [
               BottomNavigationBarItem(

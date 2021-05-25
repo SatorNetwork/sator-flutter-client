@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
+import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -220,9 +221,10 @@ class HomePage extends GetView<HomeController> {
                       ),
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: 10,
+                      itemCount: controller.showsRx.value.length,
                       itemBuilder: (context, index) {
-                        return _challengeItem();
+                        Show show = controller.showsRx.value[index];
+                        return _challengeItem(show);
                       },
                     ),
                   ),
@@ -293,17 +295,17 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _challengeItem() {
-    double width = Get.width - 20 - 32;
+  Widget _challengeItem(Show show) {
     return Container(
-      width: width,
+      width: Get.width - 20 - 32,
       height: 168,
       child: Stack(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image(
-              image: NetworkImage('https://picsum.photos/${width.round()}/168'),
+              image: NetworkImage(show.cover),
+              fit: BoxFit.cover,
             ),
           ),
           Align(
@@ -315,7 +317,7 @@ class HomePage extends GetView<HomeController> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Hold on for dear life',
+                      show.title,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,

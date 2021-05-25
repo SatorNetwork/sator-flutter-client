@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
@@ -9,6 +7,7 @@ class ChallengePage extends GetView<MainController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(
           'txt_challenge'.tr,
@@ -45,35 +44,42 @@ class ChallengePage extends GetView<MainController> {
             ),
           ),
           Align(
-            alignment: Alignment.bottomLeft,
+            alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.all(18),
-              child: Text(
-                'Peaky Blinders'.toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ),
-          Random().nextBool()
-              ? Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
                     child: Text(
-                      'New episode'.toUpperCase(),
+                      'Hold on for dear life',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
-                )
-              : Container(),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: SatorioColor.lavender_rose,
+                    ),
+                    child: Text(
+                      'New'.toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
