@@ -253,17 +253,19 @@ class HomePage extends GetView<HomeController> {
                   Container(
                     margin: const EdgeInsets.only(top: 16),
                     height: 168,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => SizedBox(
-                        width: 16,
+                    child: Obx(
+                      () => ListView.separated(
+                        separatorBuilder: (context, index) => SizedBox(
+                          width: 16,
+                        ),
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        itemCount: controller.showsRx.value.length,
+                        itemBuilder: (context, index) {
+                          Show show = controller.showsRx.value[index];
+                          return _showItem(show);
+                        },
                       ),
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: controller.showsRx.value.length,
-                      itemBuilder: (context, index) {
-                        Show show = controller.showsRx.value[index];
-                        return _challengeItem(show);
-                      },
                     ),
                   ),
                   Padding(
@@ -333,15 +335,19 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _challengeItem(Show show) {
+  Widget _showItem(Show show) {
+    final width = Get.width - 20 - 32;
+    final height = 168.0;
     return Container(
-      width: Get.width - 20 - 32,
-      height: 168,
+      width: width,
+      height: height,
       child: Stack(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image(
+              width: width,
+              height: height,
               image: NetworkImage(show.cover),
               fit: BoxFit.cover,
             ),
