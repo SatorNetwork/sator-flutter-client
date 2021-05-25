@@ -25,15 +25,48 @@ class HomePage extends GetView<HomeController> {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20, top: 76),
-                      child: Obx(
-                        () => Text(
-                          controller.profileRx.value == null
-                              ? ''
-                              : controller.profileRx.value.fullName,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 32.0,
-                            fontWeight: FontWeight.w700,
+                      child: InkWell(
+                        onTap: () {
+                          Get.defaultDialog(
+                            title: 'txt_alert'.tr,
+                            titleStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            content: Text(
+                              'txt_logout_message'.tr,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 21.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            confirm: ElevatedButton(
+                              onPressed: () {
+                                controller.logout();
+                              },
+                              child: Text(
+                                'txt_yes'.tr,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 21.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        child: Obx(
+                          () => Text(
+                            controller.profileRx.value == null
+                                ? ''
+                                : controller.profileRx.value.fullName,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 32.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),

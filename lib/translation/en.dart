@@ -14,10 +14,12 @@ const Map<String, String> en = {
   'txt_login': 'Login',
   'txt_forgot_password': 'Forgot password?',
   'txt_not_member': 'Not a member? ',
-
   'txt_challenge': 'Challenge',
   'txt_wallet': 'Wallet',
   'txt_badges': 'Badges',
   'txt_challenges': 'Challenges',
-  'txt_nfts': 'NFTs'
+  'txt_nfts': 'NFTs',
+  'txt_alert': 'Alert',
+  'txt_logout_message': 'Are you sure you to want log out?',
+  'txt_yes': 'Yes',
 };

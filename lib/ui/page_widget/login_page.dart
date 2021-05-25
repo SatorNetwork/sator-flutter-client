@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
@@ -49,23 +48,22 @@ class LoginPage extends GetView<LoginController> {
                         height: 16,
                       ),
                       Obx(() => InputTextField(
-                        inputTitle: 'txt_password'.tr,
-                        controller: controller.passwordController,
-                        hintText: 'txt_password_hint'.tr,
-                        obscureText:
-                        controller.passwordObscured.value,
-                        keyboardType: TextInputType.emailAddress,
-                        errorText:
-                        controller.validationRx.value['password'],
-                        icon: Icon(
-                            controller.passwordObscured.value
-                                ? Icons.visibility_off_outlined
-                                : Icons.remove_red_eye_outlined,
-                            color: SatorioColor.darkAccent),
-                        onPressedIcon: () {
-                          controller.passwordObscured.toggle();
-                        },
-                      )),
+                            inputTitle: 'txt_password'.tr,
+                            controller: controller.passwordController,
+                            hintText: 'txt_password_hint'.tr,
+                            obscureText: controller.passwordObscured.value,
+                            keyboardType: TextInputType.emailAddress,
+                            errorText:
+                                controller.validationRx.value['password'],
+                            icon: Icon(
+                                controller.passwordObscured.value
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.remove_red_eye_outlined,
+                                color: SatorioColor.darkAccent),
+                            onPressedIcon: () {
+                              controller.passwordObscured.toggle();
+                            },
+                          )),
                       SizedBox(
                         height: 32,
                       ),

@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
-import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/model/auth_response.dart';
 import 'package:satorio/data/model/empty_request.dart';
@@ -18,7 +18,6 @@ import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/wallet_balance_model.dart';
-import 'package:satorio/ui/page_widget/login_page.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -117,8 +116,7 @@ class ApiDataSourceImpl implements ApiDataSource {
         case 401:
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString));
-          Get.offAll(() => LoginPage(), binding: LoginBinding());
-          throw ApiErrorException(errorResponse.error);
+          throw ApiUnauthorizedException(errorResponse.error);
           break;
         default:
           ErrorResponse errorResponse =
@@ -218,5 +216,11 @@ class ApiDataSourceImpl implements ApiDataSource {
       else
         return [];
     });
+  }
+
+  @override
+  Future<void> logout() async {
+    _authDataSource.clearAll();
+    return;
   }
 }

@@ -42,4 +42,8 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
       showsRx.value = shows;
     });
   }
+
+  void logout() {
+    _satorioRepository.logout();
+  }
 }

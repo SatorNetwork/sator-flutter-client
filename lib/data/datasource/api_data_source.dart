@@ -16,4 +16,6 @@ abstract class ApiDataSource {
   Future<WalletBalanceModel> walletBalance();
 
   Future<List<ShowModel>> shows({int page});
+
+  Future<void> logout();
 }

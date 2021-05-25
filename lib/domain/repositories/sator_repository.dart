@@ -14,4 +14,6 @@ abstract class SatorioRepository {
   Future<WalletBalance> walletBalance();
 
   Future<List<Show>> shows({int page});
+
+  Future<void> logout();
 }
