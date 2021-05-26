@@ -210,8 +210,8 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestGet('shows', headers: _getHeaders(), query: query)
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString);
-      if (jsonData is Iterable)
-        return (jsonData as Iterable)
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
             .map((element) => ShowModel.fromJson(element))
             .toList();
       else

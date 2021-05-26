@@ -53,9 +53,10 @@ class OnBoardingPage extends GetView<OnBoardingController> {
             child: Column(
               children: [
                 SizedBox(height: 183),
-                SvgPicture.asset(
+                Image.asset(
                   data.assetName,
-                  width: 164,
+                  height: 164,
+                  fit: BoxFit.fitHeight,
                 ),
                 SizedBox(height: 61),
                 Padding(
