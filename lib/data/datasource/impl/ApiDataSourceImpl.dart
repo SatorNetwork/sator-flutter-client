@@ -13,6 +13,7 @@ import 'package:satorio/data/model/empty_request.dart';
 import 'package:satorio/data/model/error_response.dart';
 import 'package:satorio/data/model/error_validation_response.dart';
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/selected_show_challenges_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
@@ -212,6 +213,26 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (jsonData is Iterable)
         return (jsonData as Iterable)
             .map((element) => ShowModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<List<SelectedShowChallengesModel>> selectedShowChallenges({int page, String id}) {
+    Map<String, String> query;
+    if (page != null) {
+      query = {};
+      query['page'] = page.toString();
+    }
+
+    return _requestGet('shows/$id/challenges', headers: _getHeaders(), query: query)
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString);
+      if (jsonData is Iterable)
+        return (jsonData as Iterable)
+            .map((element) => SelectedShowChallengesModel.fromJson(element))
             .toList();
       else
         return [];
