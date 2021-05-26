@@ -60,7 +60,7 @@ class HomePage extends GetView<HomeController> {
                           () => Text(
                             controller.profileRx.value == null
                                 ? ''
-                                : controller.profileRx.value.fullName,
+                                : controller.profileRx.value.displayedName,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 32.0,
