@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -210,13 +209,13 @@ class HomePage extends GetView<HomeController> {
                         String assetName;
                         switch (index % 3) {
                           case 0:
-                            assetName = 'images/badge1.svg';
+                            assetName = 'images/badge1.png';
                             break;
                           case 1:
-                            assetName = 'images/badge2.svg';
+                            assetName = 'images/badge2.png';
                             break;
                           case 2:
-                            assetName = 'images/badge3.svg';
+                            assetName = 'images/badge3.png';
                             break;
                         }
                         return _badgeItem(assetName);
@@ -326,11 +325,16 @@ class HomePage extends GetView<HomeController> {
         color: SatorioColor.alice_blue,
       ),
       child: Center(
-        child: SvgPicture.asset(
+        child: Image.asset(
           assetName,
-          width: 40,
           height: 40,
+          fit: BoxFit.fitHeight,
         ),
+        // child: SvgPicture.asset(
+        //   assetName,
+        //   width: 40,
+        //   height: 40,
+        // ),
       ),
     );
   }

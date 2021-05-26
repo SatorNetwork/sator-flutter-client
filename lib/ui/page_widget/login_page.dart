@@ -30,10 +30,10 @@ class LoginPage extends GetView<LoginController> {
                       const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
                   child: Column(
                     children: [
-                      SvgPicture.asset(
-                        'images/logo.svg',
+                      Image.asset(
+                        'images/logo.png',
                         height: 90,
-                        alignment: Alignment.center,
+                        fit: BoxFit.fitHeight,
                       ),
                       SizedBox(
                         height: 68,

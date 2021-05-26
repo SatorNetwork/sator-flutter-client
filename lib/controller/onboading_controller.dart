@@ -13,21 +13,21 @@ class OnBoardingController extends GetxController {
 
   List<OnBoardingData> data = [
     OnBoardingData(
-      'images/on_boarding1.svg',
+      'images/on_boarding1.png',
       'Challenge your friends',
       SatorioColor.royal_blue,
       Colors.white,
       SatorioColor.carnation_pink,
     ),
     OnBoardingData(
-      'images/on_boarding2.svg',
+      'images/on_boarding2.png',
       'Challenge your friends',
       SatorioColor.carnation_pink,
       Colors.white,
       Colors.white,
     ),
     OnBoardingData(
-      'images/on_boarding3.svg',
+      'images/on_boarding3.png',
       'Challenge your friends',
       Colors.white,
       SatorioColor.textBlack,
