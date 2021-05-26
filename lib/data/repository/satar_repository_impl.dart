@@ -4,6 +4,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
+import 'package:satorio/domain/entities/challenge_detail.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
@@ -80,5 +81,12 @@ class SatorioRepositoryImpl implements SatorioRepository {
       Get.offAll(() => LoginPage(), binding: LoginBinding());
       return;
     });
+  }
+
+  @override
+  Future<ChallengeDetail> challenge(String challengeId) {
+    return _apiDataSource
+        .challenge(challengeId)
+        .catchError((value) => _handleException(value));
   }
 }

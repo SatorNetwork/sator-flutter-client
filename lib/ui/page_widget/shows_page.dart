@@ -35,9 +35,10 @@ class ShowsPage extends GetView<ShowsController> {
                           child: Text(
                             'txt_challenges'.tr,
                             style: TextStyle(
-                                color: SatorioColor.darkAccent,
-                                fontSize: 28.0,
-                                fontWeight: FontWeight.w700),
+                              color: SatorioColor.darkAccent,
+                              fontSize: 28.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ),

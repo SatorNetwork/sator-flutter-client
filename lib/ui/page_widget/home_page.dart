@@ -242,7 +242,7 @@ class HomePage extends GetView<HomeController> {
                             ),
                           ),
                           Icon(
-                            Icons.chevron_right,
+                            Icons.chevron_right_rounded,
                             size: 32,
                           ),
                         ],
@@ -283,7 +283,7 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                         Icon(
-                          Icons.chevron_right,
+                          Icons.chevron_right_rounded,
                           size: 32,
                         ),
                       ],

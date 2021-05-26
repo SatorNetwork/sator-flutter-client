@@ -16,4 +16,5 @@ class SatorioColor {
   static const Color casablanca = Color(0xFFEFB543);
   static const Color alice_blue = Color(0xFFF0F5FF);
   static const Color lavender_rose = Color(0xFFFD93D5);
+  static const Color manatee = Color(0xFF838795);
 }
