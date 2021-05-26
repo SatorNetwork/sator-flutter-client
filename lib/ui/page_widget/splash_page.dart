@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/splash_controller.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
 
 class SplashPage extends GetView<SplashController> {
   @override
@@ -12,8 +11,10 @@ class SplashPage extends GetView<SplashController> {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          Container(
-            color: SatorioColor.royal_blue,
+          SvgPicture.asset(
+            'images/bg/splash.svg',
+            height: Get.height,
+            fit: BoxFit.cover,
           ),
           Align(
             alignment: Alignment.bottomLeft,

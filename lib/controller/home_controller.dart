@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
@@ -45,5 +46,12 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
   void logout() {
     _satorioRepository.logout();
+  }
+
+  void toShows() {
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.selectedBottomTabIndex.value = 1;
+    }
   }
 }

@@ -22,4 +22,5 @@ const Map<String, String> en = {
   'txt_alert': 'Alert',
   'txt_logout_message': 'Are you sure you to want log out?',
   'txt_yes': 'Yes',
+  'txt_new': 'New',
 };

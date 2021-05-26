@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -61,7 +60,7 @@ class HomePage extends GetView<HomeController> {
                           () => Text(
                             controller.profileRx.value == null
                                 ? ''
-                                : controller.profileRx.value.fullName,
+                                : controller.profileRx.value.displayedName,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 32.0,
@@ -210,13 +209,13 @@ class HomePage extends GetView<HomeController> {
                         String assetName;
                         switch (index % 3) {
                           case 0:
-                            assetName = 'images/badge1.svg';
+                            assetName = 'images/badge1.png';
                             break;
                           case 1:
-                            assetName = 'images/badge2.svg';
+                            assetName = 'images/badge2.png';
                             break;
                           case 2:
-                            assetName = 'images/badge3.svg';
+                            assetName = 'images/badge3.png';
                             break;
                         }
                         return _badgeItem(assetName);
@@ -226,39 +225,46 @@ class HomePage extends GetView<HomeController> {
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 24, left: 20, right: 10),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'txt_challenges'.tr,
-                            style: TextStyle(
-                              color: SatorioColor.textBlack,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.w700,
+                    child: InkWell(
+                      onTap: () {
+                        controller.toShows();
+                      },
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'txt_challenges'.tr,
+                              style: TextStyle(
+                                color: SatorioColor.textBlack,
+                                fontSize: 24.0,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
-                        ),
-                        Icon(
-                          Icons.chevron_right,
-                          size: 32,
-                        ),
-                      ],
+                          Icon(
+                            Icons.chevron_right,
+                            size: 32,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 16),
                     height: 168,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => SizedBox(
-                        width: 16,
+                    child: Obx(
+                      () => ListView.separated(
+                        separatorBuilder: (context, index) => SizedBox(
+                          width: 16,
+                        ),
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        itemCount: controller.showsRx.value.length,
+                        itemBuilder: (context, index) {
+                          Show show = controller.showsRx.value[index];
+                          return _showItem(show);
+                        },
                       ),
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: controller.showsRx.value.length,
-                      itemBuilder: (context, index) {
-                        Show show = controller.showsRx.value[index];
-                        return _challengeItem(show);
-                      },
                     ),
                   ),
                   Padding(
@@ -319,24 +325,33 @@ class HomePage extends GetView<HomeController> {
         color: SatorioColor.alice_blue,
       ),
       child: Center(
-        child: SvgPicture.asset(
+        child: Image.asset(
           assetName,
-          width: 40,
           height: 40,
+          fit: BoxFit.fitHeight,
         ),
+        // child: SvgPicture.asset(
+        //   assetName,
+        //   width: 40,
+        //   height: 40,
+        // ),
       ),
     );
   }
 
-  Widget _challengeItem(Show show) {
+  Widget _showItem(Show show) {
+    final width = Get.width - 20 - 32;
+    final height = 168.0;
     return Container(
-      width: Get.width - 20 - 32,
-      height: 168,
+      width: width,
+      height: height,
       child: Stack(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image(
+              width: width,
+              height: height,
               image: NetworkImage(show.cover),
               fit: BoxFit.cover,
             ),
