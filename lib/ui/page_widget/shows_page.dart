@@ -14,7 +14,7 @@ class ShowsPage extends GetView<ShowsController> {
         child: Stack(
           children: [
             SvgPicture.asset(
-              'images/bg/splash.svg',
+              'images/bg/shows.svg',
               height: Get.height,
               fit: BoxFit.cover,
             ),
