@@ -91,9 +91,7 @@ class SelectedShowChallengesPage
                         ChallengeSimple challengeSimple =
                             controller.selectedShowChallengesRx.value[index];
                         return _challengeItem(context, challengeSimple, index);
-                      }
-                      // _challengeItem(context, index),
-                      ),
+                      }),
                 ],
               ),
             ),
