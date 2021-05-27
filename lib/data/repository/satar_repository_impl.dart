@@ -5,7 +5,7 @@ import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/profile.dart';
-import 'package:satorio/domain/entities/selected_show_challenges.dart';
+import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -76,7 +76,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<SelectedShowChallenges>> selectedShowChallenges({int page, String id}) {
+  Future<List<ChallengeSimple>> selectedShowChallenges({int page, String id}) {
     return _apiDataSource
         .selectedShowChallenges(page: page, id: id)
         .catchError((value) => _handleException(value));

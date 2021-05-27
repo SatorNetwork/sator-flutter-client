@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/selected_show_challenges_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/selected_show_challenges_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
   TabController tabController;
@@ -53,5 +55,9 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
       MainController mainController = Get.find();
       mainController.selectedBottomTabIndex.value = 1;
     }
+  }
+
+  void toShowChallenges(Show show) {
+    Get.to(() => SelectedShowChallengesPage(show), binding: SelectedShowChallengesBinding());
   }
 }

@@ -13,7 +13,7 @@ import 'package:satorio/data/model/empty_request.dart';
 import 'package:satorio/data/model/error_response.dart';
 import 'package:satorio/data/model/error_validation_response.dart';
 import 'package:satorio/data/model/profile_model.dart';
-import 'package:satorio/data/model/selected_show_challenges_model.dart';
+import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
@@ -220,7 +220,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<SelectedShowChallengesModel>> selectedShowChallenges({int page, String id}) {
+  Future<List<ChallengeSimpleModel>> selectedShowChallenges({int page, String id}) {
     Map<String, String> query;
     if (page != null) {
       query = {};
@@ -232,7 +232,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       Map jsonData = json.decode(response.bodyString);
       if (jsonData is Iterable)
         return (jsonData as Iterable)
-            .map((element) => SelectedShowChallengesModel.fromJson(element))
+            .map((element) => ChallengeSimpleModel.fromJson(element))
             .toList();
       else
         return [];
