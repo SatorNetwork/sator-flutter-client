@@ -230,8 +230,8 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestGet('shows/$id/challenges', headers: _getHeaders(), query: query)
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString);
-      if (jsonData is Iterable)
-        return (jsonData as Iterable)
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
             .map((element) => ChallengeSimpleModel.fromJson(element))
             .toList();
       else

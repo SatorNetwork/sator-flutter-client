@@ -78,20 +78,23 @@ class SelectedShowChallengesPage
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(24),
-                      separatorBuilder: (context, index) => SizedBox(
-                            height: 16,
-                          ),
-                      itemCount:
-                          controller.selectedShowChallengesRx.value.length,
-                      itemBuilder: (context, index) {
-                        ChallengeSimple challengeSimple =
-                            controller.selectedShowChallengesRx.value[index];
-                        return _challengeItem(context, challengeSimple, index);
-                      }),
+                  Obx(
+                    () => ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(24),
+                        separatorBuilder: (context, index) => SizedBox(
+                              height: 16,
+                            ),
+                        itemCount:
+                            controller.selectedShowChallengesRx.value.length,
+                        itemBuilder: (context, index) {
+                          ChallengeSimple challengeSimple =
+                              controller.selectedShowChallengesRx.value[index];
+                          return _challengeItem(
+                              context, challengeSimple, index);
+                        }),
+                  ),
                 ],
               ),
             ),
