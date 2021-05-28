@@ -1,3 +1,4 @@
+import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/wallet_balance_model.dart';
@@ -16,6 +17,8 @@ abstract class ApiDataSource {
   Future<WalletBalanceModel> walletBalance();
 
   Future<List<ShowModel>> shows({int page});
+
+  Future<List<ChallengeSimpleModel>> showChallenges({int page, String id});
 
   Future<void> logout();
 }

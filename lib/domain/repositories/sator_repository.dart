@@ -1,3 +1,4 @@
+import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
@@ -14,6 +15,8 @@ abstract class SatorioRepository {
   Future<WalletBalance> walletBalance();
 
   Future<List<Show>> shows({int page});
+
+  Future<List<ChallengeSimple>> showChallenges({int page, String id});
 
   Future<void> logout();
 }
