@@ -16,7 +16,7 @@ abstract class SatorioRepository {
 
   Future<List<Show>> shows({int page});
 
-  Future<List<ChallengeSimple>> selectedShowChallenges({int page, String id});
+  Future<List<ChallengeSimple>> showChallenges({int page, String id});
 
   Future<void> logout();
 }

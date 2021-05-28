@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/selected_show_challenges_controller.dart';
+import 'package:satorio/controller/show_challenges_controller.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
-class SelectedShowChallengesPage
-    extends GetView<SelectedShowChallengesController> {
-  SelectedShowChallengesPage(Show show) : super() {
+class ShowChallengesPage
+    extends GetView<ShowChallengesController> {
+  ShowChallengesPage(Show show) : super() {
     controller.loadChallenges(show);
   }
 
@@ -87,10 +87,10 @@ class SelectedShowChallengesPage
                               height: 16,
                             ),
                         itemCount:
-                            controller.selectedShowChallengesRx.value.length,
+                            controller.showChallengesRx.value.length,
                         itemBuilder: (context, index) {
                           ChallengeSimple challengeSimple =
-                              controller.selectedShowChallengesRx.value[index];
+                              controller.showChallengesRx.value[index];
                           return _challengeItem(
                               context, challengeSimple, index);
                         }),

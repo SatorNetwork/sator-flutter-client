@@ -76,9 +76,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<ChallengeSimple>> selectedShowChallenges({int page, String id}) {
+  Future<List<ChallengeSimple>> showChallenges({int page, String id}) {
     return _apiDataSource
-        .selectedShowChallenges(page: page, id: id)
+        .showChallenges(page: page, id: id)
         .catchError((value) => _handleException(value));
   }
 

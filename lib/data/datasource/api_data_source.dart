@@ -18,7 +18,7 @@ abstract class ApiDataSource {
 
   Future<List<ShowModel>> shows({int page});
 
-  Future<List<ChallengeSimpleModel>> selectedShowChallenges({int page, String id});
+  Future<List<ChallengeSimpleModel>> showChallenges({int page, String id});
 
   Future<void> logout();
 }

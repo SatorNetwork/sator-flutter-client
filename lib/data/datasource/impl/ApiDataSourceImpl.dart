@@ -220,7 +220,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ChallengeSimpleModel>> selectedShowChallenges({int page, String id}) {
+  Future<List<ChallengeSimpleModel>> showChallenges({int page, String id}) {
     Map<String, String> query;
     if (page != null) {
       query = {};

@@ -3,11 +3,11 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
-class SelectedShowChallengesController extends GetxController
+class ShowChallengesController extends GetxController
     with SingleGetTickerProviderMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
-  final Rx<List<ChallengeSimple>> selectedShowChallengesRx = Rx([]);
+  final Rx<List<ChallengeSimple>> showChallengesRx = Rx([]);
   final Rx<String> showTitle = Rx(null);
 
   void back() {
@@ -17,10 +17,10 @@ class SelectedShowChallengesController extends GetxController
   void loadChallenges(Show show) {
     showTitle.value = show.title;
     _satorioRepository
-        .selectedShowChallenges(id: show.id)
-        .then((List<ChallengeSimple> selectedShowChallenges) {
-      selectedShowChallengesRx.update((value) {
-        value.addAll(selectedShowChallenges);
+        .showChallenges(id: show.id)
+        .then((List<ChallengeSimple> showChallenges) {
+      showChallengesRx.update((value) {
+        value.addAll(showChallenges);
       });
     });
   }
