@@ -14,42 +14,55 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
 
   @override
   Widget build(BuildContext context) {
+    const double kHeight = 120;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
         child: Stack(
           children: [
             SvgPicture.asset(
-              'images/bg/shows.svg',
+              'images/bg/gradient.svg',
               height: Get.height,
               fit: BoxFit.cover,
             ),
             Stack(
               children: [
                 Container(
-                  constraints: const BoxConstraints(maxHeight: 24),
-                  margin: const EdgeInsets.only(top: 58),
-                  child: Center(
-                    child: Text(
-                      'txt_challenge'.tr,
-                      style: TextStyle(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 17.0,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  height: kHeight,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 33),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: kHeight / 2,
+                          child: InkWell(
+                            onTap: () => controller.back(),
+                            child: Icon(
+                              Icons.chevron_left_rounded,
+                              size: 32,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: kHeight / 1.8),
+                          width: Get.mediaQuery.size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'txt_challenge'.tr,
+                                style: TextStyle(
+                                  color: SatorioColor.darkAccent,
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 46, left: 12),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.chevron_left_rounded,
-                      size: 32,
-                    ),
-                    onPressed: () {
-                      controller.back();
-                    },
                   ),
                 ),
                 Container(

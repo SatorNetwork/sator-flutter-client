@@ -7,25 +7,22 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
-class ShowChallengesPage
-    extends GetView<ShowChallengesController> {
+class ShowChallengesPage extends GetView<ShowChallengesController> {
   ShowChallengesPage(Show show) : super() {
     controller.loadChallenges(show);
   }
 
   @override
   Widget build(BuildContext context) {
-    const double kHeight = 142;
+    const double kHeight = 120;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
         children: [
           SvgPicture.asset(
-            'images/gradient.svg',
-            fit: BoxFit.fill,
-            alignment: Alignment.center,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            'images/bg/gradient.svg',
+            height: Get.height,
+            fit: BoxFit.cover,
           ),
           Container(
             height: kHeight,
@@ -36,37 +33,37 @@ class ShowChallengesPage
                   Positioned(
                     top: kHeight / 2,
                     child: InkWell(
-                        onTap: () => controller.back(),
-                        child: Icon(
-                          Icons.chevron_left,
-                          size: 32,
-                        )),
+                      onTap: () => controller.back(),
+                      child: Icon(
+                        Icons.chevron_left_rounded,
+                        size: 32,
+                      ),
+                    ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: kHeight / 1.8),
-                    width: MediaQuery.of(context).size.width,
+                    width: Get.mediaQuery.size.width,
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            controller.showTitle == null
-                                ? ""
-                                : controller.showTitle.value,
-                            style: TextStyle(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          )
-                        ]),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          controller.show.title,
+                          style: TextStyle(
+                            color: SatorioColor.darkAccent,
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           ),
           Container(
-            constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height - kHeight),
+            constraints:
+                BoxConstraints(minHeight: Get.mediaQuery.size.height - kHeight),
             margin: EdgeInsets.only(top: kHeight),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -86,8 +83,7 @@ class ShowChallengesPage
                         separatorBuilder: (context, index) => SizedBox(
                               height: 16,
                             ),
-                        itemCount:
-                            controller.showChallengesRx.value.length,
+                        itemCount: controller.showChallengesRx.value.length,
                         itemBuilder: (context, index) {
                           ChallengeSimple challengeSimple =
                               controller.showChallengesRx.value[index];
@@ -113,7 +109,9 @@ class ShowChallengesPage
     ];
 
     return InkWell(
-      onTap: () => {print("tap")},
+      onTap: () {
+        controller.toChallengeDetail(challengeSimple);
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
@@ -124,18 +122,20 @@ class ShowChallengesPage
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-                height: 52,
-                width: 52,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                  color: colors[index % colors.length],
+              height: 52,
+              width: 52,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(16)),
+                color: colors[index % colors.length],
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  'images/challenge_tracery.svg',
+                  width: 23,
+                  height: 23,
                 ),
-                child: Center(
-                    child: Container(
-                        height: 23,
-                        width: 23,
-                        child: Image.asset("images/logo.png",
-                            color: Colors.white)))),
+              ),
+            ),
             SizedBox(
               width: 16,
             ),

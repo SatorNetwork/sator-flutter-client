@@ -10,11 +10,11 @@ import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dar
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/model/auth_response.dart';
 import 'package:satorio/data/model/challenge_detail_model.dart';
+import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/empty_request.dart';
 import 'package:satorio/data/model/error_response.dart';
 import 'package:satorio/data/model/error_validation_response.dart';
 import 'package:satorio/data/model/profile_model.dart';
-import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/sign_in_request.dart';
 import 'package:satorio/data/model/sign_up_request.dart';
@@ -221,14 +221,15 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ChallengeSimpleModel>> showChallenges({int page, String id}) {
+  Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int page}) {
     Map<String, String> query;
     if (page != null) {
       query = {};
       query['page'] = page.toString();
     }
 
-    return _requestGet('shows/$id/challenges', headers: _getHeaders(), query: query)
+    return _requestGet('shows/$showId/challenges',
+            headers: _getHeaders(), query: query)
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString);
       if (jsonData['data'] is Iterable)

@@ -17,7 +17,7 @@ abstract class SatorioRepository {
 
   Future<List<Show>> shows({int page});
 
-  Future<List<ChallengeSimple>> showChallenges({int page, String id});
+  Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
 
   Future<ChallengeDetail> challenge(String challengeId);
 

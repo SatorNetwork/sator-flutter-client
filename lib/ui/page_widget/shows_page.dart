@@ -8,13 +8,15 @@ import 'package:satorio/ui/theme/sator_color.dart';
 class ShowsPage extends GetView<ShowsController> {
   @override
   Widget build(BuildContext context) {
+    const double kHeight = 120;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
         child: Stack(
           children: [
             SvgPicture.asset(
-              'images/bg/shows.svg',
+              'images/bg/gradient.svg',
               height: Get.height,
               fit: BoxFit.cover,
             ),
@@ -43,7 +45,7 @@ class ShowsPage extends GetView<ShowsController> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 22),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(32),
@@ -52,10 +54,7 @@ class ShowsPage extends GetView<ShowsController> {
                           color: Colors.white,
                         ),
                         constraints: BoxConstraints(
-                          minHeight: Get.height -
-                              kBottomNavigationBarHeight -
-                              kToolbarHeight -
-                              Get.mediaQuery.padding.top,
+                          minHeight: Get.mediaQuery.size.height - kHeight,
                         ),
                         child: Obx(
                           () => ListView.separated(
