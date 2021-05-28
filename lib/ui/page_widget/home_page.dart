@@ -11,6 +11,7 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: SatorioColor.darkAccent,
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Stack(
