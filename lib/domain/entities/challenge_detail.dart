@@ -3,10 +3,11 @@ class ChallengeDetail {
   final String title;
   final String description;
   final String prizePool;
-  final int playersToStart;
+  final int players;
+  final String winners;
   final String timePerQuestion;
-  final String playUrl;
+  final String play;
 
   const ChallengeDetail(this.id, this.title, this.description, this.prizePool,
-      this.playersToStart, this.timePerQuestion, this.playUrl);
+      this.players, this.winners, this.timePerQuestion, this.play);
 }

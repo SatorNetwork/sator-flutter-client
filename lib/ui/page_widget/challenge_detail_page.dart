@@ -160,13 +160,20 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
                             ),
                           ),
                           Expanded(
-                            child: Text(
-                              '--',
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                color: SatorioColor.textBlack,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w400,
+                            child: Obx(
+                              () => Text(
+                                controller.challengeDetailRx.value == null ||
+                                        controller.challengeDetailRx.value
+                                            .winners.isEmpty
+                                    ? '--'
+                                    : controller
+                                        .challengeDetailRx.value.winners,
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),
@@ -188,7 +195,7 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
                               () => Text(
                                 controller.challengeDetailRx.value == null
                                     ? ''
-                                    : '${Random().nextInt(controller.challengeDetailRx.value.playersToStart)} / ${controller.challengeDetailRx.value.playersToStart}',
+                                    : '${0} / ${controller.challengeDetailRx.value.players}',
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
                                   color: SatorioColor.textBlack,
