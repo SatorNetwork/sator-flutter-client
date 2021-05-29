@@ -4,7 +4,8 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
-import 'package:satorio/domain/entities/challenge_detail.dart';
+import 'package:satorio/domain/entities/challenge.dart';
+import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
@@ -76,6 +77,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<ChallengeSimple>> showChallenges(String showId, {int page}) {
+    return _apiDataSource
+        .showChallenges(showId, page: page)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> logout() {
     return _apiDataSource.logout().then((value) {
       Get.offAll(() => LoginPage(), binding: LoginBinding());
@@ -84,7 +92,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<ChallengeDetail> challenge(String challengeId) {
+  Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
         .catchError((value) => _handleException(value));

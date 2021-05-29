@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:satorio/binding/challenge_detail_binding.dart';
+import 'package:satorio/binding/show_challenges_binding.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/page_widget/challenge_detail_page.dart';
+import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 
 class ShowsController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -23,7 +23,6 @@ class ShowsController extends GetxController {
   }
 
   void toShowChallenges(Show show) {
-    // TODO : move to show's challenge
-    Get.to(() => ChallengeDetailPage(''), binding: ChallengeDetailBinding());
+    Get.to(() => ShowChallengesPage(show), binding: ShowChallengesBinding());
   }
 }
