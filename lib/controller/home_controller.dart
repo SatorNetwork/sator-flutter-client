@@ -41,7 +41,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
   void _loadShows() {
     _satorioRepository.shows().then((List<Show> shows) {
-      print('${shows.length}');
       showsRx.value = shows;
     });
   }

@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:get/get.dart';
@@ -8,18 +7,18 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
-import 'package:satorio/data/model/auth_response.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
-import 'package:satorio/data/model/empty_request.dart';
-import 'package:satorio/data/model/error_response.dart';
-import 'package:satorio/data/model/error_validation_response.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
-import 'package:satorio/data/model/sign_in_request.dart';
-import 'package:satorio/data/model/sign_up_request.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/wallet_balance_model.dart';
+import 'package:satorio/data/request/empty_request.dart';
+import 'package:satorio/data/request/sign_in_request.dart';
+import 'package:satorio/data/request/sign_up_request.dart';
+import 'package:satorio/data/response/auth_response.dart';
+import 'package:satorio/data/response/error_response.dart';
+import 'package:satorio/data/response/error_validation_response.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -27,16 +26,13 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     _getConnect.baseUrl = 'https://sator-api-n7vrw.ondigitalocean.app/';
-  }
 
-  Map<String, String> _getHeaders() {
-    Map<String, String> headers = HashMap();
-
-    String token = _authDataSource.getAuthToken();
-    if (token != null && token.isNotEmpty)
-      headers['Authorization'] = 'Bearer $token';
-
-    return headers;
+    _getConnect.httpClient.addAuthenticator((request) {
+      String token = _authDataSource.getAuthToken();
+      if (token != null && token.isNotEmpty)
+        request.headers['Authorization'] = 'Bearer $token';
+      return request;
+    });
   }
 
   Future<Response> _requestGet(
@@ -97,9 +93,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     );
 
     print('--------');
-    // utf8Response.request.headers.forEach((key, value) {
-    //   print('$key = $value');
-    // });
 
     print(
         '${utf8Response.request.method.toUpperCase()} ${utf8Response.request.url} ${utf8Response.statusCode}');
@@ -142,7 +135,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'auth/login',
       SignInRequest(email, password),
-      headers: _getHeaders(),
     ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
@@ -156,7 +148,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'auth/signup',
       SignUpRequest(email, password, username),
-      headers: _getHeaders(),
     ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
@@ -170,7 +161,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'auth/refresh-token',
       EmptyRequest(),
-      headers: _getHeaders(),
     ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
@@ -183,7 +173,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<ProfileModel> profile() {
     return _requestGet(
       'profile',
-      headers: _getHeaders(),
     ).then((Response response) {
       return ProfileModel.fromJson(json.decode(response.bodyString)['data']);
     });
@@ -193,7 +182,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<WalletBalanceModel> walletBalance() {
     return _requestGet(
       'wallet/balance',
-      headers: _getHeaders(),
     ).then((Response response) {
       return WalletBalanceModel.fromJson(
           json.decode(response.bodyString)['data']);
@@ -208,8 +196,10 @@ class ApiDataSourceImpl implements ApiDataSource {
       query['page'] = page.toString();
     }
 
-    return _requestGet('shows', headers: _getHeaders(), query: query)
-        .then((Response response) {
+    return _requestGet(
+      'shows',
+      query: query,
+    ).then((Response response) {
       Map jsonData = json.decode(response.bodyString);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -228,9 +218,10 @@ class ApiDataSourceImpl implements ApiDataSource {
       query['page'] = page.toString();
     }
 
-    return _requestGet('shows/$showId/challenges',
-            headers: _getHeaders(), query: query)
-        .then((Response response) {
+    return _requestGet(
+      'shows/$showId/challenges',
+      query: query,
+    ).then((Response response) {
       Map jsonData = json.decode(response.bodyString);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -243,8 +234,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ChallengeModel> challenge(String challengeId) {
-    return _requestGet('challenges/$challengeId', headers: _getHeaders())
-        .then((Response response) {
+    return _requestGet(
+      'challenges/$challengeId',
+    ).then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString)['data']);
     });
   }
