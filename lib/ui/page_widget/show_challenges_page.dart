@@ -110,7 +110,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
 
     return InkWell(
       onTap: () {
-        controller.toChallengeDetail(challengeSimple);
+        controller.toChallenge(challengeSimple);
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),

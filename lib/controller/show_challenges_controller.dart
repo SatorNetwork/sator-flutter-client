@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:satorio/binding/challenge_detail_binding.dart';
+import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/page_widget/challenge_detail_page.dart';
+import 'package:satorio/ui/page_widget/challenge_page.dart';
 
 class ShowChallengesController extends GetxController
     with SingleGetTickerProviderMixin {
@@ -28,8 +28,8 @@ class ShowChallengesController extends GetxController
     });
   }
 
-  toChallengeDetail(ChallengeSimple challengeSimple) {
-    Get.to(() => ChallengeDetailPage(challengeSimple.id),
-        binding: ChallengeDetailBinding());
+  toChallenge(ChallengeSimple challengeSimple) {
+    Get.to(() => ChallengePage(challengeSimple.id),
+        binding: ChallengeBinding());
   }
 }

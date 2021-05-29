@@ -1,8 +1,8 @@
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/domain/entities/challenge_detail.dart';
+import 'package:satorio/domain/entities/challenge.dart';
 
-class ChallengeDetailModel extends ChallengeDetail implements ToJsonInterface {
-  const ChallengeDetailModel(
+class ChallengeModel extends Challenge implements ToJsonInterface {
+  const ChallengeModel(
     String id,
     String title,
     String description,
@@ -22,7 +22,7 @@ class ChallengeDetailModel extends ChallengeDetail implements ToJsonInterface {
           play,
         );
 
-  factory ChallengeDetailModel.fromJson(Map json) => ChallengeDetailModel(
+  factory ChallengeModel.fromJson(Map json) => ChallengeModel(
         json['id'] == null ? '' : json['id'],
         json['title'] == null ? '' : json['title'],
         json['description'] == null ? '' : json['description'],

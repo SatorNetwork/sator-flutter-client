@@ -1,15 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/challenge_detail_controller.dart';
+import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
-class ChallengeDetailPage extends GetView<ChallengeDetailController> {
-  ChallengeDetailPage(String challengeId) : super() {
-    controller.loadChallengeDetail(challengeId);
+class ChallengePage extends GetView<ChallengeController> {
+  ChallengePage(String challengeId) : super() {
+    controller.loadChallenge(challengeId);
   }
 
   @override
@@ -96,9 +94,9 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
                       SizedBox(height: 48),
                       Obx(
                         () => Text(
-                          controller.challengeDetailRx.value == null
+                          controller.challengeRx.value == null
                               ? ''
-                              : controller.challengeDetailRx.value.title,
+                              : controller.challengeRx.value.title,
                           style: TextStyle(
                             color: SatorioColor.darkAccent,
                             fontSize: 32.0,
@@ -109,9 +107,9 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
                       SizedBox(height: 8),
                       Obx(
                         () => Text(
-                          controller.challengeDetailRx.value == null
+                          controller.challengeRx.value == null
                               ? ''
-                              : controller.challengeDetailRx.value.description,
+                              : controller.challengeRx.value.description,
                           style: TextStyle(
                             color: SatorioColor.manatee,
                             fontSize: 15.0,
@@ -133,10 +131,9 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
                           Expanded(
                             child: Obx(
                               () => Text(
-                                controller.challengeDetailRx.value == null
+                                controller.challengeRx.value == null
                                     ? ''
-                                    : controller
-                                        .challengeDetailRx.value.prizePool,
+                                    : controller.challengeRx.value.prizePool,
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
                                   color: SatorioColor.textBlack,
@@ -162,12 +159,11 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
                           Expanded(
                             child: Obx(
                               () => Text(
-                                controller.challengeDetailRx.value == null ||
-                                        controller.challengeDetailRx.value
-                                            .winners.isEmpty
+                                controller.challengeRx.value == null ||
+                                        controller
+                                            .challengeRx.value.winners.isEmpty
                                     ? '--'
-                                    : controller
-                                        .challengeDetailRx.value.winners,
+                                    : controller.challengeRx.value.winners,
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
                                   color: SatorioColor.textBlack,
@@ -193,9 +189,9 @@ class ChallengeDetailPage extends GetView<ChallengeDetailController> {
                           Expanded(
                             child: Obx(
                               () => Text(
-                                controller.challengeDetailRx.value == null
+                                controller.challengeRx.value == null
                                     ? ''
-                                    : '${0} / ${controller.challengeDetailRx.value.players}',
+                                    : '${0} / ${controller.challengeRx.value.players}',
                                 textAlign: TextAlign.end,
                                 style: TextStyle(
                                   color: SatorioColor.textBlack,

@@ -1,4 +1,4 @@
-import 'package:satorio/domain/entities/challenge_detail.dart';
+import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -19,7 +19,7 @@ abstract class SatorioRepository {
 
   Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
 
-  Future<ChallengeDetail> challenge(String challengeId);
+  Future<Challenge> challenge(String challengeId);
 
   Future<void> logout();
 }

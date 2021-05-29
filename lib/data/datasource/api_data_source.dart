@@ -1,4 +1,4 @@
-import 'package:satorio/data/model/challenge_detail_model.dart';
+import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -21,7 +21,7 @@ abstract class ApiDataSource {
 
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int page});
 
-  Future<ChallengeDetailModel> challenge(String challengeId);
+  Future<ChallengeModel> challenge(String challengeId);
 
   Future<void> logout();
 }
