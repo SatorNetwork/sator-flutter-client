@@ -97,4 +97,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .challenge(challengeId)
         .catchError((value) => _handleException(value));
   }
+
+  @override
+  Future<GetSocket> socket(String url) {
+    return _apiDataSource.socket(url);
+  }
 }

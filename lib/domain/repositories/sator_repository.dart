@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -22,4 +23,6 @@ abstract class SatorioRepository {
   Future<Challenge> challenge(String challengeId);
 
   Future<void> logout();
+
+  Future<GetSocket> socket(String url);
 }

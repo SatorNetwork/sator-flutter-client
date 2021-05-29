@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -16,7 +17,9 @@ class QuizPage extends GetView<QuizController> {
   Widget _childPageWidget(String pageType) {
     switch (pageType) {
       default:
-        return Container();
+        return Container(
+          color: Colors.white,
+        );
     }
   }
 }

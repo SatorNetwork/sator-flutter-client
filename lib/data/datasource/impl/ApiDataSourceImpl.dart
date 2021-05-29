@@ -246,4 +246,9 @@ class ApiDataSourceImpl implements ApiDataSource {
     _authDataSource.clearAll();
     return;
   }
+
+  @override
+  Future<GetSocket> socket(String url) async {
+    return _getConnect.socket(url);
+  }
 }
