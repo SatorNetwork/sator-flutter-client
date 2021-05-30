@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -8,6 +10,8 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class HomePage extends GetView<HomeController> {
+  Random _random = Random();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -326,16 +330,22 @@ class HomePage extends GetView<HomeController> {
         color: SatorioColor.alice_blue,
       ),
       child: Center(
-        child: Image.asset(
-          assetName,
-          height: 40,
-          fit: BoxFit.fitHeight,
+        child: ColorFiltered(
+          colorFilter: _random.nextBool() ? ColorFilter.mode(
+            Colors.transparent,
+            BlendMode.multiply,
+          ) : ColorFilter.matrix(<double>[
+            0.2126,0.7152,0.0722,0,0,
+            0.2126,0.7152,0.0722,0,0,
+            0.2126,0.7152,0.0722,0,0,
+            0,0,0,1,0,
+          ]),
+          child: Image.asset(
+            assetName,
+            height: 40,
+            fit: BoxFit.fitHeight,
+          ),
         ),
-        // child: SvgPicture.asset(
-        //   assetName,
-        //   width: 40,
-        //   height: 40,
-        // ),
       ),
     );
   }

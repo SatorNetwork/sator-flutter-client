@@ -1,10 +1,10 @@
 import 'package:satorio/domain/entities/payload/payload.dart';
 
-class PayloadConnect extends Payload {
+class PayloadUser extends Payload {
   final String userId;
   final String username;
 
-  const PayloadConnect(
+  const PayloadUser(
     this.userId,
     this.username,
   );

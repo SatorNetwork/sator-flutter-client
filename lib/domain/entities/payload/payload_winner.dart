@@ -3,7 +3,7 @@ import 'package:satorio/domain/entities/payload/payload.dart';
 class PayloadWinner extends Payload {
   final String userId;
   final String username;
-  final double prize;
+  final String prize;
 
   const PayloadWinner(
     this.userId,

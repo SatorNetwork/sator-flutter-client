@@ -1,11 +1,11 @@
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/domain/entities/payload/payload_connect.dart';
+import 'package:satorio/domain/entities/payload/payload_user.dart';
 
-class PayloadConnectModel extends PayloadConnect implements ToJsonInterface {
-  const PayloadConnectModel(String userId, String username)
+class PayloadUserModel extends PayloadUser implements ToJsonInterface {
+  const PayloadUserModel(String userId, String username)
       : super(userId, username);
 
-  factory PayloadConnectModel.fromJson(Map json) => PayloadConnectModel(
+  factory PayloadUserModel.fromJson(Map json) => PayloadUserModel(
         json['user_id'] == null ? '' : json['user_id'],
         json['username'] == null ? '' : json['username'],
       );

@@ -27,4 +27,7 @@ const Map<String, String> en = {
   'txt_winners': 'Winners',
   'txt_players': 'Players',
   'txt_play': 'Play',
+  'txt_challenge_lobby': 'Challenge Lobby',
+  'txt_waiting_players': 'Waiting for players to join',
+  'txt_players_connected': 'Players connected',
 };

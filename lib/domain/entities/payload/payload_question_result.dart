@@ -3,7 +3,7 @@ import 'package:satorio/domain/entities/payload/payload.dart';
 class PayloadQuestionResult extends Payload {
   final String questionId;
   final bool result;
-  final String rate;
+  final int rate;
   final String correctAnswerId;
   final int questionsLeft;
   final int additionalPts;

@@ -6,7 +6,7 @@ class PayloadQuestionResultModel extends PayloadQuestionResult
   const PayloadQuestionResultModel(
     String questionId,
     bool result,
-    String rate,
+    int rate,
     String correctAnswerId,
     int questionsLeft,
     int additionalPts,
@@ -17,7 +17,7 @@ class PayloadQuestionResultModel extends PayloadQuestionResult
       PayloadQuestionResultModel(
         json['question_id'] == null ? '' : json['question_id'],
         json['result'] == null ? false : json['result'],
-        json['rate'] == null ? '' : json['rate'],
+        json['rate'] == null ? 0 : json['rate'],
         json['correctAnswerId'] == null ? '' : json['correctAnswerId'],
         json['questions_left'] == null ? 0 : json['questions_left'],
         json['additionalPts'] == null ? 0 : json['additionalPts'],
