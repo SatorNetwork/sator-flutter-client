@@ -9,6 +9,7 @@ import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dar
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
+import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
@@ -248,7 +249,18 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<GetSocket> socket(String url) async {
+  Future<GetSocket> createSocket(String url) async {
     return _getConnect.socket(url);
+  }
+
+  @override
+  Future<void> sendAnswer(
+    GetSocket socket,
+    String questionId,
+    String answerId,
+  ) async {
+    // TODO: check
+    socket.send(PayloadAnswerModel(questionId, answerId).toJson());
+    return;
   }
 }

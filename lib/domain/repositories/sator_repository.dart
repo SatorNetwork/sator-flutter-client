@@ -24,5 +24,7 @@ abstract class SatorioRepository {
 
   Future<void> logout();
 
-  Future<GetSocket> socket(String url);
+  Future<GetSocket> createSocket(String url);
+
+  Future<void> sendAnswer(GetSocket socket, String questionId, String answerId);
 }

@@ -6,6 +6,7 @@ import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
@@ -45,10 +46,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     });
   }
 
-  void logout() {
-    _satorioRepository.logout();
-  }
-
   void toShows() {
     if (Get.isRegistered<MainController>()) {
       MainController mainController = Get.find();
@@ -58,5 +55,17 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
   void toShowChallenges(Show show) {
     Get.to(() => ShowChallengesPage(show), binding: ShowChallengesBinding());
+  }
+
+  void toLogoutDialog() {
+    Get.dialog(DefaultDialog(
+      'txt_alert'.tr,
+      'txt_logout_message'.tr,
+      'txt_yes'.tr,
+      icon: Icons.logout,
+      onPressed: () {
+        _satorioRepository.logout();
+      },
+    ));
   }
 }

@@ -30,4 +30,6 @@ const Map<String, String> en = {
   'txt_challenge_lobby': 'Challenge Lobby',
   'txt_waiting_players': 'Waiting for players to join',
   'txt_players_connected': 'Players connected',
+  'txt_wrong_answer': 'Wrong answer. You lost :(',
+  'txt_back_home': 'Back home',
 };

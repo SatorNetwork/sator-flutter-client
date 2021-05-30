@@ -31,35 +31,7 @@ class HomePage extends GetView<HomeController> {
                       padding: const EdgeInsets.only(left: 20, top: 76),
                       child: InkWell(
                         onTap: () {
-                          Get.defaultDialog(
-                            title: 'txt_alert'.tr,
-                            titleStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            content: Text(
-                              'txt_logout_message'.tr,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 21.0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            confirm: ElevatedButton(
-                              onPressed: () {
-                                controller.logout();
-                              },
-                              child: Text(
-                                'txt_yes'.tr,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          );
+                          controller.toLogoutDialog();
                         },
                         child: Obx(
                           () => Text(

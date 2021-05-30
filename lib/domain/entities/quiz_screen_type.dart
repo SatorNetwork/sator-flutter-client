@@ -1,6 +1,6 @@
 enum QuizScreenType {
   lobby,
-  counter,
+  countdown,
   question,
   result,
 }
