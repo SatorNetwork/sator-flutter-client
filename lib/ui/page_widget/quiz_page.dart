@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/quiz_screen_type.dart';
+import 'package:satorio/ui/page_widget/quiz_counter_page.dart';
 import 'package:satorio/ui/page_widget/quiz_lobby_page.dart';
 
 class QuizPage extends GetView<QuizController> {
@@ -20,6 +21,8 @@ class QuizPage extends GetView<QuizController> {
     switch (screenType) {
       case QuizScreenType.lobby:
         return QuizLobbyPage();
+      case QuizScreenType.countdown:
+        return QuizCounterPage();
       default:
         return Container(
           color: Colors.white,
