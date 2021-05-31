@@ -67,17 +67,13 @@ class QuizController extends GetxController {
       else
         value.removeWhere((element) => element.userId == payloadUser.userId);
     });
-
-    if (screenTypeRx.value != QuizScreenType.lobby) {
-      screenTypeRx.value = QuizScreenType.lobby;
-    }
   }
 
   void _handlePayloadCountdown(PayloadCountdown payloadCountdown) {
     QuizCounterController quizCounterController = Get.find();
     quizCounterController.countdownRx.value = payloadCountdown.countdown;
 
-    if (screenTypeRx.value != QuizScreenType.countdown) {
+    if (screenTypeRx.value == QuizScreenType.lobby) {
       screenTypeRx.value = QuizScreenType.countdown;
     }
   }
@@ -89,7 +85,7 @@ class QuizController extends GetxController {
     if (Get.isDialogOpen || Get.isBottomSheetOpen) {
       Get.back();
     }
-    if (screenTypeRx.value != QuizScreenType.question) {
+    if (screenTypeRx.value == QuizScreenType.countdown) {
       screenTypeRx.value = QuizScreenType.question;
     }
   }
@@ -119,7 +115,7 @@ class QuizController extends GetxController {
     if (Get.isDialogOpen || Get.isBottomSheetOpen) {
       Get.back();
     }
-    if (screenTypeRx.value != QuizScreenType.result) {
+    if (screenTypeRx.value == QuizScreenType.question) {
       screenTypeRx.value = QuizScreenType.result;
     }
   }
