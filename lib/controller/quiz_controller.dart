@@ -12,6 +12,7 @@ import 'package:satorio/domain/entities/payload/payload_question_result.dart';
 import 'package:satorio/domain/entities/payload/payload_user.dart';
 import 'package:satorio/domain/entities/quiz_screen_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 class QuizController extends GetxController {
@@ -38,11 +39,11 @@ class QuizController extends GetxController {
   void setChallenge(Challenge challenge) {
     this.challenge = challenge;
 
-    _initSocket(challenge.play);
+    _initSocket(challenge.id);
   }
 
-  void _initSocket(String url) async {
-    _socket = await _satorioRepository.createSocket(url);
+  void _initSocket(String challengeId) async {
+    _socket = await _satorioRepository.createSocket(challengeId);
 
     _socket.onOpen(() {
       print('Socket onOpen ${_socket.url}');
@@ -94,7 +95,7 @@ class QuizController extends GetxController {
       PayloadQuestionResult payloadQuestionResult) {
     if (payloadQuestionResult.result) {
       //correct answer
-      // Get.bottomSheet();
+      Get.bottomSheet(SuccessAnswerBottomSheet(payloadQuestionResult));
     } else {
       // wrong answer
       Get.dialog(DefaultDialog(

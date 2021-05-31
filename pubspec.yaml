@@ -28,7 +28,7 @@ dependencies:
   get_storage: ^2.0.2
   # smooth_page_indicator: ^0.2.3
   flutter_svg: ^0.22.0
-
+  sprintf: ^5.0.0
 
 dev_dependencies:
   flutter_test:
