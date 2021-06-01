@@ -20,6 +20,7 @@ import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
+import 'package:satorio/data/response/socket_url_response.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -249,8 +250,19 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<String> socketUrl(String challengeId) {
+    return _requestGet(
+      'quiz/$challengeId/play',
+    ).then((Response response) {
+      return SocketUrlResponse.fromJson(
+              json.decode(response.bodyString)['data'])
+          .playUrl;
+    });
+  }
+
+  @override
   Future<GetSocket> createSocket(String url) async {
-    return _getConnect.socket(url);
+    return GetConnect().socket(url);
   }
 
   @override

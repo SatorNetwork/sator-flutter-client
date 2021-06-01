@@ -26,6 +26,8 @@ abstract class ApiDataSource {
 
   Future<void> logout();
 
+  Future<String> socketUrl(String challengeId);
+
   Future<GetSocket> createSocket(String url);
 
   Future<void> sendAnswer(GetSocket socket, String questionId, String answerId);

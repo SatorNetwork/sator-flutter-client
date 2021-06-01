@@ -32,4 +32,12 @@ const Map<String, String> en = {
   'txt_players_connected': 'Players connected',
   'txt_wrong_answer': 'Wrong answer. You lost :(',
   'txt_back_home': 'Back home',
+  'txt_keep_going': 'Keep going!',
+  'txt_questions_left': '%d questions left',
+  'txt_wait_time_runs_out':
+      'Wait until the time runs out or all of the players will vote.',
+  'txt_fastest_answer': '🔥 Fastest answer ',
+  'txt_add_pts': '+%dpts',
+  'txt_quit': 'Quit',
+  'txt_next': 'Next',
 };
