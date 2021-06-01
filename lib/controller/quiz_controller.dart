@@ -26,7 +26,7 @@ class QuizController extends GetxController {
   Challenge challenge;
   GetSocket _socket;
 
-  final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
+  final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.countdown);
 
   final SatorioRepository _satorioRepository = Get.find();
 
