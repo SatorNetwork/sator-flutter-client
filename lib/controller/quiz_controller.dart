@@ -1,9 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
 import 'package:satorio/controller/quiz_result_controller.dart';
+import 'package:satorio/data/model/payload/payload_challenge_result_model.dart';
+import 'package:satorio/data/model/payload/payload_countdown_model.dart';
+import 'package:satorio/data/model/payload/payload_question_model.dart';
+import 'package:satorio/data/model/payload/payload_question_result_model.dart';
+import 'package:satorio/data/model/payload/payload_user_model.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/payload/payload_countdown.dart';
@@ -26,10 +33,11 @@ class QuizController extends GetxController {
   @override
   void onClose() {
     if (_socket != null) {
-      _socket.dispose();
       _socket.close();
+      _socket.dispose();
       _socket = null;
     }
+    super.onClose();
   }
 
   void back() {
@@ -55,7 +63,41 @@ class QuizController extends GetxController {
       print('Socket onError ${e.message}');
     });
     _socket.onMessage((data) {
-      print('Socket onMessage: $data');
+      print('onMessage $data');
+      print('------');
+      if (data is String) {
+        Map jsonData = json.decode(data);
+        String type = jsonData['type'];
+        var payload = jsonData['payload'];
+
+        if (type != null && payload != null)
+          switch (type) {
+            case 'player_connected':
+              _handlePayloadUser(
+                  PayloadUserModel.fromJson(payload), true);
+              break;
+            case 'player_disconnected':
+              _handlePayloadUser(
+                  PayloadUserModel.fromJson(payload), false);
+              break;
+            case 'countdown':
+              _handlePayloadCountdown(
+                  PayloadCountdownModel.fromJson(payload));
+              break;
+            case 'question':
+              _handlePayloadQuestion(
+                  PayloadQuestionModel.fromJson(payload));
+              break;
+            case 'question_result':
+              _handlePayloadQuestionResult(
+                  PayloadQuestionResultModel.fromJson(payload));
+              break;
+            case 'challenge_result':
+              _handlePayloadChallengeResult(
+                  PayloadChallengeResultModel.fromJson(payload));
+              break;
+          }
+      }
     });
     _socket.connect();
   }
@@ -71,24 +113,24 @@ class QuizController extends GetxController {
   }
 
   void _handlePayloadCountdown(PayloadCountdown payloadCountdown) {
-    QuizCounterController quizCounterController = Get.find();
-    quizCounterController.countdownRx.value = payloadCountdown.countdown;
-
     if (screenTypeRx.value == QuizScreenType.lobby) {
       screenTypeRx.value = QuizScreenType.countdown;
     }
+
+    QuizCounterController quizCounterController = Get.find();
+    quizCounterController.countdownRx.value = payloadCountdown.countdown;
   }
 
   void _handlePayloadQuestion(PayloadQuestion payloadQuestion) {
-    QuizQuestionController quizQuestionController = Get.find();
-    quizQuestionController.updatePayloadQuestion(payloadQuestion);
-
     if (Get.isDialogOpen || Get.isBottomSheetOpen) {
       Get.back();
     }
     if (screenTypeRx.value == QuizScreenType.countdown) {
       screenTypeRx.value = QuizScreenType.question;
     }
+
+    QuizQuestionController quizQuestionController = Get.find();
+    quizQuestionController.updatePayloadQuestion(payloadQuestion);
   }
 
   void _handlePayloadQuestionResult(
@@ -103,22 +145,25 @@ class QuizController extends GetxController {
         'txt_wrong_answer'.tr,
         'txt_back_home'.tr,
         icon: Icons.close_rounded,
-        onPressed: () {},
+        onPressed: () {
+          Get.back(closeOverlays: true);
+        },
       ));
     }
   }
 
   void _handlePayloadChallengeResult(
-      PayloadChallengeResult payloadChallengeResult) {
-    QuizResultController quizResultController = Get.find();
-    quizResultController.resultRx.value = payloadChallengeResult;
-
+    PayloadChallengeResult payloadChallengeResult,
+  ) {
     if (Get.isDialogOpen || Get.isBottomSheetOpen) {
       Get.back();
     }
     if (screenTypeRx.value == QuizScreenType.question) {
       screenTypeRx.value = QuizScreenType.result;
     }
+
+    QuizResultController quizResultController = Get.find();
+    quizResultController.resultRx.value = payloadChallengeResult;
   }
 
   void sendAnswer(String questionId, String answerId) {

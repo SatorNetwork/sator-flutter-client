@@ -11,6 +11,7 @@ class ShowsController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     loadShows();
   }
 

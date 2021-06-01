@@ -37,12 +37,14 @@ class OnBoardingController extends GetxController {
 
   @override
   void onInit() {
+    super.onInit();
     pageController.addListener(_listener);
   }
 
   @override
   void onClose() {
     pageController.removeListener(_listener);
+    super.onClose();
   }
 
   _listener() {

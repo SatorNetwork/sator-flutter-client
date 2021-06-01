@@ -6,9 +6,9 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/extension.dart';
 
 class SuccessAnswerBottomSheet extends StatelessWidget {
-  SuccessAnswerBottomSheet(this.data);
+  const SuccessAnswerBottomSheet(this.data);
 
-  PayloadQuestionResult data;
+  final PayloadQuestionResult data;
 
   @override
   Widget build(BuildContext context) {

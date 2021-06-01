@@ -9,7 +9,7 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class HomePage extends GetView<HomeController> {
-  Random _random = Random();
+  final Random _random = Random();
 
   @override
   Widget build(BuildContext context) {

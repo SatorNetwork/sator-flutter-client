@@ -23,6 +23,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
   @override
   void onInit() {
+    super.onInit();
     _loadProfile();
     _loadWalletBalance();
     _loadShows();
