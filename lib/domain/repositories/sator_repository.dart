@@ -1,3 +1,4 @@
+import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -16,7 +17,9 @@ abstract class SatorioRepository {
 
   Future<List<Show>> shows({int page});
 
-  Future<List<ChallengeSimple>> showChallenges({int page, String id});
+  Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
+
+  Future<Challenge> challenge(String challengeId);
 
   Future<void> logout();
 }

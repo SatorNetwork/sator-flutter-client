@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
@@ -85,7 +84,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
                 shape: CircleBorder(),
                 padding: EdgeInsets.all(26.0),
                 child: Icon(
-                  Icons.chevron_right,
+                  Icons.chevron_right_rounded,
                   size: 48,
                   color: data.backgroundColor,
                 ),

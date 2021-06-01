@@ -242,7 +242,7 @@ class HomePage extends GetView<HomeController> {
                             ),
                           ),
                           Icon(
-                            Icons.chevron_right,
+                            Icons.chevron_right_rounded,
                             size: 32,
                           ),
                         ],
@@ -283,7 +283,7 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                         Icon(
-                          Icons.chevron_right,
+                          Icons.chevron_right_rounded,
                           size: 32,
                         ),
                       ],
@@ -354,14 +354,20 @@ class HomePage extends GetView<HomeController> {
               child: Image(
                 width: width,
                 height: height,
-                image: NetworkImage(show.cover),
                 fit: BoxFit.cover,
+                image: NetworkImage(show.cover),
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: SatorioColor.grey,
+                ),
               ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 20,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -376,8 +382,10 @@ class HomePage extends GetView<HomeController> {
                       ),
                     ),
                     Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 7,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: SatorioColor.lavender_rose,
@@ -403,21 +411,31 @@ class HomePage extends GetView<HomeController> {
 
   Widget _nftsItem() {
     double width = Get.width - 20 - 32;
+    double height = 168.0;
     return Container(
       width: width,
-      height: 168,
+      height: height,
       child: Stack(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image(
-              image: NetworkImage('https://picsum.photos/${width.round()}/168'),
+              width: width,
+              height: height,
+              fit: BoxFit.cover,
+              image: NetworkImage('https://picsum.photos/${width.round()}/${height.round()}'),
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: SatorioColor.grey,
+              ),
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 20,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -432,8 +450,10 @@ class HomePage extends GetView<HomeController> {
                     ),
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 7,
+                    ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
                       color: SatorioColor.lavender_rose,
