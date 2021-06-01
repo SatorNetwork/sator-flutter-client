@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -9,17 +6,17 @@ import 'package:satorio/controller/quiz_counter_controller.dart';
 class QuizCounterPage extends GetView<QuizCounterController> {
   @override
   Widget build(BuildContext context) {
-    int index = 0;
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
-        child: _buildWidgetsTree(context, index),
+        child:
+            Obx(() => _buildWidgetsTree(context, controller.countdownRx.value)),
       ),
     );
   }
 
-  Widget _buildWidgetsTree(BuildContext context, int index) {
-    switch (index) {
+  Widget _buildWidgetsTree(BuildContext context, int value) {
+    switch (value) {
       case 0:
         return _buildCountScreen('gradient_challenge_splash', 'count_3');
       case 1:
