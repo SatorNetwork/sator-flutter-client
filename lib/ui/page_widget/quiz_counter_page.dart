@@ -9,22 +9,23 @@ class QuizCounterPage extends GetView<QuizCounterController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
-        child:
-            Obx(() => _buildWidgetsTree(context, controller.countdownRx.value)),
+        child: Obx(
+          () => _buildWidgetsTree(context, controller.countdownRx.value),
+        ),
       ),
     );
   }
 
   Widget _buildWidgetsTree(BuildContext context, int value) {
     switch (value) {
-      case 0:
+      case 3:
         return _buildCountScreen('gradient_challenge_splash', 'count_3');
-      case 1:
+      case 2:
         return _buildCountScreen(
             'gradient_challenge_splash_reversed', 'count_2');
-      case 2:
+      case 1:
         return _buildCountScreen('gradient_challenge_splash', 'count_1');
-      case 3:
+      case 0:
         return _buildCountScreen(
             'gradient_challenge_splash_reversed', 'count_start');
       default:
