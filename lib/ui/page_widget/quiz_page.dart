@@ -21,10 +21,10 @@ class QuizPage extends GetView<QuizController> {
     switch (screenType) {
       case QuizScreenType.lobby:
         return QuizLobbyPage();
-      case QuizScreenType.question:
-        return QuizQuestionPage();
       case QuizScreenType.countdown:
         return QuizCounterPage();
+      case QuizScreenType.question:
+        return QuizQuestionPage();
       default:
         return Container(
           color: Colors.white,

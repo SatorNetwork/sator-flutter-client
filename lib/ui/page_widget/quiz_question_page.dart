@@ -69,7 +69,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                         height: 119,
                         duration: controller.questionRx.value == null
                             ? 0
-                            : controller.questionRx.value.questionNumber,
+                            : controller.questionRx.value.timeForAnswer,
                         fillColor: SatorioColor.darkAccent,
                         ringColor: SatorioColor.brand,
                         isReverse: true,

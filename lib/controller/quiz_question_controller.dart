@@ -11,16 +11,21 @@ class QuizQuestionController extends GetxController {
 
   QuizController quizController = Get.find();
 
-  void updatePayloadQuestion(PayloadQuestion payloadQuestion) {
+  void updatePayloadQuestion(PayloadQuestion payloadQuestion, bool restart) {
     answerIdRx.value = '';
     isAnswerSentRx.value = false;
     questionRx.value = payloadQuestion;
-    countdownController.restart(duration: payloadQuestion.timeForAnswer);
+    if (restart)
+      countdownController.restart(duration: payloadQuestion.timeForAnswer);
   }
 
   void sendAnswer() {
-    if (answerIdRx.value.isNotEmpty && isAnswerSentRx.value) {
-      //
+    if (answerIdRx.value.isNotEmpty && !isAnswerSentRx.value) {
+      quizController
+          .sendAnswer(questionRx.value.questionId, answerIdRx.value)
+          .then((value) {
+        isAnswerSentRx.value = true;
+      });
     }
   }
 }

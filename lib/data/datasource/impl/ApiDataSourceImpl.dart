@@ -10,6 +10,7 @@ import 'package:satorio/data/datasource/exception/api_validation_exception.dart'
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
+import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
@@ -271,8 +272,13 @@ class ApiDataSourceImpl implements ApiDataSource {
     String questionId,
     String answerId,
   ) async {
-    // TODO: check
-    socket.send(PayloadAnswerModel(questionId, answerId).toJson());
+    socket.send(
+      json.encode(
+        SocketMessageAnswerModel(
+          PayloadAnswerModel(questionId, answerId),
+        ).toJson(),
+      ),
+    );
     return;
   }
 }

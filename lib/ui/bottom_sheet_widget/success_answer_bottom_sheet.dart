@@ -31,7 +31,7 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
                 size: 32,
                 color: data.rate > 0
                     ? SatorioColor.interactive
-                    : SatorioColor.grey,
+                    : SatorioColor.manatee,
               ),
               SizedBox(
                 width: 8,
@@ -41,7 +41,7 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
                 size: 48,
                 color: data.rate > 1
                     ? SatorioColor.interactive
-                    : SatorioColor.grey,
+                    : SatorioColor.manatee,
               ),
               SizedBox(
                 width: 8,
@@ -51,7 +51,7 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
                 size: 32,
                 color: data.rate > 2
                     ? SatorioColor.interactive
-                    : SatorioColor.grey,
+                    : SatorioColor.manatee,
               ),
             ],
           ),
@@ -90,30 +90,32 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 44,
+            height: data.additionalPts > 0 ? 44 : 0,
           ),
-          RichText(
-            text: TextSpan(
-              text: 'txt_fastest_answer'.tr,
-              style: TextStyle(
-                color: SatorioColor.textBlack,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w400,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: data.additionalPts > 0
-                      ? 'txt_add_pts'.tr.format([data.additionalPts])
-                      : '',
-                  style: TextStyle(
-                    color: SatorioColor.textBlack,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w700,
+          data.additionalPts > 0
+              ? RichText(
+                  text: TextSpan(
+                    text: 'txt_fastest_answer'.tr,
+                    style: TextStyle(
+                      color: SatorioColor.textBlack,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'txt_add_pts'.tr.format([data.additionalPts]),
+                        style: TextStyle(
+                          color: SatorioColor.textBlack,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
+                )
+              : SizedBox(
+                  height: 0,
                 ),
-              ],
-            ),
-          ),
         ],
       ),
     );
