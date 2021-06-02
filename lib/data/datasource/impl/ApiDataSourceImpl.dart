@@ -84,6 +84,13 @@ class ApiDataSourceImpl implements ApiDataSource {
         );
   }
 
+  Future<void> _sendViaSocket(GetSocket socket, ToJsonInterface data) async {
+    String jsonData = json.encode(data.toJson());
+    print('onSend $jsonData');
+    socket.send(jsonData);
+    return;
+  }
+
   Response _processResponse(Response response) {
     Response utf8Response = Response(
       request: response.request,
@@ -272,11 +279,10 @@ class ApiDataSourceImpl implements ApiDataSource {
     String questionId,
     String answerId,
   ) async {
-    socket.send(
-      json.encode(
-        SocketMessageAnswerModel(
-          PayloadAnswerModel(questionId, answerId),
-        ).toJson(),
+    _sendViaSocket(
+      socket,
+      SocketMessageAnswerModel(
+        PayloadAnswerModel(questionId, answerId),
       ),
     );
     return;

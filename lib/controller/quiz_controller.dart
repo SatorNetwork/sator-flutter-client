@@ -63,6 +63,7 @@ class QuizController extends GetxController {
       print('Socket onError $e');
     });
     _socket.onMessage((data) {
+      print('onMessage $data');
       if (data is String) {
         SocketMessage socketMessage =
             SocketMessageModelFactory.createSocketMessage(json.decode(data));
