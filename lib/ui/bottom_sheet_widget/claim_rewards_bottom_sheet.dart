@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'package:satorio/data/model/payload/payload_winner_model.dart';
+
 // import 'package:satorio/domain/entities/payload/payload_winner.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ClaimRewardsBottomSheet extends StatelessWidget {
   const ClaimRewardsBottomSheet(this.data);
+
   //TODO: replace
   final PayloadWinnerModel data;
 
@@ -28,9 +30,10 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SvgPicture.asset(
-                'images/congrats_icon.svg',
-                fit: BoxFit.contain,
+              Icon(
+                Icons.check_circle_rounded,
+                size: 60,
+                color: SatorioColor.interactive,
               ),
               SizedBox(
                 height: 24,
@@ -77,15 +80,14 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
                 height: 20,
               ),
               InkWell(
+                onTap: () => _launchURL(),
                 child: Container(
                   height: 52,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     border: Border.all(
-                        color: Colors.black.withOpacity(0.11),
-                        width: 1),
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(8)),
+                        color: Colors.black.withOpacity(0.11), width: 1),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -102,10 +104,10 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
                       SizedBox(
                         width: 14,
                       ),
-                      SvgPicture.asset(
-                        'images/link_icon.svg',
-                        fit: BoxFit.contain,
-                      ),
+                      Icon(
+                        Icons.open_in_new_rounded,
+                        color: SatorioColor.darkAccent,
+                      )
                     ],
                   ),
                 ),
@@ -116,4 +118,11 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> _launchURL1() async {
+    await canLaunch("www.test.com") ? await launch("www.test.com") : throw 'Could not launch www.test.com';
+  }
+
+  void _launchURL() async =>
+      await canLaunch('https://google.com') ? await launch('https://google.com') : throw 'Could not launch https://google.com';
 }
