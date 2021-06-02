@@ -40,4 +40,9 @@ const Map<String, String> en = {
   'txt_add_pts': '+%dpts',
   'txt_quit': 'Quit',
   'txt_next': 'Next',
+  'txt_awesome': 'Awesome',
+  'txt_solana_link': 'Show in Solana Explorer',
+  'txt_claim_rewards': 'Claim rewards',
+  'txt_congrats': 'Congratulations',
+  'txt_congrats_msg': 'You have won, and been awarded',
 };

@@ -6,6 +6,7 @@ import 'package:satorio/domain/entities/quiz_screen_type.dart';
 import 'package:satorio/ui/page_widget/quiz_counter_page.dart';
 import 'package:satorio/ui/page_widget/quiz_lobby_page.dart';
 import 'package:satorio/ui/page_widget/quiz_question_page.dart';
+import 'package:satorio/ui/page_widget/quiz_result_page.dart';
 
 class QuizPage extends GetView<QuizController> {
   QuizPage(Challenge challenge) : super() {
@@ -25,6 +26,8 @@ class QuizPage extends GetView<QuizController> {
         return QuizCounterPage();
       case QuizScreenType.question:
         return QuizQuestionPage();
+      case QuizScreenType.result:
+        return QuizResultPage();
       default:
         return Container(
           color: Colors.white,
