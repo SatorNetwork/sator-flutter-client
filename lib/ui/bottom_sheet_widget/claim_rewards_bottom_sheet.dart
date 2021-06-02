@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
-import 'package:satorio/data/model/payload/payload_winner_model.dart';
-
-// import 'package:satorio/domain/entities/payload/payload_winner.dart';
+import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ClaimRewardsBottomSheet extends StatelessWidget {
   const ClaimRewardsBottomSheet(this.data);
 
-  //TODO: replace
-  final PayloadWinnerModel data;
+  final ClaimReward data;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +58,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
                 height: 4,
               ),
               Text(
-                data.prize,
+                data.amount,
                 style: TextStyle(
                   color: SatorioColor.textBlack,
                   fontSize: 17.0,
@@ -80,7 +77,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
                 height: 20,
               ),
               InkWell(
-                onTap: () => _launchURL(),
+                onTap: () => _launchURL(data.transactionUrl),
                 child: Container(
                   height: 52,
                   decoration: BoxDecoration(
@@ -119,6 +116,6 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
     );
   }
 
-  void _launchURL() async =>
-      await canLaunch('https://google.com') ? await launch('https://google.com') : throw 'Could not launch https://google.com';
+  void _launchURL(String url) async =>
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
 }

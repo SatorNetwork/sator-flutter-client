@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
+import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
@@ -27,4 +28,6 @@ abstract class SatorioRepository {
   Future<GetSocket> createSocket(String challengeId);
 
   Future<void> sendAnswer(GetSocket socket, String questionId, String answerId);
+
+  Future<ClaimReward> claimReward();
 }
