@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -10,7 +9,7 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class HomePage extends GetView<HomeController> {
-  Random _random = Random();
+  final Random _random = Random();
 
   @override
   Widget build(BuildContext context) {
@@ -344,7 +343,10 @@ class HomePage extends GetView<HomeController> {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 20,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -359,8 +361,10 @@ class HomePage extends GetView<HomeController> {
                       ),
                     ),
                     Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 4, horizontal: 7),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 7,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         color: SatorioColor.lavender_rose,

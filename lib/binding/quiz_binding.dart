@@ -10,9 +10,9 @@ class QuizBinding extends Bindings {
   void dependencies() {
     Get.lazyPut<QuizController>(() => QuizController());
 
-    Get.lazyPut<QuizLobbyController>(() => QuizLobbyController());
-    Get.lazyPut<QuizCounterController>(() => QuizCounterController());
-    Get.lazyPut<QuizQuestionController>(() => QuizQuestionController());
-    Get.lazyPut<QuizResultController>(() => QuizResultController());
+    Get.put<QuizLobbyController>(QuizLobbyController());
+    Get.put<QuizCounterController>(QuizCounterController());
+    Get.put<QuizQuestionController>(QuizQuestionController());
+    Get.put<QuizResultController>(QuizResultController());
   }
 }

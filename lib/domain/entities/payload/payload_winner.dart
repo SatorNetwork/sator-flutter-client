@@ -1,6 +1,4 @@
-import 'package:satorio/domain/entities/payload/payload.dart';
-
-class PayloadWinner extends Payload {
+class PayloadWinner {
   final String userId;
   final String username;
   final String prize;

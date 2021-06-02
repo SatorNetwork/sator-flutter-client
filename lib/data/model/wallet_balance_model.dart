@@ -14,7 +14,7 @@ class WalletBalanceModel extends WalletBalance implements ToJsonInterface {
 
   @override
   Map toJson() => {
-        'sao': (sao as AmountCurrencyModel).toJson(),
-        'usd': (usd as AmountCurrencyModel).toJson(),
+        'sao': (sao as ToJsonInterface).toJson(),
+        'usd': (usd as ToJsonInterface).toJson(),
       };
 }

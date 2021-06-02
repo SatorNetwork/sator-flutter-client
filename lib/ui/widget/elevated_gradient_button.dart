@@ -3,16 +3,17 @@ import 'package:flutter/widgets.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class ElevatedGradientButton extends StatelessWidget {
-  const ElevatedGradientButton(
-      {this.text,
-      this.onPressed,
-      this.leftColor = SatorioColor.interactive,
-      this.endColor = SatorioColor.darkAccent});
+  const ElevatedGradientButton({
+    this.text,
+    this.onPressed,
+    this.leftColor = SatorioColor.interactive,
+    this.rightColor = SatorioColor.darkAccent,
+  });
 
   final String text;
   final Function onPressed;
   final Color leftColor;
-  final Color endColor;
+  final Color rightColor;
 
   static const double minHeight = 48.0;
 
@@ -28,7 +29,7 @@ class ElevatedGradientButton extends StatelessWidget {
       ),
       child: Ink(
         decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [leftColor, endColor]),
+          gradient: LinearGradient(colors: [leftColor, rightColor]),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Container(

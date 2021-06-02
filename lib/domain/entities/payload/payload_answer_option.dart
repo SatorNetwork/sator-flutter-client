@@ -1,6 +1,4 @@
-import 'package:satorio/domain/entities/payload/payload.dart';
-
-class PayloadAnswerOption extends Payload {
+class PayloadAnswerOption {
   final String answerId;
   final String answerText;
 

@@ -10,6 +10,7 @@ import 'package:satorio/data/datasource/exception/api_validation_exception.dart'
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
+import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
@@ -20,6 +21,7 @@ import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
+import 'package:satorio/data/response/socket_url_response.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -249,8 +251,19 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<String> socketUrl(String challengeId) {
+    return _requestGet(
+      'quiz/$challengeId/play',
+    ).then((Response response) {
+      return SocketUrlResponse.fromJson(
+              json.decode(response.bodyString)['data'])
+          .playUrl;
+    });
+  }
+
+  @override
   Future<GetSocket> createSocket(String url) async {
-    return _getConnect.socket(url);
+    return GetConnect().socket(url);
   }
 
   @override
@@ -259,8 +272,13 @@ class ApiDataSourceImpl implements ApiDataSource {
     String questionId,
     String answerId,
   ) async {
-    // TODO: check
-    socket.send(PayloadAnswerModel(questionId, answerId).toJson());
+    socket.send(
+      json.encode(
+        SocketMessageAnswerModel(
+          PayloadAnswerModel(questionId, answerId),
+        ).toJson(),
+      ),
+    );
     return;
   }
 }
