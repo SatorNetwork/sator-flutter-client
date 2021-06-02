@@ -99,6 +99,9 @@ class ShowsPage extends GetView<ShowsController> {
                 child: Image(
                   image: NetworkImage(show.cover),
                   fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: SatorioColor.grey,
+                  ),
                 ),
               ),
             ),
