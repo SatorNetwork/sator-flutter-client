@@ -14,7 +14,7 @@ class QuizResultController extends GetxController {
     Get.bottomSheet(ClaimRewardsBottomSheet(PayloadWinnerModel("kdkdkd", "test", "83.33 SAO")));
   }
 
-  void back() {
+  void backToMain() {
     Get.until((route) => Get.currentRoute == '/() => MainPage');
   }
 }

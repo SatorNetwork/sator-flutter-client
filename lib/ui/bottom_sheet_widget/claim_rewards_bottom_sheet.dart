@@ -119,10 +119,6 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
     );
   }
 
-  Future<void> _launchURL1() async {
-    await canLaunch("www.test.com") ? await launch("www.test.com") : throw 'Could not launch www.test.com';
-  }
-
   void _launchURL() async =>
       await canLaunch('https://google.com') ? await launch('https://google.com') : throw 'Could not launch https://google.com';
 }

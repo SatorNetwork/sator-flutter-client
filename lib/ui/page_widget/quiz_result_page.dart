@@ -122,7 +122,7 @@ class QuizResultPage extends GetView<QuizResultController> {
                     child: ElevatedGradientButton(
                       text: 'txt_back_home'.tr,
                       onPressed: () {
-                        controller.back();
+                        controller.backToMain();
                       },
                     ),
                   )
