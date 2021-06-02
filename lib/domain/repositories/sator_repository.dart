@@ -1,4 +1,3 @@
-import 'package:satorio/domain/entities/challenge.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';

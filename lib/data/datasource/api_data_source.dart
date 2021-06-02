@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:satorio/data/model/challenge_model.dart';
-import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
