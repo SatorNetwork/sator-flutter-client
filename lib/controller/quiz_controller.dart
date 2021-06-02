@@ -128,18 +128,22 @@ class QuizController extends GetxController {
       PayloadQuestionResult payloadQuestionResult) {
     if (payloadQuestionResult.result) {
       //correct answer
-      Get.bottomSheet(SuccessAnswerBottomSheet(payloadQuestionResult));
+      Get.bottomSheet(
+        SuccessAnswerBottomSheet(payloadQuestionResult),
+      );
     } else {
       // wrong answer
-      Get.dialog(DefaultDialog(
-        'txt_oops'.tr,
-        'txt_wrong_answer'.tr,
-        'txt_back_home'.tr,
-        icon: Icons.close_rounded,
-        onPressed: () {
-          Get.back(closeOverlays: true);
-        },
-      ));
+      Get.dialog(
+        DefaultDialog(
+          'txt_oops'.tr,
+          'txt_wrong_answer'.tr,
+          'txt_back_home'.tr,
+          icon: Icons.close_rounded,
+          onPressed: () {
+            Get.until((route) => Get.currentRoute == '/() => MainPage');
+          },
+        ),
+      );
     }
   }
 
