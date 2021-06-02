@@ -59,14 +59,16 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   void toLogoutDialog() {
-    Get.dialog(DefaultDialog(
-      'txt_alert'.tr,
-      'txt_logout_message'.tr,
-      'txt_yes'.tr,
-      icon: Icons.logout,
-      onPressed: () {
-        _satorioRepository.logout();
-      },
-    ));
+    Get.dialog(
+      DefaultDialog(
+        'txt_log_out'.tr,
+        'txt_log_out_message'.tr,
+        'txt_yes'.tr,
+        icon: Icons.logout,
+        onPressed: () {
+          _satorioRepository.logout();
+        },
+      ),
+    );
   }
 }

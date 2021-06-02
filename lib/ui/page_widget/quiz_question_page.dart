@@ -144,12 +144,15 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                   SizedBox(
                     height: 20,
                   ),
-                  ElevatedGradientButton(
-                    text: 'txt_next'.tr,
-                    onPressed: () {
-                      controller.sendAnswer();
-                    },
-                  )
+                  Obx(
+                    () => ElevatedGradientButton(
+                      text: 'txt_next'.tr,
+                      isEnabled: controller.answerIdRx.value.isNotEmpty && !controller.isAnswerSentRx.value,
+                      onPressed: () {
+                        controller.sendAnswer();
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
