@@ -29,7 +29,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   AuthDataSource _authDataSource;
 
   ApiDataSourceImpl(this._authDataSource) {
-    _getConnect.baseUrl = 'https://sator-api-n7vrw.ondigitalocean.app/';
+    _getConnect.baseUrl = 'https://sator-api-stage-93k39.ondigitalocean.app/';
 
     _getConnect.httpClient.addAuthenticator((request) {
       String token = _authDataSource.getAuthToken();
