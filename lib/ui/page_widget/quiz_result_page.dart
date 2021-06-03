@@ -107,11 +107,14 @@ class QuizResultPage extends GetView<QuizResultController> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedGradientButton(
-                      text: 'txt_claim_rewards'.tr,
-                      onPressed: () {
-                        controller.claimRewards();
-                      },
+                    child: Obx(
+                      () => ElevatedGradientButton(
+                        text: 'txt_claim_rewards'.tr,
+                        isEnabled: !controller.isRequested.value,
+                        onPressed: () {
+                          controller.claimRewards();
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -119,11 +122,14 @@ class QuizResultPage extends GetView<QuizResultController> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedGradientButton(
-                      text: 'txt_back_home'.tr,
-                      onPressed: () {
-                        controller.backToMain();
-                      },
+                    child: Obx(
+                      () => ElevatedGradientButton(
+                        text: 'txt_back_home'.tr,
+                        isEnabled: !controller.isRequested.value,
+                        onPressed: () {
+                          controller.backToMain();
+                        },
+                      ),
                     ),
                   )
                 ],

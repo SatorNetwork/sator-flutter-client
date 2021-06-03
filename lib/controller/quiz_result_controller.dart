@@ -8,16 +8,33 @@ import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 
 class QuizResultController extends GetxController {
   Rx<PayloadChallengeResult> resultRx = Rx(null);
+  Rx<bool> isRequested = Rx(false);
 
   SatorioRepository _satorioRepository = Get.find();
 
   void claimRewards() {
-    _satorioRepository.claimReward().then((ClaimReward claimReward) {
-      if (claimReward != null)
-        Get.bottomSheet(
-          ClaimRewardsBottomSheet(claimReward),
+    Future.value(true)
+        .then(
+          (value) {
+            isRequested.value = true;
+            return value;
+          },
+        )
+        .then((value) => _satorioRepository.claimReward())
+        .then(
+          (ClaimReward claimReward) {
+            isRequested.value = false;
+            if (claimReward != null)
+              Get.bottomSheet(
+                ClaimRewardsBottomSheet(claimReward),
+              );
+          },
+        )
+        .catchError(
+          (value) {
+            isRequested.value = false;
+          },
         );
-    });
   }
 
   void backToMain() {
