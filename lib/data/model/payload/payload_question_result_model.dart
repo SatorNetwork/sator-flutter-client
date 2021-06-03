@@ -18,9 +18,9 @@ class PayloadQuestionResultModel extends PayloadQuestionResult
         json['question_id'] == null ? '' : json['question_id'],
         json['result'] == null ? false : json['result'],
         json['rate'] == null ? 0 : json['rate'],
-        json['correctAnswerId'] == null ? '' : json['correctAnswerId'],
+        json['correct_answer_id'] == null ? '' : json['correct_answer_id'],
         json['questions_left'] == null ? 0 : json['questions_left'],
-        json['additionalPts'] == null ? 0 : json['additionalPts'],
+        json['additional_pts'] == null ? 0 : json['additional_pts'],
       );
 
   @override
