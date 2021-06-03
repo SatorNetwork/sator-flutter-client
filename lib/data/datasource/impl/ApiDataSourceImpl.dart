@@ -195,7 +195,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'wallet/balance',
     ).then((Response response) {
       return WalletBalanceModel.fromJson(
-          json.decode(response.bodyString)['data']);
+          json.decode(response.bodyString));
     });
   }
 

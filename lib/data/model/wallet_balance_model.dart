@@ -4,13 +4,13 @@ import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
 
 class WalletBalanceModel extends WalletBalance implements ToJsonInterface {
-  const WalletBalanceModel(List<AmountCurrency> amountCurrencies)
-      : super(amountCurrencies);
+  const WalletBalanceModel(List<AmountCurrency> data)
+      : super(data);
 
   factory WalletBalanceModel.fromJson(Map json) => WalletBalanceModel(
-        (json == null || !(json is Iterable))
+        (json['data'] == null || !(json['data'] is Iterable))
             ? []
-            : (json as Iterable)
+            : (json['data'] as Iterable)
                 .where((element) => element != null)
                 .map((element) => AmountCurrencyModel.fromJson(element))
                 .toList(),
@@ -18,7 +18,6 @@ class WalletBalanceModel extends WalletBalance implements ToJsonInterface {
 
   @override
   Map toJson() => {
-        //  wrapped in 'data'
         'data': amountCurrencies
             .map((amountCurrency) =>
                 (amountCurrency as ToJsonInterface).toJson())
