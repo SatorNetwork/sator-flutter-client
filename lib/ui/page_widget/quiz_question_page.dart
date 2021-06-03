@@ -168,6 +168,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
         controller.answerIdRx.value = answerOption.answerId;
       },
       child: Container(
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: isSelected ? SatorioColor.interactive : Colors.white,

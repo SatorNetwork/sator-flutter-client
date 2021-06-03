@@ -71,7 +71,9 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
             children: [
               ElevatedGradientButton(
                 text: 'txt_awesome'.tr,
-                onPressed: () {},
+                onPressed: () {
+                  Get.until((route) => Get.currentRoute == '/() => MainPage');
+                },
               ),
               SizedBox(
                 height: 20,
