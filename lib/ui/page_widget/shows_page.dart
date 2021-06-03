@@ -23,8 +23,8 @@ class ShowsPage extends GetView<ShowsController> {
             NotificationListener<OverscrollNotification>(
               onNotification: (notification) {
                 // TODO : finish logic with pagination
-                if (notification.metrics.pixels ==
-                    notification.metrics.maxScrollExtent) print('Next Page');
+                // if (notification.metrics.pixels ==
+                //     notification.metrics.maxScrollExtent) print('Next Page');
                 return true;
               },
               child: SingleChildScrollView(

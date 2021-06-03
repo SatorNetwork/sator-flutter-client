@@ -6,6 +6,7 @@ import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dar
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
+import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
@@ -95,6 +96,27 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<GetSocket> createSocket(String challengeId) {
+    return _apiDataSource
+        .socketUrl(challengeId)
+        .then((socketUrl) => _apiDataSource.createSocket(socketUrl))
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> sendAnswer(
+      GetSocket socket, String questionId, String answerId) {
+    return _apiDataSource.sendAnswer(socket, questionId, answerId);
+  }
+
+  @override
+  Future<ClaimReward> claimReward() {
+    return _apiDataSource
+        .claimReward()
         .catchError((value) => _handleException(value));
   }
 }

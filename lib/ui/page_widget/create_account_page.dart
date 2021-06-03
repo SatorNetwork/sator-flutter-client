@@ -122,11 +122,14 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       SizedBox(
                         height: 24,
                       ),
-                      ElevatedGradientButton(
-                        text: 'txt_create_account'.tr,
-                        onPressed: () {
-                          controller.createAccount();
-                        },
+                      Obx(
+                        () => ElevatedGradientButton(
+                          text: 'txt_create_account'.tr,
+                          isEnabled: controller.termsOfServiceCheck.value,
+                          onPressed: () {
+                            controller.createAccount();
+                          },
+                        ),
                       ),
                     ],
                   ),

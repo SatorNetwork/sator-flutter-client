@@ -28,6 +28,9 @@ dependencies:
   get_storage: ^2.0.2
   # smooth_page_indicator: ^0.2.3
   flutter_svg: ^0.22.0
+  sprintf: ^5.0.0
+  circular_countdown_timer: ^0.2.0
+  url_launcher: ^6.0.5
 
 
 dev_dependencies:
@@ -44,6 +47,9 @@ flutter:
     - images/bg/
 
   fonts:
+    - family: SatorIcons
+      fonts:
+        - asset: fonts/SatorIcons.ttf
     - family: Inter
       fonts:
         - asset: fonts/Inter-Thin.ttf

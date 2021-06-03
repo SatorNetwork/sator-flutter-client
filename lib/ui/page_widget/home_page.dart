@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -8,9 +9,12 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class HomePage extends GetView<HomeController> {
+  final Random _random = Random();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: SatorioColor.darkAccent,
       extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Stack(
@@ -26,35 +30,7 @@ class HomePage extends GetView<HomeController> {
                       padding: const EdgeInsets.only(left: 20, top: 76),
                       child: InkWell(
                         onTap: () {
-                          Get.defaultDialog(
-                            title: 'txt_alert'.tr,
-                            titleStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 24.0,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            content: Text(
-                              'txt_logout_message'.tr,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 21.0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            confirm: ElevatedButton(
-                              onPressed: () {
-                                controller.logout();
-                              },
-                              child: Text(
-                                'txt_yes'.tr,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 21.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          );
+                          controller.toLogoutDialog();
                         },
                         child: Obx(
                           () => Text(
@@ -325,16 +301,22 @@ class HomePage extends GetView<HomeController> {
         color: SatorioColor.alice_blue,
       ),
       child: Center(
-        child: Image.asset(
-          assetName,
-          height: 40,
-          fit: BoxFit.fitHeight,
+        child: ColorFiltered(
+          colorFilter: _random.nextBool() ? ColorFilter.mode(
+            Colors.transparent,
+            BlendMode.multiply,
+          ) : ColorFilter.matrix(<double>[
+            0.2126,0.7152,0.0722,0,0,
+            0.2126,0.7152,0.0722,0,0,
+            0.2126,0.7152,0.0722,0,0,
+            0,0,0,1,0,
+          ]),
+          child: Image.asset(
+            assetName,
+            height: 40,
+            fit: BoxFit.fitHeight,
+          ),
         ),
-        // child: SvgPicture.asset(
-        //   assetName,
-        //   width: 40,
-        //   height: 40,
-        // ),
       ),
     );
   }

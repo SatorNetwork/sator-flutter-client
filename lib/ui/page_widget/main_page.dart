@@ -5,6 +5,7 @@ import 'package:satorio/ui/page_widget/home_page.dart';
 import 'package:satorio/ui/page_widget/shows_page.dart';
 import 'package:satorio/ui/page_widget/some_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/sator_icons.dart';
 
 class MainPage extends GetView<MainController> {
   @override
@@ -37,7 +38,7 @@ class MainPage extends GetView<MainController> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.crop_square_rounded,
+                SatorIcons.logo,
               ),
               label: '',
             ),
