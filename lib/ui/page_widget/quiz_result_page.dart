@@ -139,12 +139,16 @@ class QuizResultPage extends GetView<QuizResultController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          payloadWinner.username,
-          style: TextStyle(
-            color: SatorioColor.textBlack,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w600,
+        Expanded(
+          child: Text(
+            payloadWinner.username,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: SatorioColor.textBlack,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         Container(
