@@ -144,6 +144,7 @@ class QuizController extends GetxController {
             Get.until((route) => Get.currentRoute == '/() => MainPage');
           },
         ),
+        barrierDismissible: false,
       );
     }
   }
