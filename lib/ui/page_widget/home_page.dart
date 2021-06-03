@@ -122,8 +122,12 @@ class HomePage extends GetView<HomeController> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    controller.walletBalanceRx.value.sao
-                                        .displayedValue,
+                                    controller.walletBalanceRx.value
+                                                .amountCurrencies.length >
+                                            0
+                                        ? controller.walletBalanceRx.value
+                                            .amountCurrencies[0].displayedValue
+                                        : '',
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18.0,
@@ -131,8 +135,12 @@ class HomePage extends GetView<HomeController> {
                                     ),
                                   ),
                                   Text(
-                                    controller.walletBalanceRx.value.usd
-                                        .displayedValue,
+                                    controller.walletBalanceRx.value
+                                                .amountCurrencies.length >
+                                            1
+                                        ? controller.walletBalanceRx.value
+                                            .amountCurrencies[1].displayedValue
+                                        : '',
                                     style: TextStyle(
                                       color: Colors.white.withOpacity(0.7),
                                       fontSize: 12.0,
@@ -405,7 +413,9 @@ class HomePage extends GetView<HomeController> {
               width: width,
               height: height,
               fit: BoxFit.cover,
-              image: NetworkImage('https://picsum.photos/${width.round()}/${height.round()}'),
+              image: NetworkImage(
+                'https://picsum.photos/${width.round()}/${height.round()}',
+              ),
               errorBuilder: (context, error, stackTrace) => Container(
                 color: SatorioColor.grey,
               ),
