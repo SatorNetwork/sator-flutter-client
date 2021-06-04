@@ -25,7 +25,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   void onInit() {
     super.onInit();
     _loadProfile();
-    _loadWalletBalance();
+    loadWalletBalance();
     _loadShows();
   }
 
@@ -35,7 +35,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     });
   }
 
-  void _loadWalletBalance() {
+  void loadWalletBalance() {
     _satorioRepository.walletBalance().then((WalletBalance walletBalance) {
       walletBalanceRx.value = walletBalance;
     });

@@ -102,12 +102,6 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
 
   Widget _challengeItem(
       BuildContext context, ChallengeSimple challengeSimple, int index) {
-    final List<Color> colors = [
-      SatorioColor.lavender_rose,
-      SatorioColor.mona_lisa,
-      SatorioColor.light_sky_blue
-    ];
-
     return InkWell(
       onTap: () {
         controller.toChallenge(challengeSimple);
@@ -126,7 +120,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
               width: 52,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
-                color: colors[index % colors.length],
+                color: _colors[index % _colors.length],
               ),
               child: Center(
                 child: SvgPicture.asset(
@@ -139,36 +133,48 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
             SizedBox(
               width: 16,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  challengeSimple.title == null ? "" : challengeSimple.title,
-                  style: TextStyle(
-                    color: SatorioColor.darkAccent,
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w700,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    challengeSimple.title == null ? "" : challengeSimple.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: SatorioColor.darkAccent,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  challengeSimple.description == null
-                      ? ""
-                      : challengeSimple.description,
-                  style: TextStyle(
-                    color: SatorioColor.darkAccent,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
+                  SizedBox(
+                    height: 4,
                   ),
-                ),
-              ],
+                  Text(
+                    challengeSimple.description == null
+                        ? ""
+                        : challengeSimple.description,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: SatorioColor.darkAccent,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  final List<Color> _colors = [
+    SatorioColor.lavender_rose,
+    SatorioColor.mona_lisa,
+    SatorioColor.light_sky_blue
+  ];
 }

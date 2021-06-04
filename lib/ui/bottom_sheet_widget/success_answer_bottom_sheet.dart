@@ -89,30 +89,30 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
-          SizedBox(
-            height: data.additionalPts > 0 ? 44 : 0,
-          ),
           data.additionalPts > 0
-              ? RichText(
-                  text: TextSpan(
-                    text: 'txt_fastest_answer'.tr,
-                    style: TextStyle(
-                      color: SatorioColor.textBlack,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'txt_add_pts'.tr.format([data.additionalPts]),
-                        style: TextStyle(
-                          color: SatorioColor.textBlack,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w700,
-                        ),
+              ? Padding(
+                padding: const EdgeInsets.only(top: 44),
+                child: RichText(
+                    text: TextSpan(
+                      text: 'txt_fastest_answer'.tr,
+                      style: TextStyle(
+                        color: SatorioColor.textBlack,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400,
                       ),
-                    ],
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'txt_add_pts'.tr.format([data.additionalPts]),
+                          style: TextStyle(
+                            color: SatorioColor.textBlack,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                )
+              )
               : SizedBox(
                   height: 0,
                 ),

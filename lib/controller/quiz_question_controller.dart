@@ -1,6 +1,7 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_controller.dart';
+import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 
 class QuizQuestionController extends GetxController {
@@ -17,6 +18,12 @@ class QuizQuestionController extends GetxController {
     questionRx.value = payloadQuestion;
     if (restart)
       countdownController.restart(duration: payloadQuestion.timeForAnswer);
+  }
+
+  void selectAnswer(PayloadAnswerOption answerOption) {
+    if (!isAnswerSentRx.value) {
+      answerIdRx.value = answerOption.answerId;
+    }
   }
 
   void sendAnswer() {

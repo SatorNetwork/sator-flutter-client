@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -38,6 +39,14 @@ class QuizController extends GetxController {
 
   void back() {
     Get.back();
+  }
+
+  void backToMain() {
+    if (Get.isRegistered<HomeController>()) {
+      HomeController homeController = Get.find();
+      homeController.loadWalletBalance();
+    }
+    Get.until((route) => Get.currentRoute == '/() => MainPage');
   }
 
   void setChallenge(Challenge challenge) {
@@ -141,9 +150,10 @@ class QuizController extends GetxController {
           'txt_back_home'.tr,
           icon: Icons.close_rounded,
           onPressed: () {
-            Get.until((route) => Get.currentRoute == '/() => MainPage');
+            backToMain();
           },
         ),
+        barrierDismissible: false,
       );
     }
   }

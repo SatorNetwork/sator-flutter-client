@@ -147,7 +147,8 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                   Obx(
                     () => ElevatedGradientButton(
                       text: 'txt_next'.tr,
-                      isEnabled: controller.answerIdRx.value.isNotEmpty && !controller.isAnswerSentRx.value,
+                      isEnabled: controller.answerIdRx.value.isNotEmpty &&
+                          !controller.isAnswerSentRx.value,
                       onPressed: () {
                         controller.sendAnswer();
                       },
@@ -165,9 +166,10 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
   Widget _answerWidget(PayloadAnswerOption answerOption, bool isSelected) {
     return InkWell(
       onTap: () {
-        controller.answerIdRx.value = answerOption.answerId;
+        controller.selectAnswer(answerOption);
       },
       child: Container(
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: isSelected ? SatorioColor.interactive : Colors.white,
