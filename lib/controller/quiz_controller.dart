@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -41,6 +42,10 @@ class QuizController extends GetxController {
   }
 
   void backToMain() {
+    if (Get.isRegistered<HomeController>()) {
+      HomeController homeController = Get.find();
+      homeController.loadWalletBalance();
+    }
     Get.until((route) => Get.currentRoute == '/() => MainPage');
   }
 
