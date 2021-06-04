@@ -127,7 +127,7 @@ class QuizResultPage extends GetView<QuizResultController> {
                         text: 'txt_back_home'.tr,
                         isEnabled: !controller.isRequested.value,
                         onPressed: () {
-                          controller.backToMain();
+                          controller.quizController.backToMain();
                         },
                       ),
                     ),

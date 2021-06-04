@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -10,6 +11,7 @@ class QuizResultController extends GetxController {
   Rx<PayloadChallengeResult> resultRx = Rx(null);
   Rx<bool> isRequested = Rx(false);
 
+  QuizController quizController = Get.find();
   SatorioRepository _satorioRepository = Get.find();
 
   void claimRewards() {
@@ -35,9 +37,5 @@ class QuizResultController extends GetxController {
             isRequested.value = false;
           },
         );
-  }
-
-  void backToMain() {
-    Get.until((route) => Get.currentRoute == '/() => MainPage');
   }
 }

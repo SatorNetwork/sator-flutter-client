@@ -40,6 +40,10 @@ class QuizController extends GetxController {
     Get.back();
   }
 
+  void backToMain() {
+    Get.until((route) => Get.currentRoute == '/() => MainPage');
+  }
+
   void setChallenge(Challenge challenge) {
     this.challenge = challenge;
 
@@ -141,7 +145,7 @@ class QuizController extends GetxController {
           'txt_back_home'.tr,
           icon: Icons.close_rounded,
           onPressed: () {
-            Get.until((route) => Get.currentRoute == '/() => MainPage');
+            backToMain();
           },
         ),
         barrierDismissible: false,
