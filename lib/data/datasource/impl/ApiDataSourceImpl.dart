@@ -31,7 +31,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   ApiDataSourceImpl(this._authDataSource) {
     _getConnect.baseUrl = 'https://sator-api-stage-93k39.ondigitalocean.app/';
 
-    _getConnect.httpClient.addAuthenticator((request) {
+    _getConnect.httpClient.addRequestModifier((request) {
       String token = _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';

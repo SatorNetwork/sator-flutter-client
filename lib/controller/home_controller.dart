@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/show_challenges_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 
