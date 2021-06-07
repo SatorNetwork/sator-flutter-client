@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/show.dart';
-import 'package:satorio/domain/entities/wallet_balance.dart';
 
 abstract class SatorioRepository {
   Future<bool> isTokenValid();
@@ -15,7 +15,7 @@ abstract class SatorioRepository {
 
   Future<void> updateProfile();
 
-  Future<WalletBalance> walletBalance();
+  Future<List<AmountCurrency>> walletBalance();
 
   Future<List<Show>> shows({int page});
 
