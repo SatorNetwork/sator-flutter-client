@@ -1,3 +1,4 @@
+import 'package:flutter/src/foundation/change_notifier.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
@@ -17,7 +18,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
   final LocalDataSource _localDataSource;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource);
+  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource) {
+    _localDataSource.init();
+  }
 
   _handleException(Exception exception) {
     if (exception is ApiErrorException) {
@@ -57,9 +60,12 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<Profile> profile() {
+  Future<void> updateProfile() {
     return _apiDataSource
         .profile()
+        .then(
+          (Profile profile) => _localDataSource.saveProfile(profile),
+        )
         .catchError((value) => _handleException(value));
   }
 
@@ -86,7 +92,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> logout() {
-    return _apiDataSource.logout().then((value) {
+    return _localDataSource
+        .clear()
+        .then((value) => _apiDataSource.logout())
+        .then((value) {
       Get.offAll(() => LoginPage(), binding: LoginBinding());
       return;
     });
@@ -118,5 +127,12 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _apiDataSource
         .claimReward()
         .catchError((value) => _handleException(value));
+  }
+
+  //
+
+  @override
+  ValueListenable profileListenable() {
+    return _localDataSource.profileListenable();
   }
 }

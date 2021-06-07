@@ -1,13 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:satorio/binding/show_challenges_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
-import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/wallet_balance.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 
@@ -19,8 +19,12 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final Rx<WalletBalance> walletBalanceRx = Rx(null);
   final Rx<List<Show>> showsRx = Rx([]);
 
+  ValueListenable<Box<Profile>> listenable;
+
   HomeController() {
     this.tabController = TabController(length: 2, vsync: this);
+    this.listenable =
+        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
   }
 
   @override
@@ -29,12 +33,18 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     _loadProfile();
     loadWalletBalance();
     _loadShows();
+
+    listenable.addListener(_profileListener);
+  }
+
+  @override
+  void onClose() {
+    listenable.removeListener(_profileListener);
+    super.onClose();
   }
 
   void _loadProfile() {
-    _satorioRepository.profile().then((Profile profile) {
-      profileRx.value = profile;
-    });
+    _satorioRepository.updateProfile();
   }
 
   void loadWalletBalance() {
@@ -72,5 +82,10 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
         },
       ),
     );
+  }
+
+  void _profileListener() {
+    profileRx.value = listenable.value.getAt(0);
+    print('_listener ${(listenable.value).length}');
   }
 }
