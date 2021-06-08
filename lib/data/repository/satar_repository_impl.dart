@@ -1,4 +1,4 @@
-import 'package:flutter/src/foundation/change_notifier.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
@@ -122,7 +122,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> sendAnswer(
-      GetSocket socket, String questionId, String answerId) {
+    GetSocket socket,
+    String questionId,
+    String answerId,
+  ) {
     return _apiDataSource.sendAnswer(socket, questionId, answerId);
   }
 
