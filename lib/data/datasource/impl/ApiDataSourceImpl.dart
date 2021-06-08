@@ -190,7 +190,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<AmountCurrencyModel>> walletBalance() {
+  Future<List<AmountCurrencyModel>> wallet() {
     return _requestGet(
       'wallet/balance',
     ).then((Response response) {

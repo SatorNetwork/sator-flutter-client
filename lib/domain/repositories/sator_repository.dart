@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
@@ -15,7 +14,7 @@ abstract class SatorioRepository {
 
   Future<void> updateProfile();
 
-  Future<List<AmountCurrency>> walletBalance();
+  Future<void> updateWallet();
 
   Future<List<Show>> shows({int page});
 
@@ -34,4 +33,6 @@ abstract class SatorioRepository {
   //
 
   ValueListenable profileListenable();
+
+  ValueListenable walletListenable();
 }

@@ -16,30 +16,36 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile> profileRx = Rx(null);
-  final Rx<List<AmountCurrency>> walletBalanceRx = Rx([]);
+  final Rx<List<AmountCurrency>> walletRx = Rx([]);
   final Rx<List<Show>> showsRx = Rx([]);
 
-  ValueListenable<Box<Profile>> listenable;
+  ValueListenable<Box<Profile>> profileListenable;
+  ValueListenable<Box<AmountCurrency>> walletListenable;
 
   HomeController() {
     this.tabController = TabController(length: 2, vsync: this);
-    this.listenable =
+    this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+
+    this.walletListenable = _satorioRepository.walletListenable()
+        as ValueListenable<Box<AmountCurrency>>;
   }
 
   @override
   void onInit() {
     super.onInit();
     _loadProfile();
-    loadWalletBalance();
+    _loadWallet();
     _loadShows();
 
-    listenable.addListener(_profileListener);
+    profileListenable.addListener(_profileListener);
+    walletListenable.addListener(_walletListener);
   }
 
   @override
   void onClose() {
-    listenable.removeListener(_profileListener);
+    profileListenable.removeListener(_profileListener);
+    walletListenable.removeListener(_walletListener);
     super.onClose();
   }
 
@@ -47,12 +53,8 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     _satorioRepository.updateProfile();
   }
 
-  void loadWalletBalance() {
-    _satorioRepository
-        .walletBalance()
-        .then((List<AmountCurrency> amountCurrencies) {
-      walletBalanceRx.value = amountCurrencies;
-    });
+  void _loadWallet() {
+    _satorioRepository.updateWallet();
   }
 
   void _loadShows() {
@@ -87,7 +89,10 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   void _profileListener() {
-    profileRx.value = listenable.value.getAt(0);
-    print('_listener ${(listenable.value).length}');
+    profileRx.value = profileListenable.value.getAt(0);
+  }
+
+  void _walletListener() {
+    walletRx.value = walletListenable.value.values.toList();
   }
 }

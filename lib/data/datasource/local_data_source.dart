@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
 
 abstract class LocalDataSource {
@@ -9,4 +10,8 @@ abstract class LocalDataSource {
   Future<void> saveProfile(Profile profile);
 
   ValueListenable profileListenable();
+
+  Future<void> saveWallet(List<AmountCurrency> wallet);
+
+  ValueListenable walletListenable();
 }

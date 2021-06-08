@@ -70,9 +70,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<AmountCurrency>> walletBalance() {
+  Future<void> updateWallet() {
     return _apiDataSource
-        .walletBalance()
+        .wallet()
+        .then(
+          (List<AmountCurrency> amountCurrencies) =>
+              _localDataSource.saveWallet(amountCurrencies),
+        )
         .catchError((value) => _handleException(value));
   }
 
@@ -134,5 +138,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable profileListenable() {
     return _localDataSource.profileListenable();
+  }
+
+  @override
+  ValueListenable walletListenable() {
+    return _localDataSource.walletListenable();
   }
 }

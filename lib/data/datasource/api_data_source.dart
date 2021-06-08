@@ -17,7 +17,7 @@ abstract class ApiDataSource {
 
   Future<ProfileModel> profile();
 
-  Future<List<AmountCurrencyModel>> walletBalance();
+  Future<List<AmountCurrencyModel>> wallet();
 
   Future<List<ShowModel>> shows({int page});
 

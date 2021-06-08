@@ -6,14 +6,12 @@ class ProfileAdapter extends TypeAdapter<Profile> {
   int get typeId => 0;
 
   @override
-  Profile read(BinaryReader reader) {
-    return Profile(
-      reader.readString(),
-      reader.readString(),
-      reader.readString(),
-      reader.readString(),
-    );
-  }
+  Profile read(BinaryReader reader) => Profile(
+        reader.readString(),
+        reader.readString(),
+        reader.readString(),
+        reader.readString(),
+      );
 
   @override
   void write(BinaryWriter writer, Profile profile) {
