@@ -12,6 +12,12 @@ abstract class SatorioRepository {
 
   Future<bool> signUp(String email, String password, String username);
 
+  Future<bool> forgotPassword(String email);
+
+  Future<bool> validateResetPasswordCode(String email, String code);
+
+  Future<bool> resetPassword(String email, String code, String newPassword);
+
   Future<void> updateProfile();
 
   Future<void> updateWallet();
