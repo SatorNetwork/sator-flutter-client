@@ -187,7 +187,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<bool> forgotPassword(String email) {
     return _requestPost(
-      'auth/validate-reset-password-code',
+      'auth/forgot-password',
       ForgotPasswordRequest(email),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString)).result;

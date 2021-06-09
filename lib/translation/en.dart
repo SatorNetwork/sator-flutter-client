@@ -14,6 +14,10 @@ const Map<String, String> en = {
   'txt_login': 'Login',
   'txt_forgot_password': 'Forgot password?',
   'txt_not_member': 'Not a member? ',
+  'txt_password_recovery': 'Password recovery',
+  'txt_password_recovery_text':
+      'Enter an email, connected to your account.\nWe will send you a confirmation code',
+  'txt_send_code': 'Send code',
   'txt_challenge': 'Challenge',
   'txt_wallet': 'Wallet',
   'txt_badges': 'Badges',

@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/password_recovery_binding.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/forgot_password_verification_page.dart';
 
-class ForgotPasswordController extends GetxController with ValidationMixin {
+class PasswordRecoveryController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController codeController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
@@ -12,26 +14,29 @@ class ForgotPasswordController extends GetxController with ValidationMixin {
 
   final SatorioRepository _satorioRepository = Get.find();
 
+  back() {
+    Get.back();
+  }
+
   void forgotPassword() {
-    _satorioRepository.forgotPassword(emailController.text).then(
-      (bool result) {
-        if (result) {
-          // TODO : to next step - validate code;
-        }
-      },
-    ).catchError((value) => handleValidationException(value));
+    _satorioRepository
+        .forgotPassword(emailController.text)
+        .then((bool isSuccess) {
+      if (isSuccess) {
+        Get.to(ForgotPasswordVerificationPage(),
+            binding: PasswordRecoveryBinding());
+      }
+    }).catchError((value) => handleValidationException(value));
   }
 
   void validateCode() {
     _satorioRepository
         .validateResetPasswordCode(emailController.text, codeController.text)
-        .then(
-      (bool result) {
-        if (result) {
-          // TODO : to next step - set new password;
-        }
-      },
-    ).catchError((value) => handleValidationException(value));
+        .then((bool isSuccess) {
+      if (isSuccess) {
+        // TODO : to next step - set new password;
+      }
+    });
   }
 
   void resetPassword() {
@@ -41,12 +46,10 @@ class ForgotPasswordController extends GetxController with ValidationMixin {
       codeController.text,
       newPasswordController.text,
     )
-        .then(
-      (bool result) {
-        if (result) {
-          // TODO : finish forgot password process;
-        }
-      },
-    ).catchError((value) => handleValidationException(value));
+        .then((bool isSuccess) {
+      if (isSuccess) {
+        // TODO : finish forgot password process;
+      }
+    }).catchError((value) => handleValidationException(value));
   }
 }
