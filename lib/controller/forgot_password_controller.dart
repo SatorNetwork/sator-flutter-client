@@ -1,8 +1,9 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
-class ForgotPasswordController extends GetxController {
+class ForgotPasswordController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController codeController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
@@ -18,7 +19,7 @@ class ForgotPasswordController extends GetxController {
           // TODO : to next step - validate code;
         }
       },
-    );
+    ).catchError((value) => handleValidationException(value));
   }
 
   void validateCode() {
@@ -30,7 +31,7 @@ class ForgotPasswordController extends GetxController {
           // TODO : to next step - set new password;
         }
       },
-    );
+    ).catchError((value) => handleValidationException(value));
   }
 
   void resetPassword() {
@@ -46,6 +47,6 @@ class ForgotPasswordController extends GetxController {
           // TODO : finish forgot password process;
         }
       },
-    );
+    ).catchError((value) => handleValidationException(value));
   }
 }
