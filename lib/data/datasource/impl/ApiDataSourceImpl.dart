@@ -7,6 +7,7 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
@@ -15,7 +16,6 @@ import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/data/model/wallet_balance_model.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
@@ -31,7 +31,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   ApiDataSourceImpl(this._authDataSource) {
     _getConnect.baseUrl = 'https://sator-api-stage-93k39.ondigitalocean.app/';
 
-    _getConnect.httpClient.addAuthenticator((request) {
+    _getConnect.httpClient.addRequestModifier((request) {
       String token = _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';
@@ -190,12 +190,17 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<WalletBalanceModel> walletBalance() {
+  Future<List<AmountCurrencyModel>> wallet() {
     return _requestGet(
       'wallet/balance',
     ).then((Response response) {
-      return WalletBalanceModel.fromJson(
-          json.decode(response.bodyString));
+      Map jsonData = json.decode(response.bodyString);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => AmountCurrencyModel.fromJson(element))
+            .toList();
+      else
+        return [];
     });
   }
 
