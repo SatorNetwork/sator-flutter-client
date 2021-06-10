@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:satorio/controller/password_recovery_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/ui/widget/input_text_field.dart';
 
-class ForgotPasswordVerificationPage
-    extends GetView<PasswordRecoveryController> {
+class ForgotPasswordResetPage extends GetView<PasswordRecoveryController> {
   static const double _appBarHeight = 90;
 
   @override
@@ -37,10 +37,9 @@ class ForgotPasswordVerificationPage
           color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "txt_verification".tr,
+                "txt_reset_password".tr,
                 style: TextStyle(
                     color: SatorioColor.textBlack,
                     fontSize: 34.0,
@@ -50,7 +49,7 @@ class ForgotPasswordVerificationPage
                 height: 6,
               ),
               Text(
-                "txt_password_verification_text".tr,
+                "txt_reset_password_text".tr,
                 style: TextStyle(
                     color: SatorioColor.textBlack,
                     fontSize: 15.0,
@@ -59,35 +58,31 @@ class ForgotPasswordVerificationPage
               SizedBox(
                 height: 36,
               ),
-              PinCodeTextField(
-                appContext: context,
-                length: 5,
-                obscureText: false,
-                animationType: AnimationType.fade,
-                keyboardType: TextInputType.number,
-                pinTheme: PinTheme(
-                  disabledColor: SatorioColor.inputGrey,
-                  inactiveFillColor: SatorioColor.inputGrey,
-                  inactiveColor: SatorioColor.inputGrey,
-                  activeColor: SatorioColor.inputGrey,
-                  selectedColor: SatorioColor.inputGrey,
-                  selectedFillColor: SatorioColor.inputGrey,
-                  shape: PinCodeFieldShape.box,
-                  borderRadius: BorderRadius.circular(5),
-                  fieldHeight: 50,
-                  fieldWidth: 50,
-                  activeFillColor: SatorioColor.inputGrey,
+              Obx(
+                () => InputTextField(
+                  inputTitle: 'txt_new_password'.tr,
+                  controller: controller.newPasswordController,
+                  obscureText: controller.passwordObscured.value,
+                  errorText: controller.validationRx.value['password'],
+                  icon: Icon(
+                      controller.passwordObscured.value
+                          ? Icons.visibility_off_outlined
+                          : Icons.remove_red_eye_outlined,
+                      color: SatorioColor.darkAccent),
+                  onPressedIcon: () {
+                    controller.passwordObscured.toggle();
+                  },
                 ),
-                animationDuration: Duration(milliseconds: 300),
-                backgroundColor: Colors.transparent,
-                enableActiveFill: true,
-                controller: controller.codeController,
-                onCompleted: (v) {
-                  controller.validateCode();
+              ),
+              SizedBox(
+                height: 32,
+              ),
+              ElevatedGradientButton(
+                text: 'txt_save'.tr,
+                onPressed: () {
+                  controller.resetPassword();
                 },
-                onChanged: (value) {},
-                beforeTextPaste: (text) => true,
-              )
+              ),
             ],
           ),
         ),

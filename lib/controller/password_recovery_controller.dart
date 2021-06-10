@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/password_recovery_binding.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/forgot_password_reset.dart';
 import 'package:satorio/ui/page_widget/forgot_password_verification_page.dart';
 
 class PasswordRecoveryController extends GetxController with ValidationMixin {
@@ -23,8 +24,11 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
         .forgotPassword(emailController.text)
         .then((bool isSuccess) {
       if (isSuccess) {
-        Get.to(ForgotPasswordVerificationPage(),
-            binding: PasswordRecoveryBinding());
+        codeController.clear();
+        Get.to(
+          () => ForgotPasswordVerificationPage(),
+          binding: PasswordRecoveryBinding(),
+        );
       }
     }).catchError((value) => handleValidationException(value));
   }
@@ -34,7 +38,11 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
         .validateResetPasswordCode(emailController.text, codeController.text)
         .then((bool isSuccess) {
       if (isSuccess) {
-        // TODO : to next step - set new password;
+        newPasswordController.clear();
+        Get.to(
+          () => ForgotPasswordResetPage(),
+          binding: PasswordRecoveryBinding(),
+        );
       }
     });
   }
@@ -48,7 +56,7 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
     )
         .then((bool isSuccess) {
       if (isSuccess) {
-        // TODO : finish forgot password process;
+        Get.until((route) => Get.currentRoute == '/() => LoginPage');
       }
     }).catchError((value) => handleValidationException(value));
   }

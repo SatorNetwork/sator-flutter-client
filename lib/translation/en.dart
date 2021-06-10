@@ -18,6 +18,14 @@ const Map<String, String> en = {
   'txt_password_recovery_text':
       'Enter an email, connected to your account.\nWe will send you a confirmation code',
   'txt_send_code': 'Send code',
+  'txt_verification': 'Verification',
+  'txt_password_verification_text':
+      'Please enter the verification code we’ve sent to your email address',
+  'txt_reset_password': 'Reset password',
+  'txt_reset_password_text':
+      'The old password will reset.\nPlease enter your new password.',
+  'txt_new_password': 'New password',
+  'txt_save': 'Save',
   'txt_challenge': 'Challenge',
   'txt_wallet': 'Wallet',
   'txt_badges': 'Badges',
