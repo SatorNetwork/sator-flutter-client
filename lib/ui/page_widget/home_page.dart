@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -9,8 +7,6 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class HomePage extends GetView<HomeController> {
-  final Random _random = Random();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -424,7 +420,6 @@ class HomePage extends GetView<HomeController> {
               height: height,
               fit: BoxFit.cover,
               image: NetworkImage(
-                // 'https://picsum.photos/${width.round()}/${height.round()}',
                 imgURL,
               ),
               errorBuilder: (context, error, stackTrace) => Container(
