@@ -86,7 +86,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .profile()
         .then(
           (Profile profile) => _localDataSource.saveProfile(profile),
-        )
+    )
         .catchError((value) => _handleException(value));
   }
 
@@ -96,8 +96,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .wallet()
         .then(
           (List<AmountCurrency> amountCurrencies) =>
-              _localDataSource.saveWallet(amountCurrencies),
-        )
+          _localDataSource.saveWallet(amountCurrencies),
+    )
         .catchError((value) => _handleException(value));
   }
 
