@@ -91,14 +91,15 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
           ),
           data.additionalPts > 0
               ? Padding(
-                padding: const EdgeInsets.only(top: 44),
-                child: RichText(
+                  padding: const EdgeInsets.only(top: 44),
+                  child: RichText(
                     text: TextSpan(
                       text: 'txt_fastest_answer'.tr,
                       style: TextStyle(
                         color: SatorioColor.textBlack,
                         fontSize: 18.0,
                         fontWeight: FontWeight.w400,
+                        backgroundColor: Colors.transparent,
                       ),
                       children: <TextSpan>[
                         TextSpan(
@@ -107,12 +108,13 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
                             color: SatorioColor.textBlack,
                             fontSize: 18.0,
                             fontWeight: FontWeight.w700,
+                            backgroundColor: Colors.transparent,
                           ),
                         ),
                       ],
                     ),
                   ),
-              )
+                )
               : SizedBox(
                   height: 0,
                 ),

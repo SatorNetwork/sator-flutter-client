@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -9,8 +7,6 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class HomePage extends GetView<HomeController> {
-  final Random _random = Random();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,39 +112,31 @@ class HomePage extends GetView<HomeController> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 20, top: 16),
                       child: Obx(
-                        () => controller.walletBalanceRx.value == null
-                            ? Container()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    controller.walletBalanceRx.value
-                                                .amountCurrencies.length >
-                                            0
-                                        ? controller.walletBalanceRx.value
-                                            .amountCurrencies[0].displayedValue
-                                        : '',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    controller.walletBalanceRx.value
-                                                .amountCurrencies.length >
-                                            1
-                                        ? controller.walletBalanceRx.value
-                                            .amountCurrencies[1].displayedValue
-                                        : '',
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
+                        () => Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              controller.walletRx.value.length > 0
+                                  ? controller.walletRx.value[0].displayedValue
+                                  : '',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700,
                               ),
+                            ),
+                            Text(
+                              controller.walletRx.value.length > 1
+                                  ? controller.walletRx.value[1].displayedValue
+                                  : '',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.7),
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )
@@ -191,18 +179,18 @@ class HomePage extends GetView<HomeController> {
                       itemCount: 10,
                       itemBuilder: (context, index) {
                         String assetName;
-                        switch (index % 3) {
+                        switch (index) {
                           case 0:
-                            assetName = 'images/badge1.png';
+                            assetName = 'images/new/badge1.png';
                             break;
                           case 1:
-                            assetName = 'images/badge2.png';
+                            assetName = 'images/new/badge2.png';
                             break;
-                          case 2:
-                            assetName = 'images/badge3.png';
+                          default:
+                            assetName = 'images/new/badge3.png';
                             break;
                         }
-                        return _badgeItem(assetName);
+                        return _badgeItem(assetName, index);
                       },
                     ),
                   ),
@@ -282,9 +270,24 @@ class HomePage extends GetView<HomeController> {
                       ),
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: 10,
+                      itemCount: 3,
                       itemBuilder: (context, index) {
-                        return _nftsItem();
+                        String img;
+                        switch (index) {
+                          case 0:
+                            img =
+                                'https://fanart.tv/fanart/tv/277165/tvthumb/silicon-valley-5915a9878d077.jpg';
+                            break;
+                          case 1:
+                            img =
+                                'https://slpecho.com/wp-content/uploads/2019/10/friends-art-for-web-900x640.jpg';
+                            break;
+                          default:
+                            img =
+                                'https://btcmanager.com/wp-content/uploads/2018/05/Someone-Made-That-Silicon-Valley-Alert-That-Plays-Death-Metal-Whenever-Bitcoin-Price-Moves.jpg';
+                            break;
+                        }
+                        return _nftsItem(img);
                       },
                     ),
                   ),
@@ -300,7 +303,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _badgeItem(String assetName) {
+  Widget _badgeItem(String assetName, int index) {
     return Container(
       width: 100,
       height: 100,
@@ -310,18 +313,21 @@ class HomePage extends GetView<HomeController> {
       ),
       child: Center(
         child: ColorFiltered(
-          colorFilter: _random.nextBool() ? ColorFilter.mode(
-            Colors.transparent,
-            BlendMode.multiply,
-          ) : ColorFilter.matrix(<double>[
-            0.2126,0.7152,0.0722,0,0,
-            0.2126,0.7152,0.0722,0,0,
-            0.2126,0.7152,0.0722,0,0,
-            0,0,0,1,0,
-          ]),
+          // colorFilter: _random.nextBool()
+          colorFilter: index < 2
+              ? ColorFilter.mode(
+                  Colors.transparent,
+                  BlendMode.multiply,
+                )
+              : ColorFilter.matrix(<double>[
+                  0.2126, 0.7152, 0.0722, 0, 0,
+                  0.2126, 0.7152, 0.0722, 0, 0,
+                  0.2126, 0.7152, 0.0722, 0, 0,
+                  0, 0, 0, 1, 0,
+                ]),
           child: Image.asset(
             assetName,
-            height: 40,
+            height: 60,
             fit: BoxFit.fitHeight,
           ),
         ),
@@ -399,7 +405,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _nftsItem() {
+  Widget _nftsItem(String imgURL) {
     double width = Get.width - 20 - 32;
     double height = 168.0;
     return Container(
@@ -414,7 +420,7 @@ class HomePage extends GetView<HomeController> {
               height: height,
               fit: BoxFit.cover,
               image: NetworkImage(
-                'https://picsum.photos/${width.round()}/${height.round()}',
+                imgURL,
               ),
               errorBuilder: (context, error, stackTrace) => Container(
                 color: SatorioColor.grey,
