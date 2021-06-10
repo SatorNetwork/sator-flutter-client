@@ -116,39 +116,31 @@ class HomePage extends GetView<HomeController> {
                     child: Padding(
                       padding: const EdgeInsets.only(right: 20, top: 16),
                       child: Obx(
-                        () => controller.walletBalanceRx.value == null
-                            ? Container()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    controller.walletBalanceRx.value
-                                                .amountCurrencies.length >
-                                            0
-                                        ? controller.walletBalanceRx.value
-                                            .amountCurrencies[0].displayedValue
-                                        : '',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  Text(
-                                    controller.walletBalanceRx.value
-                                                .amountCurrencies.length >
-                                            1
-                                        ? controller.walletBalanceRx.value
-                                            .amountCurrencies[1].displayedValue
-                                        : '',
-                                    style: TextStyle(
-                                      color: Colors.white.withOpacity(0.7),
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
+                        () => Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              controller.walletRx.value.length > 0
+                                  ? controller.walletRx.value[0].displayedValue
+                                  : '',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700,
                               ),
+                            ),
+                            Text(
+                              controller.walletRx.value.length > 1
+                                  ? controller.walletRx.value[1].displayedValue
+                                  : '',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.7),
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   )
@@ -310,15 +302,33 @@ class HomePage extends GetView<HomeController> {
       ),
       child: Center(
         child: ColorFiltered(
-          colorFilter: _random.nextBool() ? ColorFilter.mode(
-            Colors.transparent,
-            BlendMode.multiply,
-          ) : ColorFilter.matrix(<double>[
-            0.2126,0.7152,0.0722,0,0,
-            0.2126,0.7152,0.0722,0,0,
-            0.2126,0.7152,0.0722,0,0,
-            0,0,0,1,0,
-          ]),
+          colorFilter: _random.nextBool()
+              ? ColorFilter.mode(
+                  Colors.transparent,
+                  BlendMode.multiply,
+                )
+              : ColorFilter.matrix(<double>[
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                ]),
           child: Image.asset(
             assetName,
             height: 40,

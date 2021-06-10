@@ -83,7 +83,7 @@ class ChallengePage extends GetView<ChallengeController> {
                     ),
                     child: Center(
                       child: SvgPicture.asset(
-                        'images/challenge_tracery.svg',
+                        'images/logo.svg',
                         width: 40,
                         height: 40,
                       ),
