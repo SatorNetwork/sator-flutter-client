@@ -292,20 +292,20 @@ class HomePage extends GetView<HomeController> {
                             name = "Game of Thrones";
                             break;
                           case 1:
-                            img = 'nfts_2';
-                            name = "Breaking Bad";
-                            break;
-                          case 2:
-                            img = 'nfts_3';
-                            name = "Friends";
-                            break;
-                          case 3:
                             img = 'nfts_4';
                             name = "Sopranos";
                             break;
-                          case 4:
+                          case 2:
                             img = 'nfts_5';
                             name = "Simpsons";
+                            break;
+                          case 3:
+                            img = 'nfts_2';
+                            name = "Breaking Bad";
+                            break;
+                          case 4:
+                            img = 'nfts_3';
+                            name = "Friends";
                             break;
                           default:
                             img = 'nfts_5';
