@@ -86,7 +86,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
                           itemBuilder: (context, index) {
                             PayloadUser payloadUser =
                                 controller.usersRx.value[index];
-                            return _payloadUserItem(payloadUser);
+                            return _payloadUserItem(payloadUser, index);
                           },
                         ),
                       ),
@@ -143,7 +143,13 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
     );
   }
 
-  Widget _payloadUserItem(PayloadUser payloadUser) {
+  Widget _payloadUserItem(PayloadUser payloadUser, int index) {
+    final List<String> _assetNames = [
+      'avatar_1',
+      'avatar_2',
+      'avatar_3',
+      'avatar_4',
+    ];
     return Container(
       height: 48,
       child: Row(
@@ -152,11 +158,13 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
           SizedBox(
             width: 12,
           ),
-          Image.asset(
-            'images/profile.png',
-            width: 34,
-            height: 34,
-            fit: BoxFit.fitWidth,
+          ClipOval(
+            child: Image.asset(
+              'images/new/${_assetNames[index % _assetNames.length]}.png',
+              width: 34,
+              height: 34,
+              fit: BoxFit.fitWidth,
+            ),
           ),
           SizedBox(
             width: 20,

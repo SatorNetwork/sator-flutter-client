@@ -49,6 +49,7 @@ flutter:
   assets:
     - images/
     - images/bg/
+    - images/new/
 
   fonts:
     - family: SatorIcons
