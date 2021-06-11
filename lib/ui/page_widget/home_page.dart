@@ -307,13 +307,9 @@ class HomePage extends GetView<HomeController> {
                             img = 'nfts_5';
                             name = "Simpsons";
                             break;
-                          case 5:
-                            img = 'nfts_6';
-                            name = "test";
-                            break;
                           default:
-                            img = 'nfts_7';
-                            name = "test";
+                            img = 'nfts_5';
+                            name = "Simpsons";
                             break;
                         }
                         return _nftsItem(img, name);
