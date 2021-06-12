@@ -50,14 +50,13 @@ class QuizResultPage extends GetView<QuizResultController> {
                             )),
                         Obx(
                           () => Text(
-                              controller.resultRx.value == null
-                                  ? ""
-                                  : controller.resultRx.value.prizePool,
-                              style: TextStyle(
-                                color: SatorioColor.darkAccent,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w600,
-                              )),
+                            controller.resultRx.value?.prizePool ?? '',
+                            style: TextStyle(
+                              color: SatorioColor.darkAccent,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -93,10 +92,11 @@ class QuizResultPage extends GetView<QuizResultController> {
                                     color: Colors.black.withOpacity(0.11),
                                   ),
                                 ),
-                            itemCount: controller.resultRx.value.winners.length,
+                            itemCount:
+                                controller.resultRx.value?.winners.length ?? 0,
                             itemBuilder: (context, index) {
                               PayloadWinner payloadWinner =
-                                  controller.resultRx.value.winners[index];
+                                  controller.resultRx.value!.winners[index];
                               return _winnerItem(payloadWinner);
                             }),
                       ),

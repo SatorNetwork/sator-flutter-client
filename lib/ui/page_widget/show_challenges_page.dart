@@ -139,7 +139,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    challengeSimple.title == null ? "" : challengeSimple.title,
+                    challengeSimple.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -152,9 +152,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                     height: 4,
                   ),
                   Text(
-                    challengeSimple.description == null
-                        ? ""
-                        : challengeSimple.description,
+                    challengeSimple.description,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

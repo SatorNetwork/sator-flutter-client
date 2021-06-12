@@ -4,7 +4,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 
 class ElevatedGradientButton extends StatelessWidget {
   const ElevatedGradientButton({
-    this.text,
+    this.text = '',
     this.onPressed,
     this.leftColor = SatorioColor.interactive,
     this.rightColor = SatorioColor.darkAccent,
@@ -12,7 +12,7 @@ class ElevatedGradientButton extends StatelessWidget {
   });
 
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color leftColor;
   final Color rightColor;
   final bool isEnabled;

@@ -5,7 +5,7 @@ import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 
 class QuizQuestionController extends GetxController {
-  Rx<PayloadQuestion> questionRx = Rx(null);
+  Rx<PayloadQuestion?> questionRx = Rx(null);
   Rx<String> answerIdRx = Rx('');
   Rx<bool> isAnswerSentRx = Rx(false);
   CountDownController countdownController = CountDownController();
@@ -27,12 +27,14 @@ class QuizQuestionController extends GetxController {
   }
 
   void sendAnswer() {
-    if (answerIdRx.value.isNotEmpty && !isAnswerSentRx.value) {
-      quizController
-          .sendAnswer(questionRx.value.questionId, answerIdRx.value)
-          .then((value) {
-        isAnswerSentRx.value = true;
-      });
+    if (questionRx.value != null) {
+      if (answerIdRx.value.isNotEmpty && !isAnswerSentRx.value) {
+        quizController
+            .sendAnswer(questionRx.value!.questionId, answerIdRx.value)
+            .then((value) {
+          isAnswerSentRx.value = true;
+        });
+      }
     }
   }
 }

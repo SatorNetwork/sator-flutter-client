@@ -30,9 +30,7 @@ class HomePage extends GetView<HomeController> {
                         },
                         child: Obx(
                           () => Text(
-                            controller.profileRx.value == null
-                                ? ''
-                                : controller.profileRx.value.displayedName,
+                            controller.profileRx.value?.displayedName ?? '',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 32.0,
@@ -319,10 +317,26 @@ class HomePage extends GetView<HomeController> {
                   BlendMode.multiply,
                 )
               : ColorFilter.matrix(<double>[
-                  0.2126, 0.7152, 0.0722, 0, 0,
-                  0.2126, 0.7152, 0.0722, 0, 0,
-                  0.2126, 0.7152, 0.0722, 0, 0,
-                  0, 0, 0, 1, 0,
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0.2126,
+                  0.7152,
+                  0.0722,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
                 ]),
           child: Image.asset(
             assetName,

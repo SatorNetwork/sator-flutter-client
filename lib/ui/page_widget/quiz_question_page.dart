@@ -67,9 +67,8 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                         controller: controller.countdownController,
                         width: 119,
                         height: 119,
-                        duration: controller.questionRx.value == null
-                            ? 0
-                            : controller.questionRx.value.timeForAnswer,
+                        duration:
+                            controller.questionRx.value?.timeForAnswer ?? 0,
                         fillColor: SatorioColor.darkAccent,
                         ringColor: SatorioColor.brand,
                         isReverse: true,
@@ -93,7 +92,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                     () => Text(
                       controller.questionRx.value == null
                           ? ''
-                          : '${controller.questionRx.value.questionNumber} / ${controller.questionRx.value.totalQuestions}',
+                          : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',
                       style: TextStyle(
                         color: SatorioColor.darkAccent,
                         fontSize: 16.0,
@@ -107,9 +106,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                       child: Center(
                         child: Obx(
                           () => Text(
-                            controller.questionRx.value == null
-                                ? ''
-                                : controller.questionRx.value.questionText,
+                            controller.questionRx.value?.questionText ?? '',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: SatorioColor.darkAccent,
@@ -134,7 +131,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                         mainAxisSpacing: _itemSpacing,
                         children: controller.questionRx.value == null
                             ? []
-                            : controller.questionRx.value.answerOptions
+                            : controller.questionRx.value!.answerOptions
                                 .map((e) => _answerWidget(e,
                                     e.answerId == controller.answerIdRx.value))
                                 .toList(),

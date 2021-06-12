@@ -48,7 +48,7 @@ class OnBoardingController extends GetxController {
   }
 
   _listener() {
-    pageRx.value = pageController.page.round();
+    pageRx.value = pageController.page?.round() ?? 0;
   }
 
   void nextOrJoin() {

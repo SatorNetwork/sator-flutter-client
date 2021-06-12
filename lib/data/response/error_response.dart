@@ -4,5 +4,5 @@ class ErrorResponse {
   const ErrorResponse(this.error);
 
   factory ErrorResponse.fromJson(Map json) =>
-      ErrorResponse(json['error'] as String);
+      ErrorResponse(json['error'] == null ? '' : json['error']);
 }

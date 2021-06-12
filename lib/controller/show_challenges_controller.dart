@@ -9,7 +9,7 @@ class ShowChallengesController extends GetxController
     with SingleGetTickerProviderMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
-  Show show;
+  late Show show;
 
   final Rx<List<ChallengeSimple>> showChallengesRx = Rx([]);
 
@@ -23,7 +23,7 @@ class ShowChallengesController extends GetxController
         .showChallenges(show.id)
         .then((List<ChallengeSimple> showChallenges) {
       showChallengesRx.update((value) {
-        value.addAll(showChallenges);
+        if (value != null) value.addAll(showChallenges);
       });
     });
   }

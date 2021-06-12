@@ -92,9 +92,7 @@ class ChallengePage extends GetView<ChallengeController> {
                   SizedBox(height: 48),
                   Obx(
                     () => Text(
-                      controller.challengeRx.value == null
-                          ? ''
-                          : controller.challengeRx.value.title,
+                      controller.challengeRx.value?.title ?? '',
                       style: TextStyle(
                         color: SatorioColor.darkAccent,
                         fontSize: 32.0,
@@ -105,9 +103,7 @@ class ChallengePage extends GetView<ChallengeController> {
                   SizedBox(height: 8),
                   Obx(
                     () => Text(
-                      controller.challengeRx.value == null
-                          ? ''
-                          : controller.challengeRx.value.description,
+                      controller.challengeRx.value?.description ?? '',
                       style: TextStyle(
                         color: SatorioColor.manatee,
                         fontSize: 15.0,
@@ -129,9 +125,7 @@ class ChallengePage extends GetView<ChallengeController> {
                       Expanded(
                         child: Obx(
                           () => Text(
-                            controller.challengeRx.value == null
-                                ? ''
-                                : controller.challengeRx.value.prizePool,
+                            controller.challengeRx.value?.prizePool ?? '',
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               color: SatorioColor.textBlack,
@@ -158,9 +152,10 @@ class ChallengePage extends GetView<ChallengeController> {
                         child: Obx(
                           () => Text(
                             controller.challengeRx.value == null ||
-                                    controller.challengeRx.value.winners.isEmpty
+                                    controller
+                                        .challengeRx.value!.winners.isEmpty
                                 ? '--'
-                                : controller.challengeRx.value.winners,
+                                : controller.challengeRx.value!.winners,
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               color: SatorioColor.textBlack,
@@ -188,7 +183,7 @@ class ChallengePage extends GetView<ChallengeController> {
                           () => Text(
                             controller.challengeRx.value == null
                                 ? ''
-                                : '${0} / ${controller.challengeRx.value.players}',
+                                : '${0} / ${controller.challengeRx.value!.players}',
                             textAlign: TextAlign.end,
                             style: TextStyle(
                               color: SatorioColor.textBlack,

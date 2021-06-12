@@ -35,8 +35,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   ApiDataSourceImpl(this._authDataSource) {
     _getConnect.baseUrl = 'https://sator-api-stage-93k39.ondigitalocean.app/';
 
-    _getConnect.httpClient.addRequestModifier((request) {
-      String token = _authDataSource.getAuthToken();
+    _getConnect.httpClient.addRequestModifier<Object?>((request) {
+      String? token = _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';
       return request;
@@ -45,10 +45,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   Future<Response> _requestGet(
     String path, {
-    Map<String, dynamic> headers,
-    Map<String, dynamic> query,
+    Map<String, dynamic>? query,
   }) async {
-    return await _getConnect.get(path, query: query, headers: headers).then(
+    return await _getConnect.get(path, query: query).then(
           (Response response) => _processResponse(response),
         );
   }
@@ -56,12 +55,9 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<Response> _requestPost(
     String path,
     ToJsonInterface request, {
-    Map<String, dynamic> headers,
-    Map<String, dynamic> query,
+    Map<String, dynamic>? query,
   }) async {
-    return await _getConnect
-        .post(path, request.toJson(), query: query, headers: headers)
-        .then(
+    return await _getConnect.post(path, request.toJson(), query: query).then(
           (Response response) => _processResponse(response),
         );
   }
@@ -69,30 +65,28 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<Response> _requestPatch(
     String path,
     ToJsonInterface request, {
-    Map<String, dynamic> headers,
-    Map<String, dynamic> query,
+    Map<String, dynamic>? query,
   }) async {
-    return await _getConnect
-        .patch(path, request.toJson(), query: query, headers: headers)
-        .then(
+    return await _getConnect.patch(path, request.toJson(), query: query).then(
           (Response response) => _processResponse(response),
         );
   }
 
   Future<Response> _requestDelete(
     String path, {
-    Map<String, dynamic> headers,
-    Map<String, dynamic> query,
+    Map<String, dynamic>? query,
   }) async {
-    return await _getConnect.delete(path, query: query, headers: headers).then(
+    return await _getConnect.delete(path, query: query).then(
           (Response response) => _processResponse(response),
         );
   }
 
-  Future<void> _sendViaSocket(GetSocket socket, ToJsonInterface data) async {
-    String jsonData = json.encode(data.toJson());
-    print('onSend $jsonData');
-    socket.send(jsonData);
+  Future<void> _sendViaSocket(GetSocket? socket, ToJsonInterface data) async {
+    if (socket != null) {
+      String jsonData = json.encode(data.toJson());
+      print('onSend $jsonData');
+      socket.send(jsonData);
+    }
     return;
   }
 
@@ -101,7 +95,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       request: response.request,
       statusCode: response.statusCode,
       bodyBytes: response.bodyBytes,
-      bodyString: utf8.decode(response.bodyString.runes.toList()),
+      bodyString: utf8.decode(response.bodyString!.runes.toList()),
       statusText: response.statusText,
       headers: response.headers,
       body: response.body,
@@ -110,7 +104,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     print('--------');
 
     print(
-        '${utf8Response.request.method.toUpperCase()} ${utf8Response.request.url} ${utf8Response.statusCode}');
+        '${utf8Response.request!.method.toUpperCase()} ${utf8Response.request!.url} ${utf8Response.statusCode}');
 
     print('${utf8Response.bodyString}');
     print('--------');
@@ -120,19 +114,16 @@ class ApiDataSourceImpl implements ApiDataSource {
         case 422:
           ErrorValidationResponse errorValidationResponse =
               ErrorValidationResponse.fromJson(
-                  json.decode(utf8Response.bodyString));
+                  json.decode(utf8Response.bodyString!));
           throw ApiValidationException(errorValidationResponse.validation);
-          break;
         case 401:
           ErrorResponse errorResponse =
-              ErrorResponse.fromJson(json.decode(utf8Response.bodyString));
+              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
           throw ApiUnauthorizedException(errorResponse.error);
-          break;
         default:
           ErrorResponse errorResponse =
-              ErrorResponse.fromJson(json.decode(utf8Response.bodyString));
+              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
           throw ApiErrorException(errorResponse.error);
-          break;
       }
     }
 
@@ -141,7 +132,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> isTokenExist() async {
-    String token = _authDataSource.getAuthToken();
+    String? token = _authDataSource.getAuthToken();
     return token != null && token.isNotEmpty;
   }
 
@@ -152,9 +143,9 @@ class ApiDataSourceImpl implements ApiDataSource {
       SignInRequest(email, password),
     ).then((Response response) {
       String token =
-          AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
+          AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
-      return token != null && token.isNotEmpty;
+      return token.isNotEmpty;
     });
   }
 
@@ -165,9 +156,9 @@ class ApiDataSourceImpl implements ApiDataSource {
       SignUpRequest(email, password, username),
     ).then((Response response) {
       String token =
-          AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
+          AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
-      return token != null && token.isNotEmpty;
+      return token.isNotEmpty;
     });
   }
 
@@ -178,9 +169,9 @@ class ApiDataSourceImpl implements ApiDataSource {
       EmptyRequest(),
     ).then((Response response) {
       String token =
-          AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
+          AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
-      return token != null && token.isNotEmpty;
+      return token.isNotEmpty;
     });
   }
 
@@ -190,7 +181,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'auth/forgot-password',
       ForgotPasswordRequest(email),
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString)).result;
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
@@ -200,7 +191,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'auth/validate-reset-password-code',
       ValidateResetPasswordCodeRequest(email, code),
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString)).result;
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
@@ -210,7 +201,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'auth/reset-password',
       ResetPasswordRequest(email, code, newPassword),
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString)).result;
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
@@ -219,7 +210,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestGet(
       'profile',
     ).then((Response response) {
-      return ProfileModel.fromJson(json.decode(response.bodyString)['data']);
+      return ProfileModel.fromJson(json.decode(response.bodyString!)['data']);
     });
   }
 
@@ -228,7 +219,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestGet(
       'wallet/balance',
     ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString);
+      Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
             .map((element) => AmountCurrencyModel.fromJson(element))
@@ -239,8 +230,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ShowModel>> shows({int page}) {
-    Map<String, String> query;
+  Future<List<ShowModel>> shows({int? page}) {
+    Map<String, String>? query;
     if (page != null) {
       query = {};
       query['page'] = page.toString();
@@ -250,7 +241,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'shows',
       query: query,
     ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString);
+      Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
             .map((element) => ShowModel.fromJson(element))
@@ -261,8 +252,9 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int page}) {
-    Map<String, String> query;
+  Future<List<ChallengeSimpleModel>> showChallenges(String showId,
+      {int? page}) {
+    Map<String, String>? query;
     if (page != null) {
       query = {};
       query['page'] = page.toString();
@@ -272,7 +264,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'shows/$showId/challenges',
       query: query,
     ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString);
+      Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
             .map((element) => ChallengeSimpleModel.fromJson(element))
@@ -287,7 +279,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestGet(
       'challenges/$challengeId',
     ).then((Response response) {
-      return ChallengeModel.fromJson(json.decode(response.bodyString)['data']);
+      return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
     });
   }
 
@@ -303,7 +295,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'quiz/$challengeId/play',
     ).then((Response response) {
       return SocketUrlResponse.fromJson(
-              json.decode(response.bodyString)['data'])
+              json.decode(response.bodyString!)['data'])
           .playUrl;
     });
   }
@@ -315,7 +307,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<void> sendAnswer(
-    GetSocket socket,
+    GetSocket? socket,
     String questionId,
     String answerId,
   ) async {
@@ -334,7 +326,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       'rewards/claim',
     ).then((Response response) {
       return ClaimRewardModel.fromJson(
-          json.decode(response.bodyString)['data']);
+          json.decode(response.bodyString!)['data']);
     });
   }
 }

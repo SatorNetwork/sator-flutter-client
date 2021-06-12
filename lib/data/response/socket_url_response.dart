@@ -4,5 +4,5 @@ class SocketUrlResponse {
   const SocketUrlResponse(this.playUrl);
 
   factory SocketUrlResponse.fromJson(Map json) =>
-      SocketUrlResponse(json['play_url'] as String);
+      SocketUrlResponse(json['play_url'] == null ? '' : json['play_url']);
 }

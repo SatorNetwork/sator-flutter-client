@@ -32,7 +32,8 @@ abstract class SatorioRepository {
 
   Future<GetSocket> createSocket(String challengeId);
 
-  Future<void> sendAnswer(GetSocket socket, String questionId, String answerId);
+  Future<void> sendAnswer(
+      GetSocket? socket, String questionId, String answerId);
 
   Future<ClaimReward> claimReward();
 
