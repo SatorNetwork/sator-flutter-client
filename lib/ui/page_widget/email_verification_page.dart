@@ -61,6 +61,7 @@ class EmailVerificationPage extends GetView<CreateAccountController> {
                 PinCodeTextField(
                   appContext: context,
                   length: 5,
+                  autoFocus: true,
                   obscureText: false,
                   animationType: AnimationType.fade,
                   keyboardType: TextInputType.number,
@@ -83,15 +84,17 @@ class EmailVerificationPage extends GetView<CreateAccountController> {
                   controller: controller.verificationCodeController,
                   onCompleted: (v) {
                     print("Completed");
+                    controller.verifyAccount();
                   },
                   onChanged: (value) {
-                    print(value);
+                    controller.otp = value;
+                    print(controller.otp);
                   },
                   beforeTextPaste: (text) {
                     print("Allowing to paste $text");
                     return true;
                   },
-                )
+                ),
               ],
             ),
           ),
