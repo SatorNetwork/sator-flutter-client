@@ -1,3 +1,5 @@
+[![Codemagic build status](https://api.codemagic.io/apps/60bf40c63fc15a28ae6fc0be/60bf40c63fc15a28ae6fc0bd/status_badge.svg)](https://codemagic.io/apps/60bf40c63fc15a28ae6fc0be/60bf40c63fc15a28ae6fc0bd/latest_build)
+
 # satorio
 
 Sator mobile client
