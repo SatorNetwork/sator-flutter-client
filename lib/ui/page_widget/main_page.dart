@@ -4,6 +4,7 @@ import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
 import 'package:satorio/ui/page_widget/shows_page.dart';
 import 'package:satorio/ui/page_widget/some_page.dart';
+import 'package:satorio/ui/page_widget/wallet_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 
@@ -65,6 +66,6 @@ class MainPage extends GetView<MainController> {
     ShowsPage(),
     SomePage(),
     SomePage(),
-    SomePage()
+    WalletPage(),
   ];
 }

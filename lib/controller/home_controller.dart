@@ -12,7 +12,6 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
-  late TabController tabController;
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
@@ -23,7 +22,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   late ValueListenable<Box<AmountCurrency>> walletListenable;
 
   HomeController() {
-    this.tabController = TabController(length: 2, vsync: this);
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
@@ -34,8 +32,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     super.onInit();
-    _loadProfile();
-    _loadWallet();
     _loadShows();
 
     profileListenable.addListener(_profileListener);
@@ -47,14 +43,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     profileListenable.removeListener(_profileListener);
     walletListenable.removeListener(_walletListener);
     super.onClose();
-  }
-
-  void _loadProfile() {
-    _satorioRepository.updateProfile();
-  }
-
-  void _loadWallet() {
-    _satorioRepository.updateWallet();
   }
 
   void _loadShows() {

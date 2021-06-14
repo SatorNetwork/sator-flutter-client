@@ -57,4 +57,6 @@ const Map<String, String> en = {
   'txt_claim_rewards': 'Claim rewards',
   'txt_congrats': 'Congratulations',
   'txt_congrats_msg': 'You have won, and been awarded',
+  'txt_send': 'Send',
+  'txt_receive': 'Receive',
 };
