@@ -44,7 +44,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
     )
         .then((isSuccess) {
       if (isSuccess) {
-        Get.off(() => EmailVerificationPage(), binding: CreateAccountBinding());
+        Get.to(() => EmailVerificationPage(), binding: CreateAccountBinding());
       }
     }).catchError((value) => handleValidationException(value));
   }
