@@ -44,37 +44,60 @@ class HomePage extends GetView<HomeController> {
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                      margin: const EdgeInsets.only(top: 67, right: 20),
-                      width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 5,
-                          color: Colors.white.withOpacity(0.12),
-                        ),
-                      ),
-                      child: Center(
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: SatorioColor.casablanca,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '#1',
-                              style: TextStyle(
-                                color: SatorioColor.raw_umber,
-                                fontSize: 21.0,
-                                fontWeight: FontWeight.w700,
+                        margin: const EdgeInsets.only(top: 57, right: 20),
+                        width: 100,
+                        height: 80,
+                        child: Stack(
+                          alignment: Alignment.centerRight,
+                          children: [
+                            Positioned(
+                                child: Image.asset('images/home_circle.png')),
+                            Positioned(
+                                right: 10,
+                                child: Image.asset('images/home_circle.png')),
+                            Positioned(
+                              right: 20,
+                              child: Center(
+                                child: Container(
+                                  width: 54,
+                                  height: 54,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: SatorioColor.inputGrey,
+                                    border: Border.all(
+                                      width: 5,
+                                      color: Colors.white.withOpacity(0.12),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      '#1',
+                                      style: TextStyle(
+                                        color: SatorioColor.darkAccent,
+                                        fontSize: 21.0,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
+                            Positioned(
+                                right: 56,
+                                bottom: 48,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Container(
+                                    height: 28.0,
+                                    width: 28.0,
+                                    child: Image.asset(
+                                      'images/new/avatar_1.png',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ))
+                          ],
+                        )),
                   ),
                 ],
               ),
@@ -179,13 +202,25 @@ class HomePage extends GetView<HomeController> {
                         String assetName;
                         switch (index) {
                           case 0:
-                            assetName = 'images/new/badge1.png';
+                            assetName = 'badge_1';
                             break;
                           case 1:
-                            assetName = 'images/new/badge2.png';
+                            assetName = 'badge_2';
+                            break;
+                          case 2:
+                            assetName = 'badge_3';
+                            break;
+                          case 3:
+                            assetName = 'badge_4';
+                            break;
+                          case 4:
+                            assetName = 'badge_5';
+                            break;
+                          case 5:
+                            assetName = 'badge_6';
                             break;
                           default:
-                            assetName = 'images/new/badge3.png';
+                            assetName = 'badge_closed';
                             break;
                         }
                         return _badgeItem(assetName, index);
@@ -268,24 +303,37 @@ class HomePage extends GetView<HomeController> {
                       ),
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: 3,
+                      itemCount: 5,
                       itemBuilder: (context, index) {
                         String img;
+                        String name;
                         switch (index) {
                           case 0:
-                            img =
-                                'https://fanart.tv/fanart/tv/277165/tvthumb/silicon-valley-5915a9878d077.jpg';
+                            img = 'nfts_1';
+                            name = "Game of Thrones";
                             break;
                           case 1:
-                            img =
-                                'https://slpecho.com/wp-content/uploads/2019/10/friends-art-for-web-900x640.jpg';
+                            img = 'nfts_4';
+                            name = "Sopranos";
+                            break;
+                          case 2:
+                            img = 'nfts_5';
+                            name = "Simpsons";
+                            break;
+                          case 3:
+                            img = 'nfts_2';
+                            name = "Breaking Bad";
+                            break;
+                          case 4:
+                            img = 'nfts_3';
+                            name = "Batman and Robin";
                             break;
                           default:
-                            img =
-                                'https://btcmanager.com/wp-content/uploads/2018/05/Someone-Made-That-Silicon-Valley-Alert-That-Plays-Death-Metal-Whenever-Bitcoin-Price-Moves.jpg';
+                            img = 'nfts_5';
+                            name = "Simpsons";
                             break;
                         }
-                        return _nftsItem(img);
+                        return _nftsItem(img, name);
                       },
                     ),
                   ),
@@ -310,39 +358,10 @@ class HomePage extends GetView<HomeController> {
         color: SatorioColor.alice_blue,
       ),
       child: Center(
-        child: ColorFiltered(
-          colorFilter: index < 2
-              ? ColorFilter.mode(
-                  Colors.transparent,
-                  BlendMode.multiply,
-                )
-              : ColorFilter.matrix(<double>[
-                  0.2126,
-                  0.7152,
-                  0.0722,
-                  0,
-                  0,
-                  0.2126,
-                  0.7152,
-                  0.0722,
-                  0,
-                  0,
-                  0.2126,
-                  0.7152,
-                  0.0722,
-                  0,
-                  0,
-                  0,
-                  0,
-                  0,
-                  1,
-                  0,
-                ]),
-          child: Image.asset(
-            assetName,
-            height: 60,
-            fit: BoxFit.fitHeight,
-          ),
+        child: Image.asset(
+          "images/new/$assetName.png",
+          height: 60,
+          fit: BoxFit.fitHeight,
         ),
       ),
     );
@@ -418,7 +437,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _nftsItem(String imgURL) {
+  Widget _nftsItem(String assetName, String name) {
     double width = Get.width - 20 - 32;
     double height = 168.0;
     return Container(
@@ -428,16 +447,11 @@ class HomePage extends GetView<HomeController> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image(
-              width: width,
+            child: Image.asset(
+              "images/new/$assetName.png",
               height: height,
+              width: width,
               fit: BoxFit.cover,
-              image: NetworkImage(
-                imgURL,
-              ),
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: SatorioColor.grey,
-              ),
             ),
           ),
           Align(
@@ -452,7 +466,7 @@ class HomePage extends GetView<HomeController> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Hold on for dear life',
+                      name,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20.0,
