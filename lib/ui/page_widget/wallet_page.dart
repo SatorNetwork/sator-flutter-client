@@ -238,7 +238,7 @@ class WalletPage extends GetView<WalletController> {
                 'images/sator_wallet.png',
                 height: height,
                 fit: BoxFit.cover,
-                // color: Colors.white,
+                // color: Colors.white.withOpacity(0.5),
                 // colorBlendMode: BlendMode.luminosity,
               ),
               // child: ColorFiltered(
@@ -421,4 +421,5 @@ class WalletPage extends GetView<WalletController> {
       ),
     );
   }
+
 }
