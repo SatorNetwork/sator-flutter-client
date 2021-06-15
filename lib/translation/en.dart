@@ -59,4 +59,6 @@ const Map<String, String> en = {
   'txt_congrats_msg': 'You have won, and been awarded',
   'txt_send': 'Send',
   'txt_receive': 'Receive',
+  'txt_transactions': 'Transactions',
+  'txt_transaction': 'Transaction',
 };

@@ -3,78 +3,91 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WalletPage extends GetView<WalletController> {
   static const double _separatorSize = 6.0;
   late double _viewportFraction =
       (Get.width - 2 * (8 + _separatorSize)) / Get.width;
+
   late PageController _pageController =
       PageController(viewportFraction: _viewportFraction);
+  PersistentBottomSheetController? bottomSheetController;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 64),
-                child: Center(
-                  child: Text(
-                    'txt_wallet'.tr,
-                    style: TextStyle(
-                      color: SatorioColor.darkAccent,
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w700,
-                    ),
+      body: _walletContent(),
+      bottomSheet: _transactionContent(),
+    );
+  }
+
+  Widget _walletContent() {
+    return Stack(
+      children: [
+        SvgPicture.asset(
+          'images/bg/gradient.svg',
+          height: Get.height,
+          fit: BoxFit.cover,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 64),
+              child: Center(
+                child: Text(
+                  'txt_wallet'.tr,
+                  style: TextStyle(
+                    color: SatorioColor.darkAccent,
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
-              SizedBox(
-                height: 22,
-              ),
-              Container(
-                height: 200,
-                child: PageView.builder(
-                  controller: _pageController,
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return _walletItem();
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              SmoothPageIndicator(
+            ),
+            SizedBox(
+              height: 22,
+            ),
+            Container(
+              height: 200,
+              child: PageView.builder(
                 controller: _pageController,
-                count: 3,
-                effect: WormEffect(
-                  dotHeight: 8,
-                  dotWidth: 8,
-                  activeDotColor: SatorioColor.darkAccent,
-                  dotColor: SatorioColor.darkAccent.withOpacity(0.5),
-                ),
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return _walletItem();
+                },
               ),
-              SizedBox(
-                height: 24,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            SmoothPageIndicator(
+              controller: _pageController,
+              count: 3,
+              effect: WormEffect(
+                dotHeight: 8,
+                dotWidth: 8,
+                activeDotColor: SatorioColor.darkAccent,
+                dotColor: SatorioColor.darkAccent.withOpacity(0.5),
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () {
+                    controller.send();
+                  },
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -107,10 +120,15 @@ class WalletPage extends GetView<WalletController> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    width: 50,
-                  ),
-                  Column(
+                ),
+                SizedBox(
+                  width: 50,
+                ),
+                InkWell(
+                  onTap: () {
+                    controller.receive();
+                  },
+                  child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -143,11 +161,59 @@ class WalletPage extends GetView<WalletController> {
                       ),
                     ],
                   ),
-                ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _transactionContent() {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.3,
+      minChildSize: 0.3,
+      expand: false,
+      builder: (context, scrollController) => SingleChildScrollView(
+        controller: scrollController,
+        child: Container(
+          width: Get.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 28,
+                  bottom: 12,
+                  left: 20,
+                  right: 20,
+                ),
+                child: Text(
+                  'txt_transactions'.tr,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Obx(
+                () => ListView.separated(
+                  shrinkWrap: true,
+                  physics: ScrollPhysics(),
+                  separatorBuilder: (context, index) => Divider(
+                    height: 1,
+                  ),
+                  itemCount: controller.transactionsRx.value.length,
+                  itemBuilder: (context, index) {
+                    return _transactionItem();
+                  },
+                ),
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -164,6 +230,36 @@ class WalletPage extends GetView<WalletController> {
       ),
       child: Stack(
         children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'images/sator_wallet.png',
+                height: height,
+                fit: BoxFit.cover,
+                // color: Colors.white,
+                // colorBlendMode: BlendMode.luminosity,
+              ),
+              // child: ColorFiltered(
+              //   colorFilter: ColorFilter.mode(
+              //     Colors.white,
+              //     BlendMode.luminosity,
+              //   ),
+              //   // colorFilter: ColorFilter.matrix(<double>[
+              //   //   0.2126, 0.7152, 0.0722, 0, 0,
+              //   //   0.2126, 0.7152, 0.0722, 0, 0,
+              //   //   0.2126, 0.7152, 0.0722, 0, 0,
+              //   //   0, 0, 0, 1, 0,
+              //   // ]),
+              //   child: Image.asset(
+              //     'images/sator_wallet.png',
+              //     height: height,
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+            ),
+          ),
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
@@ -260,6 +356,66 @@ class WalletPage extends GetView<WalletController> {
                 ),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _transactionItem() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      height: 63,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                'txt_transaction'.tr,
+                style: TextStyle(
+                  color: SatorioColor.textBlack,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  '+24.00',
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    color: SatorioColor.success,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 4,
+          ),
+          Row(
+            children: [
+              Text(
+                '3P4Q3E---------4QWSSA'.ellipsize(),
+                style: TextStyle(
+                  color: Colors.black.withOpacity(0.5),
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  'April 28, 2021',
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.5),
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
