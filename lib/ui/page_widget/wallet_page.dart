@@ -13,7 +13,6 @@ class WalletPage extends GetView<WalletController> {
 
   late PageController _pageController =
       PageController(viewportFraction: _viewportFraction);
-  PersistentBottomSheetController? bottomSheetController;
 
   @override
   Widget build(BuildContext context) {
@@ -208,7 +207,8 @@ class WalletPage extends GetView<WalletController> {
                   ),
                   itemCount: controller.transactionsRx.value.length,
                   itemBuilder: (context, index) {
-                    return _transactionItem();
+                    double value = controller.transactionsRx.value[index];
+                    return _transactionItem(value);
                   },
                 ),
               ),
@@ -363,7 +363,7 @@ class WalletPage extends GetView<WalletController> {
     );
   }
 
-  Widget _transactionItem() {
+  Widget _transactionItem(double value) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       height: 63,
@@ -381,10 +381,11 @@ class WalletPage extends GetView<WalletController> {
               ),
               Expanded(
                 child: Text(
-                  '+24.00',
+                  value >= 0 ? '+$value' : '$value',
                   textAlign: TextAlign.end,
                   style: TextStyle(
-                    color: SatorioColor.success,
+                    color:
+                        value >= 0 ? SatorioColor.success : SatorioColor.error,
                     fontSize: 14.0,
                     fontWeight: FontWeight.w600,
                   ),

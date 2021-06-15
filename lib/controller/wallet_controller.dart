@@ -1,8 +1,20 @@
 import 'package:get/get.dart';
 
 class WalletController extends GetxController {
-  Rx<List<String>> transactionsRx =
-      Rx(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']);
+  Rx<List<double>> transactionsRx = Rx([
+    124.0,
+    -24.0,
+    -35.0,
+    249.52,
+    1998254.39,
+    1198254.39,
+    -19254.39,
+    19655.39,
+    1189.39,
+    24.0,
+    -24.0,
+    -12.12
+  ]);
 
   void send() {}
 
