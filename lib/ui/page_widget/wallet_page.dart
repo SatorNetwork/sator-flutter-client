@@ -174,6 +174,7 @@ class WalletPage extends GetView<WalletController> {
     return DraggableScrollableSheet(
       initialChildSize: 0.3,
       minChildSize: 0.3,
+      maxChildSize: (Get.height - Get.mediaQuery.padding.top - 1) / Get.height,
       expand: false,
       builder: (context, scrollController) => SingleChildScrollView(
         controller: scrollController,
@@ -421,5 +422,4 @@ class WalletPage extends GetView<WalletController> {
       ),
     );
   }
-
 }
