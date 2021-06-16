@@ -17,11 +17,15 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/request/empty_request.dart';
+import 'package:satorio/data/request/forgot_password_request.dart';
+import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
+import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
+import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
@@ -177,6 +181,36 @@ class ApiDataSourceImpl implements ApiDataSource {
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
       _authDataSource.storeAuthToken(token);
       return token != null && token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> forgotPassword(String email) {
+    return _requestPost(
+      'auth/forgot-password',
+      ForgotPasswordRequest(email),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString)).result;
+    });
+  }
+
+  @override
+  Future<bool> validateResetPasswordCode(String email, String code) {
+    return _requestPost(
+      'auth/validate-reset-password-code',
+      ValidateResetPasswordCodeRequest(email, code),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString)).result;
+    });
+  }
+
+  @override
+  Future<bool> resetPassword(String email, String code, String newPassword) {
+    return _requestPost(
+      'auth/reset-password',
+      ResetPasswordRequest(email, code, newPassword),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString)).result;
     });
   }
 

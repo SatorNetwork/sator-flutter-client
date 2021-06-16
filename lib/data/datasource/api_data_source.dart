@@ -15,6 +15,12 @@ abstract class ApiDataSource {
 
   Future<bool> refreshToken();
 
+  Future<bool> forgotPassword(String email);
+
+  Future<bool> validateResetPasswordCode(String email, String code);
+
+  Future<bool> resetPassword(String email, String code, String newPassword);
+
   Future<ProfileModel> profile();
 
   Future<List<AmountCurrencyModel>> wallet();
