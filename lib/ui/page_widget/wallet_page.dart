@@ -8,10 +8,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WalletPage extends GetView<WalletController> {
   static const double _separatorSize = 6.0;
-  late double _viewportFraction =
+  late final double _viewportFraction =
       (Get.width - 2 * (8 + _separatorSize)) / Get.width;
 
-  late PageController _pageController =
+  late final PageController _pageController =
       PageController(viewportFraction: _viewportFraction);
 
   @override
@@ -170,10 +170,15 @@ class WalletPage extends GetView<WalletController> {
   }
 
   Widget _transactionContent() {
+    final double minSize =
+        (Get.height - 453 - kBottomNavigationBarHeight) / Get.height;
+    final double maxSize =
+        (Get.height - Get.mediaQuery.padding.top) / Get.height;
+
     return DraggableScrollableSheet(
-      initialChildSize: 0.3,
-      minChildSize: 0.3,
-      maxChildSize: (Get.height - Get.mediaQuery.padding.top - 1) / Get.height,
+      initialChildSize: minSize,
+      minChildSize: minSize,
+      maxChildSize: maxSize,
       expand: false,
       builder: (context, scrollController) => SingleChildScrollView(
         controller: scrollController,
@@ -339,25 +344,25 @@ class WalletPage extends GetView<WalletController> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 30, left: 24),
-              padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                color: Colors.white.withOpacity(0.25),
-              ),
-              child: Text(
-                '2,525.59 Rewards',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.bottomLeft,
+          //   child: Container(
+          //     margin: const EdgeInsets.only(bottom: 30, left: 24),
+          //     padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+          //     decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(35),
+          //       color: Colors.white.withOpacity(0.25),
+          //     ),
+          //     child: Text(
+          //       '2,525.59 Rewards',
+          //       style: TextStyle(
+          //         color: Colors.white,
+          //         fontSize: 12.0,
+          //         fontWeight: FontWeight.w500,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
