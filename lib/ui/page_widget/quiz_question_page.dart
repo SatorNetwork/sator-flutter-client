@@ -138,19 +138,6 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Obx(
-                    () => ElevatedGradientButton(
-                      text: 'txt_next'.tr,
-                      isEnabled: controller.answerIdRx.value.isNotEmpty &&
-                          !controller.isAnswerSentRx.value,
-                      onPressed: () {
-                        controller.sendAnswer();
-                      },
-                    ),
-                  ),
                 ],
               ),
             ),
