@@ -13,6 +13,8 @@ abstract class ApiDataSource {
 
   Future<bool> signUp(String email, String password, String username);
 
+  Future<bool> verifyAccount(String otp);
+
   Future<bool> refreshToken();
 
   Future<bool> forgotPassword(String email);
