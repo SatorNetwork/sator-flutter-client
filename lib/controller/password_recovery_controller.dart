@@ -43,7 +43,12 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
           () => ForgotPasswordResetPage(),
           binding: PasswordRecoveryBinding(),
         );
+      } else {
+        codeController.clear();
       }
+    }).catchError((value) {
+      codeController.clear();
+      handleValidationException(value);
     });
   }
 

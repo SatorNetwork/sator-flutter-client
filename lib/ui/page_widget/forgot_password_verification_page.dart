@@ -63,6 +63,7 @@ class ForgotPasswordVerificationPage
               PinCodeTextField(
                 appContext: context,
                 length: 5,
+                autoFocus: true,
                 obscureText: false,
                 animationType: AnimationType.fade,
                 keyboardType: TextInputType.number,

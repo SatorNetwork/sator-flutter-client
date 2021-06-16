@@ -13,10 +13,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
-  final TextEditingController verificationCodeController =
-      TextEditingController();
-
-  String otp = "";
+  final TextEditingController codeController = TextEditingController();
 
   final RxBool termsOfServiceCheck = false.obs;
   final RxBool passwordObscured = true.obs;
@@ -52,12 +49,17 @@ class CreateAccountController extends GetxController with ValidationMixin {
   void verifyAccount() {
     _satorioRepository
         .verifyAccount(
-      otp,
+      codeController.text,
     )
         .then((isSuccess) {
       if (isSuccess) {
         Get.offAll(() => MainPage(), binding: MainBinding());
+      } else {
+        codeController.clear();
       }
-    }).catchError((value) => handleValidationException(value));
+    }).catchError((value) {
+      codeController.clear();
+      handleValidationException(value);
+    });
   }
 }

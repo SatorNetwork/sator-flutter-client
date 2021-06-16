@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 
 class EmailVerificationPage extends GetView<CreateAccountController> {
   @override
@@ -81,19 +81,12 @@ class EmailVerificationPage extends GetView<CreateAccountController> {
                   animationDuration: Duration(milliseconds: 300),
                   backgroundColor: Colors.transparent,
                   enableActiveFill: true,
-                  controller: controller.verificationCodeController,
+                  controller: controller.codeController,
                   onCompleted: (v) {
-                    print("Completed");
                     controller.verifyAccount();
                   },
-                  onChanged: (value) {
-                    controller.otp = value;
-                    print(controller.otp);
-                  },
-                  beforeTextPaste: (text) {
-                    print("Allowing to paste $text");
-                    return true;
-                  },
+                  onChanged: (value) {},
+                  beforeTextPaste: (text) => true,
                 ),
               ],
             ),
