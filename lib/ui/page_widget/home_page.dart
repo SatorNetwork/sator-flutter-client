@@ -53,7 +53,7 @@ class HomePage extends GetView<HomeController> {
                         shape: BoxShape.circle,
                         border: Border.all(
                           width: 5,
-                          color: Colors.white,
+                          color: Colors.white.withOpacity(0.12),
                         ),
                       ),
                       child: Center(
