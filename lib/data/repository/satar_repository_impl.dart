@@ -69,9 +69,23 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .catchError((value) => _handleException(value));
   }
 
-  Future<bool> verifyAccount(String otp) {
+  Future<bool> verifyAccount(String code) {
     return _apiDataSource
-        .verifyAccount(otp)
+        .verifyAccount(code)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> isVerified() {
+    return _apiDataSource
+        .isVerified()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> resendCode() {
+    return _apiDataSource
+        .resendCode()
         .catchError((value) => _handleException(value));
   }
 

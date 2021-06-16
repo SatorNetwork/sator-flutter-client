@@ -12,7 +12,11 @@ abstract class SatorioRepository {
 
   Future<bool> signUp(String email, String password, String username);
 
-  Future<bool> verifyAccount(String otp);
+  Future<bool> verifyAccount(String code);
+
+  Future<bool> isVerified();
+
+  Future<bool> resendCode();
 
   Future<bool> forgotPassword(String email);
 

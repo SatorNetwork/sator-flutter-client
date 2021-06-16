@@ -28,7 +28,6 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
-import 'package:satorio/data/response/verify_account_response.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -165,13 +164,32 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> verifyAccount(String otp) {
+  Future<bool> verifyAccount(String code) {
     return _requestPost(
       'auth/verify-account',
-      VerifyAccountRequest(otp),
+      VerifyAccountRequest(code),
     ).then((Response response) {
-      return VerifyAccountResponse.fromJson(json.decode(response.bodyString!))
-          .isVerify;
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> isVerified() {
+    return _requestPost(
+      'auth/is-verified',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> resendCode() {
+    return _requestPost(
+      'auth/resend-otp',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
