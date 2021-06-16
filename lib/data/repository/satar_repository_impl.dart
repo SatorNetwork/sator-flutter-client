@@ -12,6 +12,7 @@ import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
@@ -24,7 +25,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   _handleException(Exception exception) {
     if (exception is ApiErrorException) {
-      Get.snackbar('txt_oops'.tr, exception.errorMessage);
+      Get.dialog(
+        DefaultDialog(
+          'txt_oops'.tr,
+          exception.errorMessage,
+          'txt_ok'.tr,
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      );
     } else if (exception is ApiUnauthorizedException) {
       logout();
       Get.snackbar('txt_oops'.tr, exception.errorMessage);
