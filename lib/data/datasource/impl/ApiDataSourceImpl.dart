@@ -21,12 +21,14 @@ import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
+import 'package:satorio/data/request/verify_account_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
+import 'package:satorio/data/response/verify_account_response.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -168,6 +170,16 @@ class ApiDataSourceImpl implements ApiDataSource {
           AuthResponse.fromJson(json.decode(response.bodyString)).accessToken;
       _authDataSource.storeAuthToken(token);
       return token != null && token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> verifyAccount(String otp) {
+    return _requestPost(
+      'auth/verify-account',
+      VerifyAccountRequest(otp),
+    ).then((Response response) {
+      return VerifyAccountResponse.fromJson(json.decode(response.bodyString)).isVerify;
     });
   }
 
