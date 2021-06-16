@@ -46,60 +46,37 @@ class HomePage extends GetView<HomeController> {
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                        margin: const EdgeInsets.only(top: 57, right: 20),
-                        width: 100,
-                        height: 80,
-                        child: Stack(
-                          alignment: Alignment.centerRight,
-                          children: [
-                            Positioned(
-                                child: Image.asset('images/home_circle.png')),
-                            Positioned(
-                                right: 10,
-                                child: Image.asset('images/home_circle.png')),
-                            Positioned(
-                              right: 20,
-                              child: Center(
-                                child: Container(
-                                  width: 54,
-                                  height: 54,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: SatorioColor.inputGrey,
-                                    border: Border.all(
-                                      width: 5,
-                                      color: Colors.white.withOpacity(0.12),
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '#1',
-                                      style: TextStyle(
-                                        color: SatorioColor.darkAccent,
-                                        fontSize: 21.0,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                      margin: const EdgeInsets.only(top: 67, right: 20),
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          width: 5,
+                          color: Colors.white,
+                        ),
+                      ),
+                      child: Center(
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: SatorioColor.casablanca,
+                          ),
+                          child: Center(
+                            child: ClipOval(
+                              child: Image.asset(
+                                'images/new/avatar_1.png',
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.fitWidth,
                               ),
                             ),
-                            Positioned(
-                                right: 56,
-                                bottom: 48,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Container(
-                                    height: 28.0,
-                                    width: 28.0,
-                                    child: Image.asset(
-                                      'images/new/avatar_1.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ))
-                          ],
-                        )),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
