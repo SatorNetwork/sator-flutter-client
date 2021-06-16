@@ -2,9 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
+import 'package:satorio/binding/password_recovery_binding.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
+import 'package:satorio/ui/page_widget/forgot_password_page.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
 
 class LoginController extends GetxController with ValidationMixin {
@@ -17,6 +19,10 @@ class LoginController extends GetxController with ValidationMixin {
 
   void toCreateAccount() {
     Get.off(() => CreateAccountPage(), binding: CreateAccountBinding());
+  }
+
+  void toForgotPassword() {
+    Get.to(() => ForgotPasswordPage(), binding: PasswordRecoveryBinding());
   }
 
   void signIn() {
