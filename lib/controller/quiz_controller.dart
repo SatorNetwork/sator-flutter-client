@@ -20,8 +20,8 @@ import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart'
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 class QuizController extends GetxController {
-  Challenge challenge;
-  GetSocket _socket;
+  late Challenge challenge;
+  GetSocket? _socket;
 
   final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
 
@@ -30,7 +30,7 @@ class QuizController extends GetxController {
   @override
   void onClose() {
     if (_socket != null) {
-      _socket.close();
+      _socket!.close();
       _socket = null;
     }
     super.onClose();
@@ -58,52 +58,56 @@ class QuizController extends GetxController {
   void _initSocket(String challengeId) async {
     _socket = await _satorioRepository.createSocket(challengeId);
 
-    _socket.onOpen(() {
-      print('Socket onOpen ${_socket.url}');
+    _socket?.onOpen(() {
+      print('Socket onOpen ${_socket?.url}');
     });
-    _socket.onClose((close) {
+    _socket?.onClose((close) {
       print('Socket onClose $close');
     });
-    _socket.onError((e) {
+    _socket?.onError((e) {
       print('Socket onError $e');
     });
-    _socket.onMessage((data) {
+    _socket?.onMessage((data) {
       print('onMessage $data');
       if (data is String) {
         SocketMessage socketMessage =
             SocketMessageModelFactory.createSocketMessage(json.decode(data));
         switch (socketMessage.type) {
           case Type.player_connected:
-            _handlePayloadUser(socketMessage.payload, true);
+            _handlePayloadUser(socketMessage.payload as PayloadUser, true);
             break;
           case Type.player_disconnected:
-            _handlePayloadUser(socketMessage.payload, false);
+            _handlePayloadUser(socketMessage.payload as PayloadUser, false);
             break;
           case Type.countdown:
-            _handlePayloadCountdown(socketMessage.payload);
+            _handlePayloadCountdown(socketMessage.payload as PayloadCountdown);
             break;
           case Type.question:
-            _handlePayloadQuestion(socketMessage.payload);
+            _handlePayloadQuestion(socketMessage.payload as PayloadQuestion);
             break;
           case Type.question_result:
-            _handlePayloadQuestionResult(socketMessage.payload);
+            _handlePayloadQuestionResult(
+                socketMessage.payload as PayloadQuestionResult);
             break;
           case Type.challenge_result:
-            _handlePayloadChallengeResult(socketMessage.payload);
+            _handlePayloadChallengeResult(
+                socketMessage.payload as PayloadChallengeResult);
             break;
         }
       }
     });
-    _socket.connect();
+    _socket?.connect();
   }
 
   void _handlePayloadUser(PayloadUser payloadUser, bool isAdd) {
     QuizLobbyController lobbyController = Get.find();
     lobbyController.usersRx.update((value) {
-      if (isAdd)
-        value.add(payloadUser);
-      else
-        value.removeWhere((element) => element.userId == payloadUser.userId);
+      if (value != null) {
+        if (isAdd)
+          value.add(payloadUser);
+        else
+          value.removeWhere((element) => element.userId == payloadUser.userId);
+      }
     });
   }
 
@@ -117,7 +121,9 @@ class QuizController extends GetxController {
   }
 
   void _handlePayloadQuestion(PayloadQuestion payloadQuestion) {
-    if (Get.isDialogOpen || Get.isBottomSheetOpen) {
+    bool isDialogOpen = Get.isDialogOpen ?? false;
+    bool isBottomSheetOpen = Get.isBottomSheetOpen ?? false;
+    if (isDialogOpen || isBottomSheetOpen) {
       Get.back();
     }
     bool restart = true;
@@ -157,7 +163,9 @@ class QuizController extends GetxController {
   void _handlePayloadChallengeResult(
     PayloadChallengeResult payloadChallengeResult,
   ) {
-    if (Get.isDialogOpen || Get.isBottomSheetOpen) {
+    bool isDialogOpen = Get.isDialogOpen ?? false;
+    bool isBottomSheetOpen = Get.isBottomSheetOpen ?? false;
+    if (isDialogOpen || isBottomSheetOpen) {
       Get.back();
     }
     if (screenTypeRx.value == QuizScreenType.question) {

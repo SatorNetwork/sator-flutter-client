@@ -12,15 +12,15 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
-  TabController tabController;
+  late TabController tabController;
   final SatorioRepository _satorioRepository = Get.find();
 
-  final Rx<Profile> profileRx = Rx(null);
+  final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
   final Rx<List<Show>> showsRx = Rx([]);
 
-  ValueListenable<Box<Profile>> profileListenable;
-  ValueListenable<Box<AmountCurrency>> walletListenable;
+  late ValueListenable<Box<Profile>> profileListenable;
+  late ValueListenable<Box<AmountCurrency>> walletListenable;
 
   HomeController() {
     this.tabController = TabController(length: 2, vsync: this);

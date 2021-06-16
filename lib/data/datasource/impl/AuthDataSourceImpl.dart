@@ -12,7 +12,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  String getAuthToken() {
+  String? getAuthToken() {
     return _storage.read(_token);
   }
 

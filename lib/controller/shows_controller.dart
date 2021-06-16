@@ -18,7 +18,7 @@ class ShowsController extends GetxController {
   void loadShows() {
     _satorioRepository.shows().then((List<Show> shows) {
       showsRx.update((value) {
-        value.addAll(shows);
+        if (value != null) value.addAll(shows);
       });
     });
   }

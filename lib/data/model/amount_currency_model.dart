@@ -11,7 +11,7 @@ class AmountCurrencyModel extends AmountCurrency implements ToJsonInterface {
             : (json['amount'] is int
                 ? (json['amount'] as int).toDouble()
                 : json['amount']),
-        json['currency'] == null ? '' : json['currency'] as String,
+        json['currency'] == null ? '' : json['currency'],
       );
 
   @override

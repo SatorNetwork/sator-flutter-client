@@ -7,7 +7,7 @@ import 'package:satorio/ui/page_widget/quiz_page.dart';
 class ChallengeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  final Rx<Challenge> challengeRx = Rx(null);
+  final Rx<Challenge?> challengeRx = Rx(null);
 
   void loadChallenge(String challengeId) {
     _satorioRepository.challenge(challengeId).then((Challenge challenge) {
@@ -21,7 +21,7 @@ class ChallengeController extends GetxController {
 
   void playChallenge() {
     if (challengeRx.value != null) {
-      Get.to(() => QuizPage(challengeRx.value), binding: QuizBinding());
+      Get.to(() => QuizPage(challengeRx.value!), binding: QuizBinding());
     }
   }
 }

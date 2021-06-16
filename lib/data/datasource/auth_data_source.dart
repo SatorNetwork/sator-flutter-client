@@ -1,6 +1,5 @@
 abstract class AuthDataSource {
-
-  String getAuthToken();
+  String? getAuthToken();
 
   storeAuthToken(String token);
 

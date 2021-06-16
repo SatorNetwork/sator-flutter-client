@@ -1,19 +1,16 @@
 class ErrorValidationResponse {
-  final Map<String, String> validation;
+  final Map<String, String?> validation;
 
   const ErrorValidationResponse(this.validation);
 
   factory ErrorValidationResponse.fromJson(Map json) {
-    Map<String, String> data = {};
+    Map<String, String?> data = {};
 
     if (json['error'] is Map)
       json['error'].forEach((key, value) {
-        String keyData;
+        String? keyData;
         if (value is Iterable) {
-          keyData = '';
-          value.forEach((element) {
-            keyData += element;
-          });
+          keyData = value.join();
         }
         if (value is String) {
           keyData = value;

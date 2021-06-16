@@ -1,5 +1,5 @@
 class ApiValidationException implements Exception {
-  final Map<String, String> validationMap;
+  final Map<String, String?> validationMap;
 
   ApiValidationException(this.validationMap);
 }

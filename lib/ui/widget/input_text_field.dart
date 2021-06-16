@@ -5,22 +5,22 @@ import 'package:satorio/ui/theme/sator_color.dart';
 class InputTextField extends StatelessWidget {
   InputTextField(
       {this.controller,
-      this.inputTitle,
+      this.inputTitle = '',
       this.keyboardType = TextInputType.text,
       this.hintText,
-      this.obscureText,
+      this.obscureText = false,
       this.errorText,
       this.icon,
       this.onPressedIcon});
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String inputTitle;
   final TextInputType keyboardType;
-  final String hintText;
+  final String? hintText;
   final bool obscureText;
-  final String errorText;
-  final Icon icon;
-  final Function onPressedIcon;
+  final String? errorText;
+  final Icon? icon;
+  final VoidCallback? onPressedIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class InputTextField extends StatelessWidget {
                     )
                   : IconButton(
                       onPressed: onPressedIcon,
-                      icon: icon,
+                      icon: icon!,
                     ),
               hintStyle: TextStyle(
                 color: Colors.black.withOpacity(0.5),

@@ -9,8 +9,8 @@ class DefaultDialog extends StatelessWidget {
   final String title;
   final String text;
   final String buttonText;
-  final VoidCallback onPressed;
-  final IconData icon;
+  final VoidCallback? onPressed;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {

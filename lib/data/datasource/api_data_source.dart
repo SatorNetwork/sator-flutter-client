@@ -27,9 +27,9 @@ abstract class ApiDataSource {
 
   Future<List<AmountCurrencyModel>> wallet();
 
-  Future<List<ShowModel>> shows({int page});
+  Future<List<ShowModel>> shows({int? page});
 
-  Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int page});
+  Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
   Future<ChallengeModel> challenge(String challengeId);
 
@@ -39,7 +39,8 @@ abstract class ApiDataSource {
 
   Future<GetSocket> createSocket(String url);
 
-  Future<void> sendAnswer(GetSocket socket, String questionId, String answerId);
+  Future<void> sendAnswer(
+      GetSocket? socket, String questionId, String answerId);
 
   Future<ClaimRewardModel> claimReward();
 }

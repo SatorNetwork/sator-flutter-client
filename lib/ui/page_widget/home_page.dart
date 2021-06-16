@@ -30,9 +30,7 @@ class HomePage extends GetView<HomeController> {
                         },
                         child: Obx(
                           () => Text(
-                            controller.profileRx.value == null
-                                ? ''
-                                : controller.profileRx.value.displayedName,
+                            controller.profileRx.value?.displayedName ?? '',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 32.0,
