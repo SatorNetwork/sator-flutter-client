@@ -23,9 +23,9 @@ class ForgotPasswordPage extends GetView<PasswordRecoveryController> {
           child: InkWell(
             onTap: () => controller.back(),
             child: Icon(
-              Icons.arrow_back_ios,
+              Icons.chevron_left_rounded,
               color: SatorioColor.darkAccent,
-              size: 18,
+              size: 32,
             ),
           ),
         ),

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QuizQuestionPage extends GetView<QuizQuestionController> {
   static const double _margin = 20.0;

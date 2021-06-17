@@ -104,6 +104,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     print('--------');
 
+    utf8Response.request!.headers.forEach((key, value) {
+      print('$key : $value');
+    });
     print(
         '${utf8Response.request!.method.toUpperCase()} ${utf8Response.request!.url} ${utf8Response.statusCode}');
 
@@ -175,9 +178,8 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> isVerified() {
-    return _requestPost(
+    return _requestGet(
       'auth/is-verified',
-      EmptyRequest(),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -195,9 +197,8 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> refreshToken() {
-    return _requestPost(
+    return _requestGet(
       'auth/refresh-token',
-      EmptyRequest(),
     ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;

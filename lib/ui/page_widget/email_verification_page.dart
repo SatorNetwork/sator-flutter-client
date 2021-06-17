@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:satorio/controller/create_account_controller.dart';
+import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
-class EmailVerificationPage extends GetView<CreateAccountController> {
+class EmailVerificationPage extends GetView<EmailVerificationController> {
   @override
   Widget build(BuildContext context) {
     const double appBarHeight = 90;
@@ -20,9 +20,9 @@ class EmailVerificationPage extends GetView<CreateAccountController> {
           child: InkWell(
             onTap: () => controller.back(),
             child: Icon(
-              Icons.arrow_back_ios,
+              Icons.chevron_left_rounded,
               color: SatorioColor.darkAccent,
-              size: 18,
+              size: 32,
             ),
           ),
         ),

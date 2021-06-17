@@ -1,19 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:satorio/binding/create_account_binding.dart';
+import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
-import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
-import 'package:satorio/ui/page_widget/main_page.dart';
 
 class CreateAccountController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
-  final TextEditingController codeController = TextEditingController();
 
   final RxBool termsOfServiceCheck = false.obs;
   final RxBool passwordObscured = true.obs;
@@ -41,25 +38,11 @@ class CreateAccountController extends GetxController with ValidationMixin {
     )
         .then((isSuccess) {
       if (isSuccess) {
-        Get.to(() => EmailVerificationPage(), binding: CreateAccountBinding());
+        Get.to(
+          () => EmailVerificationPage(),
+          binding: EmailVerificationBinding(),
+        );
       }
     }).catchError((value) => handleValidationException(value));
-  }
-
-  void verifyAccount() {
-    _satorioRepository
-        .verifyAccount(
-      codeController.text,
-    )
-        .then((isSuccess) {
-      if (isSuccess) {
-        Get.offAll(() => MainPage(), binding: MainBinding());
-      } else {
-        codeController.clear();
-      }
-    }).catchError((value) {
-      codeController.clear();
-      handleValidationException(value);
-    });
   }
 }
