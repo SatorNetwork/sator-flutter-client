@@ -191,7 +191,8 @@ class ApiDataSourceImpl implements ApiDataSource {
       'auth/resend-otp',
       EmptyRequest(),
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      return response.isOk;
+      // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 

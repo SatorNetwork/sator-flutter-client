@@ -15,19 +15,27 @@ class EmailVerificationController extends GetxController with ValidationMixin {
   }
 
   void verifyAccount() {
-    _satorioRepository
-        .verifyAccount(
-      codeController.text,
-    )
-        .then((isSuccess) {
-      if (isSuccess) {
-        Get.offAll(() => MainPage(), binding: MainBinding());
-      } else {
-        codeController.clear();
-      }
-    }).catchError((value) {
+    _satorioRepository.verifyAccount(codeController.text).then(
+      (isSuccess) {
+        if (isSuccess) {
+          Get.offAll(() => MainPage(), binding: MainBinding());
+        } else {
+          codeController.clear();
+        }
+      },
+    ).catchError((value) {
       codeController.clear();
       handleValidationException(value);
     });
+  }
+
+  resendCode() {
+    _satorioRepository.resendCode().then(
+      (isSuccess) {
+        if (isSuccess) {
+          codeController.clear();
+        }
+      },
+    );
   }
 }

@@ -20,33 +20,35 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
   }
 
   void forgotPassword() {
-    _satorioRepository
-        .forgotPassword(emailController.text)
-        .then((bool isSuccess) {
-      if (isSuccess) {
-        codeController.clear();
-        Get.to(
-          () => ForgotPasswordVerificationPage(),
-          binding: PasswordRecoveryBinding(),
-        );
-      }
-    }).catchError((value) => handleValidationException(value));
+    _satorioRepository.forgotPassword(emailController.text).then(
+      (bool isSuccess) {
+        if (isSuccess) {
+          codeController.clear();
+          Get.to(
+            () => ForgotPasswordVerificationPage(),
+            binding: PasswordRecoveryBinding(),
+          );
+        }
+      },
+    ).catchError((value) => handleValidationException(value));
   }
 
   void validateCode() {
     _satorioRepository
         .validateResetPasswordCode(emailController.text, codeController.text)
-        .then((bool isSuccess) {
-      if (isSuccess) {
-        newPasswordController.clear();
-        Get.to(
-          () => ForgotPasswordResetPage(),
-          binding: PasswordRecoveryBinding(),
-        );
-      } else {
-        codeController.clear();
-      }
-    }).catchError((value) {
+        .then(
+      (bool isSuccess) {
+        if (isSuccess) {
+          newPasswordController.clear();
+          Get.to(
+            () => ForgotPasswordResetPage(),
+            binding: PasswordRecoveryBinding(),
+          );
+        } else {
+          codeController.clear();
+        }
+      },
+    ).catchError((value) {
       codeController.clear();
       handleValidationException(value);
     });
@@ -59,10 +61,22 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
       codeController.text,
       newPasswordController.text,
     )
-        .then((bool isSuccess) {
-      if (isSuccess) {
-        Get.until((route) => Get.currentRoute == '/() => LoginPage');
-      }
-    }).catchError((value) => handleValidationException(value));
+        .then(
+      (bool isSuccess) {
+        if (isSuccess) {
+          Get.until((route) => Get.currentRoute == '/() => LoginPage');
+        }
+      },
+    ).catchError((value) => handleValidationException(value));
+  }
+
+  void resendCode() {
+    _satorioRepository.forgotPassword(emailController.text).then(
+      (bool isSuccess) {
+        if (isSuccess) {
+          codeController.clear();
+        }
+      },
+    ).catchError((value) => handleValidationException(value));
   }
 }

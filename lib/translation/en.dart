@@ -59,5 +59,6 @@ const Map<String, String> en = {
   'txt_congrats': 'Congratulations',
   'txt_congrats_msg': 'You have won, and been awarded',
   'txt_verification_text':
-      'Please enter the verification code we’ve sent to your email address or use the link from your inbox'
+      'Please enter the verification code we’ve sent to your email address or use the link from your inbox',
+  'txt_resend_code': 'Resend code',
 };
