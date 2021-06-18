@@ -249,7 +249,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<List<AmountCurrencyModel>> wallet() {
     return _requestGet(
-      'wallet/balance',
+      'wallets/balance',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
