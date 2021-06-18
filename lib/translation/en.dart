@@ -57,8 +57,10 @@ const Map<String, String> en = {
   'txt_claim_rewards': 'Claim rewards',
   'txt_congrats': 'Congratulations',
   'txt_congrats_msg': 'You have won, and been awarded',
-  'txt_send': 'Send',
-  'txt_receive': 'Receive',
-  'txt_transactions': 'Transactions',
-  'txt_transaction': 'Transaction',
+  'txt_verification_text':
+      'Please enter the verification code we’ve sent to your email address or use the link from your inbox',
+'txt_send': 'Send',
+'txt_receive': 'Receive',
+'txt_transactions': 'Transactions',
+'txt_transaction': 'Transaction',
 };

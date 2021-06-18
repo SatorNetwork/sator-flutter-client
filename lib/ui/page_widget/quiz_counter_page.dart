@@ -44,10 +44,13 @@ class QuizCounterPage extends GetView<QuizCounterController> {
           fit: BoxFit.cover,
         ),
         Center(
-          child: Image.asset(
-            'images/$countImageName.png',
-            width: Get.width,
-            fit: countImageName == 'count_start' ? BoxFit.fitWidth : null,
+          child: SvgPicture.asset(
+            'images/$countImageName.svg',
+            width:
+                countImageName == 'count_start' ? Get.width : 0.35 * Get.width,
+            fit: countImageName == 'count_start'
+                ? BoxFit.fitWidth
+                : BoxFit.contain,
           ),
         ),
       ],
