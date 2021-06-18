@@ -173,7 +173,7 @@ class WalletPage extends GetView<WalletController> {
     final double minSize =
         (Get.height - 453 - kBottomNavigationBarHeight) / Get.height;
     final double maxSize =
-        (Get.height - Get.mediaQuery.padding.top) / Get.height;
+        (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
 
     return DraggableScrollableSheet(
       initialChildSize: minSize,
