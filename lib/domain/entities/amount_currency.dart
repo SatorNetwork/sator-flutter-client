@@ -4,5 +4,5 @@ class AmountCurrency {
 
   const AmountCurrency(this.amount, this.currency);
 
-  get displayedValue => '$amount ${currency.toUpperCase()}';
+  get displayedValue => '$amount $currency';
 }

@@ -11,23 +11,24 @@ class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
       ),
       body: SingleChildScrollView(
         child: Container(
           height: Get.mediaQuery.size.height -
-              (Get.mediaQuery.padding.top + kToolbarHeight),
+              Get.mediaQuery.padding.top +
+              kToolbarHeight,
           color: Colors.white,
           child: Stack(
             children: [
               Align(
                 alignment: Alignment.center,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 124),
                   child: Column(
                     children: [
                       SvgPicture.asset(
