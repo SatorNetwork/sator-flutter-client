@@ -28,14 +28,13 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
-import 'package:satorio/data/response/verify_account_response.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
   AuthDataSource _authDataSource;
 
   ApiDataSourceImpl(this._authDataSource) {
-    _getConnect.baseUrl = 'https://sator-api-stage-93k39.ondigitalocean.app/';
+    _getConnect.baseUrl = 'https://api.stage.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -105,6 +104,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     print('--------');
 
+    utf8Response.request!.headers.forEach((key, value) {
+      print('$key : $value');
+    });
     print(
         '${utf8Response.request!.method.toUpperCase()} ${utf8Response.request!.url} ${utf8Response.statusCode}');
 
@@ -165,21 +167,38 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> verifyAccount(String otp) {
+  Future<bool> verifyAccount(String code) {
     return _requestPost(
       'auth/verify-account',
-      VerifyAccountRequest(otp),
+      VerifyAccountRequest(code),
     ).then((Response response) {
-      return VerifyAccountResponse.fromJson(json.decode(response.bodyString!))
-          .isVerify;
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> isVerified() {
+    return _requestGet(
+      'auth/is-verified',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> resendCode() {
+    return _requestPost(
+      'auth/resend-otp',
+      EmptyRequest(),
+    ).then((Response response) {
+      return response.isOk;
     });
   }
 
   @override
   Future<bool> refreshToken() {
-    return _requestPost(
+    return _requestGet(
       'auth/refresh-token',
-      EmptyRequest(),
     ).then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
@@ -230,7 +249,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<List<AmountCurrencyModel>> wallet() {
     return _requestGet(
-      'wallet/balance',
+      'wallets/balance',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
