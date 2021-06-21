@@ -31,6 +31,10 @@ abstract class ApiDataSource {
 
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
+  Future<dynamic> loadShow(String showId);
+
+  Future<dynamic> getShowEpisodeByQR(String qrCodeId);
+
   Future<ChallengeModel> challenge(String challengeId);
 
   Future<void> logout();

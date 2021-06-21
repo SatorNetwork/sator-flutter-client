@@ -7,6 +7,10 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QrScannerResultPage extends GetView<QrScannerController> {
+  QrScannerResultPage(String qrId) : super() {
+    controller.getShowEpisodeByQR(qrId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,45 +40,51 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                   SizedBox(
                     height: 34,
                   ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(32),
-                    child: Container(
-                        height: 400,
-                        width: Get.width - 40,
-                        child: Image.asset(
-                          'images/new/nfts_2.png',
-                          fit: BoxFit.cover,
-                        )),
+                  Obx(
+                      () => ClipRRect(
+                      borderRadius: BorderRadius.circular(32),
+                      child: Container(
+                          height: 400,
+                          width: Get.width - 40,
+                          child: Image.network(
+                            controller.showRx.value!.cover,
+                            fit: BoxFit.cover,
+                          )),
+                    ),
                   ),
                   SizedBox(
                     height: 16,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("#34 Name of the episode",
-                            style: TextStyle(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                            )),
-                      ],
+                  Obx(
+                      () => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(controller.showRx.value!.title,
+                              style: TextStyle(
+                                color: SatorioColor.darkAccent,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                              )),
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Expanded(child: Container()),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedGradientButton(
-                      text: 'txt_claim_rewards'.tr,
-                      isEnabled: !controller.isRequested.value,
-                      onPressed: () {
-                        controller.claimRewards();
-                      },
+                  Obx(
+                      () => Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: ElevatedGradientButton(
+                        text: 'txt_claim_rewards'.tr,
+                        isEnabled: !controller.isRequested.value,
+                        onPressed: () {
+                          controller.claimRewards();
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(

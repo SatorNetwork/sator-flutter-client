@@ -16,8 +16,6 @@ class QrScannerPage extends GetView<QrScannerController> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    // Barcode? result;
-    // QRViewController? controller;
     final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
     const double padding = 40;
 
@@ -74,8 +72,10 @@ class QrScannerPage extends GetView<QrScannerController> {
   }
 
   void _onQRViewCreated(QRViewController qrController) {
+    Barcode? result;
     qrController.scannedDataStream.listen((scanData) {
-      controller.toQrScannerResult();
+      result = scanData;
+      controller.toQrScannerResult(result!.code);
     });
   }
 }
