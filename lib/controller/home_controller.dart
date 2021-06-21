@@ -77,7 +77,8 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   void _profileListener() {
-    profileRx.value = profileListenable.value.getAt(0);
+    if (profileListenable.value.length > 0)
+      profileRx.value = profileListenable.value.getAt(0);
   }
 
   void _walletListener() {

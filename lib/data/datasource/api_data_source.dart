@@ -9,9 +9,15 @@ import 'package:satorio/data/model/show_model.dart';
 abstract class ApiDataSource {
   Future<bool> isTokenExist();
 
+  // region Auth
+
   Future<bool> signIn(String email, String password);
 
   Future<bool> signUp(String email, String password, String username);
+
+  Future<bool> apiLogout();
+
+  Future<void> authLogout();
 
   Future<bool> verifyAccount(String code);
 
@@ -27,6 +33,8 @@ abstract class ApiDataSource {
 
   Future<bool> resetPassword(String email, String code, String newPassword);
 
+  // endregion
+
   Future<ProfileModel> profile();
 
   Future<List<AmountCurrencyModel>> wallet();
@@ -36,8 +44,6 @@ abstract class ApiDataSource {
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
   Future<ChallengeModel> challenge(String challengeId);
-
-  Future<void> logout();
 
   Future<String> socketUrl(String challengeId);
 

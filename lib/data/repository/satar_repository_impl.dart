@@ -36,11 +36,21 @@ class SatorioRepositoryImpl implements SatorioRepository {
         ),
       );
     } else if (exception is ApiUnauthorizedException) {
-      logout();
+      _localLogout();
       Get.snackbar('txt_oops'.tr, exception.errorMessage);
     } else {
       throw exception;
     }
+  }
+
+  Future<void> _localLogout() {
+    return _localDataSource
+        .clear()
+        .then((value) => _apiDataSource.authLogout())
+        .then((value) {
+      Get.offAll(() => LoginPage(), binding: LoginBinding());
+      return;
+    });
   }
 
   @override
@@ -147,13 +157,17 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> logout() {
-    return _localDataSource
-        .clear()
-        .then((value) => _apiDataSource.logout())
-        .then((value) {
-      Get.offAll(() => LoginPage(), binding: LoginBinding());
-      return;
-    });
+    return _apiDataSource
+        .apiLogout()
+        .then(
+          (value) => _localLogout(),
+        )
+        .then(
+      (value) {
+        Get.offAll(() => LoginPage(), binding: LoginBinding());
+        return;
+      },
+    );
   }
 
   @override

@@ -316,7 +316,15 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<void> logout() async {
+  Future<bool> apiLogout() {
+    return _requestPost(
+      'auth/logout',
+      EmptyRequest(),
+    ).then((Response response) => response.isOk);
+  }
+
+  @override
+  Future<void> authLogout() async {
     _authDataSource.clearAll();
     return;
   }
