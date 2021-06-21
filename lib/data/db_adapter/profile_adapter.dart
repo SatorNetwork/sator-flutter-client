@@ -1,9 +1,10 @@
 import 'package:hive/hive.dart';
+import 'package:satorio/data/db_adapter/adapter_type_ids.dart';
 import 'package:satorio/domain/entities/profile.dart';
 
 class ProfileAdapter extends TypeAdapter<Profile> {
   @override
-  int get typeId => 0;
+  int get typeId => ProfileAdapterTypeId;
 
   @override
   Profile read(BinaryReader reader) => Profile(

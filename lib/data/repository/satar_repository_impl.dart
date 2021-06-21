@@ -11,6 +11,9 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/transaction.dart';
+import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
@@ -121,27 +124,6 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> updateProfile() {
-    return _apiDataSource
-        .profile()
-        .then(
-          (Profile profile) => _localDataSource.saveProfile(profile),
-        )
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
-  Future<void> updateWallet() {
-    return _apiDataSource
-        .wallet()
-        .then(
-          (List<AmountCurrency> amountCurrencies) =>
-              _localDataSource.saveWallet(amountCurrencies),
-        )
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
   Future<List<Show>> shows({int? page}) {
     return _apiDataSource
         .shows(page: page)
@@ -201,6 +183,53 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .catchError((value) => _handleException(value));
   }
 
+  @override
+  Future<void> updateProfile() {
+    return _apiDataSource
+        .profile()
+        .then(
+          (Profile profile) => _localDataSource.saveProfile(profile),
+        )
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> updateWalletBalance() {
+    return _apiDataSource
+        .walletBalance()
+        .then(
+          (List<AmountCurrency> amountCurrencies) =>
+              _localDataSource.saveWalletBalance(amountCurrencies),
+        )
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> updateWallets() {
+    return _apiDataSource
+        .wallets()
+        .then(
+          (List<Wallet> wallets) => _localDataSource.saveWallets(wallets),
+        )
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> updateWalletDetail(String walletId) {
+    return _apiDataSource
+        .walletDetail(walletId)
+        .then(
+          (WalletDetail walletDetail) =>
+              _localDataSource.saveWalletDetail(walletDetail),
+        )
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<Transaction>> walletTransactions(String walletId) {
+    return _apiDataSource.walletTransactions(walletId);
+  }
+
   //
 
   @override
@@ -209,7 +238,17 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  ValueListenable walletListenable() {
-    return _localDataSource.walletListenable();
+  ValueListenable walletBalanceListenable() {
+    return _localDataSource.walletBalanceListenable();
+  }
+
+  @override
+  ValueListenable walletsListenable() {
+    return _localDataSource.walletsListenable();
+  }
+
+  @override
+  ValueListenable walletDetailsListenable(List<String> ids) {
+    return _localDataSource.walletDetailsListenable(ids);
   }
 }

@@ -19,13 +19,13 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final Rx<List<Show>> showsRx = Rx([]);
 
   late ValueListenable<Box<Profile>> profileListenable;
-  late ValueListenable<Box<AmountCurrency>> walletListenable;
+  late ValueListenable<Box<AmountCurrency>> walletBalanceListenable;
 
   HomeController() {
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
-    this.walletListenable = _satorioRepository.walletListenable()
+    this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
   }
 
@@ -35,13 +35,13 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     _loadShows();
 
     profileListenable.addListener(_profileListener);
-    walletListenable.addListener(_walletListener);
+    walletBalanceListenable.addListener(_walletBalanceListener);
   }
 
   @override
   void onClose() {
     profileListenable.removeListener(_profileListener);
-    walletListenable.removeListener(_walletListener);
+    walletBalanceListenable.removeListener(_walletBalanceListener);
     super.onClose();
   }
 
@@ -81,7 +81,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
       profileRx.value = profileListenable.value.getAt(0);
   }
 
-  void _walletListener() {
-    walletRx.value = walletListenable.value.values.toList();
+  void _walletBalanceListener() {
+    walletRx.value = walletBalanceListenable.value.values.toList();
   }
 }

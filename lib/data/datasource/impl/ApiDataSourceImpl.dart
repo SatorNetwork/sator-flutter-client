@@ -16,6 +16,9 @@ import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
+import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/wallet_detail_model.dart';
+import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
@@ -281,7 +284,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Wallet
 
   @override
-  Future<List<AmountCurrencyModel>> wallet() {
+  Future<List<AmountCurrencyModel>> walletBalance() {
     return _requestGet(
       'wallets/balance',
     ).then((Response response) {
@@ -289,6 +292,46 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
             .map((element) => AmountCurrencyModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<List<WalletModel>> wallets() {
+    return _requestGet(
+      'wallets',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => WalletModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<WalletDetailModel> walletDetail(String walletId) {
+    return _requestGet(
+      'wallets/$walletId',
+    ).then((Response response) {
+      return WalletDetailModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<List<TransactionModel>> walletTransactions(String walletId) {
+    return _requestGet(
+      'wallets/$walletId/transactions',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => TransactionModel.fromJson(element))
             .toList();
       else
         return [];

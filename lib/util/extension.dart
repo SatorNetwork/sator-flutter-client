@@ -11,6 +11,7 @@ extension Ellipsize on String {
     if (this.length <= startCount + endCount)
       return this;
     else
-      return '${this.substring(0, startCount)}...${this.substring(length - endCount, length)}';
+      return '${this.substring(0, startCount)}...${this.substring(
+          length - endCount, length)}';
   }
 }

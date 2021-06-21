@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -11,8 +13,10 @@ class WalletPage extends GetView<WalletController> {
   late final double _viewportFraction =
       (Get.width - 2 * (8 + _separatorSize)) / Get.width;
 
-  late final PageController _pageController =
-      PageController(viewportFraction: _viewportFraction);
+  WalletPage() {
+    controller.pageController =
+        PageController(viewportFraction: _viewportFraction);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,25 +57,29 @@ class WalletPage extends GetView<WalletController> {
             ),
             Container(
               height: 200,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return _walletItem();
-                },
+              child: Obx(
+                () => PageView.builder(
+                  controller: controller.pageController,
+                  itemCount: controller.walletsRx.value.length,
+                  itemBuilder: (context, index) {
+                    return _walletItem();
+                  },
+                ),
               ),
             ),
             SizedBox(
               height: 16,
             ),
-            SmoothPageIndicator(
-              controller: _pageController,
-              count: 3,
-              effect: WormEffect(
-                dotHeight: 8,
-                dotWidth: 8,
-                activeDotColor: SatorioColor.darkAccent,
-                dotColor: SatorioColor.darkAccent.withOpacity(0.5),
+            Obx(
+              () => SmoothPageIndicator(
+                controller: controller.pageController,
+                count: max(controller.walletsRx.value.length, 1),
+                effect: WormEffect(
+                  dotHeight: 8,
+                  dotWidth: 8,
+                  activeDotColor: SatorioColor.darkAccent,
+                  dotColor: SatorioColor.darkAccent.withOpacity(0.5),
+                ),
               ),
             ),
             SizedBox(

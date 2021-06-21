@@ -5,6 +5,9 @@ import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
+import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/wallet_detail_model.dart';
+import 'package:satorio/data/model/wallet_model.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -47,7 +50,13 @@ abstract class ApiDataSource {
 
   // region Wallet
 
-  Future<List<AmountCurrencyModel>> wallet();
+  Future<List<AmountCurrencyModel>> walletBalance();
+
+  Future<List<WalletModel>> wallets();
+
+  Future<WalletDetailModel> walletDetail(String walletId);
+
+  Future<List<TransactionModel>> walletTransactions(String walletId);
 
   // endregion
 
