@@ -13,8 +13,7 @@ class QrScannerController extends GetxController {
   Rx<PayloadChallengeResult?> resultRx = Rx(null);
   Rx<bool> isRequested = Rx(false);
   Rx<Show?> showRx = Rx(Show("", "", "", false));
-
-  QrResult? qrResult;
+  Rx<QrResult?> qrResultRx = Rx(QrResult("", "", "", 0));
 
   void back() {
     Get.back();
@@ -30,20 +29,15 @@ class QrScannerController extends GetxController {
   }
 
   void _loadShow(String showId) {
-    _satorioRepository
-        .loadShow(showId)
-        .then((show) {
-          showRx.value = show;
+    _satorioRepository.loadShow(showId).then((show) {
+      showRx.value = show;
     });
   }
 
   void getShowEpisodeByQR(String qrCodeId) {
-    _satorioRepository
-        .getShowEpisodeByQR(qrCodeId)
-        .then((qrResult) {
-          this.qrResult =  qrResult;
-          _loadShow(this.qrResult!.showId);
-
+    _satorioRepository.getShowEpisodeByQR(qrCodeId).then((qrResult) {
+      qrResultRx.value = qrResult;
+      _loadShow(qrResultRx.value!.showId);
     });
   }
 
@@ -51,23 +45,23 @@ class QrScannerController extends GetxController {
     Future.value(true)
         .then(
           (value) {
-        isRequested.value = true;
-        return value;
-      },
-    )
+            isRequested.value = true;
+            return value;
+          },
+        )
         .then((value) => _satorioRepository.claimReward())
         .then(
           (ClaimReward claimReward) {
-        isRequested.value = false;
-        Get.bottomSheet(
-          ClaimRewardsBottomSheet(claimReward),
-        );
-      },
-    )
+            isRequested.value = false;
+            Get.bottomSheet(
+              ClaimRewardsBottomSheet(claimReward),
+            );
+          },
+        )
         .catchError(
           (value) {
-        isRequested.value = false;
-      },
-    );
+            isRequested.value = false;
+          },
+        );
   }
 }

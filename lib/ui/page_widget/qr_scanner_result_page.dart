@@ -71,10 +71,44 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                       ),
                     ),
                   ),
+                  Expanded(child: Container()),
+                  Obx(
+                        () => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("txt_rewards_amount".tr,
+                              style: TextStyle(
+                                color: SatorioColor.darkAccent,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
+                              )),
+                          Container(
+                            height: 36,
+                            padding: EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                color: SatorioColor.interactive.withOpacity(0.2)),
+                            child: Text(
+                              "${
+                                controller.qrResultRx.value!.rewardAmount
+                                    .toString()
+                              } SAO",
+                              style: TextStyle(
+                                color: SatorioColor.interactive,
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   SizedBox(
                     height: 20,
                   ),
-                  Expanded(child: Container()),
                   Obx(
                       () => Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),

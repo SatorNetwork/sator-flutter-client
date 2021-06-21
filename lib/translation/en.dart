@@ -62,5 +62,6 @@ const Map<String, String> en = {
       'Please enter the verification code we’ve sent to your email address or use the link from your inbox',
   'txt_cancel': 'Cancel',
   'txt_qr_scan': 'Scan QR Code',
-  'txt_watching': 'You’re\nwatching'
+  'txt_watching': 'You’re watching',
+  'txt_rewards_amount': 'Rewards amount'
 };
