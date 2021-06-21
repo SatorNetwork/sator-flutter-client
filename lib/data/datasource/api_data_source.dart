@@ -7,7 +7,13 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 
 abstract class ApiDataSource {
+  // region Local Auth
+
   Future<bool> isTokenExist();
+
+  Future<void> authLogout();
+
+  // endregion
 
   // region Auth
 
@@ -16,8 +22,6 @@ abstract class ApiDataSource {
   Future<bool> signUp(String email, String password, String username);
 
   Future<bool> apiLogout();
-
-  Future<void> authLogout();
 
   Future<bool> verifyAccount(String code);
 
@@ -35,22 +39,51 @@ abstract class ApiDataSource {
 
   // endregion
 
+  // region Profile
+
   Future<ProfileModel> profile();
 
+  // endregion
+
+  // region Wallet
+
   Future<List<AmountCurrencyModel>> wallet();
+
+  // endregion
+
+  // region Shows
 
   Future<List<ShowModel>> shows({int? page});
 
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
+  // endregion
+
+  // region Challenges
+
   Future<ChallengeModel> challenge(String challengeId);
 
-  Future<String> socketUrl(String challengeId);
+  // endregion
+
+  // region Quiz
+
+  Future<String> quizSocketUrl(String challengeId);
+
+  // endregion
+
+  // region Rewards
+
+  Future<ClaimRewardModel> claimReward();
+
+  // endregion
+
+  // region Socket
 
   Future<GetSocket> createSocket(String url);
 
   Future<void> sendAnswer(
       GetSocket? socket, String questionId, String answerId);
 
-  Future<ClaimRewardModel> claimReward();
+// endregion
+
 }

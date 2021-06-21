@@ -178,9 +178,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<GetSocket> createSocket(String challengeId) {
+  Future<GetSocket> createQuizSocket(String challengeId) {
     return _apiDataSource
-        .socketUrl(challengeId)
+        .quizSocketUrl(challengeId)
         .then((socketUrl) => _apiDataSource.createSocket(socketUrl))
         .catchError((value) => _handleException(value));
   }

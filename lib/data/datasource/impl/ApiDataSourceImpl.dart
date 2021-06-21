@@ -44,6 +44,8 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  // region Internal
+
   Future<Response> _requestGet(
     String path, {
     Map<String, dynamic>? query,
@@ -134,11 +136,25 @@ class ApiDataSourceImpl implements ApiDataSource {
     return utf8Response;
   }
 
+  // endregion
+
+  // region Local Auth
+
   @override
   Future<bool> isTokenExist() async {
     String? token = _authDataSource.getAuthToken();
     return token != null && token.isNotEmpty;
   }
+
+  @override
+  Future<void> authLogout() async {
+    _authDataSource.clearAll();
+    return;
+  }
+
+  // endregion
+
+  // region Auth
 
   @override
   Future<bool> signIn(String email, String password) {
@@ -163,6 +179,16 @@ class ApiDataSourceImpl implements ApiDataSource {
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
       return token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> apiLogout() {
+    return _requestPost(
+      'auth/logout',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
@@ -237,6 +263,10 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  // endregion
+
+  // region Profile
+
   @override
   Future<ProfileModel> profile() {
     return _requestGet(
@@ -245,6 +275,10 @@ class ApiDataSourceImpl implements ApiDataSource {
       return ProfileModel.fromJson(json.decode(response.bodyString!)['data']);
     });
   }
+
+  // endregion
+
+  // region Wallet
 
   @override
   Future<List<AmountCurrencyModel>> wallet() {
@@ -260,6 +294,10 @@ class ApiDataSourceImpl implements ApiDataSource {
         return [];
     });
   }
+
+  // endregion
+
+  // region Shows
 
   @override
   Future<List<ShowModel>> shows({int? page}) {
@@ -306,6 +344,10 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  // endregion
+
+  // region Challenges
+
   @override
   Future<ChallengeModel> challenge(String challengeId) {
     return _requestGet(
@@ -315,22 +357,12 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
-  @override
-  Future<bool> apiLogout() {
-    return _requestPost(
-      'auth/logout',
-      EmptyRequest(),
-    ).then((Response response) => response.isOk);
-  }
+  // endregion
+
+  // region Quiz
 
   @override
-  Future<void> authLogout() async {
-    _authDataSource.clearAll();
-    return;
-  }
-
-  @override
-  Future<String> socketUrl(String challengeId) {
+  Future<String> quizSocketUrl(String challengeId) {
     return _requestGet(
       'quiz/$challengeId/play',
     ).then((Response response) {
@@ -339,6 +371,24 @@ class ApiDataSourceImpl implements ApiDataSource {
           .playUrl;
     });
   }
+
+  // endregion
+
+  // region Rewards
+
+  @override
+  Future<ClaimRewardModel> claimReward() {
+    return _requestGet(
+      'rewards/claim',
+    ).then((Response response) {
+      return ClaimRewardModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  // endregion
+
+  // region Socket
 
   @override
   Future<GetSocket> createSocket(String url) async {
@@ -360,13 +410,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     return;
   }
 
-  @override
-  Future<ClaimRewardModel> claimReward() {
-    return _requestGet(
-      'rewards/claim',
-    ).then((Response response) {
-      return ClaimRewardModel.fromJson(
-          json.decode(response.bodyString!)['data']);
-    });
-  }
+// endregion
+
 }
