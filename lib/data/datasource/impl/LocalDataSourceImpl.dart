@@ -11,7 +11,8 @@ import 'package:satorio/domain/entities/profile.dart';
 
 class LocalDataSourceImpl implements LocalDataSource {
   static const _profileBox = 'profile';
-  static const _walletBox = 'wallet';
+  static const _walletBox = 'walletBalance';
+  static const _wallets = 'wallets';
 
   @override
   Future<void> init() async {
