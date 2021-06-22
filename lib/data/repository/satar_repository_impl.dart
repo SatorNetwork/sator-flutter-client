@@ -146,6 +146,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<dynamic> loadShow(String showId) {
+    return _apiDataSource
+        .loadShow(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<dynamic> getShowEpisodeByQR(String qrCodeId) {
+    return _apiDataSource
+        .getShowEpisodeByQR(qrCodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> logout() {
     return _localDataSource
         .clear()

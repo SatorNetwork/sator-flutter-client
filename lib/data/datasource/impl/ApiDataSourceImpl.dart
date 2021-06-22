@@ -14,6 +14,7 @@ import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/qr_result_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/request/empty_request.dart';
@@ -303,6 +304,28 @@ class ApiDataSourceImpl implements ApiDataSource {
             .toList();
       else
         return [];
+    });
+  }
+
+  @override
+  Future<dynamic> loadShow(String showId) {
+    return _requestGet(
+      'shows/$showId',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+
+      return ShowModel.fromJson(jsonData['data']);
+    });
+  }
+
+  @override
+  Future<QrResultModel> getShowEpisodeByQR(String qrCodeId) {
+    return _requestGet(
+      'qrcodes/$qrCodeId',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+
+      return QrResultModel.fromJson(jsonData['data']);
     });
   }
 
