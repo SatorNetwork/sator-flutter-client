@@ -31,9 +31,9 @@ abstract class SatorioRepository {
 
   Future<void> updateWallets();
 
-  Future<void> updateWalletDetail(String walletId);
+  Future<void> updateWalletDetail(String detailPath);
 
-  Future<List<Transaction>> walletTransactions(String walletId);
+  Future<List<Transaction>> walletTransactions(String transactionsPath);
 
   Future<List<Show>> shows({int page});
 

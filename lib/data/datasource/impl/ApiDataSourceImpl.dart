@@ -314,9 +314,9 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<WalletDetailModel> walletDetail(String walletId) {
+  Future<WalletDetailModel> walletDetail(String detailPath) {
     return _requestGet(
-      'wallets/$walletId',
+      detailPath,
     ).then((Response response) {
       return WalletDetailModel.fromJson(
           json.decode(response.bodyString!)['data']);
@@ -324,9 +324,9 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<TransactionModel>> walletTransactions(String walletId) {
+  Future<List<TransactionModel>> walletTransactions(String transactionsPath) {
     return _requestGet(
-      'wallets/$walletId/transactions',
+      transactionsPath,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)

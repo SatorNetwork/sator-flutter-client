@@ -215,9 +215,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> updateWalletDetail(String walletId) {
+  Future<void> updateWalletDetail(String detailPath) {
     return _apiDataSource
-        .walletDetail(walletId)
+        .walletDetail(detailPath)
         .then(
           (WalletDetail walletDetail) =>
               _localDataSource.saveWalletDetail(walletDetail),
@@ -226,8 +226,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Transaction>> walletTransactions(String walletId) {
-    return _apiDataSource.walletTransactions(walletId);
+  Future<List<Transaction>> walletTransactions(String transactionsPath) {
+    return _apiDataSource.walletTransactions(transactionsPath);
   }
 
   //

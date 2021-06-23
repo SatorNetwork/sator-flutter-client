@@ -54,9 +54,9 @@ abstract class ApiDataSource {
 
   Future<List<WalletModel>> wallets();
 
-  Future<WalletDetailModel> walletDetail(String walletId);
+  Future<WalletDetailModel> walletDetail(String detailPath);
 
-  Future<List<TransactionModel>> walletTransactions(String walletId);
+  Future<List<TransactionModel>> walletTransactions(String transactionsPath);
 
   // endregion
 

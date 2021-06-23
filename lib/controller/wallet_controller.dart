@@ -9,7 +9,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 class WalletController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  late final PageController pageController;
+  late PageController pageController;
 
   Rx<List<Wallet>> walletsRx = Rx([]);
   Rx<Map<String, WalletDetail>> walletDetailsRx = Rx({});
@@ -57,13 +57,18 @@ class WalletController extends GetxController {
 
   void _walletsListener() {
     List<Wallet> wallets = _walletsListenable.value.values.toList();
-    walletsRx.value = wallets;
 
     _walletDetailsListenable?.removeListener(_walletDetailsListener);
     _walletDetailsListenable = _satorioRepository.walletDetailsListenable(
       wallets.map((wallet) => wallet.id).toList(),
     ) as ValueListenable<Box<WalletDetail>>;
     _walletDetailsListenable?.addListener(_walletDetailsListener);
+
+    wallets.forEach((wallet) {
+      _updateWalletDetail(wallet);
+    });
+
+    walletsRx.value = wallets;
   }
 
   void _walletDetailsListener() {
@@ -77,5 +82,9 @@ class WalletController extends GetxController {
         });
       });
     }
+  }
+
+  void _updateWalletDetail(Wallet wallet) {
+    _satorioRepository.updateWalletDetail(wallet.detailsUrl);
   }
 }
