@@ -139,6 +139,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<Show>> showsFromCategory(String category) {
+    return _apiDataSource
+        .showsFromCategory(category)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<ChallengeSimple>> showChallenges(String showId, {int? page}) {
     return _apiDataSource
         .showChallenges(showId, page: page)
