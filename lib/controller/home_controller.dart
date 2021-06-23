@@ -43,7 +43,8 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     _loadProfile();
     _loadWallet();
     // _loadShows();
-    _loadAllCategories();
+    _loadHighestRewarding();
+    _loadHighestRewarding();
 
     profileListenable.addListener(_profileListener);
     walletListenable.addListener(_walletListener);
@@ -71,7 +72,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     });
   }
 
-  void _loadAllCategories() {
+  void _loadHighestRewarding() {
     _satorioRepository
         .showsFromCategory('highest_rewarding')
         .then((List<Show> shows) {
@@ -79,13 +80,13 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     });
 
     _satorioRepository
-        .showsFromCategory('most_socializing)')
+        .showsFromCategory('most_socializing')
         .then((List<Show> shows) {
       showsMostSocializingRx.value = shows;
     });
 
     _satorioRepository
-        .showsFromCategory('newest_added)')
+        .showsFromCategory('newest_added')
         .then((List<Show> shows) {
       showsNewestAddedRx.value = shows;
     });
