@@ -285,6 +285,21 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<List<ShowModel>> showsFromCategory(String category) {
+    return _requestGet(
+      'shows/filter/$category',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ShowModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
   Future<List<ChallengeSimpleModel>> showChallenges(String showId,
       {int? page}) {
     Map<String, String>? query;
