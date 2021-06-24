@@ -65,4 +65,8 @@ const Map<String, String> en = {
   'txt_receive': 'Receive',
   'txt_transactions': 'Transactions',
   'txt_transaction': 'Transaction',
+  'txt_cancel': 'Cancel',
+  'txt_qr_scan': 'Scan QR Code',
+  'txt_watching': 'You’re watching',
+  'txt_rewards_amount': 'Rewards amount',
 };

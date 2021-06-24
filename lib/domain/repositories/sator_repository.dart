@@ -37,7 +37,13 @@ abstract class SatorioRepository {
 
   Future<List<Show>> shows({int page});
 
+  Future<List<Show>> showsFromCategory(String category);
+
   Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
+
+  Future<dynamic> loadShow(String showId);
+
+  Future<dynamic> getShowEpisodeByQR(String qrCodeId);
 
   Future<Challenge> challenge(String challengeId);
 

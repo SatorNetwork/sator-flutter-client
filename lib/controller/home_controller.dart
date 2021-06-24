@@ -16,7 +16,13 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
+
+  @Deprecated('changes 23.06')
   final Rx<List<Show>> showsRx = Rx([]);
+
+  final Rx<List<Show>> showsHighestRewardingRx = Rx([]);
+  final Rx<List<Show>> showsMostSocializingRx = Rx([]);
+  final Rx<List<Show>> showsNewestAddedRx = Rx([]);
 
   late ValueListenable<Box<Profile>> profileListenable;
   late ValueListenable<Box<AmountCurrency>> walletBalanceListenable;
@@ -33,6 +39,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   void onInit() {
     super.onInit();
     _loadShows();
+    _loadHighestRewarding();
 
     profileListenable.addListener(_profileListener);
     walletBalanceListenable.addListener(_walletBalanceListener);
@@ -45,9 +52,30 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     super.onClose();
   }
 
+  @Deprecated('changes 23.06'
   void _loadShows() {
     _satorioRepository.shows().then((List<Show> shows) {
       showsRx.value = shows;
+    });
+  }
+
+  void _loadHighestRewarding() {
+    _satorioRepository
+        .showsFromCategory('highest_rewarding')
+        .then((List<Show> shows) {
+      showsHighestRewardingRx.value = shows;
+    });
+
+    _satorioRepository
+        .showsFromCategory('most_socializing')
+        .then((List<Show> shows) {
+      showsMostSocializingRx.value = shows;
+    });
+
+    _satorioRepository
+        .showsFromCategory('newest_added')
+        .then((List<Show> shows) {
+      showsNewestAddedRx.value = shows;
     });
   }
 

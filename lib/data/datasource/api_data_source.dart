@@ -64,7 +64,13 @@ abstract class ApiDataSource {
 
   Future<List<ShowModel>> shows({int? page});
 
+  Future<List<ShowModel>> showsFromCategory(String category);
+
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
+
+  Future<dynamic> loadShow(String showId);
+
+  Future<dynamic> getShowEpisodeByQR(String qrCodeId);
 
   // endregion
 

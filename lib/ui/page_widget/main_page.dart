@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
+import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/shows_page.dart';
 import 'package:satorio/ui/page_widget/some_page.dart';
 import 'package:satorio/ui/page_widget/wallet_page.dart';
@@ -20,7 +21,8 @@ class MainPage extends GetView<MainController> {
           type: BottomNavigationBarType.fixed,
           currentIndex: controller.selectedBottomTabIndex.value,
           onTap: (index) {
-            controller.selectedBottomTabIndex.value = index;
+            index != 2 ?
+            controller.selectedBottomTabIndex.value = index : controller.toQrScanner();
           },
           unselectedItemColor: SatorioColor.grey,
           fixedColor: Colors.black,
@@ -64,7 +66,7 @@ class MainPage extends GetView<MainController> {
   final List<Widget> _bodyContent = [
     HomePage(),
     ShowsPage(),
-    SomePage(),
+    QrScannerPage(),
     SomePage(),
     WalletPage(),
   ];
