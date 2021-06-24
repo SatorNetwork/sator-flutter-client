@@ -7,12 +7,12 @@ class TransactionModel extends Transaction implements ToJsonInterface {
 
   factory TransactionModel.fromJson(Map json) {
     double amount;
-    if (json['created_at'] == null)
+    if (json['amount'] == null)
       amount = 0.0;
-    else if (json['created_at'] is int)
-      amount = (json['created_at'] as int).toDouble();
+    else if (json['amount'] is int)
+      amount = (json['amount'] as int).toDouble();
     else
-      amount = json['created_at'];
+      amount = json['amount'];
 
     DateTime? createdAt;
     if (json['created_at'] != null)

@@ -2,35 +2,40 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
 class WalletController extends GetxController {
+  static const _initPage = 0;
   final SatorioRepository _satorioRepository = Get.find();
 
   late PageController pageController;
 
-  Rx<List<Wallet>> walletsRx = Rx([]);
-  Rx<Map<String, WalletDetail>> walletDetailsRx = Rx({});
+  Map<String, Wallet> wallets = {};
+  Rx<List<WalletDetail>> walletDetailsRx = Rx([]);
+  RxInt pageRx = RxInt(_initPage);
+
+  Rx<Map<String, List<Transaction>>> walletTransactionsRx = Rx({});
 
   late ValueListenable<Box<Wallet>> _walletsListenable;
   ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
 
-  Rx<List<double>> transactionsRx = Rx([
-    124.0,
-    -24.0,
-    -35.0,
-    249.52,
-    1998254.39,
-    1198254.39,
-    -19254.39,
-    19655.39,
-    1189.39,
-    24.0,
-    -24.0,
-    -12.12
-  ]);
+  // Rx<List<double>> transactionsRx = Rx([
+  //   124.0,
+  //   -24.0,
+  //   -35.0,
+  //   249.52,
+  //   1998254.39,
+  //   1198254.39,
+  //   -19254.39,
+  //   19655.39,
+  //   1189.39,
+  //   24.0,
+  //   -24.0,
+  //   -12.12
+  // ]);
 
   WalletController() {
     _walletsListenable =
@@ -51,40 +56,74 @@ class WalletController extends GetxController {
     super.onClose();
   }
 
-  void send() {}
+  void changePage(int page) {
+    if (page < walletDetailsRx.value.length) {
+      String id = walletDetailsRx.value[page].id;
 
-  void receive() {}
+      if (walletTransactionsRx.value[id]?.isEmpty ?? false) {
+        Wallet? wallet = wallets[id];
+        _updateTransaction(wallet);
+      }
+    }
+
+    pageRx.value = page;
+  }
 
   void _walletsListener() {
-    List<Wallet> wallets = _walletsListenable.value.values.toList();
+    List<Wallet> walletsNew = _walletsListenable.value.values.toList();
 
+    // Check is wallets changed
+    if (walletsNew.every((wallet) => wallets.containsKey(wallet.id))) {
+      return;
+    }
+
+    // Update wallets map
+    Map<String, Wallet> walletsTmp = {};
+    _walletsListenable.value.values.forEach((wallet) {
+      walletsTmp[wallet.id] = wallet;
+    });
+    wallets = walletsTmp;
+
+    // Ids of wallets
+    List<String> ids = wallets.values.map((wallet) => wallet.id).toList();
+
+    // Re-subscribe to new actual ids
     _walletDetailsListenable?.removeListener(_walletDetailsListener);
-    _walletDetailsListenable = _satorioRepository.walletDetailsListenable(
-      wallets.map((wallet) => wallet.id).toList(),
-    ) as ValueListenable<Box<WalletDetail>>;
+    _walletDetailsListenable = _satorioRepository.walletDetailsListenable(ids)
+        as ValueListenable<Box<WalletDetail>>;
     _walletDetailsListenable?.addListener(_walletDetailsListener);
 
-    wallets.forEach((wallet) {
+    // Update wallet detail for each wallet
+    wallets.values.forEach((wallet) {
       _updateWalletDetail(wallet);
     });
 
-    walletsRx.value = wallets;
+    // Reset all transaction & load for first wallet
+    Map<String, List<Transaction>> walletTransactionsNew = {};
+    wallets.values.forEach((wallet) {
+      walletTransactionsNew[wallet.id] = [];
+    });
+    walletTransactionsRx.value = walletTransactionsNew;
+    _updateTransaction(walletsNew[pageRx.value]);
   }
 
   void _walletDetailsListener() {
-    List<WalletDetail> walletDetails =
-        _walletDetailsListenable!.value.values.toList();
-
-    if (walletDetails.isNotEmpty) {
-      walletDetailsRx.update((value) {
-        walletDetails.forEach((walletDetail) {
-          value?[walletDetail.id] = walletDetail;
-        });
-      });
-    }
+    walletDetailsRx.value = _walletDetailsListenable!.value.values.toList();
   }
 
   void _updateWalletDetail(Wallet wallet) {
     _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+  }
+
+  void _updateTransaction(Wallet? wallet) {
+    if (wallet != null && (wallet.transactionsUrl.isNotEmpty)) {
+      _satorioRepository
+          .walletTransactions(wallet.transactionsUrl)
+          .then((List<Transaction> transactions) {
+        walletTransactionsRx.update((value) {
+          value?[wallet.id] = transactions;
+        });
+      });
+    }
   }
 }

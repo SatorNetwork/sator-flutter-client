@@ -1,9 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/controller/wallet_controller.dart';
+import 'package:satorio/domain/entities/transaction.dart';
+import 'package:satorio/domain/entities/wallet_action.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -60,9 +65,14 @@ class WalletPage extends GetView<WalletController> {
               child: Obx(
                 () => PageView.builder(
                   controller: controller.pageController,
-                  itemCount: controller.walletsRx.value.length,
+                  itemCount: controller.walletDetailsRx.value.length,
                   itemBuilder: (context, index) {
-                    return _walletItem();
+                    WalletDetail walletDetail =
+                        controller.walletDetailsRx.value[index];
+                    return _walletItem(walletDetail);
+                  },
+                  onPageChanged: (value) {
+                    controller.changePage(value);
                   },
                 ),
               ),
@@ -73,7 +83,7 @@ class WalletPage extends GetView<WalletController> {
             Obx(
               () => SmoothPageIndicator(
                 controller: controller.pageController,
-                count: max(controller.walletsRx.value.length, 1),
+                count: max(controller.walletDetailsRx.value.length, 1),
                 effect: WormEffect(
                   dotHeight: 8,
                   dotWidth: 8,
@@ -85,91 +95,24 @@ class WalletPage extends GetView<WalletController> {
             SizedBox(
               height: 24,
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InkWell(
-                  onTap: () {
-                    controller.send();
-                  },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: SatorioColor.interactive,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_upward_rounded,
-                            size: 24,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        'txt_send'.tr,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
+            Container(
+              height: 90,
+              child: Obx(
+                () => ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) => SizedBox(
+                    width: 50,
                   ),
-                ),
-                SizedBox(
-                  width: 50,
-                ),
-                InkWell(
-                  onTap: () {
-                    controller.receive();
+                  itemCount: controller.walletDetailsRx
+                      .value[controller.pageRx.value].actions.length,
+                  itemBuilder: (context, index) {
+                    WalletAction waleltAction = controller.walletDetailsRx
+                        .value[controller.pageRx.value].actions[index];
+                    return _walletActionItem(waleltAction);
                   },
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: SatorioColor.interactive,
-                        ),
-                        child: Center(
-                          child: Icon(
-                            Icons.arrow_downward_rounded,
-                            size: 24,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        'txt_receive'.tr,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
+                  scrollDirection: Axis.horizontal,
                 ),
-              ],
+              ),
             ),
           ],
         ),
@@ -218,10 +161,19 @@ class WalletPage extends GetView<WalletController> {
                   separatorBuilder: (context, index) => Divider(
                     height: 1,
                   ),
-                  itemCount: controller.transactionsRx.value.length,
+                  itemCount: controller
+                          .walletTransactionsRx
+                          .value[controller.walletDetailsRx
+                              .value[controller.pageRx.value].id]
+                          ?.length ??
+                      0,
                   itemBuilder: (context, index) {
-                    double value = controller.transactionsRx.value[index];
-                    return _transactionItem(value);
+                    Transaction transaction =
+                        controller.walletTransactionsRx.value[controller
+                            .walletDetailsRx
+                            .value[controller.pageRx.value]
+                            .id]![index];
+                    return _transactionItem(transaction);
                   },
                 ),
               ),
@@ -232,7 +184,7 @@ class WalletPage extends GetView<WalletController> {
     );
   }
 
-  Widget _walletItem() {
+  Widget _walletItem(WalletDetail walletDetail) {
     final height = 200.0;
     return Container(
       margin:
@@ -252,26 +204,7 @@ class WalletPage extends GetView<WalletController> {
                 'images/sator_wallet.png',
                 height: height,
                 fit: BoxFit.cover,
-                // color: Colors.white.withOpacity(0.5),
-                // colorBlendMode: BlendMode.luminosity,
               ),
-              // child: ColorFiltered(
-              //   colorFilter: ColorFilter.mode(
-              //     Colors.white,
-              //     BlendMode.luminosity,
-              //   ),
-              //   // colorFilter: ColorFilter.matrix(<double>[
-              //   //   0.2126, 0.7152, 0.0722, 0, 0,
-              //   //   0.2126, 0.7152, 0.0722, 0, 0,
-              //   //   0.2126, 0.7152, 0.0722, 0, 0,
-              //   //   0, 0, 0, 1, 0,
-              //   // ]),
-              //   child: Image.asset(
-              //     'images/sator_wallet.png',
-              //     height: height,
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
             ),
           ),
           Align(
@@ -285,7 +218,9 @@ class WalletPage extends GetView<WalletController> {
                 children: [
                   RichText(
                     text: TextSpan(
-                      text: '852.2',
+                      text: walletDetail.balance.length > 0
+                          ? walletDetail.balance[0].amount.toString()
+                          : '',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 32.0,
@@ -303,7 +238,9 @@ class WalletPage extends GetView<WalletController> {
                           ),
                         ),
                         TextSpan(
-                          text: 'SAO',
+                          text: walletDetail.balance.length > 0
+                              ? walletDetail.balance[0].currency
+                              : '',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 20.0,
@@ -319,7 +256,9 @@ class WalletPage extends GetView<WalletController> {
                   ),
                   RichText(
                     text: TextSpan(
-                      text: '2642.59',
+                      text: walletDetail.balance.length > 1
+                          ? walletDetail.balance[1].amount.toString()
+                          : '',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
                         fontSize: 16.0,
@@ -337,7 +276,9 @@ class WalletPage extends GetView<WalletController> {
                           ),
                         ),
                         TextSpan(
-                          text: 'USD',
+                          text: walletDetail.balance.length > 1
+                              ? walletDetail.balance[1].currency
+                              : '',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.7),
                             fontSize: 12.0,
@@ -352,31 +293,51 @@ class WalletPage extends GetView<WalletController> {
               ),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomLeft,
-          //   child: Container(
-          //     margin: const EdgeInsets.only(bottom: 30, left: 24),
-          //     padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 12),
-          //     decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(35),
-          //       color: Colors.white.withOpacity(0.25),
-          //     ),
-          //     child: Text(
-          //       '2,525.59 Rewards',
-          //       style: TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 12.0,
-          //         fontWeight: FontWeight.w500,
-          //       ),
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );
   }
 
-  Widget _transactionItem(double value) {
+  Widget _walletActionItem(WalletAction walletAction) {
+    return InkWell(
+      onTap: () {},
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: SatorioColor.interactive,
+            ),
+            child: Center(
+              child: Icon(
+                _walletActionIcon(walletAction.type),
+                size: 24,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            walletAction.name,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _transactionItem(Transaction transaction) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       height: 63,
@@ -394,11 +355,14 @@ class WalletPage extends GetView<WalletController> {
               ),
               Expanded(
                 child: Text(
-                  value >= 0 ? '+$value' : '$value',
+                  transaction.amount >= 0
+                      ? '+${transaction.amount}'
+                      : '${transaction.amount}',
                   textAlign: TextAlign.end,
                   style: TextStyle(
-                    color:
-                        value >= 0 ? SatorioColor.success : SatorioColor.error,
+                    color: transaction.amount >= 0
+                        ? SatorioColor.success
+                        : SatorioColor.error,
                     fontSize: 14.0,
                     fontWeight: FontWeight.w600,
                   ),
@@ -412,7 +376,7 @@ class WalletPage extends GetView<WalletController> {
           Row(
             children: [
               Text(
-                '3P4Q3E---------4QWSSA'.ellipsize(),
+                transaction.txHash.ellipsize(),
                 style: TextStyle(
                   color: Colors.black.withOpacity(0.5),
                   fontSize: 12.0,
@@ -421,7 +385,10 @@ class WalletPage extends GetView<WalletController> {
               ),
               Expanded(
                 child: Text(
-                  'April 28, 2021',
+                  transaction.createdAt == null
+                      ? ''
+                      : DateFormat('MMM dd, yyyy')
+                          .format(transaction.createdAt!),
                   textAlign: TextAlign.end,
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.5),
@@ -435,5 +402,18 @@ class WalletPage extends GetView<WalletController> {
         ],
       ),
     );
+  }
+
+  IconData _walletActionIcon(String walletActionType) {
+    switch (walletActionType) {
+      case Type.send_tokens:
+        return Icons.arrow_upward_rounded;
+      case Type.receive_tokens:
+        return Icons.arrow_downward_rounded;
+      case Type.claim_rewards:
+        return Icons.arrow_downward_rounded;
+      default:
+        return Icons.error_outline_rounded;
+    }
   }
 }

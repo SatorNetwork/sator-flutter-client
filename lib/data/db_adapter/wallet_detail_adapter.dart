@@ -12,8 +12,8 @@ class WalletDetailAdapter extends TypeAdapter<WalletDetail> {
   WalletDetail read(BinaryReader reader) => WalletDetail(
         reader.readString(),
         reader.readString(),
-        reader.readList() as List<AmountCurrency>,
-        reader.readList() as List<WalletAction>,
+        reader.readList().map((e) => e as AmountCurrency).toList(),
+        reader.readList().map((e) => e as WalletAction).toList(),
       );
 
   @override
