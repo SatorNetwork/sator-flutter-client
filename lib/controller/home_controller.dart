@@ -38,8 +38,8 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     super.onInit();
-    _loadShows();
-    _loadHighestRewarding();
+    // _loadShows();
+    _loadShowByCategoryName();
 
     profileListenable.addListener(_profileListener);
     walletBalanceListenable.addListener(_walletBalanceListener);
@@ -52,14 +52,14 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     super.onClose();
   }
 
-  @Deprecated('changes 23.06'
+  @Deprecated('changes 23.06')
   void _loadShows() {
     _satorioRepository.shows().then((List<Show> shows) {
       showsRx.value = shows;
     });
   }
 
-  void _loadHighestRewarding() {
+  void _loadShowByCategoryName() {
     _satorioRepository
         .showsFromCategory('highest_rewarding')
         .then((List<Show> shows) {
