@@ -219,7 +219,7 @@ class WalletPage extends GetView<WalletController> {
                   RichText(
                     text: TextSpan(
                       text: walletDetail.balance.length > 0
-                          ? walletDetail.balance[0].amount.toString()
+                          ? walletDetail.balance[0].amount.toStringAsFixed(2)
                           : '',
                       style: TextStyle(
                         color: Colors.white,
@@ -257,7 +257,7 @@ class WalletPage extends GetView<WalletController> {
                   RichText(
                     text: TextSpan(
                       text: walletDetail.balance.length > 1
-                          ? walletDetail.balance[1].amount.toString()
+                          ? walletDetail.balance[1].amount.toStringAsFixed(2)
                           : '',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
