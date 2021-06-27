@@ -96,7 +96,7 @@ class ForgotPasswordVerificationPage
               child: InkWell(
                 onTap: () => controller.resendCode(),
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: const EdgeInsets.all(24.0),
                   child: Text(
                     "txt_resend_code".tr,
                     style: TextStyle(
