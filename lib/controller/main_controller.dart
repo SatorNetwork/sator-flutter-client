@@ -13,7 +13,7 @@ class MainController extends GetxController {
     super.onInit();
     _loadProfile();
     _loadWalletBalance();
-    _loadWallets();
+    loadWallets();
   }
 
   void _loadProfile() {
@@ -24,7 +24,7 @@ class MainController extends GetxController {
     _satorioRepository.updateWalletBalance();
   }
 
-  void _loadWallets() {
+  void loadWallets() {
     _satorioRepository.updateWallets();
   }
 
