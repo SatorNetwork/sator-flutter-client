@@ -103,8 +103,10 @@ class WalletPage extends GetView<WalletController> {
                   separatorBuilder: (context, index) => SizedBox(
                     width: 50,
                   ),
-                  itemCount: controller.walletDetailsRx
-                      .value[controller.pageRx.value].actions.length,
+                  itemCount: controller.walletDetailsRx.value.length > 0
+                      ? controller.walletDetailsRx
+                          .value[controller.pageRx.value].actions.length
+                      : 0,
                   itemBuilder: (context, index) {
                     WalletAction waleltAction = controller.walletDetailsRx
                         .value[controller.pageRx.value].actions[index];
@@ -161,12 +163,14 @@ class WalletPage extends GetView<WalletController> {
                   separatorBuilder: (context, index) => Divider(
                     height: 1,
                   ),
-                  itemCount: controller
-                          .walletTransactionsRx
-                          .value[controller.walletDetailsRx
-                              .value[controller.pageRx.value].id]
-                          ?.length ??
-                      0,
+                  itemCount: controller.walletDetailsRx.value.length > 0
+                      ? (controller
+                              .walletTransactionsRx
+                              .value[controller.walletDetailsRx
+                                  .value[controller.pageRx.value].id]
+                              ?.length ??
+                          0)
+                      : 0,
                   itemBuilder: (context, index) {
                     Transaction transaction =
                         controller.walletTransactionsRx.value[controller
@@ -300,7 +304,19 @@ class WalletPage extends GetView<WalletController> {
 
   Widget _walletActionItem(WalletAction walletAction) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        switch (walletAction.type) {
+          case Type.send_tokens:
+            break;
+          case Type.receive_tokens:
+            break;
+          case Type.claim_rewards:
+            controller.claimRewards(walletAction.url);
+            break;
+          default:
+            break;
+        }
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -54,7 +54,7 @@ abstract class SatorioRepository {
   Future<void> sendAnswer(
       GetSocket? socket, String questionId, String answerId);
 
-  Future<ClaimReward> claimReward();
+  Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
   //
 
