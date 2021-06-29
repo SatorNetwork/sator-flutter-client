@@ -24,11 +24,6 @@ class MainController extends GetxController {
     _satorioRepository.updateWalletBalance();
   }
 
-  void backToMain() {
-    _satorioRepository.updateWalletBalance();
-    Get.until((route) => Get.currentRoute == '/() => MainPage');
-  }
-
   void _loadWallets() {
     _satorioRepository.updateWallets();
   }

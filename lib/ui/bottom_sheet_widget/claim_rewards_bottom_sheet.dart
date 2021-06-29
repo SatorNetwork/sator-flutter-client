@@ -74,8 +74,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
                 text: 'txt_awesome'.tr,
                 onPressed: () {
                   if (Get.isRegistered<MainController>()) {
-                    MainController mainController = Get.find();
-                    mainController.backToMain();
+                    Get.until((route) => Get.currentRoute == '/() => MainPage');
                   } else {
                     Get.back();
                   }
