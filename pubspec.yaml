@@ -50,6 +50,7 @@ flutter:
     - images/
     - images/bg/
     - images/new/
+    - images/avatar/
 
   fonts:
     - family: SatorIcons

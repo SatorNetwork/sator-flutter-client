@@ -1,14 +1,21 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/avatar_list.dart';
 
 class HomePage extends GetView<HomeController> {
+  final int avatarIndex = Random().nextInt(avatars.length);
+
   @override
   Widget build(BuildContext context) {
+    print(avatars[avatarIndex]);
     return Scaffold(
       backgroundColor: SatorioColor.darkAccent,
       extendBodyBehindAppBar: true,
@@ -64,8 +71,8 @@ class HomePage extends GetView<HomeController> {
                           ),
                           child: Center(
                             child: ClipOval(
-                              child: Image.asset(
-                                'images/new/avatar_1.png',
+                              child: SvgPicture.asset(
+                                avatars[avatarIndex],
                                 width: 50,
                                 height: 50,
                                 fit: BoxFit.fitWidth,
