@@ -118,7 +118,7 @@ class HomePage extends GetView<HomeController> {
                               controller.walletRx.value.length > 0
                                   ? controller.walletRx.value[0].displayedValue
                                   : '',
-                              style: TextStyle(
+                              style: textTheme.bodyText1!.copyWith(
                                 color: Colors.white,
                                 fontSize: 18.0 * coefficient,
                                 fontWeight: FontWeight.w700,
@@ -128,8 +128,8 @@ class HomePage extends GetView<HomeController> {
                               controller.walletRx.value.length > 1
                                   ? controller.walletRx.value[1].displayedValue
                                   : '',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.7),
+                              style: textTheme.bodyText2!.copyWith(
+                                color: Colors.white,
                                 fontSize: 12.0 * coefficient,
                                 fontWeight: FontWeight.w400,
                               ),
