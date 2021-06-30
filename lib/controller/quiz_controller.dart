@@ -41,7 +41,7 @@ class QuizController extends GetxController {
   }
 
   void backToMain() {
-    _satorioRepository.updateWallet();
+    _satorioRepository.updateWalletBalance();
     Get.until((route) => Get.currentRoute == '/() => MainPage');
   }
 
@@ -56,7 +56,7 @@ class QuizController extends GetxController {
   }
 
   void _initSocket(String challengeId) async {
-    _socket = await _satorioRepository.createSocket(challengeId);
+    _socket = await _satorioRepository.createQuizSocket(challengeId);
 
     _socket?.onOpen(() {
       print('Socket onOpen ${_socket?.url}');

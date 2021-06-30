@@ -1,9 +1,10 @@
 import 'package:hive/hive.dart';
+import 'package:satorio/data/db_adapter/adapter_type_ids.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 
 class AmountCurrencyAdapter extends TypeAdapter<AmountCurrency> {
   @override
-  int get typeId => 1;
+  int get typeId => AmountCurrencyAdapterTypeId;
 
   @override
   AmountCurrency read(BinaryReader reader) => AmountCurrency(

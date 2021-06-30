@@ -20,7 +20,7 @@ class QrScannerController extends GetxController {
   }
 
   void backToMain() {
-    _satorioRepository.updateWallet();
+    _satorioRepository.updateWalletBalance();
     Get.until((route) => Get.currentRoute == '/() => MainPage');
   }
 

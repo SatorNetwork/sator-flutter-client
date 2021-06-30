@@ -17,6 +17,9 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_result_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
+import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/wallet_detail_model.dart';
+import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
@@ -44,6 +47,8 @@ class ApiDataSourceImpl implements ApiDataSource {
       return request;
     });
   }
+
+  // region Internal
 
   Future<Response> _requestGet(
     String path, {
@@ -135,11 +140,25 @@ class ApiDataSourceImpl implements ApiDataSource {
     return utf8Response;
   }
 
+  // endregion
+
+  // region Local Auth
+
   @override
   Future<bool> isTokenExist() async {
     String? token = _authDataSource.getAuthToken();
     return token != null && token.isNotEmpty;
   }
+
+  @override
+  Future<void> authLogout() async {
+    _authDataSource.clearAll();
+    return;
+  }
+
+  // endregion
+
+  // region Auth
 
   @override
   Future<bool> signIn(String email, String password) {
@@ -164,6 +183,16 @@ class ApiDataSourceImpl implements ApiDataSource {
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
       return token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> apiLogout() {
+    return _requestPost(
+      'auth/logout',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
@@ -238,6 +267,10 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  // endregion
+
+  // region Profile
+
   @override
   Future<ProfileModel> profile() {
     return _requestGet(
@@ -247,10 +280,14 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  // endregion
+
+  // region Wallet
+
   @override
-  Future<List<AmountCurrencyModel>> wallet() {
+  Future<List<AmountCurrencyModel>> walletBalance() {
     return _requestGet(
-      'wallets/balance',
+      'balance',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
@@ -261,6 +298,50 @@ class ApiDataSourceImpl implements ApiDataSource {
         return [];
     });
   }
+
+  @override
+  Future<List<WalletModel>> wallets() {
+    return _requestGet(
+      'wallets',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => WalletModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<WalletDetailModel> walletDetail(String detailPath) {
+    return _requestGet(
+      detailPath,
+    ).then((Response response) {
+      return WalletDetailModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<List<TransactionModel>> walletTransactions(String transactionsPath) {
+    return _requestGet(
+      transactionsPath,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => TransactionModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  // endregion
+
+  // region Shows
 
   @override
   Future<List<ShowModel>> shows({int? page}) {
@@ -322,6 +403,10 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  // endregion
+
+  // region Challenges
+
   @override
   Future<dynamic> loadShow(String showId) {
     return _requestGet(
@@ -353,14 +438,12 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
-  @override
-  Future<void> logout() async {
-    _authDataSource.clearAll();
-    return;
-  }
+  // endregion
+
+  // region Quiz
 
   @override
-  Future<String> socketUrl(String challengeId) {
+  Future<String> quizSocketUrl(String challengeId) {
     return _requestGet(
       'quiz/$challengeId/play',
     ).then((Response response) {
@@ -369,6 +452,24 @@ class ApiDataSourceImpl implements ApiDataSource {
           .playUrl;
     });
   }
+
+  // endregion
+
+  // region Rewards
+
+  @override
+  Future<ClaimRewardModel> claimReward() {
+    return _requestGet(
+      'rewards/claim',
+    ).then((Response response) {
+      return ClaimRewardModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  // endregion
+
+  // region Socket
 
   @override
   Future<GetSocket> createSocket(String url) async {
@@ -390,13 +491,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     return;
   }
 
-  @override
-  Future<ClaimRewardModel> claimReward() {
-    return _requestGet(
-      'rewards/claim',
-    ).then((Response response) {
-      return ClaimRewardModel.fromJson(
-          json.decode(response.bodyString!)['data']);
-    });
-  }
+// endregion
+
 }
