@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/login_controller.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
@@ -28,12 +30,13 @@ class LoginPage extends GetView<LoginController> {
               Align(
                 alignment: Alignment.center,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 124),
+                  padding: EdgeInsets.only(
+                      left: 20, right: 20, top: 124 * coefficient),
                   child: Column(
                     children: [
                       SvgPicture.asset(
                         'images/logo.svg',
-                        height: 90,
+                        height: 90 * coefficient,
                         color: SatorioColor.brand,
                         fit: BoxFit.fitHeight,
                       ),
@@ -83,11 +86,9 @@ class LoginPage extends GetView<LoginController> {
                               },
                               child: Text(
                                 'txt_forgot_password'.tr,
-                                style: TextStyle(
-                                  color: SatorioColor.textBlack,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: textTheme.bodyText2!.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: SatorioColor.textBlack),
                               ),
                             ),
                           ),
@@ -113,17 +114,15 @@ class LoginPage extends GetView<LoginController> {
                   child: RichText(
                     text: TextSpan(
                         text: 'txt_not_member'.tr,
-                        style: TextStyle(
-                            color: SatorioColor.textBlack,
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.w400),
+                        style: textTheme.bodyText1!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: SatorioColor.textBlack),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'txt_create_account'.tr,
-                            style: TextStyle(
-                                color: SatorioColor.interactive,
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w600),
+                            style: textTheme.bodyText1!.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: SatorioColor.interactive),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 controller.toCreateAccount();
