@@ -15,7 +15,6 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    print(avatars[avatarIndex]);
     return Scaffold(
       backgroundColor: SatorioColor.darkAccent,
       extendBodyBehindAppBar: true,
@@ -454,7 +453,12 @@ class HomePage extends GetView<HomeController> {
     final width = Get.width - 20 - 32;
     final height = 168.0;
     return InkWell(
-      onTap: () => controller.toShowChallenges(show),
+      onTap: () {
+        controller.toShowDetail(show);
+      },
+      onLongPress: () {
+        controller.toShowChallenges(show);
+      },
       child: Container(
         width: width,
         height: height,

@@ -15,6 +15,7 @@ import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_result_model.dart';
+import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/transaction_model.dart';
@@ -377,6 +378,16 @@ class ApiDataSourceImpl implements ApiDataSource {
             .toList();
       else
         return [];
+    });
+  }
+
+  @override
+  Future<ShowDetailModel> showDetail(String showId) {
+    return _requestGet(
+      'shows/$showId',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      return ShowDetailModel.fromJson(jsonData['data']);
     });
   }
 

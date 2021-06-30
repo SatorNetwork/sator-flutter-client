@@ -69,4 +69,8 @@ const Map<String, String> en = {
   'txt_qr_scan': 'Scan QR Code',
   'txt_watching': 'You’re watching',
   'txt_rewards_amount': 'Rewards amount',
+  'txt_watch_trailer': 'Watch trailer',
+  'txt_challenges_available': 'Challenges available',
+  'txt_rewards_earned': 'Rewards earned',
+  'txt_episodes': 'Episodes',
 };

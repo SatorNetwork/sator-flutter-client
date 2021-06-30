@@ -11,6 +11,7 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
@@ -134,6 +135,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<List<Show>> showsFromCategory(String category) {
     return _apiDataSource
         .showsFromCategory(category)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<ShowDetail> showDetail(String showId) {
+    return _apiDataSource
+        .showDetail(showId)
         .catchError((value) => _handleException(value));
   }
 
