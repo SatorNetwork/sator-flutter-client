@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/quiz_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
@@ -73,9 +73,8 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
               ElevatedGradientButton(
                 text: 'txt_awesome'.tr,
                 onPressed: () {
-                  if (Get.isRegistered<QuizController>()) {
-                    QuizController quizController = Get.find();
-                    quizController.backToMain();
+                  if (Get.isRegistered<MainController>()) {
+                    Get.until((route) => Get.currentRoute == '/() => MainPage');
                   } else {
                     Get.back();
                   }
