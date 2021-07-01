@@ -135,22 +135,18 @@ class ShowDetailPage extends GetView<ShowDetailController> {
     final double maxSize =
         (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
 
-    return DraggableScrollableSheet(
-      initialChildSize: minSize,
-      minChildSize: minSize,
-      maxChildSize: maxSize,
-      expand: false,
-      builder: (context, scrollController) => LayoutBuilder(
-        builder: (context, constraints) =>
-            NotificationListener<ScrollNotification>(
-          onNotification: (notification) {
-            if (notification.metrics.pixels ==
-                notification.metrics.maxScrollExtent) expanded.value = true;
-            if (notification.metrics.pixels ==
-                notification.metrics.minScrollExtent) expanded.value = false;
-            return true;
-          },
-          child: SingleChildScrollView(
+    return NotificationListener<DraggableScrollableNotification>(
+      onNotification: (notification) {
+        expanded.value = notification.extent == notification.maxExtent;
+        return true;
+      },
+      child: DraggableScrollableSheet(
+        initialChildSize: minSize,
+        minChildSize: minSize,
+        maxChildSize: maxSize,
+        expand: false,
+        builder: (context, scrollController) => LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
             controller: scrollController,
             child: ConstrainedBox(
               constraints: BoxConstraints(
