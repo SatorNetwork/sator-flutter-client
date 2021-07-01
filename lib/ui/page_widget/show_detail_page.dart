@@ -7,6 +7,11 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ShowDetailPage extends GetView<ShowDetailController> {
+
+  final RxBool expanded = true.obs;
+
+  final bottomSheetMinHeight = 342;
+
   ShowDetailPage(Show show) : super() {
     controller.loadShowDetail(show);
   }
@@ -28,7 +33,7 @@ class ShowDetailPage extends GetView<ShowDetailController> {
         Obx(
           () => Image.network(
             controller.showDetailRx.value?.cover ?? '',
-            height: Get.height,
+            height: Get.height - bottomSheetMinHeight + 24,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) => Container(
               color: SatorioColor.darkAccent,
@@ -127,7 +132,7 @@ class ShowDetailPage extends GetView<ShowDetailController> {
   }
 
   Widget _bottomSheetContent() {
-    final double minSize = (Get.height - 443) / Get.height;
+    final double minSize = bottomSheetMinHeight / Get.height;
     final double maxSize =
         (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
 
@@ -165,16 +170,21 @@ class ShowDetailPage extends GetView<ShowDetailController> {
                       height: 4,
                     ),
                     Expanded(
-                      child: Text(
-                        '1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 4,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                        ),
+                      child: Obx(
+                          () => Text(
+                            '1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n1\n2\n3\n',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: expanded.value ? null : 4,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 18,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
