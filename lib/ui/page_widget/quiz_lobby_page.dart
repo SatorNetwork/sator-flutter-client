@@ -9,7 +9,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/avatar_list.dart';
 
 class QuizLobbyPage extends GetView<QuizLobbyController> {
-  final Random _random = Random();
+  final int _randomOffset = Random().nextInt(avatars.length);
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +149,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
   }
 
   Widget _payloadUserItem(PayloadUser payloadUser, int index) {
-    final avatarIndex = _random.nextInt(avatars.length);
+    int avatarIndex = (index +_randomOffset) % avatars.length;
     return Container(
       height: 48,
       child: Row(
