@@ -59,11 +59,6 @@ class WalletController extends GetxController {
   void _walletsListener() {
     List<Wallet> walletsNew = _walletsListenable.value.values.toList();
 
-    // Check is wallets changed
-    if (walletsNew.every((wallet) => wallets.containsKey(wallet.id))) {
-      return;
-    }
-
     // Update wallets map
     Map<String, Wallet> walletsTmp = {};
     _walletsListenable.value.values.forEach((wallet) {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 
 class ElevatedGradientButton extends StatelessWidget {
   const ElevatedGradientButton({
@@ -46,9 +48,9 @@ class ElevatedGradientButton extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               text,
-              style: TextStyle(
+              style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
-                  fontSize: 16.0,
+                  fontSize: 16.0 * coefficient,
                   fontWeight: FontWeight.w700),
             ),
           ),

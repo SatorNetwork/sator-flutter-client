@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/quiz_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/mixin/bacl_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ClaimRewardsBottomSheet extends StatelessWidget {
+class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
   const ClaimRewardsBottomSheet(this.data);
 
   final ClaimReward data;
@@ -30,7 +33,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
             children: [
               Icon(
                 Icons.check_circle_rounded,
-                size: 60,
+                size: 60 * coefficient,
                 color: SatorioColor.interactive,
               ),
               SizedBox(
@@ -38,33 +41,26 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
               ),
               Text(
                 "txt_congrats".tr,
-                style: TextStyle(
-                  color: SatorioColor.textBlack,
-                  fontSize: 34.0,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: textTheme.headline1!.copyWith(
+                    color: SatorioColor.textBlack,
+                    fontSize: 34.0 * coefficient,
+                    fontWeight: FontWeight.w700),
               ),
               SizedBox(
                 height: 8,
               ),
               Text(
                 "txt_congrats_msg".tr,
-                style: TextStyle(
-                  color: SatorioColor.textBlack,
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w400,
-                ),
+                style: textTheme.bodyText1!.copyWith(
+                    color: SatorioColor.textBlack, fontWeight: FontWeight.w400),
               ),
               SizedBox(
                 height: 4,
               ),
               Text(
                 data.amount,
-                style: TextStyle(
-                  color: SatorioColor.textBlack,
-                  fontSize: 17.0,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: textTheme.bodyText2!.copyWith(
+                    color: SatorioColor.textBlack, fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -73,9 +69,8 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
               ElevatedGradientButton(
                 text: 'txt_awesome'.tr,
                 onPressed: () {
-                  if (Get.isRegistered<QuizController>()) {
-                    QuizController quizController = Get.find();
-                    quizController.backToMain();
+                  if (Get.isRegistered<MainController>()) {
+                    backToMain();
                   } else {
                     Get.back();
                   }
@@ -100,9 +95,9 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
                     children: [
                       Text(
                         "txt_solana_link".tr,
-                        style: TextStyle(
+                        style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.darkAccent,
-                          fontSize: 16.0,
+                          fontSize: 16.0 * coefficient,
                           fontWeight: FontWeight.w700,
                         ),
                       ),

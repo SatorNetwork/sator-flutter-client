@@ -3,7 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/shows_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowsPage extends GetView<ShowsController> {
   @override
@@ -36,9 +38,9 @@ class ShowsPage extends GetView<ShowsController> {
                         child: Center(
                           child: Text(
                             'txt_challenges'.tr,
-                            style: TextStyle(
+                            style: textTheme.headline4!.copyWith(
                               color: SatorioColor.darkAccent,
-                              fontSize: 28.0,
+                              fontSize: 28.0 * coefficient,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -92,7 +94,7 @@ class ShowsPage extends GetView<ShowsController> {
         controller.toShowChallenges(show);
       },
       child: Container(
-        height: 168,
+        height: 168 * coefficient,
         child: Stack(
           fit: StackFit.passthrough,
           children: [
@@ -119,9 +121,9 @@ class ShowsPage extends GetView<ShowsController> {
                     Expanded(
                       child: Text(
                         show.title,
-                        style: TextStyle(
+                        style: textTheme.headline4!.copyWith(
                           color: Colors.white,
-                          fontSize: 20.0,
+                          fontSize: 20.0 * coefficient,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -136,9 +138,9 @@ class ShowsPage extends GetView<ShowsController> {
                             ),
                             child: Text(
                               'txt_new'.tr.toUpperCase(),
-                              style: TextStyle(
+                              style: textTheme.bodyText2!.copyWith(
                                 color: Colors.black,
-                                fontSize: 12.0,
+                                fontSize: 12.0 * coefficient,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

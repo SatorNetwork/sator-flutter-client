@@ -249,8 +249,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .walletDetail(detailPath)
         .then(
           (WalletDetail walletDetail) =>
-              _localDataSource.saveWalletDetail(walletDetail),
-        )
+          _localDataSource.saveWalletDetail(walletDetail),
+    )
         .catchError((value) => _handleException(value));
   }
 
