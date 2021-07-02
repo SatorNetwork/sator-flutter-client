@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/mixin/bacl_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -9,7 +10,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class ClaimRewardsBottomSheet extends StatelessWidget {
+class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
   const ClaimRewardsBottomSheet(this.data);
 
   final ClaimReward data;
@@ -69,7 +70,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget {
                 text: 'txt_awesome'.tr,
                 onPressed: () {
                   if (Get.isRegistered<MainController>()) {
-                    Get.until((route) => Get.currentRoute == '/() => MainPage');
+                    backToMain();
                   } else {
                     Get.back();
                   }
