@@ -259,7 +259,7 @@ class HomePage extends GetView<HomeController> {
           ),
         ),
         SizedBox(
-          height: 24.0 * coefficient,
+          height: 24,
         )
       ],
     );
