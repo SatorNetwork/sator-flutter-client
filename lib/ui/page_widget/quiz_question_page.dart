@@ -4,7 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 
 class QuizQuestionPage extends GetView<QuizQuestionController> {
   static const double _margin = 20.0;
@@ -12,7 +14,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
 
   @override
   Widget build(BuildContext context) {
-    double questionsBlockSize = Get.width - 2 * _margin;
+    double questionsBlockSize = (Get.width - 2 * _margin) * coefficient;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -41,9 +43,9 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                   ),
                   child: Text(
                     'txt_quit'.tr,
-                    style: TextStyle(
+                    style: textTheme.bodyText1!.copyWith(
                       color: SatorioColor.textBlack,
-                      fontSize: 18.0,
+                      fontSize: 18.0 * coefficient,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
@@ -64,8 +66,8 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                     child: Center(
                       child: CircularCountDownTimer(
                         controller: controller.countdownController,
-                        width: 119,
-                        height: 119,
+                        width: 119 * coefficient,
+                        height: 119 * coefficient,
                         duration:
                             controller.questionRx.value?.timeForAnswer ?? 0,
                         fillColor: SatorioColor.darkAccent,
@@ -76,9 +78,9 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                         autoStart: true,
                         strokeCap: StrokeCap.round,
                         textFormat: CountdownTextFormat.S,
-                        textStyle: TextStyle(
+                        textStyle: textTheme.headline1!.copyWith(
                           color: Colors.black,
-                          fontSize: 45.0,
+                          fontSize: 45.0 * coefficient,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -107,9 +109,9 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                           () => Text(
                             controller.questionRx.value?.questionText ?? '',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: textTheme.headline2!.copyWith(
                               color: SatorioColor.darkAccent,
-                              fontSize: 24.0,
+                              fontSize: 24.0 * coefficient,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -161,9 +163,9 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
           child: Text(
             answerOption.answerText,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: textTheme.headline4!.copyWith(
               color: isSelected ? Colors.white : Colors.black,
-              fontSize: 20.0,
+              fontSize: 20.0 * coefficient,
               fontWeight: FontWeight.w600,
             ),
           ),

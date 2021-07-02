@@ -1,14 +1,23 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/avatar_list.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 
 class HomePage extends GetView<HomeController> {
+  final int avatarIndex = Random().nextInt(avatars.length);
+
   @override
   Widget build(BuildContext context) {
+    print(avatars[avatarIndex]);
     return Scaffold(
       backgroundColor: SatorioColor.darkAccent,
       extendBodyBehindAppBar: true,
@@ -31,11 +40,10 @@ class HomePage extends GetView<HomeController> {
                         child: Obx(
                           () => Text(
                             controller.profileRx.value?.displayedName ?? '',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 32.0,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            style: textTheme.headline1!.copyWith(
+                                color: Colors.white,
+                                fontSize: 32.0 * coefficient,
+                                fontWeight: FontWeight.w700),
                           ),
                         ),
                       ),
@@ -45,8 +53,8 @@ class HomePage extends GetView<HomeController> {
                     alignment: Alignment.topRight,
                     child: Container(
                       margin: const EdgeInsets.only(top: 67, right: 20),
-                      width: 60,
-                      height: 60,
+                      width: 60 * coefficient,
+                      height: 60 * coefficient,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
@@ -64,8 +72,8 @@ class HomePage extends GetView<HomeController> {
                           ),
                           child: Center(
                             child: ClipOval(
-                              child: Image.asset(
-                                'images/new/avatar_1.png',
+                              child: SvgPicture.asset(
+                                avatars[avatarIndex],
                                 width: 50,
                                 height: 50,
                                 fit: BoxFit.fitWidth,
@@ -97,9 +105,9 @@ class HomePage extends GetView<HomeController> {
                       padding: const EdgeInsets.only(top: 21, left: 20),
                       child: Text(
                         'txt_wallet'.tr,
-                        style: TextStyle(
+                        style: textTheme.headline3!.copyWith(
                           color: Colors.white,
-                          fontSize: 24.0,
+                          fontSize: 24.0 * coefficient,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -117,9 +125,9 @@ class HomePage extends GetView<HomeController> {
                               controller.walletRx.value.length > 0
                                   ? controller.walletRx.value[0].displayedValue
                                   : '',
-                              style: TextStyle(
+                              style: textTheme.bodyText1!.copyWith(
                                 color: Colors.white,
-                                fontSize: 18.0,
+                                fontSize: 18.0 * coefficient,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -127,9 +135,9 @@ class HomePage extends GetView<HomeController> {
                               controller.walletRx.value.length > 1
                                   ? controller.walletRx.value[1].displayedValue
                                   : '',
-                              style: TextStyle(
-                                color: Colors.white.withOpacity(0.7),
-                                fontSize: 12.0,
+                              style: textTheme.bodyText2!.copyWith(
+                                color: Colors.white,
+                                fontSize: 12.0 * coefficient,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -167,16 +175,16 @@ class HomePage extends GetView<HomeController> {
           padding: const EdgeInsets.only(top: 32, left: 20, right: 20),
           child: Text(
             'Highest Rewarding',
-            style: TextStyle(
+            style: textTheme.headline3!.copyWith(
               color: SatorioColor.textBlack,
-              fontSize: 24.0,
+              fontSize: 24.0 * coefficient,
               fontWeight: FontWeight.w700,
             ),
           ),
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
-          height: 168,
+          height: 168 * coefficient,
           child: Obx(
             () => ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
@@ -196,16 +204,16 @@ class HomePage extends GetView<HomeController> {
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: Text(
             'Most Socializing',
-            style: TextStyle(
+            style: textTheme.headline3!.copyWith(
               color: SatorioColor.textBlack,
-              fontSize: 24.0,
+              fontSize: 24.0 * coefficient,
               fontWeight: FontWeight.w700,
             ),
           ),
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
-          height: 168,
+          height: 168 * coefficient,
           child: Obx(
             () => ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
@@ -225,16 +233,16 @@ class HomePage extends GetView<HomeController> {
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: Text(
             'Newest Added',
-            style: TextStyle(
+            style: textTheme.headline3!.copyWith(
               color: SatorioColor.textBlack,
-              fontSize: 24.0,
+              fontSize: 24.0 * coefficient,
               fontWeight: FontWeight.w700,
             ),
           ),
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
-          height: 168,
+          height: 168 * coefficient,
           child: Obx(
             () => ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
@@ -445,7 +453,7 @@ class HomePage extends GetView<HomeController> {
 
   Widget _showItem(Show show) {
     final width = Get.width - 20 - 32;
-    final height = 168.0;
+    final height = 168.0 * coefficient;
     return InkWell(
       onTap: () => controller.toShowChallenges(show),
       child: Container(
@@ -478,15 +486,15 @@ class HomePage extends GetView<HomeController> {
                     Expanded(
                       child: Text(
                         show.title,
-                        style: TextStyle(
+                        style: textTheme.headline4!.copyWith(
                           color: Colors.white,
-                          fontSize: 20.0,
+                          fontSize: 20.0 * coefficient,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         vertical: 4,
                         horizontal: 7,
                       ),
@@ -496,9 +504,9 @@ class HomePage extends GetView<HomeController> {
                       ),
                       child: Text(
                         'Rank #1',
-                        style: TextStyle(
+                        style: textTheme.bodyText2!.copyWith(
                           color: Colors.black,
-                          fontSize: 12.0,
+                          fontSize: 12.0 * coefficient,
                           fontWeight: FontWeight.w700,
                         ),
                       ),

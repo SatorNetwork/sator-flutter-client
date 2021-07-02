@@ -5,13 +5,26 @@ import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/show_model.dart';
+import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/wallet_detail_model.dart';
+import 'package:satorio/data/model/wallet_model.dart';
 
 abstract class ApiDataSource {
+  // region Local Auth
+
   Future<bool> isTokenExist();
+
+  Future<void> authLogout();
+
+  // endregion
+
+  // region Auth
 
   Future<bool> signIn(String email, String password);
 
   Future<bool> signUp(String email, String password, String username);
+
+  Future<bool> apiLogout();
 
   Future<bool> verifyAccount(String code);
 
@@ -27,9 +40,27 @@ abstract class ApiDataSource {
 
   Future<bool> resetPassword(String email, String code, String newPassword);
 
+  // endregion
+
+  // region Profile
+
   Future<ProfileModel> profile();
 
-  Future<List<AmountCurrencyModel>> wallet();
+  // endregion
+
+  // region Wallet
+
+  Future<List<AmountCurrencyModel>> walletBalance();
+
+  Future<List<WalletModel>> wallets();
+
+  Future<WalletDetailModel> walletDetail(String detailPath);
+
+  Future<List<TransactionModel>> walletTransactions(String transactionsPath);
+
+  // endregion
+
+  // region Shows
 
   Future<List<ShowModel>> shows({int? page});
 
@@ -41,16 +72,33 @@ abstract class ApiDataSource {
 
   Future<dynamic> getShowEpisodeByQR(String qrCodeId);
 
+  // endregion
+
+  // region Challenges
+
   Future<ChallengeModel> challenge(String challengeId);
 
-  Future<void> logout();
+  // endregion
 
-  Future<String> socketUrl(String challengeId);
+  // region Quiz
+
+  Future<String> quizSocketUrl(String challengeId);
+
+  // endregion
+
+  // region Rewards
+
+  Future<ClaimRewardModel> claimReward([String? claimRewardsPath]);
+
+  // endregion
+
+  // region Socket
 
   Future<GetSocket> createSocket(String url);
 
   Future<void> sendAnswer(
       GetSocket? socket, String questionId, String answerId);
 
-  Future<ClaimRewardModel> claimReward();
+// endregion
+
 }

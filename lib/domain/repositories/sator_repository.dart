@@ -4,6 +4,7 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/transaction.dart';
 
 abstract class SatorioRepository {
   Future<bool> isTokenValid();
@@ -26,7 +27,13 @@ abstract class SatorioRepository {
 
   Future<void> updateProfile();
 
-  Future<void> updateWallet();
+  Future<void> updateWalletBalance();
+
+  Future<void> updateWallets();
+
+  Future<void> updateWalletDetail(String detailPath);
+
+  Future<List<Transaction>> walletTransactions(String transactionsPath);
 
   Future<List<Show>> shows({int page});
 
@@ -42,16 +49,20 @@ abstract class SatorioRepository {
 
   Future<void> logout();
 
-  Future<GetSocket> createSocket(String challengeId);
+  Future<GetSocket> createQuizSocket(String challengeId);
 
   Future<void> sendAnswer(
       GetSocket? socket, String questionId, String answerId);
 
-  Future<ClaimReward> claimReward();
+  Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
   //
 
   ValueListenable profileListenable();
 
-  ValueListenable walletListenable();
+  ValueListenable walletBalanceListenable();
+
+  ValueListenable walletsListenable();
+
+  ValueListenable walletDetailsListenable(List<String> ids);
 }

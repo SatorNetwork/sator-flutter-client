@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/show_challenges_controller.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowChallengesPage extends GetView<ShowChallengesController> {
   ShowChallengesPage(Show show) : super() {
@@ -48,9 +50,9 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                       children: [
                         Text(
                           controller.show.title,
-                          style: TextStyle(
+                          style: textTheme.bodyText1!.copyWith(
                             color: SatorioColor.darkAccent,
-                            fontSize: 17.0,
+                            fontSize: 17,
                             fontWeight: FontWeight.w600,
                           ),
                         )
@@ -111,13 +113,13 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(13)),
             color: SatorioColor.alice_blue),
-        height: 84,
+        height: 84 * coefficient,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: 52,
-              width: 52,
+              height: 52 * coefficient,
+              width: 52 * coefficient,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
                 color: _colors[index % _colors.length],
@@ -125,8 +127,8 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
               child: Center(
                 child: SvgPicture.asset(
                   'images/logo.svg',
-                  width: 23,
-                  height: 23,
+                  width: 23 * coefficient,
+                  height: 23 * coefficient,
                 ),
               ),
             ),
@@ -142,9 +144,9 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                     challengeSimple.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: textTheme.bodyText1!.copyWith(
                       color: SatorioColor.darkAccent,
-                      fontSize: 18.0,
+                      fontSize: 18.0 * coefficient,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -155,9 +157,9 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                     challengeSimple.description,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.darkAccent,
-                      fontSize: 14.0,
+                      fontSize: 14.0 * coefficient,
                       fontWeight: FontWeight.w400,
                     ),
                   ),

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/challenge_controller.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ChallengePage extends GetView<ChallengeController> {
@@ -48,9 +50,9 @@ class ChallengePage extends GetView<ChallengeController> {
                         children: [
                           Text(
                             'txt_challenge'.tr,
-                            style: TextStyle(
+                            style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.darkAccent,
-                              fontSize: 17.0,
+                              fontSize: 17,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -75,8 +77,8 @@ class ChallengePage extends GetView<ChallengeController> {
               child: Column(
                 children: [
                   Container(
-                    width: 100,
-                    height: 100,
+                    width: 100 * coefficient,
+                    height: 100 * coefficient,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: SatorioColor.lavender_rose,
@@ -84,18 +86,18 @@ class ChallengePage extends GetView<ChallengeController> {
                     child: Center(
                       child: SvgPicture.asset(
                         'images/logo.svg',
-                        width: 40,
-                        height: 40,
+                        width: 40 * coefficient,
+                        height: 40 * coefficient,
                       ),
                     ),
                   ),
-                  SizedBox(height: 48),
+                  SizedBox(height: 48 * coefficient),
                   Obx(
                     () => Text(
                       controller.challengeRx.value?.title ?? '',
-                      style: TextStyle(
+                      style: textTheme.headline1!.copyWith(
                         color: SatorioColor.darkAccent,
-                        fontSize: 32.0,
+                        fontSize: 32.0 * coefficient,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -104,9 +106,9 @@ class ChallengePage extends GetView<ChallengeController> {
                   Obx(
                     () => Text(
                       controller.challengeRx.value?.description ?? '',
-                      style: TextStyle(
+                      style: textTheme.bodyText1!.copyWith(
                         color: SatorioColor.manatee,
-                        fontSize: 15.0,
+                        fontSize: 15.0 * coefficient,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -116,9 +118,9 @@ class ChallengePage extends GetView<ChallengeController> {
                     children: [
                       Text(
                         'txt_prize_pool'.tr,
-                        style: TextStyle(
+                        style: textTheme.bodyText1!.copyWith(
                           color: SatorioColor.textBlack,
-                          fontSize: 15.0,
+                          fontSize: 15.0 * coefficient,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -127,9 +129,9 @@ class ChallengePage extends GetView<ChallengeController> {
                           () => Text(
                             controller.challengeRx.value?.prizePool ?? '',
                             textAlign: TextAlign.end,
-                            style: TextStyle(
+                            style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
-                              fontSize: 15.0,
+                              fontSize: 15.0 * coefficient,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -142,9 +144,9 @@ class ChallengePage extends GetView<ChallengeController> {
                     children: [
                       Text(
                         'txt_winners'.tr,
-                        style: TextStyle(
+                        style: textTheme.bodyText1!.copyWith(
                           color: SatorioColor.textBlack,
-                          fontSize: 15.0,
+                          fontSize: 15.0 * coefficient,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -157,9 +159,9 @@ class ChallengePage extends GetView<ChallengeController> {
                                 ? '--'
                                 : controller.challengeRx.value!.winners,
                             textAlign: TextAlign.end,
-                            style: TextStyle(
+                            style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
-                              fontSize: 15.0,
+                              fontSize: 15.0 * coefficient,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
@@ -172,9 +174,9 @@ class ChallengePage extends GetView<ChallengeController> {
                     children: [
                       Text(
                         'txt_players'.tr,
-                        style: TextStyle(
+                        style: textTheme.bodyText1!.copyWith(
                           color: SatorioColor.textBlack,
-                          fontSize: 15.0,
+                          fontSize: 15.0 * coefficient,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -185,9 +187,9 @@ class ChallengePage extends GetView<ChallengeController> {
                                 ? ''
                                 : '${0} / ${controller.challengeRx.value!.players}',
                             textAlign: TextAlign.end,
-                            style: TextStyle(
+                            style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
-                              fontSize: 15.0,
+                              fontSize: 15.0 * coefficient,
                               fontWeight: FontWeight.w400,
                             ),
                           ),

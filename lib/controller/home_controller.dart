@@ -12,7 +12,6 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
-  late TabController tabController;
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
@@ -26,43 +25,31 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final Rx<List<Show>> showsNewestAddedRx = Rx([]);
 
   late ValueListenable<Box<Profile>> profileListenable;
-  late ValueListenable<Box<AmountCurrency>> walletListenable;
+  late ValueListenable<Box<AmountCurrency>> walletBalanceListenable;
 
   HomeController() {
-    this.tabController = TabController(length: 2, vsync: this);
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
-    this.walletListenable = _satorioRepository.walletListenable()
+    this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
   }
 
   @override
   void onInit() {
     super.onInit();
-    _loadProfile();
-    _loadWallet();
     // _loadShows();
-    _loadHighestRewarding();
-    _loadHighestRewarding();
+    _loadShowByCategoryName();
 
     profileListenable.addListener(_profileListener);
-    walletListenable.addListener(_walletListener);
+    walletBalanceListenable.addListener(_walletBalanceListener);
   }
 
   @override
   void onClose() {
     profileListenable.removeListener(_profileListener);
-    walletListenable.removeListener(_walletListener);
+    walletBalanceListenable.removeListener(_walletBalanceListener);
     super.onClose();
-  }
-
-  void _loadProfile() {
-    _satorioRepository.updateProfile();
-  }
-
-  void _loadWallet() {
-    _satorioRepository.updateWallet();
   }
 
   @Deprecated('changes 23.06')
@@ -72,7 +59,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     });
   }
 
-  void _loadHighestRewarding() {
+  void _loadShowByCategoryName() {
     _satorioRepository
         .showsFromCategory('highest_rewarding')
         .then((List<Show> shows) {
@@ -118,10 +105,11 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   void _profileListener() {
-    profileRx.value = profileListenable.value.getAt(0);
+    if (profileListenable.value.length > 0)
+      profileRx.value = profileListenable.value.getAt(0);
   }
 
-  void _walletListener() {
-    walletRx.value = walletListenable.value.values.toList();
+  void _walletBalanceListener() {
+    walletRx.value = walletBalanceListenable.value.values.toList();
   }
 }

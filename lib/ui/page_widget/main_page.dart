@@ -5,6 +5,7 @@ import 'package:satorio/ui/page_widget/home_page.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/shows_page.dart';
 import 'package:satorio/ui/page_widget/some_page.dart';
+import 'package:satorio/ui/page_widget/wallet_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 
@@ -20,8 +21,23 @@ class MainPage extends GetView<MainController> {
           type: BottomNavigationBarType.fixed,
           currentIndex: controller.selectedBottomTabIndex.value,
           onTap: (index) {
-            index != 2 ?
-            controller.selectedBottomTabIndex.value = index : controller.toQrScanner();
+            switch (index) {
+              case 0:
+                break;
+              case 1:
+                break;
+              case 2:
+                controller.toQrScanner();
+                return;
+              case 3:
+                break;
+              case 4:
+                controller.loadWallets();
+                break;
+              default:
+                break;
+            }
+            controller.selectedBottomTabIndex.value = index;
           },
           unselectedItemColor: SatorioColor.grey,
           fixedColor: Colors.black,
@@ -67,6 +83,6 @@ class MainPage extends GetView<MainController> {
     ShowsPage(),
     QrScannerPage(),
     SomePage(),
-    SomePage()
+    WalletPage(),
   ];
 }

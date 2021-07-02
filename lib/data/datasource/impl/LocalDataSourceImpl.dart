@@ -6,12 +6,19 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/db_adapter/amount_currency_adapter.dart';
 import 'package:satorio/data/db_adapter/profile_adapter.dart';
+import 'package:satorio/data/db_adapter/wallet_action_adapter.dart';
+import 'package:satorio/data/db_adapter/wallet_adapter.dart';
+import 'package:satorio/data/db_adapter/wallet_detail_adapter.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 
 class LocalDataSourceImpl implements LocalDataSource {
   static const _profileBox = 'profile';
+  static const _walletBalanceBox = 'walletBalance';
   static const _walletBox = 'wallet';
+  static const _walletDetailBox = 'walletDetail';
 
   @override
   Future<void> init() async {
@@ -19,19 +26,22 @@ class LocalDataSourceImpl implements LocalDataSource {
 
     Hive.registerAdapter(ProfileAdapter());
     Hive.registerAdapter(AmountCurrencyAdapter());
+    Hive.registerAdapter(WalletAdapter());
+    Hive.registerAdapter(WalletActionAdapter());
+    Hive.registerAdapter(WalletDetailAdapter());
 
     await Hive.openBox<Profile>(_profileBox);
-    await Hive.openBox<AmountCurrency>(_walletBox);
+    await Hive.openBox<AmountCurrency>(_walletBalanceBox);
+    await Hive.openBox<Wallet>(_walletBox);
+    await Hive.openBox<WalletDetail>(_walletDetailBox);
   }
 
   @override
-  Future<void> clear() {
-    return Hive.box<Profile>(_profileBox)
-        .clear()
-        .then((value) => Hive.box<AmountCurrency>(_walletBox).clear())
-        .then((value) {
-      return;
-    });
+  Future<void> clear() async {
+    await Hive.box<Profile>(_profileBox).clear();
+    await Hive.box<AmountCurrency>(_walletBalanceBox).clear();
+    await Hive.box<Wallet>(_walletBox).clear();
+    await Hive.box<WalletDetail>(_walletDetailBox).clear();
   }
 
   @override
@@ -45,18 +55,45 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<void> saveWallet(List<AmountCurrency> wallet) {
-    Box<AmountCurrency> walletBox = Hive.box<AmountCurrency>(_walletBox);
-    return walletBox
+  Future<void> saveWalletBalance(List<AmountCurrency> wallet) {
+    Box<AmountCurrency> walletBalanceBox =
+        Hive.box<AmountCurrency>(_walletBalanceBox);
+    return walletBalanceBox
         .clear()
-        .then((value) => walletBox.addAll(wallet))
+        .then((value) => walletBalanceBox.addAll(wallet))
         .then((value) {
       return;
     });
   }
 
   @override
-  ValueListenable walletListenable() {
-    return Hive.box<AmountCurrency>(_walletBox).listenable();
+  ValueListenable walletBalanceListenable() {
+    return Hive.box<AmountCurrency>(_walletBalanceBox).listenable();
+  }
+
+  @override
+  Future<void> saveWallets(List<Wallet> wallets) async {
+    Box<Wallet> walletsBox = Hive.box<Wallet>(_walletBox);
+    wallets.forEach((wallet) {
+      walletsBox.put(wallet.id, wallet);
+    });
+  }
+
+  @override
+  ValueListenable walletsListenable() {
+    return Hive.box<Wallet>(_walletBox).listenable();
+  }
+
+  @override
+  Future<void> saveWalletDetail(WalletDetail walletDetail) async {
+    Hive.box<WalletDetail>(_walletDetailBox).put(
+      walletDetail.id,
+      walletDetail,
+    );
+  }
+
+  @override
+  ValueListenable walletDetailsListenable(List<String> ids) {
+    return Hive.box<WalletDetail>(_walletDetailBox).listenable(keys: ids);
   }
 }
