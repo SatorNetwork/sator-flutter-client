@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:satorio/controller/password_recovery_controller.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 
 class ForgotPasswordVerificationPage
     extends GetView<PasswordRecoveryController> {
@@ -41,9 +43,9 @@ class ForgotPasswordVerificationPage
               children: [
                 Text(
                   "txt_verification".tr,
-                  style: TextStyle(
+                  style: textTheme.headline1!.copyWith(
                       color: SatorioColor.textBlack,
-                      fontSize: 34.0,
+                      fontSize: 34.0 * coefficient,
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
@@ -51,9 +53,8 @@ class ForgotPasswordVerificationPage
                 ),
                 Text(
                   "txt_password_verification_text".tr,
-                  style: TextStyle(
+                  style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
-                      fontSize: 15.0,
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(
@@ -75,8 +76,8 @@ class ForgotPasswordVerificationPage
                     selectedFillColor: SatorioColor.inputGrey,
                     shape: PinCodeFieldShape.box,
                     borderRadius: BorderRadius.circular(5),
-                    fieldHeight: 50,
-                    fieldWidth: 50,
+                    fieldHeight: 50 * coefficient,
+                    fieldWidth: 50 * coefficient,
                     activeFillColor: SatorioColor.inputGrey,
                   ),
                   animationDuration: Duration(milliseconds: 300),
@@ -99,9 +100,8 @@ class ForgotPasswordVerificationPage
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
                     "txt_resend_code".tr,
-                    style: TextStyle(
+                    style: textTheme.bodyText1!.copyWith(
                         color: SatorioColor.interactive,
-                        fontSize: 17.0,
                         fontWeight: FontWeight.w600),
                   ),
                 ),

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/create_account_controller.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
@@ -19,29 +21,25 @@ class CreateAccountPage extends GetView<CreateAccountController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: Get.mediaQuery.size.height -
-              Get.mediaQuery.padding.top +
-              kToolbarHeight,
+          height: Get.height - Get.mediaQuery.padding.top + kToolbarHeight,
           color: Colors.white,
           child: Stack(
             children: [
               Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 124),
+                  padding: EdgeInsets.only(
+                      left: 20, right: 20, top: 124 * coefficient),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'txt_create_account'.tr,
-                        style: TextStyle(
-                            color: SatorioColor.textBlack,
-                            fontSize: 34.0,
-                            fontWeight: FontWeight.w700),
-                      ),
+                      Text('txt_create_account'.tr,
+                          style: textTheme.headline1!.copyWith(
+                              fontSize: 34.0 * coefficient,
+                              fontWeight: FontWeight.w700)),
                       SizedBox(
-                        height: 32,
+                        height: 32 * coefficient,
                       ),
                       Obx(
                         () => InputTextField(
@@ -100,17 +98,15 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                             child: RichText(
                               text: TextSpan(
                                   text: 'txt_terms_of_service_description'.tr,
-                                  style: TextStyle(
-                                      color: SatorioColor.textBlack,
-                                      fontSize: 17.0,
-                                      fontWeight: FontWeight.w400),
+                                  style: textTheme.bodyText1!.copyWith(
+                                      fontWeight: FontWeight.w400,
+                                      color: SatorioColor.textBlack),
                                   children: <TextSpan>[
                                     TextSpan(
                                       text: 'txt_terms_of_service'.tr,
-                                      style: TextStyle(
-                                          color: SatorioColor.interactive,
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.w500),
+                                      style: textTheme.bodyText1!.copyWith(
+                                          fontWeight: FontWeight.w500,
+                                          color: SatorioColor.interactive),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
                                           controller.toTermsOfService();
@@ -144,17 +140,15 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                   child: RichText(
                     text: TextSpan(
                         text: 'txt_already_member'.tr,
-                        style: TextStyle(
-                            color: SatorioColor.textBlack,
-                            fontSize: 17.0,
-                            fontWeight: FontWeight.w400),
+                        style: textTheme.bodyText1!.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: SatorioColor.textBlack),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'txt_sign_in'.tr,
-                            style: TextStyle(
-                                color: SatorioColor.interactive,
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w600),
+                            style: textTheme.bodyText1!.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: SatorioColor.interactive),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 controller.toSignIn();

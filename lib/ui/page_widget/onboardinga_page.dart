@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 
 class OnBoardingPage extends GetView<OnBoardingController> {
   @override
@@ -28,7 +29,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
                     'txt_skip'.tr,
                     style: TextStyle(
                       color: controller.data[controller.pageRx.value].textColor,
-                      fontSize: 18.0,
+                      fontSize: 18 * coefficient,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -50,10 +51,10 @@ class OnBoardingPage extends GetView<OnBoardingController> {
             alignment: Alignment.topCenter,
             child: Column(
               children: [
-                SizedBox(height: 183),
+                SizedBox(height: 183 * coefficient),
                 Image.asset(
                   data.assetName,
-                  height: 164,
+                  height: 164 * coefficient,
                   fit: BoxFit.fitHeight,
                 ),
                 SizedBox(height: 61),
@@ -64,7 +65,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: data.textColor,
-                      fontSize: 34.0,
+                      fontSize: 34 * coefficient,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -81,7 +82,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
                 onPressed: () => controller.nextOrJoin(),
                 fillColor: data.buttonColor,
                 shape: CircleBorder(),
-                padding: EdgeInsets.all(26.0),
+                padding: EdgeInsets.all(26 * coefficient),
                 child: Icon(
                   Icons.chevron_right_rounded,
                   size: 48,
