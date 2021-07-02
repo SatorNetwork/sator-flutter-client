@@ -7,6 +7,7 @@ mixin BackToMainMixin {
       SatorioRepository satorioRepository = Get.find();
       satorioRepository.updateWalletBalance();
     }
+    Get.until((route) => !Get.isOverlaysOpen);
     Get.until((route) => Get.currentRoute == '/() => MainPage');
   }
 }
