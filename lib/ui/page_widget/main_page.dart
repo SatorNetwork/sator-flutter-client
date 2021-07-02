@@ -21,8 +21,23 @@ class MainPage extends GetView<MainController> {
           type: BottomNavigationBarType.fixed,
           currentIndex: controller.selectedBottomTabIndex.value,
           onTap: (index) {
-            index != 2 ?
-            controller.selectedBottomTabIndex.value = index : controller.toQrScanner();
+            switch (index) {
+              case 0:
+                break;
+              case 1:
+                break;
+              case 2:
+                controller.toQrScanner();
+                return;
+              case 3:
+                break;
+              case 4:
+                controller.loadWallets();
+                break;
+              default:
+                break;
+            }
+            controller.selectedBottomTabIndex.value = index;
           },
           unselectedItemColor: SatorioColor.grey,
           fixedColor: Colors.black,

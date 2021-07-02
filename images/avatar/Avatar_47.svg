@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140">
+    <polygon class="cls-1"
+        points="0 0 0 140 30 140 30 120 50 120 50 70 40 70 40 50 30 50 30 40 50 40 50 10 90 10 90 40 110 40 110 50 100 50 100 70 90 70 90 120 110 120 110 140 140 140 140 0 0 0"
+        fill="#9d9d9d" />
+    <rect class="cls-2" x="60" y="130" width="20" height="10" fill="#1b3032" />
+    <rect class="cls-3" x="60" y="80" width="20" height="10" fill="#fff" />
+    <polygon class="cls-4"
+        points="90 120 90 100 80 100 80 110 60 110 60 100 50 100 50 120 30 120 30 140 60 140 60 130 80 130 80 140 110 140 110 120 90 120"
+        fill="#008475" />
+    <rect class="cls-4" x="80" y="60" width="10" height="10" fill="#008475" />
+    <rect class="cls-4" x="50" y="60" width="10" height="10" fill="#008475" />
+    <polygon class="cls-4"
+        points="30 40 30 50 40 50 40 60 50 60 50 50 90 50 90 60 100 60 100 50 110 50 110 40 30 40"
+        fill="#008475" />
+    <rect class="cls-4" x="50" y="10" width="40" height="20" fill="#008475" />
+    <rect class="cls-5" x="90" y="60" width="10" height="10" fill="#b1f7f2" />
+    <path class="cls-5" d="M60,70H50v30H60v10H80V100H90V70H80V60H90V50H50V60H60ZM80,90H60V80H80Z"
+        fill="#b1f7f2" />
+    <rect class="cls-5" x="40" y="60" width="10" height="10" fill="#b1f7f2" />
+    <rect class="cls-5" x="50" y="30" width="40" height="10" fill="#b1f7f2" />
+</svg>

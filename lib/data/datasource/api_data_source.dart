@@ -88,7 +88,7 @@ abstract class ApiDataSource {
 
   // region Rewards
 
-  Future<ClaimRewardModel> claimReward();
+  Future<ClaimRewardModel> claimReward([String? claimRewardsPath]);
 
   // endregion
 

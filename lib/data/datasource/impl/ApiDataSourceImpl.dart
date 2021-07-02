@@ -458,9 +458,13 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Rewards
 
   @override
-  Future<ClaimRewardModel> claimReward() {
+  Future<ClaimRewardModel> claimReward([String? claimRewardsPath]) {
+    String path = (claimRewardsPath == null || claimRewardsPath.isEmpty)
+        ? 'rewards/claim'
+        : claimRewardsPath;
+
     return _requestGet(
-      'rewards/claim',
+      path,
     ).then((Response response) {
       return ClaimRewardModel.fromJson(
           json.decode(response.bodyString!)['data']);

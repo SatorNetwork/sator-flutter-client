@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -5,8 +7,11 @@ import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_user.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/avatar_list.dart';
 
 class QuizLobbyPage extends GetView<QuizLobbyController> {
+  final int _randomOffset = Random().nextInt(avatars.length);
+
   @override
   Widget build(BuildContext context) {
     const double kHeight = 120;
@@ -145,12 +150,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
   }
 
   Widget _payloadUserItem(PayloadUser payloadUser, int index) {
-    final List<String> _assetNames = [
-      'avatar_1',
-      'avatar_2',
-      'avatar_3',
-      'avatar_4',
-    ];
+    int avatarIndex = (index +_randomOffset) % avatars.length;
     return Container(
       height: 48,
       child: Row(
@@ -160,8 +160,8 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
             width: 12,
           ),
           ClipOval(
-            child: Image.asset(
-              'images/new/${_assetNames[index % _assetNames.length]}.png',
+            child: SvgPicture.asset(
+              avatars[avatarIndex],
               width: 34,
               height: 34,
               fit: BoxFit.fitWidth,

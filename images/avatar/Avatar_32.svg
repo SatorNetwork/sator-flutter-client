@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140">
+    <rect class="cls-1" x="50" y="70" width="40" height="50" fill="#31f2ea" />
+    <rect class="cls-2" x="60" y="50" width="10" height="10" fill="#fff" />
+    <rect class="cls-3" x="80" y="40" width="10" height="10" fill="#008475" />
+    <rect class="cls-3" x="50" y="40" width="10" height="10" fill="#008475" />
+    <polygon class="cls-4"
+        points="90 50 80 50 80 40 90 40 90 30 50 30 50 40 60 40 60 50 70 50 70 60 60 60 60 50 50 50 50 40 40 40 40 60 50 60 50 70 90 70 90 60 100 60 100 40 90 40 90 50"
+        fill="#7299ed" />
+    <rect class="cls-5" x="60" y="20" width="20" height="10" fill="#f7d06b" />
+    <path class="cls-6" d="M0,140H140V0H0ZM40,40H50V30H60V20H80V30H90V40h10V60H90v60H50V60H40Z"
+        fill="#b1f7f2" />
+</svg>

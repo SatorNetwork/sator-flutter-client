@@ -198,9 +198,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<ClaimReward> claimReward() {
+  Future<ClaimReward> claimReward([String? claimRewardsPath]) {
     return _apiDataSource
-        .claimReward()
+        .claimReward(claimRewardsPath)
         .catchError((value) => _handleException(value));
   }
 
