@@ -9,8 +9,8 @@ import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/util/avatar_list.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/util/avatar_list.dart';
 
 class HomePage extends GetView<HomeController> {
   final int avatarIndex = Random().nextInt(avatars.length);
@@ -258,6 +258,9 @@ class HomePage extends GetView<HomeController> {
             ),
           ),
         ),
+        SizedBox(
+          height: 24,
+        )
       ],
     );
   }
