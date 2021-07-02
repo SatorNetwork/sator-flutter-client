@@ -4,7 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_result_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_winner.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QuizResultPage extends GetView<QuizResultController> {
@@ -28,9 +30,9 @@ class QuizResultPage extends GetView<QuizResultController> {
                   Text(
                     "txt_winners".tr,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: textTheme.headline1!.copyWith(
                       color: SatorioColor.darkAccent,
-                      fontSize: 34.0,
+                      fontSize: 34.0 * coefficient,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -42,18 +44,20 @@ class QuizResultPage extends GetView<QuizResultController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("txt_prize_pool".tr,
-                            style: TextStyle(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w400,
-                            )),
+                        Text(
+                          "txt_prize_pool".tr,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: SatorioColor.darkAccent,
+                            fontSize: 18.0 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                         Obx(
                           () => Text(
                             controller.resultRx.value?.prizePool ?? '',
-                            style: TextStyle(
+                            style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.darkAccent,
-                              fontSize: 18.0,
+                              fontSize: 18.0 * coefficient,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -103,7 +107,7 @@ class QuizResultPage extends GetView<QuizResultController> {
                     ),
                   ),
                   SizedBox(
-                    height: 24,
+                    height: 24 * coefficient,
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
@@ -150,9 +154,8 @@ class QuizResultPage extends GetView<QuizResultController> {
             payloadWinner.username,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+            style: textTheme.bodyText1!.copyWith(
               color: SatorioColor.textBlack,
-              fontSize: 17.0,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -166,9 +169,8 @@ class QuizResultPage extends GetView<QuizResultController> {
           child: Center(
             child: Text(
               payloadWinner.prize,
-              style: TextStyle(
+              style: textTheme.bodyText2!.copyWith(
                 color: Colors.white,
-                fontSize: 15.0,
                 fontWeight: FontWeight.w600,
               ),
             ),

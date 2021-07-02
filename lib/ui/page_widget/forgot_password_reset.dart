@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/password_recovery_controller.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
@@ -38,12 +40,13 @@ class ForgotPasswordResetPage extends GetView<PasswordRecoveryController> {
           color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 "txt_reset_password".tr,
-                style: TextStyle(
+                style: textTheme.headline1!.copyWith(
                     color: SatorioColor.textBlack,
-                    fontSize: 34.0,
+                    fontSize: 34.0 * coefficient,
                     fontWeight: FontWeight.w700),
               ),
               SizedBox(
@@ -51,9 +54,8 @@ class ForgotPasswordResetPage extends GetView<PasswordRecoveryController> {
               ),
               Text(
                 "txt_reset_password_text".tr,
-                style: TextStyle(
+                style: textTheme.bodyText2!.copyWith(
                     color: SatorioColor.textBlack,
-                    fontSize: 15.0,
                     fontWeight: FontWeight.w400),
               ),
               SizedBox(

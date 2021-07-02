@@ -9,7 +9,9 @@ import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet_action.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -49,7 +51,7 @@ class WalletPage extends GetView<WalletController> {
               child: Center(
                 child: Text(
                   'txt_wallet'.tr,
-                  style: TextStyle(
+                  style: textTheme.headline2!.copyWith(
                     color: SatorioColor.darkAccent,
                     fontSize: 28.0,
                     fontWeight: FontWeight.w700,
@@ -93,7 +95,7 @@ class WalletPage extends GetView<WalletController> {
               ),
             ),
             SizedBox(
-              height: 24,
+              height: 24 * coefficient,
             ),
             Container(
               height: 90,

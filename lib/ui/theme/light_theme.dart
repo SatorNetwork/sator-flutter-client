@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
@@ -21,3 +22,7 @@ final lightTheme = ThemeData(
   textTheme:
       textTheme.copyWith(bodyText1: TextStyle(color: SatorioColor.brand)),
 );
+
+final double coefficient = Get.height / 812;
+
+
