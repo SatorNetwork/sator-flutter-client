@@ -54,7 +54,8 @@ class DefaultDialog extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              text,
+              capitalize(text),
+              textAlign: TextAlign.center,
               style: textTheme.bodyText1!
                   .copyWith(color: Colors.black, fontWeight: FontWeight.w400),
             ),
@@ -67,5 +68,9 @@ class DefaultDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String capitalize(String text) {
+    return "${text[0].toUpperCase()}${text.substring(1)}";
   }
 }
