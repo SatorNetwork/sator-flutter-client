@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:satorio/binding/show_episodes_binding.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/show_episodes_page.dart';
 
 class ShowDetailController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -17,5 +19,7 @@ class ShowDetailController extends GetxController {
     });
   }
 
-  void toEpisodes() {}
+  void toEpisodes() {
+    Get.to(() => ShowEpisodesPage(), binding: ShowEpisodesBinding());
+  }
 }

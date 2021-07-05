@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
-import 'package:satorio/controller/mixin/bacl_to_main_mixin.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
-import 'package:satorio/controller/mixin/bacl_to_main_mixin.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/qr_result.dart';
