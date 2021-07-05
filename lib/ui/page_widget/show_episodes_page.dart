@@ -72,16 +72,12 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
                   kTextTabBarHeight +
                   24 * coefficient,
             ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(32),
-                topRight: Radius.circular(32),
-              ),
-              color: Colors.white,
-            ),
             child: TabBarView(
               controller: controller.tabController,
-              children: [_episodesList(), _episodesList()],
+              children: [
+                _episodesList(),
+                _episodesList(),
+              ],
             ),
           )
         ],
@@ -90,15 +86,24 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
   }
 
   Widget _episodesList() {
-    return ListView.separated(
-      padding: const EdgeInsets.all(20),
-      separatorBuilder: (context, index) => SizedBox(
-        height: 17 * coefficient,
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(32),
+          topRight: Radius.circular(32),
+        ),
+        color: Colors.white,
       ),
-      itemCount: 5,
-      itemBuilder: (context, index) {
-        return _episode();
-      },
+      child: ListView.separated(
+        padding: const EdgeInsets.all(20),
+        separatorBuilder: (context, index) => SizedBox(
+          height: 17 * coefficient,
+        ),
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return _episode();
+        },
+      ),
     );
   }
 
