@@ -3,6 +3,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/extension.dart';
 
 class DefaultDialog extends StatelessWidget {
   const DefaultDialog(this.title, this.text, this.buttonText,
@@ -54,7 +55,7 @@ class DefaultDialog extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              capitalize(text),
+              text.capitalize(),
               textAlign: TextAlign.center,
               style: textTheme.bodyText1!
                   .copyWith(color: Colors.black, fontWeight: FontWeight.w400),
@@ -68,9 +69,5 @@ class DefaultDialog extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String capitalize(String text) {
-    return "${text[0].toUpperCase()}${text.substring(1)}";
   }
 }
