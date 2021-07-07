@@ -31,6 +31,7 @@ class MainPage extends GetView<MainController> {
                 controller.toQrScanner();
                 return;
               case 3:
+                controller.toRealmTest();
                 break;
               case 4:
                 controller.loadWallets();
