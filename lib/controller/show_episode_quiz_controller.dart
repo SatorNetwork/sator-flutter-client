@@ -1,16 +1,17 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 
-class QuizQuestionController extends GetxController {
+class ShowEpisodeQuizController extends GetxController {
   Rx<PayloadQuestion?> questionRx = Rx(null);
   Rx<String> answerIdRx = Rx('');
   Rx<bool> isAnswerSentRx = Rx(false);
   CountDownController countdownController = CountDownController();
 
-  QuizController quizController = Get.find();
+  ShowEpisodeQuizController() {
+    // load episode quiz question
+  }
 
   void updatePayloadQuestion(PayloadQuestion payloadQuestion, bool restart) {
     answerIdRx.value = '';
@@ -30,11 +31,7 @@ class QuizQuestionController extends GetxController {
   void _sendAnswer() {
     if (questionRx.value != null) {
       if (answerIdRx.value.isNotEmpty && !isAnswerSentRx.value) {
-        quizController
-            .sendAnswer(questionRx.value!.questionId, answerIdRx.value)
-            .then((value) {
-          isAnswerSentRx.value = true;
-        });
+        // send answer
       }
     }
   }

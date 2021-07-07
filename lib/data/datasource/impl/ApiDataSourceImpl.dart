@@ -17,6 +17,7 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_result_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
+import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
@@ -39,7 +40,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   AuthDataSource _authDataSource;
 
   ApiDataSourceImpl(this._authDataSource) {
-    _getConnect.baseUrl = 'https://api.stage.sator.io/';
+    _getConnect.baseUrl = 'https://api.stage.sator.io/dev/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -388,6 +389,24 @@ class ApiDataSourceImpl implements ApiDataSource {
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       return ShowDetailModel.fromJson(jsonData['data']);
+    });
+  }
+
+  @override
+  Future<List<ShowSeasonModel>> showSeasons(String showId) {
+    return _requestGet(
+      'shows/$showId/episodes',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      List<ShowSeasonModel> result;
+      if (jsonData['data'] is Iterable)
+        result =  (jsonData['data'] as Iterable)
+            .map((element) => ShowSeasonModel.fromJson(element))
+            .toList();
+      else
+        result = [];
+      result.sort((a, b) => a.seasonNumber.compareTo(b.seasonNumber));
+      return result;
     });
   }
 

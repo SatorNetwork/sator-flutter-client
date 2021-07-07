@@ -12,6 +12,7 @@ import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
@@ -146,6 +147,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<ShowSeason>> showSeasons(String showId) {
+    return _apiDataSource
+        .showSeasons(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<ChallengeSimple>> showChallenges(String showId, {int? page}) {
     return _apiDataSource
         .showChallenges(showId, page: page)
@@ -249,8 +257,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .walletDetail(detailPath)
         .then(
           (WalletDetail walletDetail) =>
-          _localDataSource.saveWalletDetail(walletDetail),
-    )
+              _localDataSource.saveWalletDetail(walletDetail),
+        )
         .catchError((value) => _handleException(value));
   }
 

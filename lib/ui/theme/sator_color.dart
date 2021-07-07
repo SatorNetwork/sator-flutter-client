@@ -21,4 +21,5 @@ class SatorioColor {
   static const Color mona_lisa = Color(0xFFFD9393);
   static const Color light_sky_blue = Color(0xFF93CAFD);
   static const Color manatee = Color(0xFF838795);
+  static const Color bright_grey = Color(0xFF525560);
 }

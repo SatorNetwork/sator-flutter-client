@@ -8,7 +8,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ShowDetailPage extends GetView<ShowDetailController> {
-  final bottomSheetMinHeight = 300 * coefficient;
+  final bottomSheetMinHeight = 250 * coefficient;
 
   ShowDetailPage(Show show) : super() {
     controller.loadShowDetail(show);
@@ -159,7 +159,6 @@ class ShowDetailPage extends GetView<ShowDetailController> {
 
   Widget _bottomSheetContent() {
     return Container(
-      // height: bottomSheetMinHeight,
       child: Padding(
         padding:
             const EdgeInsets.only(top: 32, left: 20, right: 20, bottom: 32),
@@ -180,16 +179,18 @@ class ShowDetailPage extends GetView<ShowDetailController> {
             SizedBox(
               height: 4.0 * coefficient,
             ),
-            Text(
-              _descr,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 4,
-              textAlign: TextAlign.justify,
-              style: textTheme.bodyText2!.copyWith(
-                color: Colors.black,
-                fontSize: 15.0 * coefficient,
-                fontWeight: FontWeight.w400,
-              ),
+            Obx(
+                () => Text(
+                  controller.showDetailRx.value?.description ?? '',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 4,
+                  textAlign: TextAlign.justify,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15.0 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
             ),
             SizedBox(
               height: 20.0 * coefficient,
@@ -268,7 +269,4 @@ class ShowDetailPage extends GetView<ShowDetailController> {
       ),
     );
   }
-
-  final String _descr =
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse interdum lectus semper neque pellentesque, nec molestie elit maximus. Nulla et diam at ante pellentesque ornare. Suspendisse dapibus, erat at ullamcorper dignissim, purus justo blandit diam, id eleifend mi lacus venenatis turpis. Nullam id lacus non odio egestas vehicula. Aliquam vitae vulputate nisl. Sed quis sodales quam, et semper turpis. Etiam iaculis elit a mauris pretium, in suscipit velit auctor. Fusce eu iaculis augue.\nIn hac habitasse platea dictumst. Suspendisse porta fringilla erat eu consequat. Etiam malesuada odio non augue ultricies euismod. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec vel rhoncus eros. Nullam eu nisl eu ex finibus consectetur. Cras sit amet eros posuere, mollis mi ut, malesuada ante. Aliquam hendrerit eleifend ante.\nMorbi tempus ante id ornare feugiat. Nullam eget orci ac mauris lobortis tristique in vitae quam. Nulla et nunc rhoncus, venenatis massa sit amet, lacinia velit. Donec facilisis tortor eu urna pharetra, non scelerisque leo auctor. Mauris feugiat, metus id congue ornare, velit augue iaculis elit, vel aliquam nunc tortor quis tortor. Donec vel tincidunt magna. Vivamus eget purus mi. Maecenas purus lectus, scelerisque sed ante pulvinar, varius posuere mauris. Morbi mi sapien, aliquet id dolor et, accumsan commodo nunc. In hac habitasse platea dictumst. Morbi lacinia tincidunt velit, et blandit velit tincidunt eget. Mauris non lectus et sem pulvinar convallis a non tortor.';
 }

@@ -1,12 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_episodes_controller.dart';
+import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_episode.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowEpisodesPage extends GetView<ShowEpisodesController> {
+  ShowEpisodesPage(ShowDetail showDetail) : super() {
+    controller.loadSeasonForShow(showDetail);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,12 +24,14 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: Text(
-          'Show Title',
-          style: textTheme.bodyText1!.copyWith(
-            color: SatorioColor.darkAccent,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
+        title: Obx(
+          () => Text(
+            controller.showDetailRx.value?.title ?? '',
+            style: textTheme.bodyText1!.copyWith(
+              color: SatorioColor.darkAccent,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         leading: Material(
@@ -36,26 +46,31 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
             ),
           ),
         ),
-        bottom: TabBar(
-          indicatorColor: SatorioColor.interactive,
-          labelColor: SatorioColor.interactive,
-          isScrollable: true,
-          unselectedLabelColor: SatorioColor.darkAccent,
-          controller: controller.tabController,
-          labelPadding: EdgeInsets.symmetric(horizontal: 16.0 * coefficient),
-          labelStyle: textTheme.headline4!.copyWith(
-            color: SatorioColor.darkAccent,
-            fontSize: 20 * coefficient,
-            fontWeight: FontWeight.w700,
+        bottom: PreferredSize(
+          preferredSize: Size(Get.width, kTextTabBarHeight),
+          child: Obx(
+            () => TabBar(
+              indicatorColor: SatorioColor.interactive,
+              labelColor: SatorioColor.interactive,
+              isScrollable: true,
+              unselectedLabelColor: SatorioColor.darkAccent,
+              controller: controller.tabController,
+              labelPadding:
+                  EdgeInsets.symmetric(horizontal: 16.0 * coefficient),
+              labelStyle: textTheme.headline4!.copyWith(
+                color: SatorioColor.darkAccent,
+                fontSize: 20 * coefficient,
+                fontWeight: FontWeight.w700,
+              ),
+              tabs: controller.seasonsRx.value
+                  .map(
+                    (showSeason) => Tab(
+                      text: showSeason.title,
+                    ),
+                  )
+                  .toList(),
+            ),
           ),
-          tabs: [
-            Tab(
-              text: 'Season 1',
-            ),
-            Tab(
-              text: 'Season 2',
-            ),
-          ],
         ),
       ),
       body: Stack(
@@ -72,12 +87,15 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
                   kTextTabBarHeight +
                   24 * coefficient,
             ),
-            child: TabBarView(
-              controller: controller.tabController,
-              children: [
-                _episodesList(),
-                _episodesList(),
-              ],
+            child: Obx(
+              () => TabBarView(
+                controller: controller.tabController,
+                children: controller.seasonsRx.value
+                    .map(
+                      (showSeason) => _episodesList(showSeason),
+                    )
+                    .toList(),
+              ),
             ),
           )
         ],
@@ -85,7 +103,7 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
     );
   }
 
-  Widget _episodesList() {
+  Widget _episodesList(ShowSeason showSeason) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -99,66 +117,78 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
         separatorBuilder: (context, index) => SizedBox(
           height: 17 * coefficient,
         ),
-        itemCount: 5,
+        itemCount: showSeason.episodes.length,
         itemBuilder: (context, index) {
-          return _episode();
+          final ShowEpisode showEpisode = showSeason.episodes[index];
+          return _episode(showEpisode);
         },
       ),
     );
   }
 
-  Widget _episode() {
-    final int h = (180 * coefficient).round();
-    final int w = (Get.width - 2 * 20).round();
-
+  Widget _episode(ShowEpisode showEpisode) {
     return InkWell(
-      child: Container(
-        height: 180 * coefficient,
-        child: Stack(
-          children: [
-            Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+      onTap: () {
+        controller.toEpisodeDetail();
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          height: 180 * coefficient,
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Container(
                 child: Image(
-                  image: NetworkImage('https://picsum.photos/$w/$h'),
+                  image: NetworkImage(showEpisode.cover),
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) => Container(
                     color: SatorioColor.grey,
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        '1. Pilot',
-                        style: textTheme.headline5!.copyWith(
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0),
+                        Colors.black.withOpacity(0.5)
+                      ],
+                    ),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          showEpisode.title,
+                          style: textTheme.headline5!.copyWith(
+                            color: Colors.white,
+                            fontSize: 18 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'WATCHED',
+                        style: textTheme.headline6!.copyWith(
                           color: Colors.white,
-                          fontSize: 18 * coefficient,
+                          fontSize: 12 * coefficient,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                    ),
-                    Text(
-                      'WATCHED',
-                      style: textTheme.headline6!.copyWith(
-                        color: Colors.white,
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

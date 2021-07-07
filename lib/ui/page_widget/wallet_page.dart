@@ -110,9 +110,10 @@ class WalletPage extends GetView<WalletController> {
                           .value[controller.pageRx.value].actions.length
                       : 0,
                   itemBuilder: (context, index) {
-                    WalletAction waleltAction = controller.walletDetailsRx
-                        .value[controller.pageRx.value].actions[index];
-                    return _walletActionItem(waleltAction);
+                    WalletDetail walletDetail = controller
+                        .walletDetailsRx.value[controller.pageRx.value];
+                    WalletAction walletAction = walletDetail.actions[index];
+                    return _walletActionItem(walletDetail, walletAction);
                   },
                   scrollDirection: Axis.horizontal,
                 ),
@@ -304,13 +305,18 @@ class WalletPage extends GetView<WalletController> {
     );
   }
 
-  Widget _walletActionItem(WalletAction walletAction) {
+  Widget _walletActionItem(
+    WalletDetail walletDetail,
+    WalletAction walletAction,
+  ) {
     return InkWell(
       onTap: () {
         switch (walletAction.type) {
           case Type.send_tokens:
+            controller.toSend(walletDetail);
             break;
           case Type.receive_tokens:
+            controller.toReceive(walletDetail);
             break;
           case Type.claim_rewards:
             controller.claimRewards(walletAction.url);

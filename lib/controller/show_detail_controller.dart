@@ -20,6 +20,11 @@ class ShowDetailController extends GetxController {
   }
 
   void toEpisodes() {
-    Get.to(() => ShowEpisodesPage(), binding: ShowEpisodesBinding());
+    if (showDetailRx.value != null) {
+      Get.to(
+        () => ShowEpisodesPage(showDetailRx.value!),
+        binding: ShowEpisodesBinding(),
+      );
+    }
   }
 }

@@ -21,9 +21,7 @@ class LoginPage extends GetView<LoginController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: Get.mediaQuery.size.height -
-              Get.mediaQuery.padding.top +
-              kToolbarHeight,
+          height: Get.mediaQuery.size.height,
           color: Colors.white,
           child: Stack(
             children: [
