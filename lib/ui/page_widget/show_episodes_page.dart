@@ -129,7 +129,7 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
   Widget _episode(ShowEpisode showEpisode) {
     return InkWell(
       onTap: () {
-        controller.toEpisodeDetail();
+        controller.toEpisodeDetail(showEpisode);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),

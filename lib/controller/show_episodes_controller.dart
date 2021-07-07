@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
@@ -21,7 +22,7 @@ class ShowEpisodesController extends GetxController
     Get.back();
   }
 
-  void toEpisodeDetail() {}
+  void toEpisodeDetail(ShowEpisode showEpisode) {}
 
   void loadSeasonForShow(ShowDetail showDetail) {
     showDetailRx.value = showDetail;
