@@ -7,6 +7,12 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class EpisodeRealmDialog extends StatelessWidget {
+
+  final VoidCallback? onStartQuizPressed;
+  final VoidCallback? onScanQrPressed;
+
+  const EpisodeRealmDialog({Key? key, this.onStartQuizPressed, this.onScanQrPressed}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -95,18 +101,14 @@ class EpisodeRealmDialog extends StatelessWidget {
             ),
             ElevatedGradientButton(
               text: 'txt_start_entrance_quiz'.tr,
-              onPressed: () {
-                Get.back();
-              },
+              onPressed: onStartQuizPressed
             ),
             SizedBox(
               height: 8 * coefficient,
             ),
             ElevatedGradientButton(
               text: 'txt_qr_scan'.tr,
-              onPressed: () {
-                Get.back();
-              },
+              onPressed: onScanQrPressed
             ),
           ],
         ),

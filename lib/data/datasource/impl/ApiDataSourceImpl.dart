@@ -12,6 +12,7 @@ import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
+import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_result_model.dart';
@@ -400,7 +401,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       Map jsonData = json.decode(response.bodyString!);
       List<ShowSeasonModel> result;
       if (jsonData['data'] is Iterable)
-        result =  (jsonData['data'] as Iterable)
+        result = (jsonData['data'] as Iterable)
             .map((element) => ShowSeasonModel.fromJson(element))
             .toList();
       else
@@ -465,6 +466,34 @@ class ApiDataSourceImpl implements ApiDataSource {
       'challenges/$challengeId',
     ).then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<bool> isChallengeActivated(String episodeId) {
+    return _requestGet(
+      'challenges/$episodeId/is-activated',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId) {
+    return _requestGet(
+      'challenges/$episodeId/validation-question',
+    ).then((Response response) {
+      return PayloadQuestionModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
+    return _requestGet(
+      'challenges/$questionId/check-answer/$answerId',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 

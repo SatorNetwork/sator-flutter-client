@@ -2,16 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/realm_controller.dart';
+import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/review.dart';
+import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_episode.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/extension.dart';
 
-class ShowEpisodesRealmPage extends GetView<RealmController> {
+class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
+  final double kAppBarHeight = 120;
   final double kHeight = 220;
 
+  ShowEpisodesRealmPage(
+      ShowDetail showDetail, ShowSeason showSeason, ShowEpisode showEpisode)
+      : super() {
+    controller.updateData(showDetail, showSeason, showEpisode);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,28 +36,22 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
   Widget _bodyContent() {
     return Stack(
       children: [
-        SvgPicture.asset(
-          'images/bg/gradient_challenge_splash_reversed.svg',
-          height: Get.height,
-          fit: BoxFit.cover,
+        Obx(
+          () => Image.network(
+            controller.showEpisodeRx.value?.cover ?? '',
+            height: 300,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => Container(
+              color: SatorioColor.darkAccent,
+            ),
+          ),
         ),
-        //TODO: replace
-        // Obx(
-        //       () => Image.network(
-        //     '',
-        //     height: Get.height - bottomSheetMinHeight + 24,
-        //     fit: BoxFit.cover,
-        //     errorBuilder: (context, error, stackTrace) => Container(
-        //       color: SatorioColor.darkAccent,
-        //     ),
-        //   ),
-        // ),
         Container(
           height: kHeight,
           child: Stack(
             children: [
               Positioned(
-                top: kHeight / 3,
+                top: kAppBarHeight / 2,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20.0),
                   child: InkWell(
@@ -61,34 +65,42 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: kHeight / 3.2),
+                margin: EdgeInsets.only(top: kAppBarHeight / 2),
                 width: Get.mediaQuery.size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Breaking Bad',
-                      style: textTheme.bodyText2!.copyWith(
-                        color: Colors.white,
-                        fontSize: 12.0 * coefficient,
-                        fontWeight: FontWeight.w400,
+                    Obx(
+                      () => Text(
+                        controller.showDetailRx.value?.title ?? '',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: Colors.white,
+                          fontSize: 12.0 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                     SizedBox(
                       height: 2,
                     ),
-                    Text(
-                      'S1.E3 Cat’s in the bag',
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                    Obx(
+                      () => Text(
+                        'txt_episode_naming'.tr.format([
+                          controller.showSeasonRx.value?.seasonNumber ?? 0,
+                          controller.showEpisodeRx.value?.episodeNumber ?? 0,
+                          controller.showEpisodeRx.value?.title ?? '',
+                        ]),
+                        style: textTheme.bodyText1!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
               Positioned(
-                top: kHeight / 3,
+                top: kAppBarHeight / 2,
                 right: 0,
                 child: Container(
                   margin: EdgeInsets.only(right: 20),
@@ -149,8 +161,10 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
                         child: Center(
                           child: Row(
                             children: [
-                              controller.isRealmActivatedRx.value == false ?
-                              SvgPicture.asset('images/locked_icon.svg') : SvgPicture.asset('images/unlocked_icon.svg'),
+                              controller.isRealmActivatedRx.value == false
+                                  ? SvgPicture.asset('images/locked_icon.svg')
+                                  : SvgPicture.asset(
+                                      'images/unlocked_icon.svg'),
                               SizedBox(
                                 width: 16,
                               ),
@@ -159,7 +173,9 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    controller.isRealmActivatedRx.value == true ? '24hrs' : 'Locked',
+                                    controller.isRealmActivatedRx.value == true
+                                        ? '24hrs'
+                                        : 'Locked',
                                     style: textTheme.bodyText2!.copyWith(
                                       color: Colors.black,
                                       fontSize: 15 * coefficient,
@@ -644,7 +660,7 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
                                         ElevatedGradientButton(
                                           text: 'txt_activate_realm'.tr,
                                           onPressed: () {
-                                            controller.activateRealm();
+                                            controller.toEpisodeRealmDialog();
                                           },
                                         ),
                                       ],
@@ -819,9 +835,9 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                     colors: [
-                                      Color(0xFFFFB546),
-                                      Color(0xFFFF7246)
-                                    ])),
+                                  Color(0xFFFFB546),
+                                  Color(0xFFFF7246)
+                                ])),
                           ),
                         ),
                         SizedBox(
@@ -858,7 +874,9 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        SizedBox(height: 6,),
+                        SizedBox(
+                          height: 6,
+                        ),
                         Text(
                           '15.00 ETH',
                           style: textTheme.bodyText2!.copyWith(
@@ -873,7 +891,6 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
                 ],
               ),
             ),
-
           ],
         ),
       ),
@@ -1040,7 +1057,6 @@ class ShowEpisodesRealmPage extends GetView<RealmController> {
       ),
     );
   }
-
 
   final Review review = Review(
       'id',

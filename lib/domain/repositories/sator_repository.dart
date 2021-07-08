@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -52,6 +53,12 @@ abstract class SatorioRepository {
   Future<dynamic> getShowEpisodeByQR(String qrCodeId);
 
   Future<Challenge> challenge(String challengeId);
+
+  Future<bool> isChallengeActivated(String episodeId);
+
+  Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId);
+
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
 
   Future<void> logout();
 

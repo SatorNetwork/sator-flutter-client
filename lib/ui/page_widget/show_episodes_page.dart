@@ -120,16 +120,16 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
         itemCount: showSeason.episodes.length,
         itemBuilder: (context, index) {
           final ShowEpisode showEpisode = showSeason.episodes[index];
-          return _episode(showEpisode);
+          return _episode(showSeason, showEpisode);
         },
       ),
     );
   }
 
-  Widget _episode(ShowEpisode showEpisode) {
+  Widget _episode(ShowSeason showSeason, ShowEpisode showEpisode) {
     return InkWell(
       onTap: () {
-        controller.toEpisodeDetail(showEpisode);
+        controller.toEpisodeDetail(showSeason, showEpisode);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),

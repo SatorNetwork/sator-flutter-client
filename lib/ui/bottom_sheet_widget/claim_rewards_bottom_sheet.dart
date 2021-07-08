@@ -18,7 +18,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 390,
+      // height: 390,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
@@ -27,9 +27,11 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.check_circle_rounded,
@@ -63,6 +65,9 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                     color: SatorioColor.textBlack, fontWeight: FontWeight.w600),
               ),
             ],
+          ),
+          SizedBox(
+            height: 32,
           ),
           Column(
             children: [

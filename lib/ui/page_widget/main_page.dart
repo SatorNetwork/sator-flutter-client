@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
-import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 import 'package:satorio/ui/page_widget/shows_page.dart';
 import 'package:satorio/ui/page_widget/some_page.dart';
 import 'package:satorio/ui/page_widget/wallet_page.dart';
@@ -31,7 +30,6 @@ class MainPage extends GetView<MainController> {
                 controller.toQrScanner();
                 return;
               case 3:
-                controller.toRealmTest();
                 break;
               case 4:
                 controller.loadWallets();
@@ -84,8 +82,7 @@ class MainPage extends GetView<MainController> {
     HomePage(),
     ShowsPage(),
     QrScannerPage(),
-    ShowEpisodesRealmPage(),
-    // SomePage(),
+    SomePage(),
     WalletPage(),
   ];
 }

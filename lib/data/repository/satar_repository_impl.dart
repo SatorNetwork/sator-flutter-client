@@ -9,6 +9,7 @@ import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
@@ -193,6 +194,26 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> isChallengeActivated(String episodeId) {
+    return _apiDataSource
+        .isChallengeActivated(episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId) {
+    return _apiDataSource
+        .showEpisodeQuizQuestion(episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
+    return _apiDataSource
+        .showEpisodeQuizAnswer(questionId, answerId)
         .catchError((value) => _handleException(value));
   }
 

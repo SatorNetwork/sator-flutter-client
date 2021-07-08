@@ -80,13 +80,15 @@ const Map<String, String> en = {
   'txt_episodes': 'Episodes',
   'txt_enter_episode_realm': 'Enter episode realm',
   'txt_enter_episode_realm_step_1':
-  'Start watching the episode. Pay attention to the details.',
+      'Start watching the episode. Pay attention to the details.',
   'txt_enter_episode_realm_step_2':
-  'Within the first 60 seconds, you’ll have enough info to enter.',
+      'Within the first 60 seconds, you’ll have enough info to enter.',
   'txt_enter_episode_realm_step_3':
-  'Watch the rest of the episode, chat live, and then complete the challenges to earn SAO!',
+      'Watch the rest of the episode, chat live, and then complete the challenges to earn SAO!',
   'txt_start_entrance_quiz': 'Start entrance quiz',
   'txt_share_qr': 'Share QR',
   'txt_account_address': 'Account Address',
   'txt_copy_address': 'Copy address',
+  'txt_episode_naming': 'S%d.E%d %s',
+  'txt_episode_entrance_quiz': 'S%d.E%d Entrance Quiz',
 };
