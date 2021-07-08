@@ -33,9 +33,8 @@ class LoginPage extends GetView<LoginController> {
                   child: Column(
                     children: [
                       SvgPicture.asset(
-                        'images/logo.svg',
+                        'images/sator_logo_colored.svg',
                         height: 90 * coefficient,
-                        color: SatorioColor.brand,
                         fit: BoxFit.fitHeight,
                       ),
                       SizedBox(

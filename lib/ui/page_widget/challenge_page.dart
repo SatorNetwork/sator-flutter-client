@@ -86,7 +86,8 @@ class ChallengePage extends GetView<ChallengeController> {
                     ),
                     child: Center(
                       child: SvgPicture.asset(
-                        'images/logo.svg',
+                        'images/sator_logo.svg',
+                        color: Colors.white,
                         width: 40 * coefficient,
                         height: 40 * coefficient,
                       ),
