@@ -974,15 +974,17 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           SizedBox(
             height: 8,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Text(
-              review.text,
-              maxLines: 5,
-              style: textTheme.bodyText2!.copyWith(
-                color: Colors.black,
-                fontSize: 15 * coefficient,
-                fontWeight: FontWeight.w400,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                review.text,
+                maxLines: 5,
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.black,
+                  fontSize: 15 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ),
