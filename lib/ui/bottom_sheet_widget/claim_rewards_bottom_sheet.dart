@@ -40,7 +40,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                 height: 24,
               ),
               Text(
-                "txt_congrats".tr,
+                "txt_done".tr,
                 style: textTheme.headline1!.copyWith(
                     color: SatorioColor.textBlack,
                     fontSize: 34.0 * coefficient,

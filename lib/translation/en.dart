@@ -57,7 +57,7 @@ const Map<String, String> en = {
   'txt_solana_link': 'Show in Solana Explorer',
   'txt_claim_rewards': 'Claim rewards',
   'txt_congrats': 'Congratulations',
-  'txt_congrats_msg': 'You have won, and been awarded',
+  'txt_congrats_msg': 'You have successfully claimed your rewards.',
   'txt_verification_text':
       'Please enter the verification code we’ve sent to your email address or use the link from your inbox',
   'txt_resend_code': 'Resend code',
@@ -84,4 +84,5 @@ const Map<String, String> en = {
   'txt_share_qr': 'Share QR',
   'txt_account_address': 'Account Address',
   'txt_copy_address': 'Copy address',
+  'txt_done': 'Done!'
 };
