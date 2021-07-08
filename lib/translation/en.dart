@@ -89,6 +89,7 @@ const Map<String, String> en = {
   'txt_share_qr': 'Share QR',
   'txt_account_address': 'Account Address',
   'txt_copy_address': 'Copy address',
+  'txt_done': 'Done!',
   'txt_episode_naming': 'S%d.E%d %s',
   'txt_episode_entrance_quiz': 'S%d.E%d Entrance Quiz',
 };
