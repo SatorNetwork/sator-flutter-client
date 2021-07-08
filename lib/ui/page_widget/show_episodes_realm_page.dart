@@ -147,7 +147,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   scrollDirection: Axis.horizontal,
                   physics: AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  // itemCount: 3,
                   shrinkWrap: true,
                   children: [
                     Obx(
@@ -174,6 +173,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Text(
                                     controller.isRealmActivatedRx.value == true
@@ -214,7 +214,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         child: Row(
                           children: [
                             SvgPicture.asset(
-                              'images/logo.svg',
+                              'images/sator_logo.svg',
                               color: Colors.black,
                               height: 20,
                               width: 20,
@@ -225,6 +225,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
                                   '0',
@@ -253,6 +254,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
                                   '3,414.42',
@@ -290,7 +292,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         child: Row(
                           children: [
                             SvgPicture.asset(
-                              'images/logo.svg',
+                              'images/sator_logo.svg',
                               color: Colors.black,
                               height: 20,
                               width: 20,
@@ -301,6 +303,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
                                   '0',
@@ -329,6 +332,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 Text(
                                   '3,414.42',
