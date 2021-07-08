@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
+import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 
 class ShowEpisodeRealmController extends GetxController {
@@ -23,7 +25,6 @@ class ShowEpisodeRealmController extends GetxController {
 
     _satorioRepository.isChallengeActivated(showEpisode.id).then((bool result) {
       isRealmActivatedRx.value = result;
-      print('$result');
     });
   }
 
@@ -50,6 +51,15 @@ class ShowEpisodeRealmController extends GetxController {
             // TODO: open qr scanner
           },
         ),
+      );
+    }
+  }
+
+  toChallenge() {
+    if (showEpisodeRx.value != null) {
+      Get.to(
+        () => ChallengePage(showEpisodeRx.value!.challengeId),
+        binding: ChallengeBinding(),
       );
     }
   }

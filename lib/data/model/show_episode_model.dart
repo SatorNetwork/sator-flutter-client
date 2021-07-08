@@ -2,10 +2,25 @@ import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 
 class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
-  const ShowEpisodeModel(String id, String showId, int episodeNumber,
-      String title, String description, String cover, DateTime? releaseDate)
+  const ShowEpisodeModel(
+      String id,
+      String showId,
+      String challengeId,
+      int episodeNumber,
+      String title,
+      String description,
+      String cover,
+      DateTime? releaseDate)
       : super(
-            id, showId, episodeNumber, title, description, cover, releaseDate);
+          id,
+          showId,
+          challengeId,
+          episodeNumber,
+          title,
+          description,
+          cover,
+          releaseDate,
+        );
 
   factory ShowEpisodeModel.fromJson(Map json) {
     DateTime? releaseDate;
@@ -15,6 +30,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
     return ShowEpisodeModel(
       json['id'] == null ? '' : json['id'],
       json['show_id'] == null ? '' : json['show_id'],
+      json['challenge_id'] == null ? '' : json['challenge_id'],
       json['episode_number'] == null ? 0 : json['episode_number'],
       json['title'] == null ? '' : json['title'],
       json['description'] == null ? '' : json['description'],
@@ -27,6 +43,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
   Map toJson() => {
         'id': id,
         'show_id': showId,
+        'challenge_id': challengeId,
         'episode_number': episodeNumber,
         'title': title,
         'description': description,

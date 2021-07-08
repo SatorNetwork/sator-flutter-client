@@ -161,10 +161,13 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         child: Center(
                           child: Row(
                             children: [
-                              controller.isRealmActivatedRx.value == false
-                                  ? SvgPicture.asset('images/locked_icon.svg')
-                                  : SvgPicture.asset(
-                                      'images/unlocked_icon.svg'),
+                              Obx(
+                                () => controller.isRealmActivatedRx.value ==
+                                        false
+                                    ? SvgPicture.asset('images/locked_icon.svg')
+                                    : SvgPicture.asset(
+                                        'images/unlocked_icon.svg'),
+                              ),
                               SizedBox(
                                 width: 16,
                               ),
@@ -486,151 +489,157 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ),
                       Stack(
                         children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(13)),
-                              color: SatorioColor.interactive,
-                            ),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16, bottom: 16),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 52,
-                                        width: 52,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(8)),
-                                          color: Color(0xFF584FC1),
-                                        ),
-                                        //TODO: replace new logo (sator_logo.svg)
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            'images/logo.svg',
-                                            color: Colors.white,
-                                            height: 23,
-                                            width: 23,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'txt_head'.tr,
-                                            style:
-                                                textTheme.bodyText1!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 18 * coefficient,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 6,
-                                          ),
-                                          Text(
-                                            'txt_head_text'.tr,
-                                            style:
-                                                textTheme.bodyText2!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14 * coefficient,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Expanded(child: Container()),
-                                      InkWell(
-                                        onTap: () => controller.back(),
-                                        child: Icon(
-                                          Icons.chevron_right_rounded,
-                                          size: 32,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      left: 45, right: 45, top: 21, bottom: 5),
+                          Obx(() => InkWell(
+                                onTap: controller.isRealmActivatedRx.value
+                                    ? () {
+                                        controller.toChallenge();
+                                      }
+                                    : null,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 16),
                                   decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                        Color(0xFF6359E4),
-                                        Color(0xFF7C73E8)
-                                      ])),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(13)),
+                                    color: SatorioColor.interactive,
+                                  ),
+                                  child: Column(
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '291',
-                                            style:
-                                                textTheme.bodyText2!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14 * coefficient,
-                                              fontWeight: FontWeight.w700,
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16, right: 16, bottom: 16),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: 52,
+                                              width: 52,
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8)),
+                                                color: Color(0xFF584FC1),
+                                              ),
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  'images/sator_logo.svg',
+                                                  color: Colors.white,
+                                                  height: 23,
+                                                  width: 23,
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Text(
-                                            'players',
-                                            style:
-                                                textTheme.bodyText2!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14 * coefficient,
-                                              fontWeight: FontWeight.w400,
+                                            SizedBox(
+                                              width: 16,
                                             ),
-                                          ),
-                                        ],
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'txt_head'.tr,
+                                                  style: textTheme.bodyText1!
+                                                      .copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 18 * coefficient,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 6,
+                                                ),
+                                                Text(
+                                                  'txt_head_text'.tr,
+                                                  style: textTheme.bodyText2!
+                                                      .copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 14 * coefficient,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Expanded(child: Container()),
+                                            Icon(
+                                              Icons.chevron_right_rounded,
+                                              size: 32,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            '2,130.00 SAO',
-                                            style:
-                                                textTheme.bodyText2!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14 * coefficient,
-                                              fontWeight: FontWeight.w700,
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                            left: 45,
+                                            right: 45,
+                                            top: 21,
+                                            bottom: 5),
+                                        decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [
+                                              Color(0xFF6359E4),
+                                              Color(0xFF7C73E8)
+                                            ])),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '291',
+                                                  style: textTheme.bodyText2!
+                                                      .copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 14 * coefficient,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  'players',
+                                                  style: textTheme.bodyText2!
+                                                      .copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 14 * coefficient,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 4,
-                                          ),
-                                          Text(
-                                            'remains',
-                                            style:
-                                                textTheme.bodyText2!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 14 * coefficient,
-                                              fontWeight: FontWeight.w400,
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  '2,130.00 SAO',
+                                                  style: textTheme.bodyText2!
+                                                      .copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 14 * coefficient,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 4,
+                                                ),
+                                                Text(
+                                                  'remains',
+                                                  style: textTheme.bodyText2!
+                                                      .copyWith(
+                                                    color: Colors.white,
+                                                    fontSize: 14 * coefficient,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              )),
                           Obx(
                             () => controller.isRealmActivatedRx.value == false
                                 ? Container(
