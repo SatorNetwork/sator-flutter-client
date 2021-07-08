@@ -185,8 +185,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 6,
+                                  Expanded(
+                                    child: Container(),
                                   ),
                                   Text(
                                     'Status',
@@ -235,8 +235,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 6,
+                                Expanded(
+                                  child: Container(),
                                 ),
                                 Text(
                                   'you',
@@ -264,8 +264,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 6,
+                                Expanded(
+                                  child: Container(),
                                 ),
                                 Text(
                                   'fans',
@@ -313,8 +313,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 6,
+                                Expanded(
+                                  child: Container(),
                                 ),
                                 Text(
                                   'you',
@@ -342,8 +342,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 6,
+                                Expanded(
+                                  child: Container(),
                                 ),
                                 Text(
                                   'fans',
