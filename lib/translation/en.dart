@@ -7,7 +7,7 @@ const Map<String, String> en = {
   'txt_username': 'Username',
   'txt_create_account': 'Create Account',
   'txt_terms_of_service_description':
-      'Creating an account means you’re okay with our ',
+  'Creating an account means you’re okay with our ',
   'txt_terms_of_service': 'Terms of Service',
   'txt_already_member': 'Already a member? ',
   'txt_sign_in': 'Sign In',
@@ -16,14 +16,14 @@ const Map<String, String> en = {
   'txt_not_member': 'Not a member? ',
   'txt_password_recovery': 'Password recovery',
   'txt_password_recovery_text':
-      'Enter an email, connected to your account.\nWe will send you a confirmation code',
+  'Enter an email, connected to your account.\nWe will send you a confirmation code',
   'txt_send_code': 'Send code',
   'txt_verification': 'Verification',
   'txt_password_verification_text':
-      'Please enter the verification code we’ve sent to your email address',
+  'Please enter the verification code we’ve sent to your email address',
   'txt_reset_password': 'Reset password',
   'txt_reset_password_text':
-      'The old password will reset.\nPlease enter your new password.',
+  'The old password will reset.\nPlease enter your new password.',
   'txt_new_password': 'New password',
   'txt_save': 'Save',
   'txt_challenge': 'Challenge',
@@ -48,7 +48,7 @@ const Map<String, String> en = {
   'txt_keep_going': 'Keep going!',
   'txt_questions_left': '%d questions left',
   'txt_wait_time_runs_out':
-      'Wait until the time runs out or all of the players will vote.',
+  'Wait until the time runs out or all of the players will vote.',
   'txt_fastest_answer': '🔥 Fastest answer ',
   'txt_add_pts': '+%dpts',
   'txt_quit': 'Quit',
@@ -57,9 +57,9 @@ const Map<String, String> en = {
   'txt_solana_link': 'Show in Solana Explorer',
   'txt_claim_rewards': 'Claim rewards',
   'txt_congrats': 'Congratulations',
-  'txt_congrats_msg': 'You have won, and been awarded',
+  'txt_congrats_msg': 'You have successfully claimed your rewards.',
   'txt_verification_text':
-      'Please enter the verification code we’ve sent to your email address or use the link from your inbox',
+  'Please enter the verification code we’ve sent to your email address or use the link from your inbox',
   'txt_resend_code': 'Resend code',
   'txt_send': 'Send',
   'txt_receive': 'Receive',
@@ -69,6 +69,7 @@ const Map<String, String> en = {
   'txt_qr_scan': 'Scan QR Code',
   'txt_watching': 'You’re watching',
   'txt_rewards_amount': 'Rewards amount',
+  'txt_done': 'Done!'
   'txt_episode_rating': 'Episode rating',
   'txt_reviews': 'Reviews',
   'txt_head': 'Head-to-head trivia',

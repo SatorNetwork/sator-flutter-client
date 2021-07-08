@@ -15,3 +15,9 @@ extension Ellipsize on String {
           length - endCount, length)}';
   }
 }
+
+extension Capitalize on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${this.substring(1)}";
+  }
+}
