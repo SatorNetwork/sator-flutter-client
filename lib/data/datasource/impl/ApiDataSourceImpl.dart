@@ -101,26 +101,18 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   Response _processResponse(Response response) {
-    Response utf8Response = Response(
-      request: response.request,
-      statusCode: response.statusCode,
-      bodyBytes: response.bodyBytes,
-      bodyString: utf8.decode(response.bodyString!.runes.toList()),
-      statusText: response.statusText,
-      headers: response.headers,
-      body: response.body,
-    );
+    Response utf8Response = response;
+    // Response utf8Response = Response(
+    //   request: response.request,
+    //   statusCode: response.statusCode,
+    //   bodyBytes: response.bodyBytes,
+    //   bodyString: utf8.decode(response.bodyString!.runes.toList()),
+    //   statusText: response.statusText,
+    //   headers: response.headers,
+    //   body: response.body,
+    // );
 
-    print('--------');
-
-    utf8Response.request!.headers.forEach((key, value) {
-      print('$key : $value');
-    });
-    print(
-        '${utf8Response.request!.method.toUpperCase()} ${utf8Response.request!.url} ${utf8Response.statusCode}');
-
-    print('${utf8Response.bodyString}');
-    print('--------');
+    logResponse(utf8Response);
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
@@ -141,6 +133,24 @@ class ApiDataSourceImpl implements ApiDataSource {
     }
 
     return utf8Response;
+  }
+
+  void logResponse(Response response) {
+    print('--------');
+
+    // print('Request headers:');
+    // response.request!.headers.forEach((key, value) {
+    //   print('$key : $value');
+    // });
+    print(
+        '${response.request!.method.toUpperCase()} ${response.request!.url} ${response.statusCode}');
+
+    // print('Response headers:');
+    // response.headers!.forEach((key, value) {
+    //   print('$key : $value');
+    // });
+    print('${response.bodyString}');
+    print('--------');
   }
 
   // endregion
