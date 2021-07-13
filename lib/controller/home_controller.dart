@@ -37,7 +37,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     super.onInit();
-    // _loadShows();
     _loadShowByCategoryName();
 
     profileListenable.addListener(_profileListener);
