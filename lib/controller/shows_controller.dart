@@ -8,6 +8,7 @@ import 'package:satorio/ui/page_widget/show_detail_page.dart';
 
 class ShowsController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
+  final int _itemsPerPage = 10;
 
   final Rx<List<Show>> showsRx = Rx([]);
 
@@ -29,9 +30,9 @@ class ShowsController extends GetxController {
     _isLoadingRx.value = true;
 
     _satorioRepository
-        .shows(page: _pageRx.value, itemsPerPage: 5)
+        .shows(page: _pageRx.value, itemsPerPage: _itemsPerPage)
         .then((List<Show> shows) {
-      print(shows.length.toString());
+
       showsRx.update((value) {
         if (value != null) value.addAll(shows);
       });
