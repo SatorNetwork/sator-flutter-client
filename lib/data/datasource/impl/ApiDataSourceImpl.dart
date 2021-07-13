@@ -140,14 +140,14 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     // print('Request headers:');
     // response.request!.headers.forEach((key, value) {
-    //   print('$key : $value');
+    //   print('   $key : $value');
     // });
     print(
         '${response.request!.method.toUpperCase()} ${response.request!.url} ${response.statusCode}');
 
     // print('Response headers:');
     // response.headers!.forEach((key, value) {
-    //   print('$key : $value');
+    //   print('   $key : $value');
     // });
     print('${response.bodyString}');
     print('--------');
@@ -357,11 +357,13 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Shows
 
   @override
-  Future<List<ShowModel>> shows({int? page}) {
+  Future<List<ShowModel>> shows({int? page, int? itemsPerPage}) {
     Map<String, String>? query;
-    if (page != null) {
+    if (page != null || itemsPerPage != null) {
       query = {};
-      query['page'] = page.toString();
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
     }
 
     return _requestGet(

@@ -65,7 +65,7 @@ abstract class ApiDataSource {
 
   // region Shows
 
-  Future<List<ShowModel>> shows({int? page});
+  Future<List<ShowModel>> shows({int? page, int? itemsPerPage});
 
   Future<List<ShowModel>> showsFromCategory(String category);
 

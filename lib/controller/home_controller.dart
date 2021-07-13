@@ -19,9 +19,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
 
-  @Deprecated('changes 23.06')
-  final Rx<List<Show>> showsRx = Rx([]);
-
   final Rx<List<Show>> showsHighestRewardingRx = Rx([]);
   final Rx<List<Show>> showsMostSocializingRx = Rx([]);
   final Rx<List<Show>> showsNewestAddedRx = Rx([]);
@@ -52,13 +49,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     profileListenable.removeListener(_profileListener);
     walletBalanceListenable.removeListener(_walletBalanceListener);
     super.onClose();
-  }
-
-  @Deprecated('changes 23.06')
-  void _loadShows() {
-    _satorioRepository.shows().then((List<Show> shows) {
-      showsRx.value = shows;
-    });
   }
 
   void _loadShowByCategoryName() {

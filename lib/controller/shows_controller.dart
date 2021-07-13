@@ -11,6 +11,10 @@ class ShowsController extends GetxController {
 
   final Rx<List<Show>> showsRx = Rx([]);
 
+  final RxInt _pageRx = 1.obs;
+  final RxBool _isLoadingRx = false.obs;
+  final RxBool _isAllLoadedRx = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -18,10 +22,24 @@ class ShowsController extends GetxController {
   }
 
   void loadShows() {
-    _satorioRepository.shows().then((List<Show> shows) {
+    if (_isAllLoadedRx.value) return;
+
+    if (_isLoadingRx.value) return;
+
+    _isLoadingRx.value = true;
+
+    _satorioRepository
+        .shows(page: _pageRx.value, itemsPerPage: 5)
+        .then((List<Show> shows) {
+      print(shows.length.toString());
       showsRx.update((value) {
         if (value != null) value.addAll(shows);
       });
+      _isAllLoadedRx.value = shows.isEmpty;
+      _isLoadingRx.value = false;
+      _pageRx.value = _pageRx.value + 1;
+    }).catchError((value) {
+      _isLoadingRx.value = false;
     });
   }
 
