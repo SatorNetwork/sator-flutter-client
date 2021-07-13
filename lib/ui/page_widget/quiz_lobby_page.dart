@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_user.dart';
-import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/avatar_list.dart';
 
@@ -14,10 +13,33 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
 
   @override
   Widget build(BuildContext context) {
-    const double kHeight = 120;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          'txt_challenge_lobby'.tr,
+          style: TextStyle(
+            color: SatorioColor.darkAccent,
+            fontSize: 17.0,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: Material(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          child: InkWell(
+            onTap: () => controller.quizController.back(),
+            child: Icon(
+              Icons.chevron_left_rounded,
+              color: SatorioColor.darkAccent,
+              size: 32,
+            ),
+          ),
+        ),
+      ),
       body: Container(
         child: Stack(
           children: [
@@ -27,46 +49,9 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
               fit: BoxFit.cover,
             ),
             Container(
-              height: kHeight,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: kHeight / 2,
-                      child: InkWell(
-                        onTap: () => controller.quizController.back(),
-                        child: Icon(
-                          Icons.chevron_left_rounded,
-                          size: 32,
-                          color: SatorioColor.darkAccent,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: kHeight / 1.8),
-                      width: Get.mediaQuery.size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'txt_challenge_lobby'.tr,
-                            style: TextStyle(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
               width: Get.width,
-              margin: const EdgeInsets.only(top: 120),
+              margin: EdgeInsets.only(
+                  top: Get.mediaQuery.padding.top + kToolbarHeight),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -151,7 +136,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
   }
 
   Widget _payloadUserItem(PayloadUser payloadUser, int index) {
-    int avatarIndex = (index +_randomOffset) % avatars.length;
+    int avatarIndex = (index + _randomOffset) % avatars.length;
     return Container(
       height: 48,
       child: Row(

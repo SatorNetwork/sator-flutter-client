@@ -8,12 +8,10 @@ import 'package:satorio/ui/theme/sator_color.dart';
 class EmailVerificationPage extends GetView<EmailVerificationController> {
   @override
   Widget build(BuildContext context) {
-    const double appBarHeight = 90;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: appBarHeight,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
         leading: Material(
           color: Colors.transparent,

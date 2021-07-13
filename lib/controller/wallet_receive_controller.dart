@@ -9,12 +9,13 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:satorio/controller/mixin/back_mixin.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:share/share.dart';
 
-class WalletReceiveController extends GetxController {
+class WalletReceiveController extends GetxController with BackMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
@@ -38,10 +39,6 @@ class WalletReceiveController extends GetxController {
   void onClose() {
     profileListenable.removeListener(profileListener);
     super.onClose();
-  }
-
-  void back() {
-    Get.back();
   }
 
   void copyAddress() {

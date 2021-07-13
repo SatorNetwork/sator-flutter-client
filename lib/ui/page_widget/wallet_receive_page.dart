@@ -11,8 +11,6 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class WalletReceivePage extends GetView<WalletReceiveController> {
-  static const double _kHeight = 120;
-
   WalletReceivePage(WalletDetail walletDetail) {
     controller.walletDetailRx.value = walletDetail;
   }
@@ -22,6 +20,31 @@ class WalletReceivePage extends GetView<WalletReceiveController> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          'txt_receive'.tr,
+          style: textTheme.bodyText1!.copyWith(
+            color: SatorioColor.darkAccent,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: Material(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          child: InkWell(
+            onTap: () => controller.back(),
+            child: Icon(
+              Icons.chevron_left_rounded,
+              size: 32,
+              color: SatorioColor.darkAccent,
+            ),
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           SvgPicture.asset(
@@ -30,48 +53,12 @@ class WalletReceivePage extends GetView<WalletReceiveController> {
             fit: BoxFit.cover,
           ),
           Container(
-            height: _kHeight,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: _kHeight / 2,
-                    child: InkWell(
-                      onTap: () => controller.back(),
-                      child: Icon(
-                        Icons.chevron_left_rounded,
-                        size: 32,
-                        color: SatorioColor.darkAccent,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: _kHeight / 1.8),
-                    width: Get.mediaQuery.size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'txt_receive'.tr,
-                          style: textTheme.bodyText1!.copyWith(
-                            color: SatorioColor.darkAccent,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
             constraints: BoxConstraints(
-              minHeight: Get.mediaQuery.size.height - _kHeight,
+              minHeight: Get.mediaQuery.size.height -
+                  (Get.mediaQuery.padding.top + kToolbarHeight),
             ),
-            margin: EdgeInsets.only(top: _kHeight),
+            margin: EdgeInsets.only(
+                top: Get.mediaQuery.padding.top + kToolbarHeight),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
