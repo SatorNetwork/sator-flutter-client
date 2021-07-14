@@ -27,7 +27,7 @@ class QrScannerResultPage extends GetView<QrScannerController> {
             ),
             Container(
               width: Get.width,
-              margin: EdgeInsets.only(top: 76),
+              margin: EdgeInsets.only(top: 76 * coefficient),
               child: Column(
                 children: [
                   Text(
@@ -40,13 +40,13 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                     ),
                   ),
                   SizedBox(
-                    height: 34,
+                    height: 34 * coefficient,
                   ),
                   Obx(
                     () => ClipRRect(
                       borderRadius: BorderRadius.circular(32),
                       child: Container(
-                          height: 400,
+                          height: 400 * coefficient,
                           width: Get.width - 40,
                           child: Image.network(
                             controller.showRx.value!.cover,
@@ -64,9 +64,9 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(controller.showRx.value!.title,
-                              style: TextStyle(
+                              style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.darkAccent,
-                                fontSize: 18.0,
+                                fontSize: 18.0 * coefficient,
                                 fontWeight: FontWeight.w400,
                               )),
                         ],
@@ -145,11 +145,11 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                           children: [
                             Text(
                               'txt_back_home'.tr,
-                              style: TextStyle(
+                              style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.darkAccent,
-                                fontSize: 16.0,
+                                fontSize: 16.0 * coefficient,
                                 fontWeight: FontWeight.w700,
-                              ),
+                              )
                             ),
                           ],
                         ),
