@@ -14,7 +14,7 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
-  final double kAppBarHeight = 120;
+  final double kAppBarHeight = 120 ;
   final double kHeight = 220;
 
   ShowEpisodesRealmPage(
@@ -140,9 +140,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: kHeight / 1.5),
+                margin: EdgeInsets.only(top: kHeight * coefficient / 1.5),
                 width: Get.mediaQuery.size.width,
-                height: 80,
+                height: 80 * coefficient,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   physics: AlwaysScrollableScrollPhysics(),
@@ -370,7 +370,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _bottomSheetContent() {
-    final double minSize = (Get.height - 260) / Get.height;
+    final double minSize = (Get.height - 260 * coefficient) / Get.height;
     final double maxSize =
         (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
 
@@ -392,7 +392,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: 48,
+                        height: 48 * coefficient,
                       ),
                       Text(
                         'txt_episode_rating'.tr,
@@ -435,7 +435,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         ),
                       ),
                       SizedBox(
-                        height: 35,
+                        height: 35 * coefficient,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -452,7 +452,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             onTap: () => controller.back(),
                             child: Icon(
                               Icons.chevron_right_rounded,
-                              size: 32,
+                              size: 32 * coefficient,
                               color: Colors.black,
                             ),
                           ),
@@ -462,7 +462,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         height: 16,
                       ),
                       Container(
-                        height: 260,
+                        height: 240,
                         child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemCount: 4,
@@ -760,7 +760,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
 
   Widget _nftsItem(String assetName, String name) {
     double width = Get.width - 80;
-    double height = 192.0;
+    double height = 192.0 * coefficient;
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: Container(
@@ -774,7 +774,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               fit: BoxFit.cover,
             ),
             Container(
-              margin: EdgeInsets.only(top: 100),
+              margin: EdgeInsets.only(top: 100 * coefficient),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -784,14 +784,12 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Expanded(
-                      child: Text(
-                        name,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      child: Text(name,
+                          style: textTheme.headline4!.copyWith(
+                            color: Colors.white,
+                            fontSize: 20.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          )),
                     ),
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -804,11 +802,11 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ),
                       child: Text(
                         'Rank #1',
-                        style: TextStyle(
+                        style: textTheme.bodyText2!.copyWith(
                           color: Colors.black,
-                          fontSize: 12.0,
+                          fontSize: 12.0 * coefficient,
                           fontWeight: FontWeight.w700,
-                        ),
+                        )
                       ),
                     )
                   ],
@@ -818,7 +816,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             Container(
               color: SatorioColor.alice_blue,
               padding: EdgeInsets.symmetric(vertical: 16),
-              margin: EdgeInsets.only(top: 170),
+              margin: EdgeInsets.only(top: 170 * coefficient),
               child: Column(
                 children: [
                   Padding(
@@ -867,7 +865,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ],
                     ),
                   ),
-                  Expanded(child: Container()),
+                  SizedBox(height: 24,),
                   Container(
                     width: Get.mediaQuery.size.width,
                     padding: EdgeInsets.only(top: 16, left: 16, right: 16),
