@@ -91,6 +91,9 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                           fontSize: 45.0 * coefficient,
                           fontWeight: FontWeight.w600,
                         ),
+                        onComplete: () {
+                          controller.timeExpire();
+                        },
                       ),
                     ),
                   ),
