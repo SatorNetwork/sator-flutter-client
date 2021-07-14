@@ -1,7 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/mixin/back_mixin.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
@@ -10,7 +9,7 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
-class ShowEpisodeQuizController extends GetxController with BackMixin {
+class ShowEpisodeQuizController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<ShowSeason?> showSeasonRx = Rx(null);
@@ -20,6 +19,10 @@ class ShowEpisodeQuizController extends GetxController with BackMixin {
   final Rx<String> answerIdRx = Rx('');
   final Rx<bool> isAnswerSentRx = Rx(false);
   final CountDownController countdownController = CountDownController();
+
+  void back() {
+    Get.back();
+  }
 
   void loadValidationQuestion(ShowSeason showSeason, ShowEpisode showEpisode) {
     showSeasonRx.value = showSeason;

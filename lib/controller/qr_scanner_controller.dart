@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
-import 'package:satorio/controller/mixin/back_mixin.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
@@ -10,13 +9,16 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_result_page.dart';
 
-class QrScannerController extends GetxController
-    with BackToMainMixin, BackMixin {
+class QrScannerController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
   Rx<PayloadChallengeResult?> resultRx = Rx(null);
   Rx<bool> isRequested = Rx(false);
   Rx<Show?> showRx = Rx(Show("", "", "", false));
   Rx<QrResult?> qrResultRx = Rx(QrResult("", "", "", 0));
+
+  void back() {
+    Get.back();
+  }
 
   void toQrScannerResult(String qrId) {
     Get.to(() => QrScannerResultPage(qrId), binding: QrScannerBinding());

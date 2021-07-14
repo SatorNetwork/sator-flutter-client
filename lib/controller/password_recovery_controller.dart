@@ -1,14 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/password_recovery_binding.dart';
-import 'package:satorio/controller/mixin/back_mixin.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/forgot_password_reset.dart';
 import 'package:satorio/ui/page_widget/forgot_password_verification_page.dart';
 
-class PasswordRecoveryController extends GetxController
-    with ValidationMixin, BackMixin {
+class PasswordRecoveryController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController codeController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
@@ -16,6 +14,10 @@ class PasswordRecoveryController extends GetxController
   final RxBool passwordObscured = true.obs;
 
   final SatorioRepository _satorioRepository = Get.find();
+
+  void back() {
+    Get.back();
+  }
 
   void forgotPassword() {
     _satorioRepository.forgotPassword(emailController.text).then(

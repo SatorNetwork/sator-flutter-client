@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/mixin/back_mixin.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
@@ -21,7 +20,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
-class QuizController extends GetxController with BackToMainMixin, BackMixin {
+class QuizController extends GetxController with BackToMainMixin {
   late Challenge challenge;
   GetSocket? _socket;
 
@@ -36,6 +35,10 @@ class QuizController extends GetxController with BackToMainMixin, BackMixin {
       _socket = null;
     }
     super.onClose();
+  }
+
+  void back() {
+    Get.back();
   }
 
   void setChallenge(Challenge challenge) {

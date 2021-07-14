@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
-import 'package:satorio/controller/mixin/back_mixin.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -10,7 +9,7 @@ import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 
-class ShowEpisodeRealmController extends GetxController with BackMixin {
+class ShowEpisodeRealmController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<ShowDetail?> showDetailRx = Rx(null);
@@ -27,6 +26,10 @@ class ShowEpisodeRealmController extends GetxController with BackMixin {
     _satorioRepository.isChallengeActivated(showEpisode.id).then((bool result) {
       isRealmActivatedRx.value = result;
     });
+  }
+
+  void back() {
+    Get.back();
   }
 
   void toEpisodeRealmDialog() {
