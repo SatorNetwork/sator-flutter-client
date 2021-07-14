@@ -13,18 +13,7 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
-        leading: Material(
-          color: Colors.transparent,
-          shadowColor: Colors.transparent,
-          child: InkWell(
-            onTap: () => controller.back(),
-            child: Icon(
-              Icons.chevron_left_rounded,
-              color: SatorioColor.darkAccent,
-              size: 32,
-            ),
-          ),
-        ),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         width: Get.width,
