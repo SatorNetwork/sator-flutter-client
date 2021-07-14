@@ -22,6 +22,7 @@ class HomePage extends GetView<HomeController> {
       backgroundColor: SatorioColor.darkAccent,
       extendBodyBehindAppBar: true,
       body: RefreshIndicator(
+        color: SatorioColor.brand,
         onRefresh: _refresh,
         child: SingleChildScrollView(
           child: Stack(
