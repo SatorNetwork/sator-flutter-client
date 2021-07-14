@@ -31,6 +31,7 @@ class WalletPage extends GetView<WalletController> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       body: RefreshIndicator(
+        color: SatorioColor.brand,
         onRefresh: _refresh,
           child: _walletContent()),
       bottomSheet: _transactionContent(),
