@@ -30,97 +30,105 @@ class WalletPage extends GetView<WalletController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      body: _walletContent(),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+          child: _walletContent()),
       bottomSheet: _transactionContent(),
     );
   }
 
+  Future<Null> _refresh() async {
+    controller.refreshWallet();
+  }
+
   Widget _walletContent() {
-    return Stack(
-      children: [
-        SvgPicture.asset(
-          'images/bg/gradient.svg',
-          height: Get.height,
-          fit: BoxFit.cover,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 64),
-              child: Center(
-                child: Text(
-                  'txt_wallet'.tr,
-                  style: textTheme.headline2!.copyWith(
-                    color: SatorioColor.darkAccent,
-                    fontSize: 28.0,
-                    fontWeight: FontWeight.w700,
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          SvgPicture.asset(
+            'images/bg/gradient.svg',
+            height: Get.height,
+            fit: BoxFit.cover,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 64),
+                child: Center(
+                  child: Text(
+                    'txt_wallet'.tr,
+                    style: textTheme.headline2!.copyWith(
+                      color: SatorioColor.darkAccent,
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 22,
-            ),
-            Container(
-              height: 200,
-              child: Obx(
-                () => PageView.builder(
+              SizedBox(
+                height: 22,
+              ),
+              Container(
+                height: 200,
+                child: Obx(
+                  () => PageView.builder(
+                    controller: controller.pageController,
+                    itemCount: controller.walletDetailsRx.value.length,
+                    itemBuilder: (context, index) {
+                      WalletDetail walletDetail =
+                          controller.walletDetailsRx.value[index];
+                      return _walletItem(walletDetail);
+                    },
+                    onPageChanged: (value) {
+                      controller.changePage(value);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Obx(
+                () => SmoothPageIndicator(
                   controller: controller.pageController,
-                  itemCount: controller.walletDetailsRx.value.length,
-                  itemBuilder: (context, index) {
-                    WalletDetail walletDetail =
-                        controller.walletDetailsRx.value[index];
-                    return _walletItem(walletDetail);
-                  },
-                  onPageChanged: (value) {
-                    controller.changePage(value);
-                  },
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Obx(
-              () => SmoothPageIndicator(
-                controller: controller.pageController,
-                count: max(controller.walletDetailsRx.value.length, 1),
-                effect: WormEffect(
-                  dotHeight: 8,
-                  dotWidth: 8,
-                  activeDotColor: SatorioColor.darkAccent,
-                  dotColor: SatorioColor.darkAccent.withOpacity(0.5),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 24 * coefficient,
-            ),
-            Container(
-              height: 90,
-              child: Obx(
-                () => ListView.separated(
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) => SizedBox(
-                    width: 50,
+                  count: max(controller.walletDetailsRx.value.length, 1),
+                  effect: WormEffect(
+                    dotHeight: 8,
+                    dotWidth: 8,
+                    activeDotColor: SatorioColor.darkAccent,
+                    dotColor: SatorioColor.darkAccent.withOpacity(0.5),
                   ),
-                  itemCount: controller.walletDetailsRx.value.length > 0
-                      ? controller.walletDetailsRx
-                          .value[controller.pageRx.value].actions.length
-                      : 0,
-                  itemBuilder: (context, index) {
-                    WalletAction waleltAction = controller.walletDetailsRx
-                        .value[controller.pageRx.value].actions[index];
-                    return _walletActionItem(waleltAction);
-                  },
-                  scrollDirection: Axis.horizontal,
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+              SizedBox(
+                height: 24 * coefficient,
+              ),
+              Container(
+                height: 90,
+                child: Obx(
+                  () => ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 50,
+                    ),
+                    itemCount: controller.walletDetailsRx.value.length > 0
+                        ? controller.walletDetailsRx
+                            .value[controller.pageRx.value].actions.length
+                        : 0,
+                    itemBuilder: (context, index) {
+                      WalletAction waleltAction = controller.walletDetailsRx
+                          .value[controller.pageRx.value].actions[index];
+                      return _walletActionItem(waleltAction);
+                    },
+                    scrollDirection: Axis.horizontal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

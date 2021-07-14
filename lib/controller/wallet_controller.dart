@@ -93,6 +93,10 @@ class WalletController extends GetxController {
     walletDetailsRx.value = _walletDetailsListenable!.value.values.toList();
   }
 
+  void refreshWallet() {
+    _walletsListener();
+  }
+
   void _updateWalletDetail(Wallet wallet) {
     _satorioRepository.updateWalletDetail(wallet.detailsUrl);
   }
