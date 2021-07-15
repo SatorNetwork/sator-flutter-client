@@ -24,7 +24,7 @@ class HomePage extends GetView<HomeController> {
       body: RefreshIndicator(
         color: SatorioColor.brand,
         onRefresh: () async {
-          controller.refreshMainPage();
+          controller.refreshHomePage();
         },
         child: SingleChildScrollView(
           child: Stack(

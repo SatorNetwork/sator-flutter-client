@@ -52,7 +52,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     super.onClose();
   }
 
-  void refreshMainPage() {
+  void refreshHomePage() {
     _satorioRepository.updateProfile();
     _loadShowByCategoryName();
   }
