@@ -118,8 +118,7 @@ class WalletPage extends GetView<WalletController> {
                     itemBuilder: (context, index) {
                       WalletDetail walletDetail = controller
                           .walletDetailsRx.value[controller.pageRx.value];
-                      WalletAction walletAction = controller.walletDetailsRx
-                          .value[controller.pageRx.value].actions[index];
+                      WalletAction walletAction = walletDetail.actions[index];
                       return _walletActionItem(walletDetail, walletAction);
                     },
                     scrollDirection: Axis.horizontal,
