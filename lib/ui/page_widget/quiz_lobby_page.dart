@@ -29,7 +29,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
             Container(
               height: kHeight,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 33),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Stack(
                   children: [
                     Positioned(
@@ -39,6 +39,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
                         child: Icon(
                           Icons.chevron_left_rounded,
                           size: 32,
+                          color: SatorioColor.darkAccent,
                         ),
                       ),
                     ),

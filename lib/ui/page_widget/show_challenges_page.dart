@@ -29,7 +29,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
           Container(
             height: kHeight,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 33),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Stack(
                 children: [
                   Positioned(
@@ -39,6 +39,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                       child: Icon(
                         Icons.chevron_left_rounded,
                         size: 32,
+                        color: SatorioColor.darkAccent,
                       ),
                     ),
                   ),
@@ -89,8 +90,8 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                         itemBuilder: (context, index) {
                           ChallengeSimple challengeSimple =
                               controller.showChallengesRx.value[index];
-                          return _challengeItem(
-                              context, challengeSimple, index);
+                          Color color = _colors[index % _colors.length];
+                          return _challengeItem(challengeSimple, color);
                         }),
                   ),
                 ],
@@ -102,8 +103,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
     );
   }
 
-  Widget _challengeItem(
-      BuildContext context, ChallengeSimple challengeSimple, int index) {
+  Widget _challengeItem(ChallengeSimple challengeSimple, Color color) {
     return InkWell(
       onTap: () {
         controller.toChallenge(challengeSimple);
@@ -122,7 +122,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
               width: 52 * coefficient,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
-                color: _colors[index % _colors.length],
+                color: color,
               ),
               child: Center(
                 child: SvgPicture.asset(

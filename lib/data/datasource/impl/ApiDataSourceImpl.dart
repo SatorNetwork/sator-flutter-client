@@ -12,10 +12,13 @@ import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
+import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_result_model.dart';
+import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
+import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
@@ -38,7 +41,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   AuthDataSource _authDataSource;
 
   ApiDataSourceImpl(this._authDataSource) {
-    _getConnect.baseUrl = 'https://api.stage.sator.io/';
+    _getConnect.baseUrl = 'https://api.stage.sator.io/dev/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -98,26 +101,18 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   Response _processResponse(Response response) {
-    Response utf8Response = Response(
-      request: response.request,
-      statusCode: response.statusCode,
-      bodyBytes: response.bodyBytes,
-      bodyString: utf8.decode(response.bodyString!.runes.toList()),
-      statusText: response.statusText,
-      headers: response.headers,
-      body: response.body,
-    );
+    Response utf8Response = response;
+    // Response utf8Response = Response(
+    //   request: response.request,
+    //   statusCode: response.statusCode,
+    //   bodyBytes: response.bodyBytes,
+    //   bodyString: utf8.decode(response.bodyString!.runes.toList()),
+    //   statusText: response.statusText,
+    //   headers: response.headers,
+    //   body: response.body,
+    // );
 
-    print('--------');
-
-    utf8Response.request!.headers.forEach((key, value) {
-      print('$key : $value');
-    });
-    print(
-        '${utf8Response.request!.method.toUpperCase()} ${utf8Response.request!.url} ${utf8Response.statusCode}');
-
-    print('${utf8Response.bodyString}');
-    print('--------');
+    logResponse(utf8Response);
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
@@ -138,6 +133,24 @@ class ApiDataSourceImpl implements ApiDataSource {
     }
 
     return utf8Response;
+  }
+
+  void logResponse(Response response) {
+    print('--------');
+
+    // print('Request headers:');
+    // response.request!.headers.forEach((key, value) {
+    //   print('$key : $value');
+    // });
+    print(
+        '${response.request!.method.toUpperCase()} ${response.request!.url} ${response.statusCode}');
+
+    // print('Response headers:');
+    // response.headers!.forEach((key, value) {
+    //   print('$key : $value');
+    // });
+    print('${response.bodyString}');
+    print('--------');
   }
 
   // endregion
@@ -381,6 +394,34 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<ShowDetailModel> showDetail(String showId) {
+    return _requestGet(
+      'shows/$showId',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      return ShowDetailModel.fromJson(jsonData['data']);
+    });
+  }
+
+  @override
+  Future<List<ShowSeasonModel>> showSeasons(String showId) {
+    return _requestGet(
+      'shows/$showId/episodes',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      List<ShowSeasonModel> result;
+      if (jsonData['data'] is Iterable)
+        result = (jsonData['data'] as Iterable)
+            .map((element) => ShowSeasonModel.fromJson(element))
+            .toList();
+      else
+        result = [];
+      result.sort((a, b) => a.seasonNumber.compareTo(b.seasonNumber));
+      return result;
+    });
+  }
+
+  @override
   Future<List<ChallengeSimpleModel>> showChallenges(String showId,
       {int? page}) {
     Map<String, String>? query;
@@ -435,6 +476,34 @@ class ApiDataSourceImpl implements ApiDataSource {
       'challenges/$challengeId',
     ).then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<bool> isChallengeActivated(String episodeId) {
+    return _requestGet(
+      'challenges/$episodeId/is-activated',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId) {
+    return _requestGet(
+      'challenges/$episodeId/validation-question',
+    ).then((Response response) {
+      return PayloadQuestionModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
+    return _requestGet(
+      'challenges/$questionId/check-answer/$answerId',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 

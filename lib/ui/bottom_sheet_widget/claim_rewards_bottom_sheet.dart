@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
-import 'package:satorio/controller/mixin/bacl_to_main_mixin.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -18,7 +18,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 390,
+      // height: 390,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
@@ -27,9 +27,11 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
                 Icons.check_circle_rounded,
@@ -40,7 +42,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                 height: 24,
               ),
               Text(
-                "txt_done".tr,
+                "txt_congrats".tr,
                 style: textTheme.headline1!.copyWith(
                     color: SatorioColor.textBlack,
                     fontSize: 34.0 * coefficient,
@@ -51,6 +53,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
               ),
               Text(
                 "txt_congrats_msg".tr,
+                textAlign: TextAlign.center,
                 style: textTheme.bodyText1!.copyWith(
                     color: SatorioColor.textBlack, fontWeight: FontWeight.w400),
               ),
@@ -63,6 +66,9 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                     color: SatorioColor.textBlack, fontWeight: FontWeight.w600),
               ),
             ],
+          ),
+          SizedBox(
+            height: 32,
           ),
           Column(
             children: [

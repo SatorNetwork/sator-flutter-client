@@ -88,6 +88,9 @@ class ShowsPage extends GetView<ShowsController> {
   Widget _showItem(Show show) {
     return InkWell(
       onTap: () {
+        controller.toShowDetail(show);
+      },
+      onLongPress: () {
         controller.toShowChallenges(show);
       },
       child: Container(

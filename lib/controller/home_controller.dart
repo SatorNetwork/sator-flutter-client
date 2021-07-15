@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/show_challenges_binding.dart';
+import 'package:satorio/binding/show_detail_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -10,6 +11,7 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
+import 'package:satorio/ui/page_widget/show_detail_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final SatorioRepository _satorioRepository = Get.find();
@@ -88,6 +90,10 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
   void toShowChallenges(Show show) {
     Get.to(() => ShowChallengesPage(show), binding: ShowChallengesBinding());
+  }
+
+  void toShowDetail(Show show) {
+    Get.to(() => ShowDetailPage(show), binding: ShowDetailBinding());
   }
 
   void toLogoutDialog() {

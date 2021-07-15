@@ -21,7 +21,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: Get.height - Get.mediaQuery.padding.top + kToolbarHeight,
+          height: Get.height,
           color: Colors.white,
           child: Stack(
             children: [

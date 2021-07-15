@@ -3,8 +3,11 @@ import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
+import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
+import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
@@ -66,6 +69,10 @@ abstract class ApiDataSource {
 
   Future<List<ShowModel>> showsFromCategory(String category);
 
+  Future<ShowDetailModel> showDetail(String showId);
+
+  Future<List<ShowSeasonModel>> showSeasons(String showId);
+
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
   Future<dynamic> loadShow(String showId);
@@ -77,6 +84,12 @@ abstract class ApiDataSource {
   // region Challenges
 
   Future<ChallengeModel> challenge(String challengeId);
+
+  Future<bool> isChallengeActivated(String episodeId);
+
+  Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId);
+
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
 
   // endregion
 

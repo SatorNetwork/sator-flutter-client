@@ -9,8 +9,11 @@ import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
@@ -138,6 +141,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<ShowDetail> showDetail(String showId) {
+    return _apiDataSource
+        .showDetail(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<ShowSeason>> showSeasons(String showId) {
+    return _apiDataSource
+        .showSeasons(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<ChallengeSimple>> showChallenges(String showId, {int? page}) {
     return _apiDataSource
         .showChallenges(showId, page: page)
@@ -177,6 +194,26 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> isChallengeActivated(String episodeId) {
+    return _apiDataSource
+        .isChallengeActivated(episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId) {
+    return _apiDataSource
+        .showEpisodeQuizQuestion(episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
+    return _apiDataSource
+        .showEpisodeQuizAnswer(questionId, answerId)
         .catchError((value) => _handleException(value));
   }
 
