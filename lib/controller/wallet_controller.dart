@@ -129,4 +129,8 @@ class WalletController extends GetxController {
       },
     );
   }
+
+  void refreshWallet() {
+    _satorioRepository.updateWallets();
+  }
 }
