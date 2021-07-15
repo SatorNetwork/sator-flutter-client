@@ -23,7 +23,9 @@ class HomePage extends GetView<HomeController> {
       extendBodyBehindAppBar: true,
       body: RefreshIndicator(
         color: SatorioColor.brand,
-        onRefresh: _refresh,
+        onRefresh: () async {
+          controller.refreshMainPage();
+        },
         child: SingleChildScrollView(
           child: Stack(
             children: [
@@ -168,11 +170,6 @@ class HomePage extends GetView<HomeController> {
         ),
       ),
     );
-  }
-
-  Future<Null> _refresh() async {
-    controller.refreshMainPage();
-    print('refresh');
   }
 
   Widget _contentWithCategories() {
