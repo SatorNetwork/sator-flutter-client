@@ -14,9 +14,6 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
-  final double kAppBarHeight = 120 ;
-  final double kHeight = 220;
-
   ShowEpisodesRealmPage(
       ShowDetail showDetail, ShowSeason showSeason, ShowEpisode showEpisode)
       : super() {
@@ -28,6 +25,93 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Obx(
+              () => Text(
+                controller.showDetailRx.value?.title ?? '',
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.white,
+                  fontSize: 12.0 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 2,
+            ),
+            Obx(
+              () => Text(
+                'txt_episode_naming'.tr.format([
+                  controller.showSeasonRx.value?.seasonNumber ?? 0,
+                  controller.showEpisodeRx.value?.episodeNumber ?? 0,
+                  controller.showEpisodeRx.value?.title ?? '',
+                ]),
+                style: textTheme.bodyText1!.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        leading: InkWell(
+          onTap: () => controller.back(),
+          child: Icon(
+            Icons.chevron_left_rounded,
+            size: 32,
+            color: Colors.white,
+          ),
+        ),
+        actions: [
+          Container(
+            // margin: const EdgeInsets.only(right: 20),
+            width: kToolbarHeight,
+            height: kToolbarHeight,
+            child: Stack(
+              children: [
+                Center(
+                  child: InkWell(
+                    onTap: () => controller.back(),
+                    child: Icon(
+                      Icons.question_answer_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 5,
+                  top: 5,
+                  child: ClipOval(
+                    child: Container(
+                      height: 20,
+                      width: 20,
+                      color: SatorioColor.brand,
+                      child: Center(
+                        child: Text(
+                          '55',
+                          style: textTheme.bodyText2!.copyWith(
+                            color: Colors.white,
+                            fontSize: 9 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
       body: _bodyContent(),
       bottomSheet: _bottomSheetContent(),
     );
@@ -47,100 +131,12 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           ),
         ),
         Container(
-          height: kHeight,
+          height: 220,
           child: Stack(
             children: [
-              Positioned(
-                top: kAppBarHeight / 2,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: InkWell(
-                    onTap: () => controller.back(),
-                    child: Icon(
-                      Icons.chevron_left_rounded,
-                      size: 32,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
               Container(
-                margin: EdgeInsets.only(top: kAppBarHeight / 2),
-                width: Get.mediaQuery.size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Obx(
-                      () => Text(
-                        controller.showDetailRx.value?.title ?? '',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: Colors.white,
-                          fontSize: 12.0 * coefficient,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Obx(
-                      () => Text(
-                        'txt_episode_naming'.tr.format([
-                          controller.showSeasonRx.value?.seasonNumber ?? 0,
-                          controller.showEpisodeRx.value?.episodeNumber ?? 0,
-                          controller.showEpisodeRx.value?.title ?? '',
-                        ]),
-                        style: textTheme.bodyText1!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                top: kAppBarHeight / 2,
-                right: 0,
-                child: Container(
-                  margin: EdgeInsets.only(right: 20),
-                  width: 50,
-                  height: 44,
-                  child: Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                            onTap: () => controller.back(),
-                            child: SvgPicture.asset('images/chat_icon.svg')),
-                      ),
-                      Positioned(
-                        right: 15,
-                        bottom: 24,
-                        child: ClipOval(
-                          child: Container(
-                            height: 20,
-                            width: 20,
-                            color: SatorioColor.brand,
-                            child: Center(
-                              child: Text(
-                                '55',
-                                style: textTheme.bodyText2!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 9 * coefficient,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: kHeight * coefficient / 1.5),
+                margin: EdgeInsets.only(
+                    top: Get.mediaQuery.padding.top + kToolbarHeight + 20),
                 width: Get.mediaQuery.size.width,
                 height: 80 * coefficient,
                 child: ListView(
@@ -800,14 +796,12 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         borderRadius: BorderRadius.circular(12),
                         color: SatorioColor.lavender_rose,
                       ),
-                      child: Text(
-                        'Rank #1',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: Colors.black,
-                          fontSize: 12.0 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        )
-                      ),
+                      child: Text('Rank #1',
+                          style: textTheme.bodyText2!.copyWith(
+                            color: Colors.black,
+                            fontSize: 12.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          )),
                     )
                   ],
                 ),
@@ -865,7 +859,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 24,),
+                  SizedBox(
+                    height: 24,
+                  ),
                   Container(
                     width: Get.mediaQuery.size.width,
                     padding: EdgeInsets.only(top: 16, left: 16, right: 16),
