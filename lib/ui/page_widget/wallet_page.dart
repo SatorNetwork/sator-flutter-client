@@ -31,10 +31,10 @@ class WalletPage extends GetView<WalletController> {
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
       body: RefreshIndicator(
-        color: SatorioColor.brand,
-        onRefresh: () async {
-          controller.updateWallets();
-        },
+          color: SatorioColor.brand,
+          onRefresh: () async {
+            controller.refreshWallet();
+          },
           child: _walletContent()),
       bottomSheet: _transactionContent(),
     );
