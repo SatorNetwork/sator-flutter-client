@@ -54,11 +54,10 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     super.onClose();
   }
 
-  @Deprecated('changes 23.06')
-  void _loadShows() {
-    _satorioRepository.shows().then((List<Show> shows) {
-      showsRx.value = shows;
-    });
+  void refreshHomePage() {
+    _satorioRepository.updateProfile();
+    _satorioRepository.updateWalletBalance();
+    _loadShowByCategoryName();
   }
 
   void _loadShowByCategoryName() {
