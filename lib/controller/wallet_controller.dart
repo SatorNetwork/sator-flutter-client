@@ -40,12 +40,19 @@ class WalletController extends GetxController {
 
   @override
   void onClose() {
+    pageController.removeListener(_changePage);
     _walletsListenable.removeListener(_walletsListener);
     _walletDetailsListenable?.removeListener(_walletDetailsListener);
     super.onClose();
   }
 
-  void changePage(int page) {
+  void setupPageController(double viewportFraction) {
+    pageController = PageController(viewportFraction: viewportFraction);
+    pageController.addListener(_changePage);
+  }
+
+  void _changePage() {
+    int page = pageController.page?.round() ?? 0;
     if (page < walletDetailsRx.value.length) {
       String id = walletDetailsRx.value[page].id;
 
