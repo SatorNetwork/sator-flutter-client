@@ -101,6 +101,10 @@ class WalletController extends GetxController {
     _satorioRepository.updateWalletDetail(wallet.detailsUrl);
   }
 
+  void updateWallets() {
+    _satorioRepository.updateWallets();
+  }
+
   void _updateTransaction(Wallet? wallet) {
     if (wallet != null && (wallet.transactionsUrl.isNotEmpty)) {
       _satorioRepository

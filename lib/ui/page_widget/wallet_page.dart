@@ -32,14 +32,12 @@ class WalletPage extends GetView<WalletController> {
       backgroundColor: Colors.transparent,
       body: RefreshIndicator(
         color: SatorioColor.brand,
-        onRefresh: _refresh,
+        onRefresh: () async {
+          controller.updateWallets();
+        },
           child: _walletContent()),
       bottomSheet: _transactionContent(),
     );
-  }
-
-  Future<Null> _refresh() async {
-    controller.refreshWallet();
   }
 
   Widget _walletContent() {
