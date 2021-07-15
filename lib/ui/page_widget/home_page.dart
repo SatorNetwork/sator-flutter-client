@@ -20,146 +20,152 @@ class HomePage extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: SatorioColor.darkAccent,
       extendBodyBehindAppBar: true,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              color: SatorioColor.darkAccent,
-              height: 190,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, top: 76),
-                      child: InkWell(
-                        onTap: () {
-                          controller.toLogoutDialog();
-                        },
+      body: RefreshIndicator(
+        color: SatorioColor.brand,
+        onRefresh: () async {
+          controller.refreshHomePage();
+        },
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Container(
+                color: SatorioColor.darkAccent,
+                height: 190,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 76),
+                        child: InkWell(
+                          onTap: () {
+                            controller.toLogoutDialog();
+                          },
+                          child: Obx(
+                            () => Text(
+                              controller.profileRx.value?.displayedName ?? '',
+                              style: textTheme.headline1!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 32.0 * coefficient,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 67, right: 20),
+                        width: 60 * coefficient,
+                        height: 60 * coefficient,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 5,
+                            color: Colors.white.withOpacity(0.12),
+                          ),
+                        ),
+                        child: Center(
+                          child: Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: SatorioColor.casablanca,
+                            ),
+                            child: Center(
+                              child: ClipOval(
+                                child: SvgPicture.asset(
+                                  avatars[avatarIndex],
+                                  width: 50,
+                                  height: 50,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 158),
+                height: 115,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
+                  ),
+                  color: SatorioColor.interactive,
+                ),
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 21, left: 20),
+                        child: Text(
+                          'txt_wallet'.tr,
+                          style: textTheme.headline3!.copyWith(
+                            color: Colors.white,
+                            fontSize: 24.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20, top: 16),
                         child: Obx(
-                          () => Text(
-                            controller.profileRx.value?.displayedName ?? '',
-                            style: textTheme.headline1!.copyWith(
-                                color: Colors.white,
-                                fontSize: 32.0 * coefficient,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 67, right: 20),
-                      width: 60 * coefficient,
-                      height: 60 * coefficient,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          width: 5,
-                          color: Colors.white.withOpacity(0.12),
-                        ),
-                      ),
-                      child: Center(
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: SatorioColor.casablanca,
-                          ),
-                          child: Center(
-                            child: ClipOval(
-                              child: SvgPicture.asset(
-                                avatars[avatarIndex],
-                                width: 50,
-                                height: 50,
-                                fit: BoxFit.fitWidth,
+                          () => Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                controller.walletRx.value.length > 0
+                                    ? controller.walletRx.value[0].displayedValue
+                                    : '',
+                                style: textTheme.bodyText1!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 18.0 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
+                              Text(
+                                controller.walletRx.value.length > 1
+                                    ? controller.walletRx.value[1].displayedValue
+                                    : '',
+                                style: textTheme.bodyText2!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 12.0 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 158),
-              height: 115,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
+                    )
+                  ],
                 ),
-                color: SatorioColor.interactive,
               ),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 21, left: 20),
-                      child: Text(
-                        'txt_wallet'.tr,
-                        style: textTheme.headline3!.copyWith(
-                          color: Colors.white,
-                          fontSize: 24.0 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+              Container(
+                margin: const EdgeInsets.only(top: 231),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20, top: 16),
-                      child: Obx(
-                        () => Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              controller.walletRx.value.length > 0
-                                  ? controller.walletRx.value[0].displayedValue
-                                  : '',
-                              style: textTheme.bodyText1!.copyWith(
-                                color: Colors.white,
-                                fontSize: 18.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Text(
-                              controller.walletRx.value.length > 1
-                                  ? controller.walletRx.value[1].displayedValue
-                                  : '',
-                              style: textTheme.bodyText2!.copyWith(
-                                color: Colors.white,
-                                fontSize: 12.0 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 231),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
+                  color: Colors.white,
                 ),
-                color: Colors.white,
-              ),
-              child: _contentWithCategories(),
-            )
-          ],
+                child: _contentWithCategories(),
+              )
+            ],
+          ),
         ),
       ),
     );
