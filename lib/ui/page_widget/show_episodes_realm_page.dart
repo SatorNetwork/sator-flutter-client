@@ -796,7 +796,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         borderRadius: BorderRadius.circular(12),
                         color: SatorioColor.lavender_rose,
                       ),
-                      child: Text('Rank #1',
+                      child: Text('NFT',
                           style: textTheme.bodyText2!.copyWith(
                             color: Colors.black,
                             fontSize: 12.0 * coefficient,

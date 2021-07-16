@@ -345,7 +345,7 @@ class HomePage extends GetView<HomeController> {
                         color: SatorioColor.lavender_rose,
                       ),
                       child: Text(
-                        'Rank #1',
+                        'NFT',
                         style: textTheme.bodyText2!.copyWith(
                           color: Colors.black,
                           fontSize: 12.0 * coefficient,
