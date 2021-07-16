@@ -210,8 +210,8 @@ class WalletPage extends GetView<WalletController> {
             alignment: Alignment.centerRight,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'images/sator_wallet.png',
+              child: SvgPicture.asset(
+                'images/sator_wallet.svg',
                 height: height,
                 fit: BoxFit.cover,
               ),

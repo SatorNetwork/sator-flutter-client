@@ -16,11 +16,10 @@ class WalletController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   late PageController pageController;
+  final RxInt pageRx = _initPage.obs;
 
   Map<String, Wallet> wallets = {};
   Rx<List<WalletDetail>> walletDetailsRx = Rx([]);
-  RxInt pageRx = RxInt(_initPage);
-
   Rx<Map<String, List<Transaction>>> walletTransactionsRx = Rx({});
 
   late ValueListenable<Box<Wallet>> _walletsListenable;
@@ -40,29 +39,41 @@ class WalletController extends GetxController {
 
   @override
   void onClose() {
-    pageController.removeListener(_changePage);
+    pageController.removeListener(_pageListener);
     _walletsListenable.removeListener(_walletsListener);
     _walletDetailsListenable?.removeListener(_walletDetailsListener);
     super.onClose();
   }
 
   void setupPageController(double viewportFraction) {
-    pageController = PageController(viewportFraction: viewportFraction);
-    pageController.addListener(_changePage);
+    pageController = PageController(
+      initialPage: _initPage,
+      keepPage: true,
+      viewportFraction: viewportFraction,
+    );
+    pageController.addListener(_pageListener);
+    resetPageToInitValue();
   }
 
-  void _changePage() {
-    int page = pageController.page?.round() ?? 0;
-    if (page < walletDetailsRx.value.length) {
-      String id = walletDetailsRx.value[page].id;
+  void resetPageToInitValue() {
+    pageRx.value = _initPage;
+  }
 
-      if (walletTransactionsRx.value[id]?.isEmpty ?? false) {
-        Wallet? wallet = wallets[id];
-        _updateTransaction(wallet);
+  void _pageListener() {
+    final int page = pageController.page?.round() ?? 0;
+
+    if (page != pageRx.value) {
+      if (page < walletDetailsRx.value.length) {
+        String id = walletDetailsRx.value[page].id;
+
+        if (walletTransactionsRx.value[id]?.isEmpty ?? false) {
+          Wallet? wallet = wallets[id];
+          _updateTransaction(wallet);
+        }
       }
-    }
 
-    pageRx.value = page;
+      pageRx.value = page;
+    }
   }
 
   void _walletsListener() {
