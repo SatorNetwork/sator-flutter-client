@@ -770,7 +770,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               fit: BoxFit.cover,
             ),
             Container(
-              margin: EdgeInsets.only(top: 100 * coefficient),
+              margin: EdgeInsets.only(top: 85 * coefficient),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -810,8 +810,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             Container(
               color: SatorioColor.alice_blue,
               padding: EdgeInsets.symmetric(vertical: 16),
-              margin: EdgeInsets.only(top: 170 * coefficient),
+              margin: EdgeInsets.only(top: 140 * coefficient),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -825,7 +826,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     ),
                   ),
                   SizedBox(
-                    height: 16,
+                    height: 7*coefficient,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
