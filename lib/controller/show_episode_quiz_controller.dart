@@ -31,16 +31,14 @@ class ShowEpisodeQuizController extends GetxController {
     _satorioRepository
         .showEpisodeQuizQuestion(showEpisode.id)
         .then((PayloadQuestion payloadQuestion) {
-      _updatePayloadQuestion(payloadQuestion, true);
+      _updatePayloadQuestion(payloadQuestion);
     });
   }
 
-  void _updatePayloadQuestion(PayloadQuestion payloadQuestion, bool restart) {
+  void _updatePayloadQuestion(PayloadQuestion payloadQuestion) {
     answerIdRx.value = '';
     isAnswerSentRx.value = false;
     questionRx.value = payloadQuestion;
-    if (restart)
-      countdownController.restart(duration: payloadQuestion.timeForAnswer);
   }
 
   void selectAnswer(PayloadAnswerOption answerOption) {
