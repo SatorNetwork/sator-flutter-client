@@ -156,7 +156,7 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
                       end: Alignment.bottomCenter,
                       colors: [
                         Colors.black.withOpacity(0),
-                        Colors.black.withOpacity(0.5)
+                        Colors.black.withOpacity(0.5),
                       ],
                     ),
                   ),

@@ -127,7 +127,8 @@ class HomePage extends GetView<HomeController> {
                             children: [
                               Text(
                                 controller.walletRx.value.length > 0
-                                    ? controller.walletRx.value[0].displayedValue
+                                    ? controller
+                                        .walletRx.value[0].displayedValue
                                     : '',
                                 style: textTheme.bodyText1!.copyWith(
                                   color: Colors.white,
@@ -137,7 +138,8 @@ class HomePage extends GetView<HomeController> {
                               ),
                               Text(
                                 controller.walletRx.value.length > 1
-                                    ? controller.walletRx.value[1].displayedValue
+                                    ? controller
+                                        .walletRx.value[1].displayedValue
                                     : '',
                                 style: textTheme.bodyText2!.copyWith(
                                   color: Colors.white,
@@ -270,24 +272,6 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _badgeItem(String assetName, int index) {
-    return Container(
-      width: 100,
-      height: 100,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(17),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Center(
-        child: Image.asset(
-          "images/new/$assetName.png",
-          height: 60,
-          fit: BoxFit.fitHeight,
-        ),
-      ),
-    );
-  }
-
   Widget _showItem(Show show) {
     final width = Get.width - 20 - 32;
     final height = 168.0 * coefficient;
@@ -298,14 +282,14 @@ class HomePage extends GetView<HomeController> {
       onLongPress: () {
         controller.toShowChallenges(show);
       },
-      child: Container(
-        width: width,
-        height: height,
-        child: Stack(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: width,
+          height: height,
+          child: Stack(
+            children: [
+              Image(
                 width: width,
                 height: height,
                 fit: BoxFit.cover,
@@ -314,115 +298,61 @@ class HomePage extends GetView<HomeController> {
                   color: SatorioColor.grey,
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 20,
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        show.title,
-                        style: textTheme.headline4!.copyWith(
-                          color: Colors.white,
-                          fontSize: 20.0 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 7,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: SatorioColor.lavender_rose,
-                      ),
-                      child: Text(
-                        'NFT',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: Colors.black,
-                          fontSize: 12.0 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _nftsItem(String assetName, String name) {
-    double width = Get.width - 20 - 32;
-    double height = 168.0;
-    return Container(
-      width: width,
-      height: height,
-      child: Stack(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.asset(
-              "images/new/$assetName.png",
-              height: height,
-              width: width,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 20,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Text(
-                      name,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w700,
-                      ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0),
+                        Colors.black.withOpacity(0.5),
+                      ],
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 7,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: SatorioColor.lavender_rose,
-                    ),
-                    child: Text(
-                      'Rank #1',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w700,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          show.title,
+                          style: textTheme.headline4!.copyWith(
+                            color: Colors.white,
+                            fontSize: 20.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 7,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: SatorioColor.lavender_rose,
+                        ),
+                        child: Text(
+                          'NFT',
+                          style: textTheme.bodyText2!.copyWith(
+                            color: Colors.black,
+                            fontSize: 12.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
