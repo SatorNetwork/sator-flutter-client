@@ -17,6 +17,7 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
 
   @override
   Widget build(BuildContext context) {
+    // controller.seasonsRx.value.length == 1 && controller.seasonsRx.value[0].seasonNumber == 0
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -46,32 +47,6 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
             ),
           ),
         ),
-        bottom: PreferredSize(
-          preferredSize: Size(Get.width, kTextTabBarHeight),
-          child: Obx(
-            () => TabBar(
-              indicatorColor: SatorioColor.interactive,
-              labelColor: SatorioColor.interactive,
-              isScrollable: true,
-              unselectedLabelColor: SatorioColor.darkAccent,
-              controller: controller.tabController,
-              labelPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0 * coefficient),
-              labelStyle: textTheme.headline4!.copyWith(
-                color: SatorioColor.darkAccent,
-                fontSize: 20 * coefficient,
-                fontWeight: FontWeight.w700,
-              ),
-              tabs: controller.seasonsRx.value
-                  .map(
-                    (showSeason) => Tab(
-                      text: showSeason.title,
-                    ),
-                  )
-                  .toList(),
-            ),
-          ),
-        ),
       ),
       body: Stack(
         children: [
@@ -80,15 +55,50 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
             height: Get.height,
             fit: BoxFit.cover,
           ),
-          Container(
-            margin: EdgeInsets.only(
-              top: Get.mediaQuery.padding.top +
-                  kToolbarHeight +
-                  kTextTabBarHeight +
-                  24 * coefficient,
+          Obx(
+            () => Container(
+              margin: EdgeInsets.only(
+                top: Get.mediaQuery.padding.top + kToolbarHeight,
+              ),
+              height: _tabBarHeight(),
+              width: Get.width,
+              child: Center(
+                child: TabBar(
+                  indicatorColor: _isTabBarVisible()
+                      ? SatorioColor.interactive
+                      : Colors.transparent,
+                  automaticIndicatorColorAdjustment: false,
+                  labelColor: SatorioColor.interactive,
+                  isScrollable: true,
+                  unselectedLabelColor: SatorioColor.darkAccent,
+                  controller: controller.tabController,
+                  labelPadding:
+                      EdgeInsets.symmetric(horizontal: 16.0 * coefficient),
+                  labelStyle: textTheme.headline4!.copyWith(
+                    color: SatorioColor.darkAccent,
+                    fontSize: 20 * coefficient,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  tabs: controller.seasonsRx.value
+                      .map(
+                        (showSeason) => Tab(
+                          text: showSeason.title,
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
             ),
-            child: Obx(
-              () => TabBarView(
+          ),
+          Obx(
+            () => Container(
+              margin: EdgeInsets.only(
+                top: Get.mediaQuery.padding.top +
+                    kToolbarHeight +
+                    _tabBarHeight() +
+                    24 * coefficient,
+              ),
+              child: TabBarView(
                 controller: controller.tabController,
                 children: controller.seasonsRx.value
                     .map(
@@ -97,7 +107,7 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
                     .toList(),
               ),
             ),
-          )
+          ),
         ],
       ),
     );
@@ -192,5 +202,14 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
         ),
       ),
     );
+  }
+
+  double _tabBarHeight() {
+    return _isTabBarVisible() ? kTextTabBarHeight : 0.0;
+  }
+
+  bool _isTabBarVisible() {
+    return !(controller.seasonsRx.value.length == 1 &&
+        controller.seasonsRx.value[0].seasonNumber == 0);
   }
 }
