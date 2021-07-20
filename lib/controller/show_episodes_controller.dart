@@ -43,4 +43,15 @@ class ShowEpisodesController extends GetxController
       seasonsRx.value = seasons;
     });
   }
+
+  void refreshSeasons() {
+    if (showDetailRx.value == null) return;
+
+    _satorioRepository
+        .showSeasons(showDetailRx.value!.id)
+        .then((List<ShowSeason> seasons) {
+      tabController = TabController(length: seasons.length, vsync: this);
+      seasonsRx.value = seasons;
+    });
+  }
 }

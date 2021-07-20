@@ -29,52 +29,58 @@ class ShowsPage extends GetView<ShowsController> {
                 //     notification.metrics.maxScrollExtent) print('Next Page');
                 return true;
               },
-              child: SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 64),
-                        child: Center(
-                          child: Text(
-                            'txt_challenges'.tr,
-                            style: textTheme.headline4!.copyWith(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 28.0 * coefficient,
-                              fontWeight: FontWeight.w700,
+              child: RefreshIndicator(
+                color: SatorioColor.brand,
+                onRefresh: () async {
+                  controller.loadShows();
+                },
+                child: SingleChildScrollView(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 64),
+                          child: Center(
+                            child: Text(
+                              'txt_challenges'.tr,
+                              style: textTheme.headline4!.copyWith(
+                                color: SatorioColor.darkAccent,
+                                fontSize: 28.0 * coefficient,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 22),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(32),
-                            topRight: Radius.circular(32),
-                          ),
-                          color: Colors.white,
-                        ),
-                        constraints: BoxConstraints(
-                          minHeight: Get.mediaQuery.size.height - kHeight,
-                        ),
-                        child: Obx(
-                          () => ListView.separated(
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(24),
-                            physics: ScrollPhysics(),
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: 24,
+                        Container(
+                          margin: const EdgeInsets.only(top: 22),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(32),
+                              topRight: Radius.circular(32),
                             ),
-                            itemCount: controller.showsRx.value.length,
-                            itemBuilder: (context, index) {
-                              Show show = controller.showsRx.value[index];
-                              return _showItem(show);
-                            },
+                            color: Colors.white,
                           ),
-                        ),
-                      )
-                    ],
+                          constraints: BoxConstraints(
+                            minHeight: Get.mediaQuery.size.height - kHeight,
+                          ),
+                          child: Obx(
+                            () => ListView.separated(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(24),
+                              physics: ScrollPhysics(),
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: 24,
+                              ),
+                              itemCount: controller.showsRx.value.length,
+                              itemBuilder: (context, index) {
+                                Show show = controller.showsRx.value[index];
+                                return _showItem(show);
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
