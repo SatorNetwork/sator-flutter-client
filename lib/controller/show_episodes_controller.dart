@@ -36,12 +36,7 @@ class ShowEpisodesController extends GetxController
   void loadSeasonForShow(ShowDetail showDetail) {
     showDetailRx.value = showDetail;
 
-    _satorioRepository
-        .showSeasons(showDetail.id)
-        .then((List<ShowSeason> seasons) {
-      tabController = TabController(length: seasons.length, vsync: this);
-      seasonsRx.value = seasons;
-    });
+    refreshSeasons();
   }
 
   void refreshSeasons() {
