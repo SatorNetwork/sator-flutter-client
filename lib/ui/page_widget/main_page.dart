@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/shows_page.dart';
@@ -32,6 +33,10 @@ class MainPage extends GetView<MainController> {
               case 3:
                 break;
               case 4:
+                if (Get.isRegistered<WalletController>()) {
+                  WalletController walletController = Get.find();
+                  walletController.resetPageToInitValue();
+                }
                 controller.loadWallets();
                 break;
               default:

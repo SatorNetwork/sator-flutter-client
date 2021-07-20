@@ -8,8 +8,6 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
 class ForgotPasswordPage extends GetView<PasswordRecoveryController> {
-  static const double _appBarHeight = 90;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +15,6 @@ class ForgotPasswordPage extends GetView<PasswordRecoveryController> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: _appBarHeight,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
         leading: Material(
           color: Colors.transparent,
@@ -36,7 +33,7 @@ class ForgotPasswordPage extends GetView<PasswordRecoveryController> {
         child: Container(
           width: Get.width,
           height: Get.mediaQuery.size.height -
-              (Get.mediaQuery.padding.top + _appBarHeight),
+              (Get.mediaQuery.padding.top + kToolbarHeight),
           color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(

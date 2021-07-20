@@ -38,7 +38,7 @@ abstract class SatorioRepository {
 
   Future<List<Transaction>> walletTransactions(String transactionsPath);
 
-  Future<List<Show>> shows({int page});
+  Future<List<Show>> shows({int? page, int? itemsPerPage});
 
   Future<List<Show>> showsFromCategory(String category);
 

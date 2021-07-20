@@ -127,9 +127,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Show>> shows({int? page}) {
+  Future<List<Show>> shows({int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .shows(page: page)
+        .shows(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 

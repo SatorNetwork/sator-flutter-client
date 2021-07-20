@@ -8,8 +8,6 @@ import 'package:satorio/ui/theme/text_theme.dart';
 
 class ForgotPasswordVerificationPage
     extends GetView<PasswordRecoveryController> {
-  static const double _appBarHeight = 90;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +15,6 @@ class ForgotPasswordVerificationPage
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        toolbarHeight: _appBarHeight,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
         leading: Material(
           color: Colors.transparent,

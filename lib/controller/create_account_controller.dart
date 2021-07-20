@@ -25,10 +25,6 @@ class CreateAccountController extends GetxController with ValidationMixin {
     Get.off(() => LoginPage(), binding: LoginBinding());
   }
 
-  void back() {
-    Get.back();
-  }
-
   void createAccount() {
     _satorioRepository
         .signUp(

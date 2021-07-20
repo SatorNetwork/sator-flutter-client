@@ -31,16 +31,14 @@ class ShowEpisodeQuizController extends GetxController {
     _satorioRepository
         .showEpisodeQuizQuestion(showEpisode.id)
         .then((PayloadQuestion payloadQuestion) {
-      _updatePayloadQuestion(payloadQuestion, true);
+      _updatePayloadQuestion(payloadQuestion);
     });
   }
 
-  void _updatePayloadQuestion(PayloadQuestion payloadQuestion, bool restart) {
+  void _updatePayloadQuestion(PayloadQuestion payloadQuestion) {
     answerIdRx.value = '';
     isAnswerSentRx.value = false;
     questionRx.value = payloadQuestion;
-    if (restart)
-      countdownController.restart(duration: payloadQuestion.timeForAnswer);
   }
 
   void selectAnswer(PayloadAnswerOption answerOption) {
@@ -70,8 +68,8 @@ class ShowEpisodeQuizController extends GetxController {
               DefaultDialog(
                 'txt_oops'.tr,
                 'txt_wrong_answer'.tr,
-                'txt_back_home'.tr,
-                icon: Icons.close_rounded,
+                'txt_ok'.tr,
+                icon: Icons.sentiment_dissatisfied_rounded,
                 onPressed: () {
                   Get.until((route) => !Get.isOverlaysOpen);
                   Get.until((route) =>
@@ -84,5 +82,22 @@ class ShowEpisodeQuizController extends GetxController {
         });
       }
     }
+  }
+
+  void timeExpire() {
+    Get.dialog(
+      DefaultDialog(
+        'txt_oops'.tr,
+        'txt_time_expire'.tr,
+        'txt_ok'.tr,
+        icon: Icons.sentiment_dissatisfied_rounded,
+        onPressed: () {
+          Get.until((route) => !Get.isOverlaysOpen);
+          Get.until(
+              (route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+        },
+      ),
+      barrierDismissible: false,
+    );
   }
 }

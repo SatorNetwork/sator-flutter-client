@@ -19,13 +19,29 @@ class ShowDetailPage extends GetView<ShowDetailController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        leading: Material(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          child: InkWell(
+            onTap: () => controller.back(),
+            child: Icon(
+              Icons.chevron_left_rounded,
+              size: 32,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
       body: _bodyContent(),
       bottomSheet: _bottomSheetContent(),
     );
   }
 
   Widget _bodyContent() {
-    const double kHeight = 120;
     return Stack(
       children: [
         Obx(
@@ -63,27 +79,6 @@ class ShowDetailPage extends GetView<ShowDetailController> {
                 Colors.black.withOpacity(0.5)
               ]),
               borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
-        Container(
-          height: kHeight,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: kHeight / 2,
-                  child: InkWell(
-                    onTap: () => controller.back(),
-                    child: Icon(
-                      Icons.chevron_left_rounded,
-                      size: 32,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
             ),
           ),
         ),
@@ -180,17 +175,17 @@ class ShowDetailPage extends GetView<ShowDetailController> {
               height: 4.0 * coefficient,
             ),
             Obx(
-                () => Text(
-                  controller.showDetailRx.value?.description ?? '',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 4,
-                  textAlign: TextAlign.justify,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: Colors.black,
-                    fontSize: 15.0 * coefficient,
-                    fontWeight: FontWeight.w400,
-                  ),
+              () => Text(
+                controller.showDetailRx.value?.description ?? '',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 4,
+                textAlign: TextAlign.justify,
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.black,
+                  fontSize: 15.0 * coefficient,
+                  fontWeight: FontWeight.w400,
                 ),
+              ),
             ),
             SizedBox(
               height: 20.0 * coefficient,

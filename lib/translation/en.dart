@@ -44,6 +44,7 @@ const Map<String, String> en = {
   'txt_waiting_players': 'Waiting for players to join',
   'txt_players_connected': 'Players connected',
   'txt_wrong_answer': 'Wrong answer. You lost :(',
+  'txt_time_expire': 'Time expired. You lost :(',
   'txt_back_home': 'Back home',
   'txt_keep_going': 'Keep going!',
   'txt_questions_left': '%d questions left',

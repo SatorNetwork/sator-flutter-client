@@ -9,7 +9,7 @@ class ShowDetailController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
   final Rx<ShowDetail?> showDetailRx = Rx(null);
 
-  back() {
+  void back() {
     Get.back();
   }
 

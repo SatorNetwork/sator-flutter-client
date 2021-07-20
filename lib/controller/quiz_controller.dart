@@ -146,7 +146,7 @@ class QuizController extends GetxController with BackToMainMixin {
           'txt_oops'.tr,
           'txt_wrong_answer'.tr,
           'txt_back_home'.tr,
-          icon: Icons.close_rounded,
+          icon: Icons.sentiment_dissatisfied_rounded,
           onPressed: () {
             backToMain();
           },
