@@ -131,6 +131,19 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           ),
         ),
         Container(
+          height: Get.mediaQuery.padding.top + kToolbarHeight + 20,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              colors: [
+                Colors.black.withOpacity(0),
+                Colors.black.withOpacity(0.5),
+              ],
+            ),
+          ),
+        ),
+        Container(
           height: 220,
           child: Stack(
             children: [
@@ -826,7 +839,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     ),
                   ),
                   SizedBox(
-                    height: 7*coefficient,
+                    height: 7 * coefficient,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),

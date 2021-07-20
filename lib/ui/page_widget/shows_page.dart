@@ -93,14 +93,14 @@ class ShowsPage extends GetView<ShowsController> {
       onLongPress: () {
         controller.toShowChallenges(show);
       },
-      child: Container(
-        height: 168 * coefficient,
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          height: 168 * coefficient,
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Container(
                 child: Image(
                   image: NetworkImage(show.cover),
                   fit: BoxFit.cover,
@@ -109,48 +109,60 @@ class ShowsPage extends GetView<ShowsController> {
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        show.title,
-                        style: textTheme.headline4!.copyWith(
-                          color: Colors.white,
-                          fontSize: 20.0 * coefficient,
-                          fontWeight: FontWeight.w700,
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0),
+                        Colors.black.withOpacity(0.5),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          show.title,
+                          style: textTheme.headline4!.copyWith(
+                            color: Colors.white,
+                            fontSize: 20.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                    ),
-                    show.hasNewEpisode
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: SatorioColor.lavender_rose,
-                            ),
-                            child: Text(
-                              'txt_new'.tr.toUpperCase(),
-                              style: textTheme.bodyText2!.copyWith(
-                                color: Colors.black,
-                                fontSize: 12.0 * coefficient,
-                                fontWeight: FontWeight.w700,
+                      show.hasNewEpisode
+                          ? Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 7),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: SatorioColor.lavender_rose,
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
+                              child: Text(
+                                'txt_new'.tr.toUpperCase(),
+                                style: textTheme.bodyText2!.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 12.0 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
