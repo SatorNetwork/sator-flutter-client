@@ -15,7 +15,7 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
 
   final SatorioRepository _satorioRepository = Get.find();
 
-  back() {
+  void back() {
     Get.back();
   }
 

@@ -14,10 +14,33 @@ class ChallengePage extends GetView<ChallengeController> {
 
   @override
   Widget build(BuildContext context) {
-    const double kHeight = 120;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          'txt_challenge'.tr,
+          style: textTheme.bodyText1!.copyWith(
+            color: SatorioColor.darkAccent,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: Material(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          child: InkWell(
+            onTap: () => controller.back(),
+            child: Icon(
+              Icons.chevron_left_rounded,
+              color: SatorioColor.darkAccent,
+              size: 32,
+            ),
+          ),
+        ),
+      ),
       body: Container(
         child: Stack(
           children: [
@@ -27,46 +50,9 @@ class ChallengePage extends GetView<ChallengeController> {
               fit: BoxFit.cover,
             ),
             Container(
-              height: kHeight,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: kHeight / 2,
-                      child: InkWell(
-                        onTap: () => controller.back(),
-                        child: Icon(
-                          Icons.chevron_left_rounded,
-                          size: 32,
-                          color: SatorioColor.darkAccent,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: kHeight / 1.8),
-                      width: Get.mediaQuery.size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'txt_challenge'.tr,
-                            style: textTheme.bodyText1!.copyWith(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Container(
               width: Get.width,
-              margin: const EdgeInsets.only(top: 120),
+              margin: EdgeInsets.only(
+                  top: Get.mediaQuery.padding.top + kToolbarHeight),
               padding: const EdgeInsets.only(top: 57, left: 20, right: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(

@@ -72,25 +72,35 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                 children: [
                   Container(
                     child: Center(
-                      child: CircularCountDownTimer(
-                        controller: controller.countdownController,
-                        width: 119 * coefficient,
-                        height: 119 * coefficient,
-                        duration:
-                            controller.questionRx.value?.timeForAnswer ?? 0,
-                        fillColor: SatorioColor.darkAccent,
-                        ringColor: SatorioColor.brand,
-                        isReverse: true,
-                        backgroundColor: Colors.white,
-                        strokeWidth: 7,
-                        autoStart: true,
-                        strokeCap: StrokeCap.round,
-                        textFormat: CountdownTextFormat.S,
-                        textStyle: textTheme.headline1!.copyWith(
-                          color: Colors.black,
-                          fontSize: 45.0 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      child: Obx(
+                        () => controller.questionRx.value == null
+                            ? Container(
+                                width: 119 * coefficient,
+                                height: 119 * coefficient,
+                              )
+                            : CircularCountDownTimer(
+                                controller: controller.countdownController,
+                                width: 119 * coefficient,
+                                height: 119 * coefficient,
+                                duration:
+                                    controller.questionRx.value!.timeForAnswer,
+                                fillColor: SatorioColor.darkAccent,
+                                ringColor: SatorioColor.brand,
+                                isReverse: true,
+                                backgroundColor: Colors.white,
+                                strokeWidth: 7,
+                                autoStart: true,
+                                strokeCap: StrokeCap.round,
+                                textFormat: CountdownTextFormat.S,
+                                textStyle: textTheme.headline1!.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 45.0 * coefficient,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                onComplete: () {
+                                  controller.timeExpire();
+                                },
+                              ),
                       ),
                     ),
                   ),

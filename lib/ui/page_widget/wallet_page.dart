@@ -21,8 +21,7 @@ class WalletPage extends GetView<WalletController> {
       (Get.width - 2 * (8 + _separatorSize)) / Get.width;
 
   WalletPage() {
-    controller.pageController =
-        PageController(viewportFraction: _viewportFraction);
+    controller.setupPageController(_viewportFraction);
   }
 
   @override
@@ -78,9 +77,6 @@ class WalletPage extends GetView<WalletController> {
                       WalletDetail walletDetail =
                           controller.walletDetailsRx.value[index];
                       return _walletItem(walletDetail);
-                    },
-                    onPageChanged: (value) {
-                      controller.changePage(value);
                     },
                   ),
                 ),
@@ -214,8 +210,8 @@ class WalletPage extends GetView<WalletController> {
             alignment: Alignment.centerRight,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'images/sator_wallet.png',
+              child: SvgPicture.asset(
+                'images/sator_wallet.svg',
                 height: height,
                 fit: BoxFit.cover,
               ),
