@@ -32,7 +32,7 @@ class ShowsPage extends GetView<ShowsController> {
               child: RefreshIndicator(
                 color: SatorioColor.brand,
                 onRefresh: () async {
-                  controller.loadShows();
+                  controller.refreshShows();
                 },
                 child: SingleChildScrollView(
                   child: Container(
