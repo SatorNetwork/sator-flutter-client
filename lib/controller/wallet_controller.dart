@@ -37,6 +37,7 @@ class WalletController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    refreshAllWallets();
 
     _walletsListenable.addListener(_walletsListener);
     _transactionListenable.addListener(_transactionsListener);
@@ -100,11 +101,6 @@ class WalletController extends GetxController {
         as ValueListenable<Box<WalletDetail>>;
     _walletDetailsListenable?.addListener(_walletDetailsListener);
 
-    // Update wallet detail for each wallet
-    wallets.values.forEach((wallet) {
-      _updateWalletDetail(wallet);
-    });
-
     // Reset all transaction & load for first wallet
     Map<String, List<Transaction>> walletTransactionsNew = {};
     wallets.values.forEach((wallet) {
@@ -112,8 +108,8 @@ class WalletController extends GetxController {
     });
     walletTransactionsRx.value = walletTransactionsNew;
     _transactionsListener();
-    // TODO
-    _updateTransaction(wallets.values.elementAt(pageRx.value));
+    // // TODO
+    // _updateTransaction(wallets.values.elementAt(pageRx.value));
   }
 
   void _walletDetailsListener() {
@@ -165,7 +161,12 @@ class WalletController extends GetxController {
     );
   }
 
-  void refreshWallet() {
-    _satorioRepository.updateWallets();
+  void refreshAllWallets() {
+    _satorioRepository.updateWallets().then((List<Wallet> wallets) {
+      wallets.forEach((wallet) {
+        _updateWalletDetail(wallet);
+      });
+      if (wallets.isNotEmpty) _updateTransaction(wallets[pageRx.value]);
+    });
   }
 }
