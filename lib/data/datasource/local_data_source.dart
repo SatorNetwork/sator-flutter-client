@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 
@@ -24,4 +25,8 @@ abstract class LocalDataSource {
   Future<void> saveWalletDetail(WalletDetail walletDetail);
 
   ValueListenable walletDetailsListenable(List<String> ids);
+
+  Future<void> saveTransactions(List<Transaction> transactions);
+
+  ValueListenable transactionsListenable();
 }

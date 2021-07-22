@@ -24,10 +24,14 @@ class WalletController extends GetxController {
 
   late ValueListenable<Box<Wallet>> _walletsListenable;
   ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
+  late ValueListenable<Box<Transaction>> _transactionListenable;
 
   WalletController() {
     _walletsListenable =
         _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
+
+    _transactionListenable = _satorioRepository.transactionsListenable()
+        as ValueListenable<Box<Transaction>>;
   }
 
   @override
@@ -35,12 +39,14 @@ class WalletController extends GetxController {
     super.onInit();
 
     _walletsListenable.addListener(_walletsListener);
+    _transactionListenable.addListener(_transactionsListener);
   }
 
   @override
   void onClose() {
     pageController.removeListener(_pageListener);
     _walletsListenable.removeListener(_walletsListener);
+    _transactionListenable.removeListener(_transactionsListener);
     _walletDetailsListenable?.removeListener(_walletDetailsListener);
     super.onClose();
   }
@@ -66,10 +72,11 @@ class WalletController extends GetxController {
       if (page < walletDetailsRx.value.length) {
         String id = walletDetailsRx.value[page].id;
 
-        if (walletTransactionsRx.value[id]?.isEmpty ?? false) {
-          Wallet? wallet = wallets[id];
-          _updateTransaction(wallet);
-        }
+        // if (walletTransactionsRx.value[id]?.isEmpty ?? false) {
+        Wallet? wallet = wallets[id];
+        // TODO
+        _updateTransaction(wallet);
+        // }
       }
 
       pageRx.value = page;
@@ -77,14 +84,12 @@ class WalletController extends GetxController {
   }
 
   void _walletsListener() {
-    List<Wallet> walletsNew = _walletsListenable.value.values.toList();
-
     // Update wallets map
-    Map<String, Wallet> walletsTmp = {};
+    Map<String, Wallet> walletsNew = {};
     _walletsListenable.value.values.forEach((wallet) {
-      walletsTmp[wallet.id] = wallet;
+      walletsNew[wallet.id] = wallet;
     });
-    wallets = walletsTmp;
+    wallets = walletsNew;
 
     // Ids of wallets
     List<String> ids = wallets.values.map((wallet) => wallet.id).toList();
@@ -106,11 +111,29 @@ class WalletController extends GetxController {
       walletTransactionsNew[wallet.id] = [];
     });
     walletTransactionsRx.value = walletTransactionsNew;
-    _updateTransaction(walletsNew[pageRx.value]);
+    _transactionsListener();
+    // TODO
+    _updateTransaction(wallets.values.elementAt(pageRx.value));
   }
 
   void _walletDetailsListener() {
     walletDetailsRx.value = _walletDetailsListenable!.value.values.toList();
+  }
+
+  void _transactionsListener() {
+    Iterable<Transaction> allTransactions = _transactionListenable.value.values;
+    print('_transactionsListener ${allTransactions.length}');
+    walletTransactionsRx.update((value) {
+      for (String walletId in value!.keys) {
+        List<Transaction> transactions = allTransactions
+            .where((transaction) => transaction.walletId == walletId)
+            .toList();
+        transactions.sort((a, b) => a.createdAt != null && b.createdAt != null
+            ? b.createdAt!.compareTo(a.createdAt!)
+            : 0);
+        value[walletId] = transactions;
+      }
+    });
   }
 
   void _updateWalletDetail(Wallet wallet) {
@@ -119,13 +142,7 @@ class WalletController extends GetxController {
 
   void _updateTransaction(Wallet? wallet) {
     if (wallet != null && (wallet.transactionsUrl.isNotEmpty)) {
-      _satorioRepository
-          .walletTransactions(wallet.transactionsUrl)
-          .then((List<Transaction> transactions) {
-        walletTransactionsRx.update((value) {
-          value?[wallet.id] = transactions;
-        });
-      });
+      _satorioRepository.updateWalletTransactions(wallet.transactionsUrl);
     }
   }
 

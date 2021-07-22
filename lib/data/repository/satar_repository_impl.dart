@@ -181,9 +181,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .apiLogout()
         .then(
           (value) => _localLogout(),
-        )
+    )
         .then(
-      (value) {
+          (value) {
         Get.offAll(() => LoginPage(), binding: LoginBinding());
         return;
       },
@@ -226,11 +226,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> sendAnswer(
-    GetSocket? socket,
-    String questionId,
-    String answerId,
-  ) {
+  Future<void> sendAnswer(GetSocket? socket,
+      String questionId,
+      String answerId,) {
     return _apiDataSource.sendAnswer(socket, questionId, answerId);
   }
 
@@ -247,7 +245,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .profile()
         .then(
           (Profile profile) => _localDataSource.saveProfile(profile),
-        )
+    )
         .catchError((value) => _handleException(value));
   }
 
@@ -257,8 +255,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .walletBalance()
         .then(
           (List<AmountCurrency> amountCurrencies) =>
-              _localDataSource.saveWalletBalance(amountCurrencies),
-        )
+          _localDataSource.saveWalletBalance(amountCurrencies),
+    )
         .catchError((value) => _handleException(value));
   }
 
@@ -268,7 +266,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .wallets()
         .then(
           (List<Wallet> wallets) => _localDataSource.saveWallets(wallets),
-        )
+    )
         .catchError((value) => _handleException(value));
   }
 
@@ -278,14 +276,17 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .walletDetail(detailPath)
         .then(
           (WalletDetail walletDetail) =>
-              _localDataSource.saveWalletDetail(walletDetail),
-        )
+          _localDataSource.saveWalletDetail(walletDetail),
+    )
         .catchError((value) => _handleException(value));
   }
 
   @override
-  Future<List<Transaction>> walletTransactions(String transactionsPath) {
-    return _apiDataSource.walletTransactions(transactionsPath);
+  Future<void> updateWalletTransactions(String transactionsPath) {
+    return _apiDataSource.walletTransactions(transactionsPath).then(
+          (List<Transaction> transactions) =>
+          _localDataSource.saveTransactions(transactions),
+    );
   }
 
   //
@@ -308,5 +309,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable walletDetailsListenable(List<String> ids) {
     return _localDataSource.walletDetailsListenable(ids);
+  }
+
+  @override
+  ValueListenable transactionsListenable() {
+    return _localDataSource.transactionsListenable();
   }
 }
