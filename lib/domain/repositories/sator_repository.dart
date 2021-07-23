@@ -36,7 +36,8 @@ abstract class SatorioRepository {
 
   Future<void> updateWalletDetail(String detailPath);
 
-  Future<void> updateWalletTransactions(String transactionsPath);
+  Future<void> updateWalletTransactions(String transactionsPath,
+      {DateTime? from, DateTime? to});
 
   Future<List<Show>> shows({int? page, int? itemsPerPage});
 

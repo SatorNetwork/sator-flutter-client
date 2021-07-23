@@ -115,7 +115,6 @@ class LocalDataSourceImpl implements LocalDataSource {
 
     Box<Transaction> transactionBox = Hive.box<Transaction>(_transactionBox);
     transactionBox.putAll(transactionMap);
-    print('saveTransactions ${transactions.length}');
   }
 
   @override

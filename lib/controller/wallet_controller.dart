@@ -26,6 +26,8 @@ class WalletController extends GetxController {
   ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
   late ValueListenable<Box<Transaction>> _transactionListenable;
 
+  RxBool _isMoreLoading = false.obs;
+
   WalletController() {
     _walletsListenable =
         _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
@@ -71,13 +73,9 @@ class WalletController extends GetxController {
 
     if (page != pageRx.value) {
       if (page < walletDetailsRx.value.length) {
-        String id = walletDetailsRx.value[page].id;
-
-        // if (walletTransactionsRx.value[id]?.isEmpty ?? false) {
-        Wallet? wallet = wallets[id];
-        // TODO
+        String walletId = walletDetailsRx.value[page].id;
+        Wallet? wallet = wallets[walletId];
         _updateTransaction(wallet);
-        // }
       }
 
       pageRx.value = page;
@@ -108,8 +106,6 @@ class WalletController extends GetxController {
     });
     walletTransactionsRx.value = walletTransactionsNew;
     _transactionsListener();
-    // // TODO
-    // _updateTransaction(wallets.values.elementAt(pageRx.value));
   }
 
   void _walletDetailsListener() {
@@ -118,7 +114,6 @@ class WalletController extends GetxController {
 
   void _transactionsListener() {
     Iterable<Transaction> allTransactions = _transactionListenable.value.values;
-    print('_transactionsListener ${allTransactions.length}');
     walletTransactionsRx.update((value) {
       for (String walletId in value!.keys) {
         List<Transaction> transactions = allTransactions
@@ -137,8 +132,19 @@ class WalletController extends GetxController {
   }
 
   void _updateTransaction(Wallet? wallet) {
-    if (wallet != null && (wallet.transactionsUrl.isNotEmpty)) {
-      _satorioRepository.updateWalletTransactions(wallet.transactionsUrl);
+    if (wallet != null && wallet.transactionsUrl.isNotEmpty) {
+      List<DateTime> trxDateTimes = _transactionListenable.value.values
+          .where((element) =>
+              element.walletId == wallet.id && element.createdAt != null)
+          .map((element) => element.createdAt!)
+          .toList();
+
+      DateTime? fromDateTime = trxDateTimes.isEmpty
+          ? null
+          : trxDateTimes.reduce((a, b) => a.isAfter(b) ? a : b);
+
+      _satorioRepository.updateWalletTransactions(wallet.transactionsUrl,
+          from: fromDateTime);
     }
   }
 
@@ -168,5 +174,32 @@ class WalletController extends GetxController {
       });
       if (wallets.isNotEmpty) _updateTransaction(wallets[pageRx.value]);
     });
+  }
+
+  void loadMoreTransactions() {
+    if (_isMoreLoading.value) return;
+
+    _isMoreLoading.value = true;
+
+    String walletId = walletDetailsRx.value[pageRx.value].id;
+    Wallet? wallet = wallets[walletId];
+    if (wallet != null && wallet.transactionsUrl.isNotEmpty) {
+      List<DateTime> trxDateTimes = _transactionListenable.value.values
+          .where((element) =>
+              element.walletId == wallet.id && element.createdAt != null)
+          .map((element) => element.createdAt!)
+          .toList();
+
+      DateTime? toDateTime = trxDateTimes.isEmpty
+          ? null
+          : trxDateTimes.reduce((a, b) => a.isBefore(b) ? a : b);
+
+      _satorioRepository
+          .updateWalletTransactions(wallet.transactionsUrl, to: toDateTime)
+          .then((value) => _isMoreLoading.value = false)
+          .catchError((value) {
+        _isMoreLoading.value = false;
+      });
+    }
   }
 }

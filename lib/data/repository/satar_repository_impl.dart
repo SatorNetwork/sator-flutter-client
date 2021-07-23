@@ -282,8 +282,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> updateWalletTransactions(String transactionsPath) {
-    return _apiDataSource.walletTransactions(transactionsPath).then(
+  Future<void> updateWalletTransactions(String transactionsPath,
+      {DateTime? from, DateTime? to}) {
+    return _apiDataSource
+        .walletTransactions(transactionsPath, from: from, to: to)
+        .then(
           (List<Transaction> transactions) =>
               _localDataSource.saveTransactions(transactions),
         );
