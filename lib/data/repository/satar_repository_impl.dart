@@ -263,13 +263,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> updateWallets() {
-    return _apiDataSource
-        .wallets()
-        .then(
-          (List<Wallet> wallets) => _localDataSource.saveWallets(wallets),
-        )
-        .catchError((value) => _handleException(value));
+  Future<List<Wallet>> updateWallets() {
+    return _apiDataSource.wallets().then((List<Wallet> wallets) {
+      _localDataSource.saveWallets(wallets);
+      return wallets;
+    }).catchError((value) => _handleException(value));
   }
 
   @override
@@ -284,8 +282,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Transaction>> walletTransactions(String transactionsPath) {
-    return _apiDataSource.walletTransactions(transactionsPath);
+  Future<void> updateWalletTransactions(String transactionsPath,
+      {DateTime? from, DateTime? to}) {
+    return _apiDataSource
+        .walletTransactions(transactionsPath, from: from, to: to)
+        .then(
+          (List<Transaction> transactions) =>
+              _localDataSource.saveTransactions(transactions),
+        );
   }
 
   //
@@ -308,5 +312,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable walletDetailsListenable(List<String> ids) {
     return _localDataSource.walletDetailsListenable(ids);
+  }
+
+  @override
+  ValueListenable transactionsListenable() {
+    return _localDataSource.transactionsListenable();
   }
 }

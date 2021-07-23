@@ -32,7 +32,7 @@ class WalletPage extends GetView<WalletController> {
       body: RefreshIndicator(
           color: SatorioColor.brand,
           onRefresh: () async {
-            controller.refreshWallet();
+            controller.refreshAllWallets();
           },
           child: _walletContent()),
       bottomSheet: _transactionContent(),
@@ -139,55 +139,64 @@ class WalletPage extends GetView<WalletController> {
       minChildSize: minSize,
       maxChildSize: maxSize,
       expand: false,
-      builder: (context, scrollController) => SingleChildScrollView(
-        controller: scrollController,
-        child: Container(
-          width: Get.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 28,
-                  bottom: 12,
-                  left: 20,
-                  right: 20,
-                ),
-                child: Text(
-                  'txt_transactions'.tr,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w600,
+      builder: (context, scrollController) =>
+          NotificationListener<OverscrollNotification>(
+        onNotification: (notification) {
+          if (notification.metrics.pixels ==
+              notification.metrics.maxScrollExtent)
+            controller.loadMoreTransactions();
+          return true;
+        },
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Container(
+            width: Get.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 28,
+                    bottom: 12,
+                    left: 20,
+                    right: 20,
+                  ),
+                  child: Text(
+                    'txt_transactions'.tr,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              Obx(
-                () => ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  separatorBuilder: (context, index) => Divider(
-                    height: 1,
+                Obx(
+                  () => ListView.separated(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    separatorBuilder: (context, index) => Divider(
+                      height: 1,
+                    ),
+                    itemCount: controller.walletDetailsRx.value.length > 0
+                        ? (controller
+                                .walletTransactionsRx
+                                .value[controller.walletDetailsRx
+                                    .value[controller.pageRx.value].id]
+                                ?.length ??
+                            0)
+                        : 0,
+                    itemBuilder: (context, index) {
+                      Transaction transaction =
+                          controller.walletTransactionsRx.value[controller
+                              .walletDetailsRx
+                              .value[controller.pageRx.value]
+                              .id]![index];
+                      return _transactionItem(transaction);
+                    },
                   ),
-                  itemCount: controller.walletDetailsRx.value.length > 0
-                      ? (controller
-                              .walletTransactionsRx
-                              .value[controller.walletDetailsRx
-                                  .value[controller.pageRx.value].id]
-                              ?.length ??
-                          0)
-                      : 0,
-                  itemBuilder: (context, index) {
-                    Transaction transaction =
-                        controller.walletTransactionsRx.value[controller
-                            .walletDetailsRx
-                            .value[controller.pageRx.value]
-                            .id]![index];
-                    return _transactionItem(transaction);
-                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
