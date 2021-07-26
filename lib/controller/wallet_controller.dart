@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/wallet_receive_binding.dart';
+import 'package:satorio/binding/wallet_send_binding.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
@@ -10,6 +11,7 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/wallet_receive_page.dart';
+import 'package:satorio/ui/page_widget/wallet_send_page.dart';
 
 class WalletController extends GetxController {
   static const _initPage = 0;
@@ -155,7 +157,12 @@ class WalletController extends GetxController {
     );
   }
 
-  void toSend(WalletDetail walletDetail) {}
+  void toSend(WalletDetail walletDetail) {
+    Get.to(
+      () => WalletSendPage(walletDetail),
+      binding: WalletSendBinding(),
+    );
+  }
 
   void claimRewards(String claimRewardsPath) {
     _satorioRepository.claimReward(claimRewardsPath).then(

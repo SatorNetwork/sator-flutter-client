@@ -93,4 +93,12 @@ const Map<String, String> en = {
   'txt_done': 'Done!',
   'txt_episode_naming': 'S%d.E%d %s',
   'txt_episode_entrance_quiz': 'S%d.E%d Entrance Quiz',
+  'txt_amount': 'Amount',
+  'txt_send_to': 'Send to',
+  'txt_accounts': 'Accounts',
+  'txt_contacts': 'Contacts',
+  'txt_address': 'Address',
+  'txt_scan_qr': 'Scan QR',
+  'txt_note': 'Note',
+  'txt_preview': 'Preview',
 };

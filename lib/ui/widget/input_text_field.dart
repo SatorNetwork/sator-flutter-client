@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
@@ -21,7 +20,7 @@ class InputTextField extends StatelessWidget {
   final String? hintText;
   final bool obscureText;
   final String? errorText;
-  final Icon? icon;
+  final Widget? icon;
   final VoidCallback? onPressedIcon;
 
   @override
