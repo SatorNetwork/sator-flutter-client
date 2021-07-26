@@ -93,4 +93,7 @@ const Map<String, String> en = {
   'txt_done': 'Done!',
   'txt_episode_naming': 'S%d.E%d %s',
   'txt_episode_entrance_quiz': 'S%d.E%d Entrance Quiz',
+  'txt_watch': 'Watch',
+  'txt_scan': 'Scan',
+  'txt_profile': 'Profile',
 };
