@@ -116,129 +116,25 @@ class WalletSendPage extends GetView<WalletSendController> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: SatorioColor.alice_blue,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              'images/accounts.svg',
-                              width: 24,
-                              height: 24,
-                              color: SatorioColor.interactive,
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'txt_accounts'.tr,
-                              style: textTheme.bodyText2!.copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: SatorioColor.textBlack),
-                            )
-                          ],
-                        ),
-                      ),
+                    _sendTo(
+                      'accounts',
+                      'txt_accounts'.tr,
+                      () {},
                     ),
-                    Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: SatorioColor.alice_blue,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              'images/contacts.svg',
-                              width: 24,
-                              height: 24,
-                              color: SatorioColor.interactive,
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'txt_contacts'.tr,
-                              style: textTheme.bodyText2!.copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: SatorioColor.textBlack),
-                            )
-                          ],
-                        ),
-                      ),
+                    _sendTo(
+                      'contacts',
+                      'txt_contacts'.tr,
+                      () {},
                     ),
-                    Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: SatorioColor.alice_blue,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              'images/address.svg',
-                              width: 24,
-                              height: 24,
-                              color: SatorioColor.interactive,
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'txt_address'.tr,
-                              style: textTheme.bodyText2!.copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: SatorioColor.textBlack),
-                            )
-                          ],
-                        ),
-                      ),
+                    _sendTo(
+                      'address',
+                      'txt_address'.tr,
+                      () {},
                     ),
-                    Container(
-                      width: 75,
-                      height: 75,
-                      decoration: BoxDecoration(
-                        color: SatorioColor.alice_blue,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SvgPicture.asset(
-                              'images/scan_qr.svg',
-                              width: 24,
-                              height: 24,
-                              color: SatorioColor.interactive,
-                            ),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text(
-                              'txt_scan_qr'.tr,
-                              style: textTheme.bodyText2!.copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: SatorioColor.textBlack),
-                            )
-                          ],
-                        ),
-                      ),
+                    _sendTo(
+                      'scan_qr',
+                      'txt_scan_qr'.tr,
+                      () {},
                     ),
                   ],
                 ),
@@ -254,11 +150,49 @@ class WalletSendPage extends GetView<WalletSendController> {
                 ),
                 ElevatedGradientButton(
                   text: 'txt_preview'.tr,
+                  onPressed: controller.preview(),
                 ),
               ],
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _sendTo(String assetName, String title, VoidCallback? onPressed) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        width: 75,
+        height: 75,
+        decoration: BoxDecoration(
+          color: SatorioColor.alice_blue,
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                'images/$assetName.svg',
+                width: 24,
+                height: 24,
+                color: SatorioColor.interactive,
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                title,
+                style: textTheme.bodyText2!.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: SatorioColor.textBlack),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

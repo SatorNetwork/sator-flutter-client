@@ -16,4 +16,6 @@ class WalletSendController extends GetxController {
   }
 
   void toInfo() {}
+
+  preview() {}
 }
