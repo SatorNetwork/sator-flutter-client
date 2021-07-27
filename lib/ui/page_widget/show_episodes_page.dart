@@ -122,16 +122,22 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
         ),
         color: Colors.white,
       ),
-      child: ListView.separated(
-        padding: const EdgeInsets.all(20),
-        separatorBuilder: (context, index) => SizedBox(
-          height: 17 * coefficient,
-        ),
-        itemCount: showSeason.episodes.length,
-        itemBuilder: (context, index) {
-          final ShowEpisode showEpisode = showSeason.episodes[index];
-          return _episode(showSeason, showEpisode);
+      child: RefreshIndicator(
+        color: SatorioColor.brand,
+        onRefresh: () async {
+          controller.refreshSeasons();
         },
+        child: ListView.separated(
+          padding: const EdgeInsets.all(20),
+          separatorBuilder: (context, index) => SizedBox(
+            height: 17 * coefficient,
+          ),
+          itemCount: showSeason.episodes.length,
+          itemBuilder: (context, index) {
+            final ShowEpisode showEpisode = showSeason.episodes[index];
+            return _episode(showSeason, showEpisode);
+          },
+        ),
       ),
     );
   }

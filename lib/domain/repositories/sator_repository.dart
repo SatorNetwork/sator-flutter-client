@@ -7,7 +7,7 @@ import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_season.dart';
-import 'package:satorio/domain/entities/transaction.dart';
+import 'package:satorio/domain/entities/wallet.dart';
 
 abstract class SatorioRepository {
   Future<bool> isTokenValid();
@@ -32,11 +32,12 @@ abstract class SatorioRepository {
 
   Future<void> updateWalletBalance();
 
-  Future<void> updateWallets();
+  Future<List<Wallet>> updateWallets();
 
   Future<void> updateWalletDetail(String detailPath);
 
-  Future<List<Transaction>> walletTransactions(String transactionsPath);
+  Future<void> updateWalletTransactions(String transactionsPath,
+      {DateTime? from, DateTime? to});
 
   Future<List<Show>> shows({int? page, int? itemsPerPage});
 
@@ -78,4 +79,6 @@ abstract class SatorioRepository {
   ValueListenable walletsListenable();
 
   ValueListenable walletDetailsListenable(List<String> ids);
+
+  ValueListenable transactionsListenable();
 }

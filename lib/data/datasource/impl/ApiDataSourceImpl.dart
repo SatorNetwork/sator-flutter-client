@@ -338,9 +338,15 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<TransactionModel>> walletTransactions(String transactionsPath) {
+  Future<List<TransactionModel>> walletTransactions(String transactionsPath,
+      {DateTime? from, DateTime? to}) {
+    Map<String, String> query = {};
+    if (from != null) query['from'] = from.toIso8601String();
+    if (to != null) query['to'] = to.toIso8601String();
+
     return _requestGet(
       transactionsPath,
+      query: query.isEmpty ? null : query,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)

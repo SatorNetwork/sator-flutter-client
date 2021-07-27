@@ -9,10 +9,11 @@ import 'package:satorio/ui/page_widget/show_detail_page.dart';
 class ShowsController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
   final int _itemsPerPage = 10;
+  static const int _initialPage = 1;
 
   final Rx<List<Show>> showsRx = Rx([]);
 
-  final RxInt _pageRx = 1.obs;
+  final RxInt _pageRx = _initialPage.obs;
   final RxBool _isLoadingRx = false.obs;
   final RxBool _isAllLoadedRx = false.obs;
 
@@ -32,7 +33,6 @@ class ShowsController extends GetxController {
     _satorioRepository
         .shows(page: _pageRx.value, itemsPerPage: _itemsPerPage)
         .then((List<Show> shows) {
-
       showsRx.update((value) {
         if (value != null) value.addAll(shows);
       });
@@ -42,6 +42,16 @@ class ShowsController extends GetxController {
     }).catchError((value) {
       _isLoadingRx.value = false;
     });
+  }
+
+  void refreshShows() {
+    if (_isLoadingRx.value) return;
+
+    showsRx.value = [];
+    _pageRx.value = _initialPage;
+    _isAllLoadedRx.value = false;
+
+    loadShows();
   }
 
   void toShowChallenges(Show show) {

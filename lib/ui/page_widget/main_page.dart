@@ -36,8 +36,8 @@ class MainPage extends GetView<MainController> {
                 if (Get.isRegistered<WalletController>()) {
                   WalletController walletController = Get.find();
                   walletController.resetPageToInitValue();
+                  walletController.refreshAllWallets();
                 }
-                controller.loadWallets();
                 break;
               default:
                 break;
