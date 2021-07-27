@@ -18,7 +18,6 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 390,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(32),
@@ -42,7 +41,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                 height: 24,
               ),
               Text(
-                "txt_congrats".tr,
+                'txt_congrats'.tr,
                 style: textTheme.headline1!.copyWith(
                     color: SatorioColor.textBlack,
                     fontSize: 34.0 * coefficient,
@@ -52,7 +51,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                 height: 8,
               ),
               Text(
-                "txt_congrats_msg".tr,
+                'txt_congrats_msg'.tr,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyText1!.copyWith(
                     color: SatorioColor.textBlack, fontWeight: FontWeight.w400),
@@ -104,7 +103,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "txt_solana_link".tr,
+                        'txt_solana_link'.tr,
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.darkAccent,
                           fontSize: 16.0 * coefficient,

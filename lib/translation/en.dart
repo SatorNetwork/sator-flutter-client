@@ -101,4 +101,10 @@ const Map<String, String> en = {
   'txt_scan_qr': 'Scan QR',
   'txt_note': 'Note',
   'txt_preview': 'Preview',
+  'txt_transacting_tips': 'Transacting Tips',
+  'txt_transacting_tips_description':
+      'Before you finalize your transaction, keep in mind a couple of tips:',
+  'txt_more_info_transacting_tips': 'For more info about transactions tap ',
+  'txt_here': 'here',
+  'txt_i_understand': 'I understand',
 };

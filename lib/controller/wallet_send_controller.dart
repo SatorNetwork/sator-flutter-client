@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
 
 class WalletSendController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -15,7 +16,11 @@ class WalletSendController extends GetxController {
     Get.back();
   }
 
-  void toInfo() {}
+  void showTransactingTips() {
+    Get.bottomSheet(
+      TransactingTipsBottomSheet(),
+    );
+  }
 
   void preview() {}
 }
