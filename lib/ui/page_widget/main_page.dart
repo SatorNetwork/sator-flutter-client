@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
@@ -10,6 +9,7 @@ import 'package:satorio/ui/page_widget/wallet_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/ext_bottom_navy_bar.dart';
 
 class MainPage extends GetView<MainController> {
   @override
@@ -18,137 +18,108 @@ class MainPage extends GetView<MainController> {
       body: Obx(
         () => _bodyContent[controller.selectedBottomTabIndex.value],
       ),
-
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
-        width: Get.width,
-        child: GNav(
+      bottomNavigationBar: Obx(
+        () => ExtBottomNavyBar(
           selectedIndex: controller.selectedBottomTabIndex.value,
-          gap: 8,
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 11),
-          activeColor: Colors.white,
-          color: SatorioColor.interactive,
-          tabBorderRadius: 14,
-          duration: Duration(milliseconds: 500),
+          showElevation: false,
           iconSize: 24,
-          textStyle: textTheme.headline6!.copyWith(
-            color: Colors.white,
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-          ),
-          tabBackgroundColor: SatorioColor.interactive,
-          tabs: [
-            GButton(
-              icon: Icons.home_rounded,
-              text: 'txt_watch'.tr,
-            ),
-            GButton(
-              icon: Icons.videocam_rounded,
-              text: 'txt_scan'.tr,
-              onPressed: () {
+          backgroundColor: Colors.white,
+          itemCornerRadius: 14,
+          animationDuration: Duration(milliseconds: 500),
+          onItemSelected: (index) {
+            switch (index) {
+              case 1:
                 controller.toQrScanner();
-                // final int v = controller.selectedBottomTabIndex.value;
-                // print('onPressed $v');
-              },
-            ),
-            GButton(
-              icon: SatorIcons.logo,
-              text: 'txt_nfts'.tr,
-            ),
-            GButton(
-              icon: Icons.image_rounded,
-              text: 'txt_wallet'.tr,
-              onPressed: () {
+                return;
+              case 3:
                 if (Get.isRegistered<WalletController>()) {
                   WalletController walletController = Get.find();
                   walletController.resetPageToInitValue();
                   walletController.refreshAllWallets();
                 }
-              },
+                break;
+              default:
+                break;
+            }
+            controller.selectedBottomTabIndex.value = index;
+          },
+          items: [
+            ExtBottomNavyBarItem(
+              icon: Icon(Icons.home_rounded),
+              title: Text(
+                'txt_watch'.tr,
+                style: textTheme.headline6!.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              inactiveColor: SatorioColor.interactive,
+              activeBackgroundColor: SatorioColor.interactive,
+              activeColor: Colors.white,
             ),
-            GButton(
-              icon: Icons.account_balance_wallet_rounded,
-              text: 'txt_profile'.tr,
+            ExtBottomNavyBarItem(
+              icon: Icon(Icons.videocam_rounded),
+              title: Text(
+                'txt_scan'.tr,
+                style: textTheme.headline6!.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              inactiveColor: SatorioColor.interactive,
+              activeBackgroundColor: SatorioColor.interactive,
+              activeColor: Colors.white,
+            ),
+            ExtBottomNavyBarItem(
+              icon: Icon(SatorIcons.logo),
+              title: Text(
+                'txt_nfts'.tr,
+                style: textTheme.headline6!.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              inactiveColor: SatorioColor.interactive,
+              activeBackgroundColor: SatorioColor.interactive,
+              activeColor: Colors.white,
+            ),
+            ExtBottomNavyBarItem(
+              icon: Icon(Icons.image_rounded),
+              title: Text(
+                'txt_wallet'.tr,
+                style: textTheme.headline6!.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              inactiveColor: SatorioColor.interactive,
+              activeBackgroundColor: SatorioColor.interactive,
+              activeColor: Colors.white,
+            ),
+            ExtBottomNavyBarItem(
+              icon: Icon(Icons.account_balance_wallet_rounded),
+              title: Text(
+                'txt_profile'.tr,
+                style: textTheme.headline6!.copyWith(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              inactiveColor: SatorioColor.interactive,
+              activeBackgroundColor: SatorioColor.interactive,
+              activeColor: Colors.white,
             ),
           ],
-          onTabChange: (index) {
-            controller.selectedBottomTabIndex.value = index;
-            // print('${controller.selectedBottomTabIndex.value}');
-          },
         ),
       ),
-
-      // bottomNavigationBar: Obx(
-      //   () => BottomNavigationBar(
-      //     type: BottomNavigationBarType.fixed,
-      //     currentIndex: controller.selectedBottomTabIndex.value,
-      //     onTap: (index) {
-      //       switch (index) {
-      //         case 0:
-      //           break;
-      //         case 1:
-      //           break;
-      //         case 2:
-      //           controller.toQrScanner();
-      //           return;
-      //         case 3:
-      //           break;
-      //         case 4:
-      //           if (Get.isRegistered<WalletController>()) {
-      //             WalletController walletController = Get.find();
-      //             walletController.resetPageToInitValue();
-      //             walletController.refreshAllWallets();
-      //           }
-      //           break;
-      //         default:
-      //           break;
-      //       }
-      //       controller.selectedBottomTabIndex.value = index;
-      //     },
-      //     unselectedItemColor: SatorioColor.grey,
-      //     fixedColor: Colors.black,
-      //     items: [
-      //       BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.home_rounded,
-      //         ),
-      //         label: '',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.videocam_rounded,
-      //         ),
-      //         label: '',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(
-      //           SatorIcons.logo,
-      //         ),
-      //         label: '',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.image_rounded,
-      //         ),
-      //         label: '',
-      //       ),
-      //       BottomNavigationBarItem(
-      //         icon: Icon(
-      //           Icons.account_balance_wallet_rounded,
-      //         ),
-      //         label: '',
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 
   final List<Widget> _bodyContent = [
     HomePage(),
-    SomePage(),
+    EmptyPage(),
     ShowsPage(),
     WalletPage(),
-    SomePage(),
+    EmptyPage(),
   ];
 }
