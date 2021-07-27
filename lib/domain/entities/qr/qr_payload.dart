@@ -1,0 +1,4 @@
+class QrPayload{
+
+  const QrPayload();
+}
