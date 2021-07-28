@@ -29,10 +29,10 @@ class MainPage extends GetView<MainController> {
           onItemSelected: (index) {
             controller.selectedBottomTabIndex.value = index;
             switch (index) {
-              case 1:
+              case MainController.TabScan:
                 controller.toQrScanner();
                 return;
-              case 3:
+              case MainController.TabWallet:
                 if (Get.isRegistered<WalletController>()) {
                   WalletController walletController = Get.find();
                   walletController.resetPageToInitValue();

@@ -7,6 +7,7 @@ class MainController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   static const int TabHome = 0;
+  static const int TabScan = 1;
   static const int TabNfts = 2;
   static const int TabWallet = 3;
   static const int TabProfile = 4;
