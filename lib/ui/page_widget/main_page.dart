@@ -25,8 +25,9 @@ class MainPage extends GetView<MainController> {
           iconSize: 24,
           backgroundColor: Colors.white,
           itemCornerRadius: 14,
-          animationDuration: Duration(milliseconds: 500),
+          animationDuration: Duration(milliseconds: 200),
           onItemSelected: (index) {
+            controller.selectedBottomTabIndex.value = index;
             switch (index) {
               case 1:
                 controller.toQrScanner();
@@ -41,7 +42,6 @@ class MainPage extends GetView<MainController> {
               default:
                 break;
             }
-            controller.selectedBottomTabIndex.value = index;
           },
           items: [
             ExtBottomNavyBarItem(
