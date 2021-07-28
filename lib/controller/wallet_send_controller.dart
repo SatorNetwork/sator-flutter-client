@@ -22,5 +22,5 @@ class WalletSendController extends GetxController {
     );
   }
 
-  void preview() {}
+  void toPreview() {}
 }

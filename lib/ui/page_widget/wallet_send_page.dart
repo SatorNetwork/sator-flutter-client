@@ -151,7 +151,7 @@ class WalletSendPage extends GetView<WalletSendController> {
                   ElevatedGradientButton(
                     text: 'txt_preview'.tr,
                     onPressed: () {
-                      controller.preview();
+                      controller.toPreview();
                     },
                   ),
                 ],
