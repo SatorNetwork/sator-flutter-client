@@ -107,4 +107,7 @@ const Map<String, String> en = {
   'txt_more_info_transacting_tips': 'For more info about transactions tap ',
   'txt_here': 'here',
   'txt_i_understand': 'I understand',
+  'txt_asset': 'Asset',
+  'txt_fee': 'Fee',
+
 };

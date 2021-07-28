@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/transaction_preview_binding.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
-import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
+import 'package:satorio/ui/page_widget/transaction_preview_page.dart';
 
 class WalletSendController extends GetxController {
-  final SatorioRepository _satorioRepository = Get.find();
-
   final TextEditingController amountController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
 
@@ -22,5 +21,10 @@ class WalletSendController extends GetxController {
     );
   }
 
-  void toPreview() {}
+  void toPreview() {
+    Get.to(
+      () => TransactionPreviewPage(),
+      binding: TransactionPreviewBinding(),
+    );
+  }
 }
