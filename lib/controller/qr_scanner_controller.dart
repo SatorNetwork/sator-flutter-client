@@ -20,7 +20,7 @@ class QrScannerController extends GetxController with BackToMainMixin {
 
   void _loadShow(QrShowPayload showPayload) {
     _satorioRepository.loadShow(showPayload.showId).then((show) {
-      Get.offAll(() => QrResultShowPage(show, showPayload),
+      Get.off(() => QrResultShowPage(show, showPayload),
           binding: QrResultShowBinding());
     });
   }
