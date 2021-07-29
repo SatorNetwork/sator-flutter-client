@@ -27,7 +27,6 @@ class MainPage extends GetView<MainController> {
           itemCornerRadius: 14,
           animationDuration: Duration(milliseconds: 200),
           onItemSelected: (index) {
-            controller.selectedBottomTabIndex.value = index;
             switch (index) {
               case MainController.TabScan:
                 controller.toQrScanner();
@@ -42,10 +41,14 @@ class MainPage extends GetView<MainController> {
               default:
                 break;
             }
+            controller.selectedBottomTabIndex.value = index;
           },
           items: [
             ExtBottomNavyBarItem(
-              icon: Icon(Icons.home_rounded),
+              icon: Icon(
+                SatorIcons.watch,
+                size: 20,
+              ),
               title: Text(
                 'txt_watch'.tr,
                 style: textTheme.headline6!.copyWith(
@@ -58,7 +61,10 @@ class MainPage extends GetView<MainController> {
               activeColor: Colors.white,
             ),
             ExtBottomNavyBarItem(
-              icon: Icon(Icons.videocam_rounded),
+              icon: Icon(
+                SatorIcons.scan,
+                size: 20,
+              ),
               title: Text(
                 'txt_scan'.tr,
                 style: textTheme.headline6!.copyWith(
@@ -71,7 +77,10 @@ class MainPage extends GetView<MainController> {
               activeColor: Colors.white,
             ),
             ExtBottomNavyBarItem(
-              icon: Icon(SatorIcons.logo),
+              icon: Icon(
+                SatorIcons.nft,
+                size: 20,
+              ),
               title: Text(
                 'txt_nfts'.tr,
                 style: textTheme.headline6!.copyWith(
@@ -84,7 +93,10 @@ class MainPage extends GetView<MainController> {
               activeColor: Colors.white,
             ),
             ExtBottomNavyBarItem(
-              icon: Icon(Icons.image_rounded),
+              icon: Icon(
+                SatorIcons.wallet,
+                size: 20,
+              ),
               title: Text(
                 'txt_wallet'.tr,
                 style: textTheme.headline6!.copyWith(
@@ -97,7 +109,10 @@ class MainPage extends GetView<MainController> {
               activeColor: Colors.white,
             ),
             ExtBottomNavyBarItem(
-              icon: Icon(Icons.account_balance_wallet_rounded),
+              icon: Icon(
+                SatorIcons.profile,
+                size: 20,
+              ),
               title: Text(
                 'txt_profile'.tr,
                 style: textTheme.headline6!.copyWith(
