@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
-import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -9,14 +8,9 @@ import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 
 class QrResultShowController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
-  Rx<PayloadChallengeResult?> resultRx = Rx(null);
   Rx<bool> isRequested = Rx(false);
   Rx<Show?> showRx = Rx(Show("", "", "", false));
   Rx<QrShowPayload?> showPayloadRx = Rx(QrShowPayload("", "", "", 0));
-
-  void back() {
-    Get.back();
-  }
 
   void loadData(Show show, QrShowPayload showPayload) {
     showRx.value = show;

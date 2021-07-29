@@ -5,18 +5,13 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:satorio/binding/qr_result_show_binding.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/data/model/qr/qr_data_factory.dart';
-import 'package:satorio/domain/entities/claim_reward.dart';
-import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/qr/qr_data.dart';
 import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/qr_result_show_page.dart';
 
 class QrScannerController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
-  Rx<PayloadChallengeResult?> resultRx = Rx(null);
-  Rx<bool> isRequested = Rx(false);
   Barcode? result;
 
   void back() {
@@ -25,7 +20,7 @@ class QrScannerController extends GetxController with BackToMainMixin {
 
   void _loadShow(QrShowPayload showPayload) {
     _satorioRepository.loadShow(showPayload.showId).then((show) {
-      Get.to(() => QrResultShowPage(show, showPayload),
+      Get.offAll(() => QrResultShowPage(show, showPayload),
           binding: QrResultShowBinding());
     });
   }
@@ -59,33 +54,5 @@ class QrScannerController extends GetxController with BackToMainMixin {
 
   void _handleWalletData(String qrId) {
     print("wallet type");
-  }
-
-  void _goToSelected(page, Bindings binding) {
-    Get.to(() => page, binding: binding);
-  }
-
-  void claimRewards() {
-    Future.value(true)
-        .then(
-          (value) {
-            isRequested.value = true;
-            return value;
-          },
-        )
-        .then((value) => _satorioRepository.claimReward())
-        .then(
-          (ClaimReward claimReward) {
-            isRequested.value = false;
-            Get.bottomSheet(
-              ClaimRewardsBottomSheet(claimReward),
-            );
-          },
-        )
-        .catchError(
-          (value) {
-            isRequested.value = false;
-          },
-        );
   }
 }
