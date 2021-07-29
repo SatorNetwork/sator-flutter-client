@@ -38,7 +38,7 @@ class QrScannerPage extends GetView<QrScannerController> {
           children: [
             QRView(
               key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
+              onQRViewCreated: controller.startScan,
               overlay: QrScannerOverlayShape(
                   borderColor: SatorioColor.interactive,
                   overlayColor: SatorioColor.textBlack.withOpacity(0.9),
@@ -71,13 +71,5 @@ class QrScannerPage extends GetView<QrScannerController> {
                 )),
           ],
         ));
-  }
-
-  void _onQRViewCreated(QRViewController qrController) {
-    Barcode? result;
-    qrController.scannedDataStream.listen((scanData) {
-      result = scanData;
-      controller.toQrScannerResult(result!.code);
-    });
   }
 }
