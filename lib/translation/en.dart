@@ -109,5 +109,15 @@ const Map<String, String> en = {
   'txt_i_understand': 'I understand',
   'txt_asset': 'Asset',
   'txt_fee': 'Fee',
-
+  'txt_staking': 'Staking',
+  'txt_auto_sator': 'Auto SATOR',
+  'txt_automatic_restaking': 'Automatic Restaking',
+  'txt_apy': 'APY',
+  'txt_total_staked': 'Total Staked',
+  'txt_stake': 'Stake',
+  'txt_loyalty_levels': 'Loyalty Levels',
+  'txt_data': 'Data',
+  'txt_dividends': 'Dividends',
+  'txt_number': 'Number',
+  'txt_current': 'Current',
 };

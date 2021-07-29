@@ -69,7 +69,6 @@ class WalletSendPage extends GetView<WalletSendController> {
                 (Get.mediaQuery.padding.top + kToolbarHeight),
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
-            padding: const EdgeInsets.only(left: 20, right: 20, top: 28),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32),
@@ -77,84 +76,91 @@ class WalletSendPage extends GetView<WalletSendController> {
               ),
               color: Colors.white,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InputTextField(
-                    controller: controller.amountController,
-                    inputTitle: 'txt_amount'.tr,
-                    keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
-                    hintText: '0.00',
-                    icon: ClipOval(
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        color: SatorioColor.mauve,
-                        child: Icon(
-                          SatorIcons.logo,
-                          size: 20,
-                          color: SatorioColor.brand,
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 28, bottom: 20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      InputTextField(
+                        controller: controller.amountController,
+                        inputTitle: 'txt_amount'.tr,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
+                        hintText: '0.00',
+                        icon: ClipOval(
+                          child: Container(
+                            width: 24,
+                            height: 24,
+                            color: SatorioColor.mauve,
+                            child: Icon(
+                              SatorIcons.logo,
+                              size: 20,
+                              color: SatorioColor.brand,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 28 * coefficient,
-                  ),
-                  Text(
-                    'txt_send_to'.tr,
-                    style: textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: SatorioColor.textBlack),
-                  ),
-                  SizedBox(
-                    height: 3,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _sendTo(
-                        'accounts',
-                        'txt_accounts'.tr,
-                        () {},
+                      SizedBox(
+                        height: 28 * coefficient,
                       ),
-                      _sendTo(
-                        'contacts',
-                        'txt_contacts'.tr,
-                        () {},
+                      Text(
+                        'txt_send_to'.tr,
+                        style: textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: SatorioColor.textBlack),
                       ),
-                      _sendTo(
-                        'address',
-                        'txt_address'.tr,
-                        () {},
+                      SizedBox(
+                        height: 3,
                       ),
-                      _sendTo(
-                        'scan_qr',
-                        'txt_scan_qr'.tr,
-                        () {},
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _sendTo(
+                            'accounts',
+                            'txt_accounts'.tr,
+                            () {},
+                          ),
+                          _sendTo(
+                            'contacts',
+                            'txt_contacts'.tr,
+                            () {},
+                          ),
+                          _sendTo(
+                            'address',
+                            'txt_address'.tr,
+                            () {},
+                          ),
+                          _sendTo(
+                            'scan_qr',
+                            'txt_scan_qr'.tr,
+                            () {},
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 28,
+                      ),
+                      InputTextField(
+                        controller: controller.noteController,
+                        inputTitle: 'txt_note'.tr,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedGradientButton(
+                        text: 'txt_preview'.tr,
+                        onPressed: () {
+                          controller.toPreview();
+                        },
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 28,
-                  ),
-                  InputTextField(
-                    controller: controller.noteController,
-                    inputTitle: 'txt_note'.tr,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedGradientButton(
-                    text: 'txt_preview'.tr,
-                    onPressed: () {
-                      controller.toPreview();
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
           )

@@ -89,9 +89,10 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                 child: Text(
                                   'txt_asset'.tr,
                                   style: textTheme.bodyText1!.copyWith(
-                                      fontSize: 17 * coefficient,
-                                      fontWeight: FontWeight.w400,
-                                      color: SatorioColor.textBlack),
+                                    fontSize: 17 * coefficient,
+                                    fontWeight: FontWeight.w400,
+                                    color: SatorioColor.textBlack,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -105,9 +106,10 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                   'SAO',
                                   textAlign: TextAlign.end,
                                   style: textTheme.headline5!.copyWith(
-                                      fontSize: 15 * coefficient,
-                                      fontWeight: FontWeight.w600,
-                                      color: SatorioColor.brand),
+                                    fontSize: 15 * coefficient,
+                                    fontWeight: FontWeight.w600,
+                                    color: SatorioColor.brand,
+                                  ),
                                 ),
                               ),
                             ],
@@ -127,18 +129,20 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                               Text(
                                 'txt_amount'.tr,
                                 style: textTheme.bodyText1!.copyWith(
-                                    fontSize: 17 * coefficient,
-                                    fontWeight: FontWeight.w400,
-                                    color: SatorioColor.textBlack),
+                                  fontSize: 17 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                  color: SatorioColor.textBlack,
+                                ),
                               ),
                               Expanded(
                                 child: Text(
                                   '25.33',
                                   textAlign: TextAlign.end,
                                   style: textTheme.headline5!.copyWith(
-                                      fontSize: 17 * coefficient,
-                                      fontWeight: FontWeight.w600,
-                                      color: SatorioColor.textBlack),
+                                    fontSize: 17 * coefficient,
+                                    fontWeight: FontWeight.w600,
+                                    color: SatorioColor.textBlack,
+                                  ),
                                 ),
                               ),
                             ],
@@ -158,18 +162,20 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                               Text(
                                 'txt_send_to'.tr,
                                 style: textTheme.bodyText1!.copyWith(
-                                    fontSize: 17 * coefficient,
-                                    fontWeight: FontWeight.w400,
-                                    color: SatorioColor.textBlack),
+                                  fontSize: 17 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                  color: SatorioColor.textBlack,
+                                ),
                               ),
                               Expanded(
                                 child: Text(
                                   '@',
                                   textAlign: TextAlign.end,
                                   style: textTheme.headline5!.copyWith(
-                                      fontSize: 17 * coefficient,
-                                      fontWeight: FontWeight.w600,
-                                      color: SatorioColor.textBlack),
+                                    fontSize: 17 * coefficient,
+                                    fontWeight: FontWeight.w600,
+                                    color: SatorioColor.textBlack,
+                                  ),
                                 ),
                               ),
                             ],
@@ -189,18 +195,20 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                               Text(
                                 'txt_fee'.tr,
                                 style: textTheme.bodyText1!.copyWith(
-                                    fontSize: 17 * coefficient,
-                                    fontWeight: FontWeight.w400,
-                                    color: SatorioColor.textBlack),
+                                  fontSize: 17 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                  color: SatorioColor.textBlack,
+                                ),
                               ),
                               Expanded(
                                 child: Text(
                                   '\$9.24',
                                   textAlign: TextAlign.end,
                                   style: textTheme.headline5!.copyWith(
-                                      fontSize: 17 * coefficient,
-                                      fontWeight: FontWeight.w600,
-                                      color: SatorioColor.textBlack),
+                                    fontSize: 17 * coefficient,
+                                    fontWeight: FontWeight.w600,
+                                    color: SatorioColor.textBlack,
+                                  ),
                                 ),
                               ),
                             ],
