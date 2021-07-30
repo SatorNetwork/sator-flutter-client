@@ -77,7 +77,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                   if (Get.isRegistered<MainController>()) {
                     if (Get.currentRoute != '/() => MainPage') {
                       MainController mainController = Get.find();
-                      mainController.selectedBottomTabIndex.value = 0;
+                      mainController.selectedBottomTabIndex.value = MainController.TabWallet;
                     }
                     backToMain();
                   } else {

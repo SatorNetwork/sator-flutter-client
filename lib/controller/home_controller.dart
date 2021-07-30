@@ -76,13 +76,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     });
   }
 
-  void toShows() {
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      mainController.selectedBottomTabIndex.value = 1;
-    }
-  }
-
   void toShowChallenges(Show show) {
     Get.to(() => ShowChallengesPage(show), binding: ShowChallengesBinding());
   }
