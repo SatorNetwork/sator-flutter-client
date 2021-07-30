@@ -41,7 +41,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   AuthDataSource _authDataSource;
 
   ApiDataSourceImpl(this._authDataSource) {
-    _getConnect.baseUrl = 'https://api.stage.sator.io/';
+    // TODO: move this option into environment variable
+    _getConnect.baseUrl = 'https://api.stage.sator.io/dev/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
