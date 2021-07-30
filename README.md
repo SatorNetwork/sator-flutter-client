@@ -1,4 +1,4 @@
-[![Codemagic build status](https://api.codemagic.io/apps/60bf40c63fc15a28ae6fc0be/60bf40c63fc15a28ae6fc0bd/status_badge.svg)](https://codemagic.io/apps/60bf40c63fc15a28ae6fc0be/60bf40c63fc15a28ae6fc0bd/latest_build)
+[![Codemagic build status](https://api.codemagic.io/apps/60d536fd19e6aa32f8ae59d3/60d536fd19e6aa32f8ae59d2/status_badge.svg)](https://codemagic.io/apps/60d536fd19e6aa32f8ae59d3/60d536fd19e6aa32f8ae59d2/latest_build)
 
 # satorio
 
