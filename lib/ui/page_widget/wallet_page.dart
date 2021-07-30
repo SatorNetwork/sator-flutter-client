@@ -21,8 +21,7 @@ class WalletPage extends GetView<WalletController> {
       (Get.width - 2 * (8 + _separatorSize)) / Get.width;
 
   WalletPage() {
-    controller.pageController =
-        PageController(viewportFraction: _viewportFraction);
+    controller.setupPageController(_viewportFraction);
   }
 
   @override
@@ -30,97 +29,102 @@ class WalletPage extends GetView<WalletController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      body: _walletContent(),
+      body: RefreshIndicator(
+          color: SatorioColor.brand,
+          onRefresh: () async {
+            controller.refreshAllWallets();
+          },
+          child: _walletContent()),
       bottomSheet: _transactionContent(),
     );
   }
 
   Widget _walletContent() {
-    return Stack(
-      children: [
-        SvgPicture.asset(
-          'images/bg/gradient.svg',
-          height: Get.height,
-          fit: BoxFit.cover,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              margin: const EdgeInsets.only(top: 64),
-              child: Center(
-                child: Text(
-                  'txt_wallet'.tr,
-                  style: textTheme.headline2!.copyWith(
-                    color: SatorioColor.darkAccent,
-                    fontSize: 28.0,
-                    fontWeight: FontWeight.w700,
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          SvgPicture.asset(
+            'images/bg/gradient.svg',
+            height: Get.height,
+            fit: BoxFit.cover,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 64),
+                child: Center(
+                  child: Text(
+                    'txt_wallet'.tr,
+                    style: textTheme.headline2!.copyWith(
+                      color: SatorioColor.darkAccent,
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 22,
-            ),
-            Container(
-              height: 200,
-              child: Obx(
-                () => PageView.builder(
+              SizedBox(
+                height: 22,
+              ),
+              Container(
+                height: 200,
+                child: Obx(
+                  () => PageView.builder(
+                    controller: controller.pageController,
+                    itemCount: controller.walletDetailsRx.value.length,
+                    itemBuilder: (context, index) {
+                      WalletDetail walletDetail =
+                          controller.walletDetailsRx.value[index];
+                      return _walletItem(walletDetail);
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Obx(
+                () => SmoothPageIndicator(
                   controller: controller.pageController,
-                  itemCount: controller.walletDetailsRx.value.length,
-                  itemBuilder: (context, index) {
-                    WalletDetail walletDetail =
-                        controller.walletDetailsRx.value[index];
-                    return _walletItem(walletDetail);
-                  },
-                  onPageChanged: (value) {
-                    controller.changePage(value);
-                  },
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Obx(
-              () => SmoothPageIndicator(
-                controller: controller.pageController,
-                count: max(controller.walletDetailsRx.value.length, 1),
-                effect: WormEffect(
-                  dotHeight: 8,
-                  dotWidth: 8,
-                  activeDotColor: SatorioColor.darkAccent,
-                  dotColor: SatorioColor.darkAccent.withOpacity(0.5),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 24 * coefficient,
-            ),
-            Container(
-              height: 90,
-              child: Obx(
-                () => ListView.separated(
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) => SizedBox(
-                    width: 50,
+                  count: max(controller.walletDetailsRx.value.length, 1),
+                  effect: WormEffect(
+                    dotHeight: 8,
+                    dotWidth: 8,
+                    activeDotColor: SatorioColor.darkAccent,
+                    dotColor: SatorioColor.darkAccent.withOpacity(0.5),
                   ),
-                  itemCount: controller.walletDetailsRx.value.length > 0
-                      ? controller.walletDetailsRx
-                          .value[controller.pageRx.value].actions.length
-                      : 0,
-                  itemBuilder: (context, index) {
-                    WalletAction waleltAction = controller.walletDetailsRx
-                        .value[controller.pageRx.value].actions[index];
-                    return _walletActionItem(waleltAction);
-                  },
-                  scrollDirection: Axis.horizontal,
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+              SizedBox(
+                height: 24 * coefficient,
+              ),
+              Container(
+                height: 90,
+                child: Obx(
+                  () => ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 50,
+                    ),
+                    itemCount: controller.walletDetailsRx.value.length > 0
+                        ? controller.walletDetailsRx
+                            .value[controller.pageRx.value].actions.length
+                        : 0,
+                    itemBuilder: (context, index) {
+                      WalletDetail walletDetail = controller
+                          .walletDetailsRx.value[controller.pageRx.value];
+                      WalletAction walletAction = walletDetail.actions[index];
+                      return _walletActionItem(walletDetail, walletAction);
+                    },
+                    scrollDirection: Axis.horizontal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -135,55 +139,64 @@ class WalletPage extends GetView<WalletController> {
       minChildSize: minSize,
       maxChildSize: maxSize,
       expand: false,
-      builder: (context, scrollController) => SingleChildScrollView(
-        controller: scrollController,
-        child: Container(
-          width: Get.width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 28,
-                  bottom: 12,
-                  left: 20,
-                  right: 20,
-                ),
-                child: Text(
-                  'txt_transactions'.tr,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w600,
+      builder: (context, scrollController) =>
+          NotificationListener<OverscrollNotification>(
+        onNotification: (notification) {
+          if (notification.metrics.pixels ==
+              notification.metrics.maxScrollExtent)
+            controller.loadMoreTransactions();
+          return true;
+        },
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Container(
+            width: Get.width,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 28,
+                    bottom: 12,
+                    left: 20,
+                    right: 20,
+                  ),
+                  child: Text(
+                    'txt_transactions'.tr,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              Obx(
-                () => ListView.separated(
-                  shrinkWrap: true,
-                  physics: ScrollPhysics(),
-                  separatorBuilder: (context, index) => Divider(
-                    height: 1,
+                Obx(
+                  () => ListView.separated(
+                    shrinkWrap: true,
+                    physics: ScrollPhysics(),
+                    separatorBuilder: (context, index) => Divider(
+                      height: 1,
+                    ),
+                    itemCount: controller.walletDetailsRx.value.length > 0
+                        ? (controller
+                                .walletTransactionsRx
+                                .value[controller.walletDetailsRx
+                                    .value[controller.pageRx.value].id]
+                                ?.length ??
+                            0)
+                        : 0,
+                    itemBuilder: (context, index) {
+                      Transaction transaction =
+                          controller.walletTransactionsRx.value[controller
+                              .walletDetailsRx
+                              .value[controller.pageRx.value]
+                              .id]![index];
+                      return _transactionItem(transaction);
+                    },
                   ),
-                  itemCount: controller.walletDetailsRx.value.length > 0
-                      ? (controller
-                              .walletTransactionsRx
-                              .value[controller.walletDetailsRx
-                                  .value[controller.pageRx.value].id]
-                              ?.length ??
-                          0)
-                      : 0,
-                  itemBuilder: (context, index) {
-                    Transaction transaction =
-                        controller.walletTransactionsRx.value[controller
-                            .walletDetailsRx
-                            .value[controller.pageRx.value]
-                            .id]![index];
-                    return _transactionItem(transaction);
-                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -206,8 +219,8 @@ class WalletPage extends GetView<WalletController> {
             alignment: Alignment.centerRight,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'images/sator_wallet.png',
+              child: SvgPicture.asset(
+                'images/sator_wallet.svg',
                 height: height,
                 fit: BoxFit.cover,
               ),
@@ -304,13 +317,18 @@ class WalletPage extends GetView<WalletController> {
     );
   }
 
-  Widget _walletActionItem(WalletAction walletAction) {
+  Widget _walletActionItem(
+    WalletDetail walletDetail,
+    WalletAction walletAction,
+  ) {
     return InkWell(
       onTap: () {
         switch (walletAction.type) {
           case Type.send_tokens:
+            controller.toSend(walletDetail);
             break;
           case Type.receive_tokens:
+            controller.toReceive(walletDetail);
             break;
           case Type.claim_rewards:
             controller.claimRewards(walletAction.url);

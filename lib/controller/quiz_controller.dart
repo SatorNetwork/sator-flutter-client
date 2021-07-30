@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/mixin/bacl_to_main_mixin.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -146,7 +146,7 @@ class QuizController extends GetxController with BackToMainMixin {
           'txt_oops'.tr,
           'txt_wrong_answer'.tr,
           'txt_back_home'.tr,
-          icon: Icons.close_rounded,
+          icon: Icons.sentiment_dissatisfied_rounded,
           onPressed: () {
             backToMain();
           },

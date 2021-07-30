@@ -24,57 +24,63 @@ class ShowsPage extends GetView<ShowsController> {
             ),
             NotificationListener<OverscrollNotification>(
               onNotification: (notification) {
-                // TODO : finish logic with pagination
-                // if (notification.metrics.pixels ==
-                //     notification.metrics.maxScrollExtent) print('Next Page');
+                if (notification.metrics.pixels ==
+                    notification.metrics.maxScrollExtent)
+                  controller.loadShows();
                 return true;
               },
-              child: SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 64),
-                        child: Center(
-                          child: Text(
-                            'txt_challenges'.tr,
-                            style: textTheme.headline4!.copyWith(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 28.0 * coefficient,
-                              fontWeight: FontWeight.w700,
+              child: RefreshIndicator(
+                color: SatorioColor.brand,
+                onRefresh: () async {
+                  controller.refreshShows();
+                },
+                child: SingleChildScrollView(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(top: 64),
+                          child: Center(
+                            child: Text(
+                              'txt_challenges'.tr,
+                              style: textTheme.headline4!.copyWith(
+                                color: SatorioColor.darkAccent,
+                                fontSize: 28.0 * coefficient,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(top: 22),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(32),
-                            topRight: Radius.circular(32),
-                          ),
-                          color: Colors.white,
-                        ),
-                        constraints: BoxConstraints(
-                          minHeight: Get.mediaQuery.size.height - kHeight,
-                        ),
-                        child: Obx(
-                          () => ListView.separated(
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.all(24),
-                            physics: ScrollPhysics(),
-                            separatorBuilder: (context, index) => SizedBox(
-                              height: 24,
+                        Container(
+                          margin: const EdgeInsets.only(top: 22),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(32),
+                              topRight: Radius.circular(32),
                             ),
-                            itemCount: controller.showsRx.value.length,
-                            itemBuilder: (context, index) {
-                              Show show = controller.showsRx.value[index];
-                              return _showItem(show);
-                            },
+                            color: Colors.white,
                           ),
-                        ),
-                      )
-                    ],
+                          constraints: BoxConstraints(
+                            minHeight: Get.mediaQuery.size.height - kHeight,
+                          ),
+                          child: Obx(
+                            () => ListView.separated(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(24),
+                              physics: ScrollPhysics(),
+                              separatorBuilder: (context, index) => SizedBox(
+                                height: 24,
+                              ),
+                              itemCount: controller.showsRx.value.length,
+                              itemBuilder: (context, index) {
+                                Show show = controller.showsRx.value[index];
+                                return _showItem(show);
+                              },
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -88,16 +94,19 @@ class ShowsPage extends GetView<ShowsController> {
   Widget _showItem(Show show) {
     return InkWell(
       onTap: () {
+        controller.toShowDetail(show);
+      },
+      onLongPress: () {
         controller.toShowChallenges(show);
       },
-      child: Container(
-        height: 168 * coefficient,
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          height: 168 * coefficient,
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Container(
                 child: Image(
                   image: NetworkImage(show.cover),
                   fit: BoxFit.cover,
@@ -106,48 +115,60 @@ class ShowsPage extends GetView<ShowsController> {
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        show.title,
-                        style: textTheme.headline4!.copyWith(
-                          color: Colors.white,
-                          fontSize: 20.0 * coefficient,
-                          fontWeight: FontWeight.w700,
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0),
+                        Colors.black.withOpacity(0.5),
+                      ],
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          show.title,
+                          style: textTheme.headline4!.copyWith(
+                            color: Colors.white,
+                            fontSize: 20.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                    ),
-                    show.hasNewEpisode
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 4, horizontal: 7),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: SatorioColor.lavender_rose,
-                            ),
-                            child: Text(
-                              'txt_new'.tr.toUpperCase(),
-                              style: textTheme.bodyText2!.copyWith(
-                                color: Colors.black,
-                                fontSize: 12.0 * coefficient,
-                                fontWeight: FontWeight.w700,
+                      show.hasNewEpisode
+                          ? Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 7),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: SatorioColor.lavender_rose,
                               ),
-                            ),
-                          )
-                        : Container(),
-                  ],
+                              child: Text(
+                                'txt_new'.tr.toUpperCase(),
+                                style: textTheme.bodyText2!.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 12.0 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

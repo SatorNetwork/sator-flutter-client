@@ -3,8 +3,11 @@ import 'package:get/get.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show.dart';
-import 'package:satorio/domain/entities/transaction.dart';
+import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/wallet.dart';
 
 abstract class SatorioRepository {
   Future<bool> isTokenValid();
@@ -29,15 +32,20 @@ abstract class SatorioRepository {
 
   Future<void> updateWalletBalance();
 
-  Future<void> updateWallets();
+  Future<List<Wallet>> updateWallets();
 
   Future<void> updateWalletDetail(String detailPath);
 
-  Future<List<Transaction>> walletTransactions(String transactionsPath);
+  Future<void> updateWalletTransactions(String transactionsPath,
+      {DateTime? from, DateTime? to});
 
-  Future<List<Show>> shows({int page});
+  Future<List<Show>> shows({int? page, int? itemsPerPage});
 
   Future<List<Show>> showsFromCategory(String category);
+
+  Future<ShowDetail> showDetail(String showId);
+
+  Future<List<ShowSeason>> showSeasons(String showId);
 
   Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
 
@@ -46,6 +54,12 @@ abstract class SatorioRepository {
   Future<dynamic> getShowEpisodeByQR(String qrCodeId);
 
   Future<Challenge> challenge(String challengeId);
+
+  Future<bool> isChallengeActivated(String episodeId);
+
+  Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId);
+
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
 
   Future<void> logout();
 
@@ -65,4 +79,6 @@ abstract class SatorioRepository {
   ValueListenable walletsListenable();
 
   ValueListenable walletDetailsListenable(List<String> ids);
+
+  ValueListenable transactionsListenable();
 }

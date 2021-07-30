@@ -9,6 +9,17 @@ class QrScannerPage extends GetView<QrScannerController> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          "txt_qr_scan".tr,
+          style: TextStyle(
+              color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
+        ),
+        automaticallyImplyLeading: false,
+      ),
       body: Container(
         child: _buildQrView(context),
       ),
@@ -27,7 +38,7 @@ class QrScannerPage extends GetView<QrScannerController> {
           children: [
             QRView(
               key: qrKey,
-              onQRViewCreated: _onQRViewCreated,
+              onQRViewCreated: controller.startScan,
               overlay: QrScannerOverlayShape(
                   borderColor: SatorioColor.interactive,
                   overlayColor: SatorioColor.textBlack.withOpacity(0.9),
@@ -36,15 +47,6 @@ class QrScannerPage extends GetView<QrScannerController> {
                   borderWidth: 12,
                   cutOutSize: scanArea),
             ),
-            Positioned(
-                top: 62,
-                child: Text(
-                  "txt_qr_scan".tr,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600),
-                )),
             Positioned(
                 bottom: 46,
                 child: InkWell(
@@ -69,13 +71,5 @@ class QrScannerPage extends GetView<QrScannerController> {
                 )),
           ],
         ));
-  }
-
-  void _onQRViewCreated(QRViewController qrController) {
-    Barcode? result;
-    qrController.scannedDataStream.listen((scanData) {
-      result = scanData;
-      controller.toQrScannerResult(result!.code);
-    });
   }
 }

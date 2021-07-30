@@ -9,8 +9,11 @@ import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
@@ -124,9 +127,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Show>> shows({int? page}) {
+  Future<List<Show>> shows({int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .shows(page: page)
+        .shows(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -134,6 +137,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<List<Show>> showsFromCategory(String category) {
     return _apiDataSource
         .showsFromCategory(category)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<ShowDetail> showDetail(String showId) {
+    return _apiDataSource
+        .showDetail(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<ShowSeason>> showSeasons(String showId) {
+    return _apiDataSource
+        .showSeasons(showId)
         .catchError((value) => _handleException(value));
   }
 
@@ -177,6 +194,26 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> isChallengeActivated(String episodeId) {
+    return _apiDataSource
+        .isChallengeActivated(episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId) {
+    return _apiDataSource
+        .showEpisodeQuizQuestion(episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
+    return _apiDataSource
+        .showEpisodeQuizAnswer(questionId, answerId)
         .catchError((value) => _handleException(value));
   }
 
@@ -226,13 +263,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> updateWallets() {
-    return _apiDataSource
-        .wallets()
-        .then(
-          (List<Wallet> wallets) => _localDataSource.saveWallets(wallets),
-        )
-        .catchError((value) => _handleException(value));
+  Future<List<Wallet>> updateWallets() {
+    return _apiDataSource.wallets().then((List<Wallet> wallets) {
+      _localDataSource.saveWallets(wallets);
+      return wallets;
+    }).catchError((value) => _handleException(value));
   }
 
   @override
@@ -247,8 +282,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Transaction>> walletTransactions(String transactionsPath) {
-    return _apiDataSource.walletTransactions(transactionsPath);
+  Future<void> updateWalletTransactions(String transactionsPath,
+      {DateTime? from, DateTime? to}) {
+    return _apiDataSource
+        .walletTransactions(transactionsPath, from: from, to: to)
+        .then(
+          (List<Transaction> transactions) =>
+              _localDataSource.saveTransactions(transactions),
+        );
   }
 
   //
@@ -271,5 +312,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable walletDetailsListenable(List<String> ids) {
     return _localDataSource.walletDetailsListenable(ids);
+  }
+
+  @override
+  ValueListenable transactionsListenable() {
+    return _localDataSource.transactionsListenable();
   }
 }

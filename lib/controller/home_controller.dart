@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/show_challenges_binding.dart';
+import 'package:satorio/binding/show_detail_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -10,15 +11,13 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
+import 'package:satorio/ui/page_widget/show_detail_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
-
-  @Deprecated('changes 23.06')
-  final Rx<List<Show>> showsRx = Rx([]);
 
   final Rx<List<Show>> showsHighestRewardingRx = Rx([]);
   final Rx<List<Show>> showsMostSocializingRx = Rx([]);
@@ -38,7 +37,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   @override
   void onInit() {
     super.onInit();
-    // _loadShows();
     _loadShowByCategoryName();
 
     profileListenable.addListener(_profileListener);
@@ -52,11 +50,10 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     super.onClose();
   }
 
-  @Deprecated('changes 23.06')
-  void _loadShows() {
-    _satorioRepository.shows().then((List<Show> shows) {
-      showsRx.value = shows;
-    });
+  void refreshHomePage() {
+    _satorioRepository.updateProfile();
+    _satorioRepository.updateWalletBalance();
+    _loadShowByCategoryName();
   }
 
   void _loadShowByCategoryName() {
@@ -79,15 +76,12 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     });
   }
 
-  void toShows() {
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      mainController.selectedBottomTabIndex.value = 1;
-    }
-  }
-
   void toShowChallenges(Show show) {
     Get.to(() => ShowChallengesPage(show), binding: ShowChallengesBinding());
+  }
+
+  void toShowDetail(Show show) {
+    Get.to(() => ShowDetailPage(show), binding: ShowDetailBinding());
   }
 
   void toLogoutDialog() {

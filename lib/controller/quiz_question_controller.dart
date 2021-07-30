@@ -23,11 +23,11 @@ class QuizQuestionController extends GetxController {
   void selectAnswer(PayloadAnswerOption answerOption) {
     if (!isAnswerSentRx.value) {
       answerIdRx.value = answerOption.answerId;
-      sendAnswer();
+      _sendAnswer();
     }
   }
 
-  void sendAnswer() {
+  void _sendAnswer() {
     if (questionRx.value != null) {
       if (answerIdRx.value.isNotEmpty && !isAnswerSentRx.value) {
         quizController

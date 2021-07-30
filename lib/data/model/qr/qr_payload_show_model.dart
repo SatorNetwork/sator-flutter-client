@@ -1,11 +1,11 @@
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/domain/entities/qr_result.dart';
+import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
 
-class QrResultModel extends QrResult implements ToJsonInterface {
-  const QrResultModel(String id, String showId, String episodeId, int rewardAmount)
+class QrPayLoadShowModel extends QrShowPayload implements ToJsonInterface {
+  const QrPayLoadShowModel(String id, String showId, String episodeId, int rewardAmount)
       : super(id, showId, episodeId, rewardAmount);
 
-  factory QrResultModel.fromJson(Map json) => QrResultModel(
+  factory QrPayLoadShowModel.fromJson(Map json) => QrPayLoadShowModel(
         json['id'] == null ? '' : json['id'],
         json['show_id'] == null ? '' : json['show_id'],
         json['episode_id'] == null ? '' : json['episode_id'],

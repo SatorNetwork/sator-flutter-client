@@ -2,15 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/qr_scanner_controller.dart';
+import 'package:satorio/controller/qr_result_show_controller.dart';
+import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
+import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
-class QrScannerResultPage extends GetView<QrScannerController> {
-  QrScannerResultPage(String qrId) : super() {
-    controller.getShowEpisodeByQR(qrId);
+class QrResultShowPage extends GetView<QrResultShowController> {
+  QrResultShowPage(Show show, QrShowPayload showPayload) : super() {
+    controller.loadData(show, showPayload);
   }
 
   @override
@@ -27,7 +29,7 @@ class QrScannerResultPage extends GetView<QrScannerController> {
             ),
             Container(
               width: Get.width,
-              margin: EdgeInsets.only(top: 76),
+              margin: EdgeInsets.only(top: 76 * coefficient),
               child: Column(
                 children: [
                   Text(
@@ -40,13 +42,13 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                     ),
                   ),
                   SizedBox(
-                    height: 34,
+                    height: 34 * coefficient,
                   ),
                   Obx(
                     () => ClipRRect(
                       borderRadius: BorderRadius.circular(32),
                       child: Container(
-                          height: 400,
+                          height: 400 * coefficient,
                           width: Get.width - 40,
                           child: Image.network(
                             controller.showRx.value!.cover,
@@ -64,9 +66,9 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(controller.showRx.value!.title,
-                              style: TextStyle(
+                              style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.darkAccent,
-                                fontSize: 18.0,
+                                fontSize: 18.0 * coefficient,
                                 fontWeight: FontWeight.w400,
                               )),
                         ],
@@ -98,7 +100,7 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                                 color:
                                     SatorioColor.interactive.withOpacity(0.2)),
                             child: Text(
-                              "${controller.qrResultRx.value!.rewardAmount.toString()} SAO",
+                              "${controller.showPayloadRx.value!.rewardAmount.toString()} SAO",
                               style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.interactive,
                                 fontWeight: FontWeight.w700,
@@ -145,11 +147,11 @@ class QrScannerResultPage extends GetView<QrScannerController> {
                           children: [
                             Text(
                               'txt_back_home'.tr,
-                              style: TextStyle(
+                              style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.darkAccent,
-                                fontSize: 16.0,
+                                fontSize: 16.0 * coefficient,
                                 fontWeight: FontWeight.w700,
-                              ),
+                              )
                             ),
                           ],
                         ),

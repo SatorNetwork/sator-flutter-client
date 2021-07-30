@@ -16,9 +16,34 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
 
   @override
   Widget build(BuildContext context) {
-    const double kHeight = 120;
     return Scaffold(
       backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        title: Text(
+          controller.show.title,
+          style: textTheme.bodyText1!.copyWith(
+            color: SatorioColor.darkAccent,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        leading: Material(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          child: InkWell(
+            onTap: () => controller.back(),
+            child: Icon(
+              Icons.chevron_left_rounded,
+              color: SatorioColor.darkAccent,
+              size: 32,
+            ),
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           SvgPicture.asset(
@@ -27,46 +52,9 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
             fit: BoxFit.cover,
           ),
           Container(
-            height: kHeight,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 33),
-              child: Stack(
-                children: [
-                  Positioned(
-                    top: kHeight / 2,
-                    child: InkWell(
-                      onTap: () => controller.back(),
-                      child: Icon(
-                        Icons.chevron_left_rounded,
-                        size: 32,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: kHeight / 1.8),
-                    width: Get.mediaQuery.size.width,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          controller.show.title,
-                          style: textTheme.bodyText1!.copyWith(
-                            color: SatorioColor.darkAccent,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
             constraints:
-                BoxConstraints(minHeight: Get.mediaQuery.size.height - kHeight),
-            margin: EdgeInsets.only(top: kHeight),
+                BoxConstraints(minHeight: Get.mediaQuery.size.height - (Get.mediaQuery.padding.top + kToolbarHeight)),
+            margin: EdgeInsets.only(top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32),
@@ -89,8 +77,8 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
                         itemBuilder: (context, index) {
                           ChallengeSimple challengeSimple =
                               controller.showChallengesRx.value[index];
-                          return _challengeItem(
-                              context, challengeSimple, index);
+                          Color color = _colors[index % _colors.length];
+                          return _challengeItem(challengeSimple, color);
                         }),
                   ),
                 ],
@@ -102,8 +90,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
     );
   }
 
-  Widget _challengeItem(
-      BuildContext context, ChallengeSimple challengeSimple, int index) {
+  Widget _challengeItem(ChallengeSimple challengeSimple, Color color) {
     return InkWell(
       onTap: () {
         controller.toChallenge(challengeSimple);
@@ -122,7 +109,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
               width: 52 * coefficient,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
-                color: _colors[index % _colors.length],
+                color: color,
               ),
               child: Center(
                 child: SvgPicture.asset(
