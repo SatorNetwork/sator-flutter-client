@@ -11,8 +11,9 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
 class WalletSendPage extends GetView<WalletSendController> {
-  WalletSendPage(WalletDetail walletDetail) {
-    controller.walletDetailRx.value = walletDetail;
+  WalletSendPage({WalletDetail? fromWalletDetail, String? toAddress}) {
+    controller.fromWalletDetailRx.value = fromWalletDetail;
+    controller.toAddressRx.value = toAddress;
   }
 
   @override

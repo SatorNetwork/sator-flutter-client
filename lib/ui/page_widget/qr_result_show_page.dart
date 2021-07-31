@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/qr_result_show_controller.dart';
-import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
+import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -11,8 +11,8 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QrResultShowPage extends GetView<QrResultShowController> {
-  QrResultShowPage(Show show, QrShowPayload showPayload) : super() {
-    controller.loadData(show, showPayload);
+  QrResultShowPage(Show show, QrShow qrShow) : super() {
+    controller.loadData(show, qrShow);
   }
 
   @override
@@ -48,12 +48,15 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                     () => ClipRRect(
                       borderRadius: BorderRadius.circular(32),
                       child: Container(
-                          height: 400 * coefficient,
-                          width: Get.width - 40,
-                          child: Image.network(
-                            controller.showRx.value!.cover,
+                        height: 400 * coefficient,
+                        width: Get.width - 40,
+                        child: Obx(
+                          () => Image.network(
+                            controller.showRx.value?.cover ?? '',
                             fit: BoxFit.cover,
-                          )),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -65,12 +68,16 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(controller.showRx.value!.title,
+                          Obx(
+                            () => Text(
+                              controller.showRx.value?.title ?? '',
                               style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.darkAccent,
                                 fontSize: 18.0 * coefficient,
                                 fontWeight: FontWeight.w400,
-                              )),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -99,11 +106,13 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                                     BorderRadius.all(Radius.circular(8)),
                                 color:
                                     SatorioColor.interactive.withOpacity(0.2)),
-                            child: Text(
-                              "${controller.showPayloadRx.value!.rewardAmount.toString()} SAO",
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.interactive,
-                                fontWeight: FontWeight.w700,
+                            child: Obx(
+                              () => Text(
+                                "${controller.qrShowRx.value?.rewardAmount.toString() ?? ''} SAO",
+                                style: textTheme.bodyText1!.copyWith(
+                                  color: SatorioColor.interactive,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           )
@@ -151,7 +160,7 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                                 color: SatorioColor.darkAccent,
                                 fontSize: 16.0 * coefficient,
                                 fontWeight: FontWeight.w700,
-                              )
+                              ),
                             ),
                           ],
                         ),

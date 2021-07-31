@@ -159,7 +159,7 @@ class WalletController extends GetxController {
 
   void toSend(WalletDetail walletDetail) {
     Get.to(
-      () => WalletSendPage(walletDetail),
+      () => WalletSendPage(fromWalletDetail: walletDetail),
       binding: WalletSendBinding(),
     );
   }

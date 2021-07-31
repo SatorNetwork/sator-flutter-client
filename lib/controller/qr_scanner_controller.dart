@@ -6,7 +6,9 @@ import 'package:satorio/binding/qr_result_show_binding.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/data/model/qr/qr_data_factory.dart';
 import 'package:satorio/domain/entities/qr/qr_data.dart';
-import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
+import 'package:satorio/domain/entities/qr/qr_payload_show.dart';
+import 'package:satorio/domain/entities/qr/qr_payload_wallet_send.dart';
+import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/qr_result_show_page.dart';
 
@@ -18,9 +20,9 @@ class QrScannerController extends GetxController with BackToMainMixin {
     Get.back();
   }
 
-  void _loadShow(QrShowPayload showPayload) {
-    _satorioRepository.loadShow(showPayload.showId).then((show) {
-      Get.off(() => QrResultShowPage(show, showPayload),
+  void _loadShow(QrShow qrShow) {
+    _satorioRepository.loadShow(qrShow.showId).then((show) {
+      Get.off(() => QrResultShowPage(show, qrShow),
           binding: QrResultShowBinding());
     });
   }
@@ -37,17 +39,17 @@ class QrScannerController extends GetxController with BackToMainMixin {
     QrData data = QrDataModelFactory.createQrData(jsonDecode(scanData));
     switch (data.type) {
       case QrType.show:
-        _handleShowData(data.qrId);
+        _handleShowData((data.payload as QrPayloadShow).code);
         break;
-      case QrType.wallet:
-        _handleWalletData(data.qrId);
+      case QrType.walletSend:
+        _handleWalletData((data.payload as QrPayloadWalletSend).walletAddress);
         break;
     }
   }
 
-  void _handleShowData(String qrId) {
-    _satorioRepository.getShowEpisodeByQR(qrId).then((qrResult) {
-      QrShowPayload show = qrResult;
+  void _handleShowData(String code) {
+    _satorioRepository.getShowEpisodeByQR(code).then((qrResult) {
+      QrShow show = qrResult;
       _loadShow(show);
     });
   }

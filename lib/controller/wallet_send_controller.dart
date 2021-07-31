@@ -9,7 +9,8 @@ class WalletSendController extends GetxController {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
 
-  final Rx<WalletDetail?> walletDetailRx = Rx(null);
+  final Rx<WalletDetail?> fromWalletDetailRx = Rx(null);
+  final Rx<String?> toAddressRx = Rx(null);
 
   void back() {
     Get.back();

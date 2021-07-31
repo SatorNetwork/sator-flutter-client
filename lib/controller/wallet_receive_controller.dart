@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -9,6 +10,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:satorio/data/model/qr/qr_data_factory.dart';
+import 'package:satorio/data/model/qr/qr_payload_wallet_send_model.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -20,12 +23,23 @@ class WalletReceiveController extends GetxController {
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<WalletDetail?> walletDetailRx = Rx(null);
 
+  final RxString qrCodeDataRx = ''.obs;
+
   late ValueListenable<Box<Profile>> profileListenable;
 
   WalletReceiveController() {
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
     profileListener();
+  }
+
+  void updateWalletDetail(WalletDetail walletDetail) {
+    walletDetailRx.value = walletDetail;
+    qrCodeDataRx.value = json.encode(
+      QrDataWalletModel(
+        QrPayloadWalletSendModel(walletDetail.solanaAccountAddress),
+      ).toJson(),
+    );
   }
 
   @override
@@ -60,11 +74,9 @@ class WalletReceiveController extends GetxController {
   }
 
   void shareQr() async {
-    if (walletDetailRx.value != null) {
-      String data = walletDetailRx.value!.solanaAccountAddress;
-
+    if (walletDetailRx.value != null && qrCodeDataRx.value.isNotEmpty) {
       final QrValidationResult qrValidationResult = QrValidator.validate(
-        data: data,
+        data: qrCodeDataRx.value,
         version: QrVersions.auto,
         errorCorrectionLevel: QrErrorCorrectLevel.L,
       );
@@ -73,15 +85,16 @@ class WalletReceiveController extends GetxController {
         final QrCode qrCode = qrValidationResult.qrCode!;
         final QrPainter painter = QrPainter.withQr(
           qr: qrCode,
-          color: const Color(0xFF000000),
-          emptyColor: const Color(0xFFFFFFFF),
+          color: Colors.black,
+          emptyColor: Colors.white,
           gapless: true,
           embeddedImageStyle: null,
           embeddedImage: null,
         );
 
         final Directory tempDir = await getTemporaryDirectory();
-        final String path = '${tempDir.path}/$data.png';
+        final String path =
+            '${tempDir.path}/${walletDetailRx.value!.solanaAccountAddress}.png';
 
         final ByteData picData =
             (await painter.toImageData(1024, format: ImageByteFormat.png))!;

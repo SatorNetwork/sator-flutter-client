@@ -12,7 +12,7 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class WalletReceivePage extends GetView<WalletReceiveController> {
   WalletReceivePage(WalletDetail walletDetail) {
-    controller.walletDetailRx.value = walletDetail;
+    controller.updateWalletDetail(walletDetail);
   }
 
   @override
@@ -89,9 +89,7 @@ class WalletReceivePage extends GetView<WalletReceiveController> {
                 ),
                 Obx(
                   () => QrImage(
-                    data:
-                        controller.walletDetailRx.value?.solanaAccountAddress ??
-                            '',
+                    data: controller.qrCodeDataRx.value,
                     size: 0.64 * Get.width,
                   ),
                 ),

@@ -15,7 +15,7 @@ import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
-import 'package:satorio/data/model/qr/qr_payload_show_model.dart';
+import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
@@ -113,7 +113,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     //   body: response.body,
     // );
 
-    logResponse(utf8Response);
+    _logResponse(utf8Response);
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
@@ -136,7 +136,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     return utf8Response;
   }
 
-  void logResponse(Response response) {
+  void _logResponse(Response response) {
     print('--------');
 
     // print('Request headers:');
@@ -458,7 +458,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Challenges
 
   @override
-  Future<dynamic> loadShow(String showId) {
+  Future<ShowModel> loadShow(String showId) {
     return _requestGet(
       'shows/$showId',
     ).then((Response response) {
@@ -469,13 +469,13 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<QrPayLoadShowModel> getShowEpisodeByQR(String qrCodeId) {
+  Future<QrShowModel> getShowEpisodeByQR(String qrCodeId) {
     return _requestGet(
       'qrcodes/$qrCodeId',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
 
-      return QrPayLoadShowModel.fromJson(jsonData['data']);
+      return QrShowModel.fromJson(jsonData['data']);
     });
   }
 
