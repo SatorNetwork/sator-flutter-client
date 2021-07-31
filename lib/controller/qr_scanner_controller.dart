@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:satorio/binding/qr_result_show_binding.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
+import 'package:satorio/controller/qr_result_show_controller.dart';
 import 'package:satorio/data/model/qr/qr_data_factory.dart';
 import 'package:satorio/domain/entities/qr/qr_data.dart';
 import 'package:satorio/domain/entities/qr/qr_payload_show.dart';
@@ -22,8 +23,11 @@ class QrScannerController extends GetxController with BackToMainMixin {
 
   void _loadShow(QrShow qrShow) {
     _satorioRepository.loadShow(qrShow.showId).then((show) {
-      Get.off(() => QrResultShowPage(show, qrShow),
-          binding: QrResultShowBinding());
+      Get.off(
+        () => QrResultShowPage(),
+        binding: QrResultShowBinding(),
+        arguments: QrResultShowArgument(show, qrShow),
+      );
     });
   }
 
@@ -54,7 +58,7 @@ class QrScannerController extends GetxController with BackToMainMixin {
     });
   }
 
-  void _handleWalletData(String qrId) {
-    print("wallet type");
+  void _handleWalletData(String walletAddress) {
+    // TODO
   }
 }

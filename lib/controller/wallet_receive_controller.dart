@@ -21,9 +21,8 @@ class WalletReceiveController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
-  final Rx<WalletDetail?> walletDetailRx = Rx(null);
-
-  final RxString qrCodeDataRx = ''.obs;
+  late final Rx<WalletDetail> walletDetailRx;
+  late final RxString qrCodeDataRx;
 
   late ValueListenable<Box<Profile>> profileListenable;
 
@@ -31,15 +30,17 @@ class WalletReceiveController extends GetxController {
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
     profileListener();
-  }
 
-  void updateWalletDetail(WalletDetail walletDetail) {
-    walletDetailRx.value = walletDetail;
-    qrCodeDataRx.value = json.encode(
-      QrDataWalletModel(
-        QrPayloadWalletSendModel(walletDetail.solanaAccountAddress),
-      ).toJson(),
-    );
+    WalletReceiveArgument argument = Get.arguments as WalletReceiveArgument;
+    walletDetailRx = Rx(argument.walletDetail);
+    qrCodeDataRx = json
+        .encode(
+          QrDataWalletModel(
+            QrPayloadWalletSendModel(
+                argument.walletDetail.solanaAccountAddress),
+          ).toJson(),
+        )
+        .obs;
   }
 
   @override
@@ -59,22 +60,20 @@ class WalletReceiveController extends GetxController {
   }
 
   void copyAddress() {
-    if (walletDetailRx.value != null) {
-      Clipboard.setData(
-        ClipboardData(
-          text: walletDetailRx.value!.solanaAccountAddress,
-        ),
-      );
-      ScaffoldMessenger.of(Get.context!).showSnackBar(
-        SnackBar(
-          content: Text('Copied to clipboard'),
-        ),
-      );
-    }
+    Clipboard.setData(
+      ClipboardData(
+        text: walletDetailRx.value.solanaAccountAddress,
+      ),
+    );
+    ScaffoldMessenger.of(Get.context!).showSnackBar(
+      SnackBar(
+        content: Text('Copied to clipboard'),
+      ),
+    );
   }
 
   void shareQr() async {
-    if (walletDetailRx.value != null && qrCodeDataRx.value.isNotEmpty) {
+    if (qrCodeDataRx.value.isNotEmpty) {
       final QrValidationResult qrValidationResult = QrValidator.validate(
         data: qrCodeDataRx.value,
         version: QrVersions.auto,
@@ -94,7 +93,7 @@ class WalletReceiveController extends GetxController {
 
         final Directory tempDir = await getTemporaryDirectory();
         final String path =
-            '${tempDir.path}/${walletDetailRx.value!.solanaAccountAddress}.png';
+            '${tempDir.path}/${walletDetailRx.value.solanaAccountAddress}.png';
 
         final ByteData picData =
             (await painter.toImageData(1024, format: ImageByteFormat.png))!;
@@ -111,4 +110,10 @@ class WalletReceiveController extends GetxController {
       profileRx.value = profileListenable.value.getAt(0);
     }
   }
+}
+
+class WalletReceiveArgument {
+  final WalletDetail walletDetail;
+
+  const WalletReceiveArgument(this.walletDetail);
 }

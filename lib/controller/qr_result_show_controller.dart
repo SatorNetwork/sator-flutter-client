@@ -8,13 +8,15 @@ import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 
 class QrResultShowController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
-  Rx<bool> isRequested = Rx(false);
-  Rx<Show?> showRx = Rx(Show("", "", "", false));
-  Rx<QrShow?> qrShowRx = Rx(QrShow("", "", "", 0));
+  final RxBool isRequested = false.obs;
+  late final Rx<Show> showRx;
+  late final Rx<QrShow?> qrShowRx;
 
-  void loadData(Show show, QrShow qrShow) {
-    showRx.value = show;
-    qrShowRx.value = qrShow;
+  QrResultShowController() {
+    QrResultShowArgument argument = Get.arguments as QrResultShowArgument;
+
+    showRx = Rx(argument.show);
+    qrShowRx = Rx(argument.qrShow);
   }
 
   void claimRewards() {
@@ -40,4 +42,11 @@ class QrResultShowController extends GetxController with BackToMainMixin {
           },
         );
   }
+}
+
+class QrResultShowArgument {
+  final Show show;
+  final QrShow qrShow;
+
+  const QrResultShowArgument(this.show, this.qrShow);
 }

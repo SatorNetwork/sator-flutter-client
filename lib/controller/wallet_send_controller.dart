@@ -7,10 +7,18 @@ import 'package:satorio/ui/page_widget/transaction_preview_page.dart';
 
 class WalletSendController extends GetxController {
   final TextEditingController amountController = TextEditingController();
+  late final TextEditingController toAddressController;
   final TextEditingController noteController = TextEditingController();
 
-  final Rx<WalletDetail?> fromWalletDetailRx = Rx(null);
-  final Rx<String?> toAddressRx = Rx(null);
+  late final Rx<WalletDetail?> fromWalletDetailRx;
+
+  final RxBool toAddressVisibility = false.obs;
+
+  WalletSendController() {
+    WalletSendArgument argument = Get.arguments as WalletSendArgument;
+    toAddressController = TextEditingController(text: argument.toAddress);
+    fromWalletDetailRx = Rx(argument.fromWalletDetail);
+  }
 
   void back() {
     Get.back();
@@ -28,4 +36,27 @@ class WalletSendController extends GetxController {
       binding: TransactionPreviewBinding(),
     );
   }
+
+  void selectFromOwnWallets() {
+    // TODO
+  }
+
+  void selectFromContacts() {
+    // TODO
+  }
+
+  void enterAddress() {
+    toAddressVisibility.value = true;
+  }
+
+  void scanQr() {
+    // TODO
+  }
+}
+
+class WalletSendArgument {
+  final WalletDetail? fromWalletDetail;
+  final String? toAddress;
+
+  const WalletSendArgument(this.fromWalletDetail, this.toAddress);
 }

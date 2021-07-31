@@ -56,9 +56,7 @@ class InputTextField extends StatelessWidget {
               hintText: hintText,
               errorText: errorText,
               suffixIcon: icon == null
-                  ? Container(
-                      width: 30,
-                    )
+                  ? null
                   : IconButton(
                       onPressed: onPressedIcon,
                       icon: icon!,

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/wallet_receive_binding.dart';
 import 'package:satorio/binding/wallet_send_binding.dart';
+import 'package:satorio/controller/wallet_receive_controller.dart';
+import 'package:satorio/controller/wallet_send_controller.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
@@ -152,15 +154,17 @@ class WalletController extends GetxController {
 
   void toReceive(WalletDetail walletDetail) {
     Get.to(
-      () => WalletReceivePage(walletDetail),
+      () => WalletReceivePage(),
       binding: WalletReceiveBinding(),
+      arguments: WalletReceiveArgument(walletDetail),
     );
   }
 
   void toSend(WalletDetail walletDetail) {
     Get.to(
-      () => WalletSendPage(fromWalletDetail: walletDetail),
+      () => WalletSendPage(),
       binding: WalletSendBinding(),
+      arguments: WalletSendArgument(walletDetail, null),
     );
   }
 

@@ -4,9 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/review.dart';
-import 'package:satorio/domain/entities/show_detail.dart';
-import 'package:satorio/domain/entities/show_episode.dart';
-import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -14,12 +11,6 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
-  ShowEpisodesRealmPage(
-      ShowDetail showDetail, ShowSeason showSeason, ShowEpisode showEpisode)
-      : super() {
-    controller.updateData(showDetail, showSeason, showEpisode);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +26,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           children: [
             Obx(
               () => Text(
-                controller.showDetailRx.value?.title ?? '',
+                controller.showDetailRx.value.title,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.white,
                   fontSize: 12.0 * coefficient,
@@ -49,9 +40,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             Obx(
               () => Text(
                 'txt_episode_naming'.tr.format([
-                  controller.showSeasonRx.value?.seasonNumber ?? 0,
-                  controller.showEpisodeRx.value?.episodeNumber ?? 0,
-                  controller.showEpisodeRx.value?.title ?? '',
+                  controller.showSeasonRx.value.seasonNumber,
+                  controller.showEpisodeRx.value.episodeNumber,
+                  controller.showEpisodeRx.value.title,
                 ]),
                 style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
@@ -122,7 +113,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
       children: [
         Obx(
           () => Image.network(
-            controller.showEpisodeRx.value?.cover ?? '',
+            controller.showEpisodeRx.value.cover,
             height: 300,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) => Container(

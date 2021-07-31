@@ -3,18 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/qr_result_show_controller.dart';
-import 'package:satorio/domain/entities/qr_show.dart';
-import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QrResultShowPage extends GetView<QrResultShowController> {
-  QrResultShowPage(Show show, QrShow qrShow) : super() {
-    controller.loadData(show, qrShow);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +46,12 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                         width: Get.width - 40,
                         child: Obx(
                           () => Image.network(
-                            controller.showRx.value?.cover ?? '',
+                            controller.showRx.value.cover,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -70,7 +68,7 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                         children: [
                           Obx(
                             () => Text(
-                              controller.showRx.value?.title ?? '',
+                              controller.showRx.value.title,
                               style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.darkAccent,
                                 fontSize: 18.0 * coefficient,
@@ -82,7 +80,9 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                       ),
                     ),
                   ),
-                  Expanded(child: Container()),
+                  Expanded(
+                    child: Container(),
+                  ),
                   Obx(
                     () => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),

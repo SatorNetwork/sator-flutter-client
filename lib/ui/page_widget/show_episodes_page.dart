@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_episodes_controller.dart';
-import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -11,13 +10,8 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowEpisodesPage extends GetView<ShowEpisodesController> {
-  ShowEpisodesPage(ShowDetail showDetail) : super() {
-    controller.loadSeasonForShow(showDetail);
-  }
-
   @override
   Widget build(BuildContext context) {
-    // controller.seasonsRx.value.length == 1 && controller.seasonsRx.value[0].seasonNumber == 0
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -27,7 +21,7 @@ class ShowEpisodesPage extends GetView<ShowEpisodesController> {
         centerTitle: true,
         title: Obx(
           () => Text(
-            controller.showDetailRx.value?.title ?? '',
+            controller.showDetailRx.value.title,
             style: textTheme.bodyText1!.copyWith(
               color: SatorioColor.darkAccent,
               fontSize: 17,

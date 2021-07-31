@@ -4,8 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
-import 'package:satorio/domain/entities/show_episode.dart';
-import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -14,11 +12,6 @@ import 'package:satorio/util/extension.dart';
 class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
   static const double _margin = 20.0;
   static const double _itemSpacing = 12.0;
-
-  ShowEpisodeQuizPage(ShowSeason showSeason, ShowEpisode showEpisode)
-      : super() {
-    controller.loadValidationQuestion(showSeason, showEpisode);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +103,8 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                   Obx(
                     () => Text(
                       'txt_episode_entrance_quiz'.tr.format([
-                        controller.showSeasonRx.value?.seasonNumber ?? 0,
-                        controller.showEpisodeRx.value?.episodeNumber ?? 0
+                        controller.showSeasonRx.value.seasonNumber,
+                        controller.showEpisodeRx.value.episodeNumber,
                       ]),
                       style: TextStyle(
                         color: SatorioColor.darkAccent,

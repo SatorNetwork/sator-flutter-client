@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/wallet_send_controller.dart';
-import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
@@ -11,11 +10,6 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
 
 class WalletSendPage extends GetView<WalletSendController> {
-  WalletSendPage({WalletDetail? fromWalletDetail, String? toAddress}) {
-    controller.fromWalletDetailRx.value = fromWalletDetail;
-    controller.toAddressRx.value = toAddress;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,24 +118,55 @@ class WalletSendPage extends GetView<WalletSendController> {
                           _sendTo(
                             'accounts',
                             'txt_accounts'.tr,
-                            () {},
+                            () {
+                              controller.selectFromOwnWallets();
+                            },
                           ),
                           _sendTo(
                             'contacts',
                             'txt_contacts'.tr,
-                            () {},
+                            () {
+                              controller.selectFromContacts();
+                            },
                           ),
                           _sendTo(
                             'address',
                             'txt_address'.tr,
-                            () {},
+                            () {
+                              controller.enterAddress();
+                            },
                           ),
                           _sendTo(
                             'scan_qr',
                             'txt_scan_qr'.tr,
-                            () {},
+                            () {
+                              controller.scanQr();
+                            },
                           ),
                         ],
+                      ),
+                      Obx(
+                        () => SizedBox(
+                          height: controller.toAddressVisibility.value ? 28 : 0,
+                        ),
+                      ),
+                      Obx(
+                        () => controller.toAddressVisibility.value
+                            ? InputTextField(
+                                controller: controller.toAddressController,
+                                inputTitle: 'txt_send_to'.tr,
+                                icon: Icon(
+                                  Icons.close_rounded,
+                                  color:
+                                      SatorioColor.textBlack.withOpacity(0.5),
+                                ),
+                                onPressedIcon: () {
+                                  controller.toAddressController.clear();
+                                },
+                              )
+                            : SizedBox(
+                                height: 0,
+                              ),
                       ),
                       SizedBox(
                         height: 28,

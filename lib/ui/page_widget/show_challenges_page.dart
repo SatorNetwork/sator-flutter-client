@@ -4,16 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_challenges_controller.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
-import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowChallengesPage extends GetView<ShowChallengesController> {
-  ShowChallengesPage(Show show) : super() {
-    controller.loadChallenges(show);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,12 +18,14 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: Text(
-          controller.show.title,
-          style: textTheme.bodyText1!.copyWith(
-            color: SatorioColor.darkAccent,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
+        title: Obx(
+          () => Text(
+            controller.showRx.value.title,
+            style: textTheme.bodyText1!.copyWith(
+              color: SatorioColor.darkAccent,
+              fontSize: 17,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
         leading: Material(
@@ -52,9 +49,11 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
             fit: BoxFit.cover,
           ),
           Container(
-            constraints:
-                BoxConstraints(minHeight: Get.mediaQuery.size.height - (Get.mediaQuery.padding.top + kToolbarHeight)),
-            margin: EdgeInsets.only(top: Get.mediaQuery.padding.top + kToolbarHeight),
+            constraints: BoxConstraints(
+                minHeight: Get.mediaQuery.size.height -
+                    (Get.mediaQuery.padding.top + kToolbarHeight)),
+            margin: EdgeInsets.only(
+                top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32),
