@@ -123,4 +123,5 @@ const Map<String, String> en = {
   'txt_dividends': 'Dividends',
   'txt_number': 'Number',
   'txt_current': 'Current',
+  'txt_coming_soon': 'Coming soon...',
 };

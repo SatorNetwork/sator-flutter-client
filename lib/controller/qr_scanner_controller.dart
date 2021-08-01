@@ -19,16 +19,16 @@ import 'package:satorio/ui/page_widget/wallet_send_page.dart';
 class QrScannerController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
-  late final RxBool isResultBackRx;
+  late final RxBool isNeedReturnResultRx;
   Barcode? result;
 
   QrScannerController() {
     QrScannerArgument argument = Get.arguments as QrScannerArgument;
-    isResultBackRx = argument.isResultBack.obs;
+    isNeedReturnResultRx = argument.isNeedReturnResult.obs;
   }
 
   void back() {
-    if (isResultBackRx.value)
+    if (isNeedReturnResultRx.value)
       Get.back(result: null);
     else
       Get.back();
@@ -70,7 +70,7 @@ class QrScannerController extends GetxController with BackToMainMixin {
   }
 
   void _handleWalletData(String walletAddress) {
-    if (isResultBackRx.value) {
+    if (isNeedReturnResultRx.value) {
       Get.back(result: walletAddress);
     } else {
       Get.off(
@@ -83,7 +83,7 @@ class QrScannerController extends GetxController with BackToMainMixin {
 }
 
 class QrScannerArgument {
-  final bool isResultBack;
+  final bool isNeedReturnResult;
 
-  const QrScannerArgument(this.isResultBack);
+  const QrScannerArgument(this.isNeedReturnResult);
 }

@@ -5,6 +5,7 @@ import 'package:satorio/binding/transaction_preview_binding.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/transaction_preview_page.dart';
 
@@ -48,7 +49,16 @@ class WalletSendController extends GetxController {
   }
 
   void selectFromContacts() {
-    // TODO
+    Get.dialog(
+      DefaultDialog(
+        'txt_oops'.tr,
+        'txt_coming_soon'.tr,
+        'txt_ok'.tr,
+        onPressed: () {
+          Get.back();
+        },
+      ),
+    );
   }
 
   void enterAddress() {
@@ -56,22 +66,25 @@ class WalletSendController extends GetxController {
   }
 
   void scanQr() async {
-    String? result = await Get.to(
+    final result = await Get.to(
       () => QrScannerPage(),
       binding: QrScannerBinding(),
       arguments: QrScannerArgument(true),
     );
 
-    if (result != null && result.isNotEmpty) {
-      toAddressController.value = TextEditingValue(
-        text: result,
-        selection: TextSelection.fromPosition(
-          TextPosition(offset: result.length),
-        ),
-      );
+    if (result != null && (result is String) && result.isNotEmpty)
+      _setToAddress(result);
+  }
 
-      toAddressVisibility.value = true;
-    }
+  void _setToAddress(String toAddress) {
+    toAddressController.value = TextEditingValue(
+      text: toAddress,
+      selection: TextSelection.fromPosition(
+        TextPosition(offset: toAddress.length),
+      ),
+    );
+
+    toAddressVisibility.value = true;
   }
 }
 
