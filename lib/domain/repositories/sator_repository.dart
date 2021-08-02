@@ -79,7 +79,7 @@ abstract class SatorioRepository {
 
   ValueListenable walletsListenable();
 
-  ValueListenable walletDetailsListenable(List<String> ids);
+  ValueListenable walletDetailsListenable(List<String>? ids);
 
   ValueListenable transactionsListenable();
 }

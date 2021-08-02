@@ -119,28 +119,28 @@ class WalletSendPage extends GetView<WalletSendController> {
                             'accounts',
                             'txt_accounts'.tr,
                             () {
-                              controller.selectFromOwnWallets();
+                              controller.selectDestinationFromOwnWallets();
                             },
                           ),
                           _sendTo(
                             'contacts',
                             'txt_contacts'.tr,
                             () {
-                              controller.selectFromContacts();
+                              controller.selectDestinationFromContacts();
                             },
                           ),
                           _sendTo(
                             'address',
                             'txt_address'.tr,
                             () {
-                              controller.enterAddress();
+                              controller.enterDestinationAddress();
                             },
                           ),
                           _sendTo(
                             'scan_qr',
                             'txt_scan_qr'.tr,
                             () {
-                              controller.scanQr();
+                              controller.scanDestinationQr();
                             },
                           ),
                         ],
@@ -161,7 +161,7 @@ class WalletSendPage extends GetView<WalletSendController> {
                                       SatorioColor.textBlack.withOpacity(0.5),
                                 ),
                                 onPressedIcon: () {
-                                  controller.toAddressController.clear();
+                                  controller.clearDestinationAddress();
                                 },
                               )
                             : SizedBox(
@@ -178,12 +178,17 @@ class WalletSendPage extends GetView<WalletSendController> {
                       SizedBox(
                         height: 20,
                       ),
-                      ElevatedGradientButton(
-                        text: 'txt_preview'.tr,
-                        onPressed: () {
-                          controller.toPreview();
-                        },
-                      ),
+                      Obx(
+                        () => ElevatedGradientButton(
+                          text: 'txt_preview'.tr,
+                          isEnabled:
+                              controller.fromWalletDetailRx.value != null &&
+                                  controller.toAddressRx.value.isNotEmpty,
+                          onPressed: () {
+                            controller.toPreview();
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),

@@ -311,7 +311,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  ValueListenable walletDetailsListenable(List<String> ids) {
+  ValueListenable walletDetailsListenable(List<String>? ids) {
     return _localDataSource.walletDetailsListenable(ids);
   }
 

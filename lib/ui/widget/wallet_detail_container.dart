@@ -6,11 +6,18 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class WalletDetailContainer extends StatelessWidget {
-  const WalletDetailContainer(this.walletDetail, {this.height, this.margin});
+  WalletDetailContainer(this.walletDetail,
+      {this.height = _defaultHeight, this.margin});
+
+  static const double _defaultHeight = 200.0;
 
   final WalletDetail walletDetail;
-  final double? height;
+  final double height;
   final EdgeInsetsGeometry? margin;
+
+  double get _fraction {
+    return height / _defaultHeight;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +25,7 @@ class WalletDetailContainer extends StatelessWidget {
       height: height,
       margin: margin,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20 * _fraction),
         color: SatorioColor.darkAccent,
       ),
       child: Stack(
@@ -26,7 +33,7 @@ class WalletDetailContainer extends StatelessWidget {
           Align(
             alignment: Alignment.centerRight,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20 * _fraction),
               child: SvgPicture.asset(
                 'images/sator_wallet.svg',
                 height: height,
@@ -37,7 +44,8 @@ class WalletDetailContainer extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(top: 22, left: 24),
+              padding:
+                  EdgeInsets.only(top: 22 * _fraction, left: 24 * _fraction),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -50,7 +58,7 @@ class WalletDetailContainer extends StatelessWidget {
                           : '',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 32.0,
+                        fontSize: 32.0 * _fraction,
                         fontWeight: FontWeight.w700,
                         backgroundColor: Colors.transparent,
                       ),
@@ -59,7 +67,7 @@ class WalletDetailContainer extends StatelessWidget {
                           text: ' ',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 36.0,
+                            fontSize: 36.0 * _fraction,
                             fontWeight: FontWeight.w600,
                             backgroundColor: Colors.transparent,
                           ),
@@ -70,7 +78,7 @@ class WalletDetailContainer extends StatelessWidget {
                               : '',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20.0,
+                            fontSize: 20.0 * _fraction,
                             fontWeight: FontWeight.w700,
                             backgroundColor: Colors.transparent,
                           ),
@@ -88,7 +96,7 @@ class WalletDetailContainer extends StatelessWidget {
                           : '',
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.7),
-                        fontSize: 16.0,
+                        fontSize: 16.0 * _fraction,
                         fontWeight: FontWeight.w500,
                         backgroundColor: Colors.transparent,
                       ),
@@ -97,7 +105,7 @@ class WalletDetailContainer extends StatelessWidget {
                           text: ' ',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.7),
-                            fontSize: 16.0,
+                            fontSize: 16.0 * _fraction,
                             fontWeight: FontWeight.w600,
                             backgroundColor: Colors.transparent,
                           ),
@@ -108,7 +116,7 @@ class WalletDetailContainer extends StatelessWidget {
                               : '',
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.7),
-                            fontSize: 12.0,
+                            fontSize: 12.0 * _fraction,
                             fontWeight: FontWeight.w500,
                             backgroundColor: Colors.transparent,
                           ),
@@ -124,25 +132,25 @@ class WalletDetailContainer extends StatelessWidget {
             Align(
               alignment: Alignment.bottomLeft,
               child: Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 30,
-                  left: 24,
+                padding: EdgeInsets.only(
+                  bottom: 30 * _fraction,
+                  left: 24 * _fraction,
                 ),
                 child: Container(
-                  height: 30,
+                  height: 30 * _fraction,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     color: Colors.white.withOpacity(0.25),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 7,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12 * _fraction,
+                    vertical: 7 * _fraction,
                   ),
                   child: Text(
                     '${walletDetail.balance[2].amount.toStringAsFixed(2)} ${walletDetail.balance[2].currency}',
                     style: textTheme.subtitle2!.copyWith(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 12 * _fraction,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
