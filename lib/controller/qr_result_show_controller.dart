@@ -10,7 +10,7 @@ class QrResultShowController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
   final RxBool isRequested = false.obs;
   late final Rx<Show> showRx;
-  late final Rx<QrShow?> qrShowRx;
+  late final Rx<QrShow> qrShowRx;
 
   QrResultShowController() {
     QrResultShowArgument argument = Get.arguments as QrResultShowArgument;
