@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/wallet_stacked_controller.dart';
+import 'package:satorio/domain/entities/amount_currency.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/ui/widget/wallet_detail_container.dart';
 
 class WalletStackedPage extends GetView<WalletStackedController> {
   @override
@@ -60,7 +63,10 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _walletCard(),
+                      WalletDetailContainer(
+                        _mockWalletDetail(),
+                        height: 200,
+                      ),
                       SizedBox(
                         height: 32 * coefficient,
                       ),
@@ -97,137 +103,6 @@ class WalletStackedPage extends GetView<WalletStackedController> {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _walletCard() {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: SatorioColor.darkAccent,
-      ),
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: SvgPicture.asset(
-                'images/sator_wallet.svg',
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 22, left: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: '852.2',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.w700,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: ' ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 36.0,
-                            fontWeight: FontWeight.w600,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'SAO',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w700,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: '2642.59',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: ' ',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'USD',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w500,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                bottom: 30,
-                left: 24,
-              ),
-              child: Container(
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  color: Colors.white.withOpacity(0.25),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 7,
-                ),
-                child: Text(
-                  '2,525.59 Rewards',
-                  style: textTheme.subtitle2!.copyWith(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -531,6 +406,19 @@ class WalletStackedPage extends GetView<WalletStackedController> {
           )
         ],
       ),
+    );
+  }
+
+  WalletDetail _mockWalletDetail() {
+    return WalletDetail(
+      'id',
+      'solanaAccountAddress',
+      [
+        AmountCurrency(852.2, 'SAO'),
+        AmountCurrency(2642.59, 'USD'),
+        AmountCurrency(2525.59, 'Rewarded'),
+      ],
+      [],
     );
   }
 }

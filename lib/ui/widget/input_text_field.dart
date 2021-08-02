@@ -4,7 +4,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class InputTextField extends StatelessWidget {
-  InputTextField(
+  const InputTextField(
       {this.controller,
       this.inputTitle = '',
       this.keyboardType = TextInputType.text,
