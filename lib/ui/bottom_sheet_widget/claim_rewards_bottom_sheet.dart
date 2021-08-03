@@ -7,6 +7,7 @@ import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -77,7 +78,8 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                   if (Get.isRegistered<MainController>()) {
                     if (Get.currentRoute != '/() => MainPage') {
                       MainController mainController = Get.find();
-                      mainController.selectedBottomTabIndex.value = MainController.TabWallet;
+                      mainController.selectedBottomTabIndex.value =
+                          MainController.TabWallet;
                     }
                     backToMain();
                   } else {
@@ -88,39 +90,17 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
               SizedBox(
                 height: 20,
               ),
-              InkWell(
-                onTap: () => _launchURL(data.transactionUrl),
-                child: Container(
-                  height: 52,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                    border: Border.all(
-                        color: Colors.black.withOpacity(0.11), width: 1),
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'txt_solana_link'.tr,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.darkAccent,
-                          fontSize: 16.0 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 14,
-                      ),
-                      Icon(
-                        Icons.open_in_new_rounded,
-                        color: SatorioColor.darkAccent,
-                      )
-                    ],
-                  ),
+              BorderedButton(
+                text: 'txt_solana_link'.tr,
+                borderColor: Colors.black.withOpacity(0.11),
+                icon: Icon(
+                  Icons.open_in_new_rounded,
+                  color: SatorioColor.darkAccent,
                 ),
-              )
+                onPressed: () {
+                  _launchURL(data.transactionUrl);
+                },
+              ),
             ],
           ),
         ],

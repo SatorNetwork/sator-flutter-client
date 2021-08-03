@@ -8,6 +8,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/wallet_detail_container.dart';
 
@@ -80,7 +81,7 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                       SizedBox(
                         height: 16 * coefficient,
                       ),
-                      _stackingCard(),
+                      _stackingCard2(),
                       SizedBox(
                         height: 32 * coefficient,
                       ),
@@ -223,15 +224,146 @@ class WalletStackedPage extends GetView<WalletStackedController> {
     );
   }
 
+  Widget _stackingCard2() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: SatorioColor.alice_blue,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'txt_auto_sator'.tr,
+                      style: textTheme.headline5!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 20 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      'txt_automatic_restaking'.tr,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: Colors.black.withOpacity(0.7),
+                        fontSize: 12 * coefficient,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 48 * coefficient,
+                height: 48 * coefficient,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: SatorioColor.mauve,
+                ),
+                child: Center(
+                  child: Icon(
+                    SatorIcons.logo,
+                    size: 40 * coefficient,
+                    color: SatorioColor.brand,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20 * coefficient,
+          ),
+          Row(
+            children: [
+              Text(
+                'txt_staked'.tr,
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.black,
+                  fontSize: 15 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  '25316.22',
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 8 * coefficient,
+          ),
+          Row(
+            children: [
+              Text(
+                'txt_your_share'.tr,
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.black,
+                  fontSize: 15 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  '135.2%',
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20 * coefficient,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: BorderedButton(
+                  text: 'txt_substract'.tr,
+                  onPressed: () {},
+                ),
+              ),
+              SizedBox(
+                width: 12 * coefficient,
+              ),
+              Expanded(
+                child: ElevatedGradientButton(
+                  text: 'txt_add'.tr,
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _loyaltyLevelCard() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border(
-          top: BorderSide(width: 2, color: SatorioColor.interactive),
-          bottom: BorderSide(width: 2, color: SatorioColor.interactive),
-          left: BorderSide(width: 2, color: SatorioColor.interactive),
-          right: BorderSide(width: 2, color: SatorioColor.interactive),
+        border: Border.all(
+          width: 2,
+          color: SatorioColor.interactive,
         ),
         color: SatorioColor.alice_blue,
       ),
@@ -274,15 +406,9 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                       height: 48 * coefficient,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        border: Border(
-                          top: BorderSide(
-                              width: 2, color: SatorioColor.royal_blue_2),
-                          bottom: BorderSide(
-                              width: 2, color: SatorioColor.royal_blue_2),
-                          left: BorderSide(
-                              width: 2, color: SatorioColor.royal_blue_2),
-                          right: BorderSide(
-                              width: 2, color: SatorioColor.royal_blue_2),
+                        border: Border.all(
+                          color: SatorioColor.royal_blue_2,
+                          width: 2,
                         ),
                         color: SatorioColor.interactive,
                       ),
@@ -415,7 +541,7 @@ class WalletStackedPage extends GetView<WalletStackedController> {
       [
         AmountCurrency(852.2, 'SAO'),
         AmountCurrency(2642.59, 'USD'),
-        AmountCurrency(2525.59, 'Rewarded'),
+        AmountCurrency(2525.59, 'Rewards'),
       ],
       [],
     );
