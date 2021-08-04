@@ -12,6 +12,8 @@ class QrData<T extends QrPayload> {
 class QrType {
   static const walletSend = 'wallet_send';
   static const show = 'show';
+
+  static const List<String> all = [walletSend, show];
 }
 
 class QrDataShow extends QrData<QrPayloadShow> {

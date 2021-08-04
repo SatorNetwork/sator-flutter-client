@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/binding/transaction_preview_binding.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
+import 'package:satorio/domain/entities/qr/qr_data.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
@@ -123,7 +124,10 @@ class WalletSendController extends GetxController {
     final result = await Get.to(
       () => QrScannerPage(),
       binding: QrScannerBinding(),
-      arguments: QrScannerArgument(true),
+      arguments: QrScannerArgument(
+        true,
+        expectedQrTypes: [QrType.walletSend],
+      ),
     );
 
     if (result != null && (result is String) && result.isNotEmpty)

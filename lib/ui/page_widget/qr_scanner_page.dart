@@ -31,22 +31,24 @@ class QrScannerPage extends GetView<QrScannerController> {
   Widget _buildQrView(BuildContext context) {
     const double padding = 40;
 
-    var scanArea = (Get.width < 400 || Get.height < 400) ? 150.0 : 300.0;
     return Container(
       height: Get.height,
       child: Stack(
         alignment: Alignment.topCenter,
         children: [
-          QRView(
-            key: qrKey,
-            onQRViewCreated: controller.startScan,
-            overlay: QrScannerOverlayShape(
-                borderColor: SatorioColor.interactive,
+          Obx(
+            () => QRView(
+              key: qrKey,
+              onQRViewCreated: controller.startScan,
+              overlay: QrScannerOverlayShape(
+                borderColor: _statusColor(controller.statusRx.value),
                 overlayColor: SatorioColor.textBlack.withOpacity(0.9),
                 borderRadius: 28,
-                borderLength: 80,
+                borderLength: Get.width * 0.165,
                 borderWidth: 12,
-                cutOutSize: scanArea),
+                cutOutSize: Get.width * 0.53,
+              ),
+            ),
           ),
           Positioned(
             bottom: 46,
@@ -57,15 +59,16 @@ class QrScannerPage extends GetView<QrScannerController> {
                 width: Get.width - padding,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  color: Color(0xFF4E4E4E),
+                  color: SatorioColor.matterhorn,
                 ),
                 child: Center(
                   child: Text(
                     "txt_cancel".tr,
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600),
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -74,5 +77,16 @@ class QrScannerPage extends GetView<QrScannerController> {
         ],
       ),
     );
+  }
+
+  Color _statusColor(QrScannerStatus status) {
+    switch (status) {
+      case QrScannerStatus.typeUnHandled:
+        return SatorioColor.error;
+      case QrScannerStatus.typeHandled:
+        return SatorioColor.success;
+      default:
+        return SatorioColor.interactive;
+    }
   }
 }

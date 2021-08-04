@@ -19,16 +19,21 @@ import 'package:satorio/ui/page_widget/wallet_send_page.dart';
 class QrScannerController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
-  late final RxBool isNeedReturnResultRx;
-  Barcode? result;
+  late final bool _isNeedReturnResult;
+  late final List<String> _expectedQrTypes;
+
+  final Rx<QrScannerStatus> statusRx = Rx(QrScannerStatus.readyForScan);
+
+  // Barcode? result;
 
   QrScannerController() {
     QrScannerArgument argument = Get.arguments as QrScannerArgument;
-    isNeedReturnResultRx = argument.isNeedReturnResult.obs;
+    _isNeedReturnResult = argument.isNeedReturnResult;
+    _expectedQrTypes = argument.expectedQrTypes;
   }
 
   void back() {
-    if (isNeedReturnResultRx.value)
+    if (_isNeedReturnResult)
       Get.back(result: null);
     else
       Get.back();
@@ -36,41 +41,65 @@ class QrScannerController extends GetxController with BackToMainMixin {
 
   void startScan(QRViewController qrController) {
     qrController.scannedDataStream.listen((scanData) {
-      if (result != null) return;
-      result = scanData;
-      _initScanner(result!.code.toString());
+      if (statusRx.value != QrScannerStatus.readyForScan) return;
+      statusRx.value = QrScannerStatus.processing;
+
+      _processCode(scanData.code.toString());
     });
   }
 
-  void _initScanner(String scanData) {
-    print(scanData);
-    QrData data = QrDataModelFactory.createQrData(jsonDecode(scanData));
-    switch (data.type) {
-      case QrType.show:
-        _handleShowData((data.payload as QrPayloadShow).code);
-        break;
-      case QrType.walletSend:
-        _handleWalletData((data.payload as QrPayloadWalletSend).walletAddress);
-        break;
+  void _processCode(String scanData) {
+    print('scan data $scanData');
+    bool canBeHandled = false;
+    try {
+      QrData data = QrDataModelFactory.createQrData(jsonDecode(scanData));
+
+      canBeHandled = _expectedQrTypes.contains(data.type);
+      if (canBeHandled) {
+        switch (data.type) {
+          case QrType.show:
+            _handleShowData((data.payload as QrPayloadShow).code);
+            break;
+          case QrType.walletSend:
+            _handleWalletData(
+                (data.payload as QrPayloadWalletSend).walletAddress);
+            break;
+        }
+      }
+    } catch (FormatException) {
+      canBeHandled = false;
     }
+    statusRx.value = canBeHandled
+        ? QrScannerStatus.typeHandled
+        : QrScannerStatus.typeUnHandled;
+
+    Future.delayed(
+      Duration(seconds: 3),
+      () {
+        statusRx.value = QrScannerStatus.readyForScan;
+      },
+    );
   }
 
   void _handleShowData(String code) {
-    _satorioRepository.getShowEpisodeByQR(code).then((qrResult) {
-      QrShow qrShow = qrResult;
-
-      _satorioRepository.loadShow(qrShow.showId).then((show) {
-        Get.off(
-          () => QrResultShowPage(),
-          binding: QrResultShowBinding(),
-          arguments: QrResultShowArgument(show, qrShow),
+    _satorioRepository.getShowEpisodeByQR(code).then(
+      (qrResult) {
+        QrShow qrShow = qrResult;
+        _satorioRepository.loadShow(qrShow.showId).then(
+          (show) {
+            Get.off(
+              () => QrResultShowPage(),
+              binding: QrResultShowBinding(),
+              arguments: QrResultShowArgument(show, qrShow),
+            );
+          },
         );
-      });
-    });
+      },
+    );
   }
 
   void _handleWalletData(String walletAddress) {
-    if (isNeedReturnResultRx.value) {
+    if (_isNeedReturnResult) {
       Get.back(result: walletAddress);
     } else {
       Get.off(
@@ -84,6 +113,15 @@ class QrScannerController extends GetxController with BackToMainMixin {
 
 class QrScannerArgument {
   final bool isNeedReturnResult;
+  final List<String> expectedQrTypes;
 
-  const QrScannerArgument(this.isNeedReturnResult);
+  const QrScannerArgument(this.isNeedReturnResult,
+      {this.expectedQrTypes = QrType.all});
+}
+
+enum QrScannerStatus {
+  readyForScan,
+  processing,
+  typeUnHandled,
+  typeHandled,
 }
