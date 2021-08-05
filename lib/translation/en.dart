@@ -96,4 +96,7 @@ const Map<String, String> en = {
   'txt_watch': 'Watch',
   'txt_scan': 'Scan',
   'txt_profile': 'Profile',
+  'txt_activity': 'Activity',
+  'txt_friends': 'Friends',
+  'txt_invite_friends': 'Invite Friends'
 };
