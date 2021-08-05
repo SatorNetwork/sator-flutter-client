@@ -5,6 +5,8 @@ import 'package:satorio/controller/qr_scanner_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class QrScannerPage extends GetView<QrScannerController> {
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,49 +29,64 @@ class QrScannerPage extends GetView<QrScannerController> {
   }
 
   Widget _buildQrView(BuildContext context) {
-    final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
     const double padding = 40;
 
-    var scanArea = (Get.width < 400 || Get.height < 400) ? 150.0 : 300.0;
     return Container(
-        height: Get.height,
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            QRView(
+      height: Get.height,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Obx(
+            () => QRView(
               key: qrKey,
               onQRViewCreated: controller.startScan,
               overlay: QrScannerOverlayShape(
-                  borderColor: SatorioColor.interactive,
-                  overlayColor: SatorioColor.textBlack.withOpacity(0.9),
-                  borderRadius: 28,
-                  borderLength: 80,
-                  borderWidth: 12,
-                  cutOutSize: scanArea),
+                borderColor: _statusColor(controller.statusRx.value),
+                overlayColor: SatorioColor.textBlack.withOpacity(0.9),
+                borderRadius: 28,
+                borderLength: Get.width * 0.165,
+                borderWidth: 12,
+                cutOutSize: Get.width * 0.53,
+              ),
             ),
-            Positioned(
-                bottom: 46,
-                child: InkWell(
-                  onTap: () => controller.back(),
-                  child: Container(
-                    height: 50,
-                    width: Get.width - padding,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Color(0xFF4E4E4E),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "txt_cancel".tr,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600),
-                      ),
+          ),
+          Positioned(
+            bottom: 46,
+            child: InkWell(
+              onTap: () => controller.back(),
+              child: Container(
+                height: 50,
+                width: Get.width - padding,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: SatorioColor.matterhorn,
+                ),
+                child: Center(
+                  child: Text(
+                    "txt_cancel".tr,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                )),
-          ],
-        ));
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _statusColor(QrScannerStatus status) {
+    switch (status) {
+      case QrScannerStatus.typeUnHandled:
+        return SatorioColor.error;
+      case QrScannerStatus.typeHandled:
+        return SatorioColor.success;
+      default:
+        return SatorioColor.interactive;
+    }
   }
 }

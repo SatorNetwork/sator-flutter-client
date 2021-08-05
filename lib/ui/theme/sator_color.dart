@@ -22,4 +22,8 @@ class SatorioColor {
   static const Color light_sky_blue = Color(0xFF93CAFD);
   static const Color manatee = Color(0xFF838795);
   static const Color bright_grey = Color(0xFF525560);
+  static const Color mauve = Color(0xFFE5C7FF);
+  static const Color lavender_blue = Color(0xFFDDDEFF);
+  static const Color royal_blue_2 = Color(0xFF6359DF);
+  static const Color matterhorn = Color(0xFF4E4E4E);
 }

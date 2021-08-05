@@ -110,22 +110,23 @@ class LoginPage extends GetView<LoginController> {
                   padding: const EdgeInsets.all(24.0),
                   child: RichText(
                     text: TextSpan(
-                        text: 'txt_not_member'.tr,
-                        style: textTheme.bodyText1!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: SatorioColor.textBlack),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'txt_create_account'.tr,
-                            style: textTheme.bodyText1!.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: SatorioColor.interactive),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                controller.toCreateAccount();
-                              },
-                          ),
-                        ]),
+                      text: 'txt_not_member'.tr,
+                      style: textTheme.bodyText1!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: SatorioColor.textBlack),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'txt_create_account'.tr,
+                          style: textTheme.bodyText1!.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: SatorioColor.interactive),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              controller.toCreateAccount();
+                            },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

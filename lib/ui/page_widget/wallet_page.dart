@@ -12,6 +12,7 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/wallet_detail_container.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -76,7 +77,14 @@ class WalletPage extends GetView<WalletController> {
                     itemBuilder: (context, index) {
                       WalletDetail walletDetail =
                           controller.walletDetailsRx.value[index];
-                      return _walletItem(walletDetail);
+                      return WalletDetailContainer(
+                        walletDetail,
+                        height: 200,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: _separatorSize / _viewportFraction,
+                        ),
+                      );
+                      // return _walletItem(walletDetail);
                     },
                   ),
                 ),
@@ -199,120 +207,6 @@ class WalletPage extends GetView<WalletController> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _walletItem(WalletDetail walletDetail) {
-    final height = 200.0;
-    return Container(
-      margin:
-          EdgeInsets.symmetric(horizontal: _separatorSize / _viewportFraction),
-      height: height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: SatorioColor.darkAccent,
-      ),
-      child: Stack(
-        children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: SvgPicture.asset(
-                'images/sator_wallet.svg',
-                height: height,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 22, left: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: walletDetail.balance.length > 0
-                          ? walletDetail.balance[0].amount.toStringAsFixed(2)
-                          : '',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32.0,
-                        fontWeight: FontWeight.w700,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: ' ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 36.0,
-                            fontWeight: FontWeight.w600,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                        TextSpan(
-                          text: walletDetail.balance.length > 0
-                              ? walletDetail.balance[0].currency
-                              : '',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w700,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      text: walletDetail.balance.length > 1
-                          ? walletDetail.balance[1].amount.toStringAsFixed(2)
-                          : '',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w500,
-                        backgroundColor: Colors.transparent,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: ' ',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w600,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                        TextSpan(
-                          text: walletDetail.balance.length > 1
-                              ? walletDetail.balance[1].currency
-                              : '',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w500,
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

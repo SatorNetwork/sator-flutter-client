@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_detail_controller.dart';
-import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -9,10 +8,6 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ShowDetailPage extends GetView<ShowDetailController> {
   final bottomSheetMinHeight = 250 * coefficient;
-
-  ShowDetailPage(Show show) : super() {
-    controller.loadShowDetail(show);
-  }
 
   @override
   Widget build(BuildContext context) {

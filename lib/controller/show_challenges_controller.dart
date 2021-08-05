@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
+import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -9,18 +10,15 @@ class ShowChallengesController extends GetxController
     with SingleGetTickerProviderMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
-  late Show show;
-
+  late final Rx<Show> showRx;
   final Rx<List<ChallengeSimple>> showChallengesRx = Rx([]);
 
-  void back() {
-    Get.back();
-  }
+  ShowChallengesController() {
+    ShowChallengesArgument argument = Get.arguments as ShowChallengesArgument;
+    showRx = Rx(argument.show);
 
-  void loadChallenges(Show show) {
-    this.show = show;
     _satorioRepository
-        .showChallenges(show.id)
+        .showChallenges(argument.show.id)
         .then((List<ChallengeSimple> showChallenges) {
       showChallengesRx.update((value) {
         if (value != null) value.addAll(showChallenges);
@@ -28,8 +26,21 @@ class ShowChallengesController extends GetxController
     });
   }
 
-  toChallenge(ChallengeSimple challengeSimple) {
-    Get.to(() => ChallengePage(challengeSimple.id),
-        binding: ChallengeBinding());
+  void back() {
+    Get.back();
   }
+
+  toChallenge(ChallengeSimple challengeSimple) {
+    Get.to(
+      () => ChallengePage(),
+      binding: ChallengeBinding(),
+      arguments: ChallengeArgument(challengeSimple.id),
+    );
+  }
+}
+
+class ShowChallengesArgument {
+  final Show show;
+
+  const ShowChallengesArgument(this.show);
 }

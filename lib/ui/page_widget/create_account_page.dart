@@ -97,22 +97,23 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                           Flexible(
                             child: RichText(
                               text: TextSpan(
-                                  text: 'txt_terms_of_service_description'.tr,
-                                  style: textTheme.bodyText1!.copyWith(
-                                      fontWeight: FontWeight.w400,
-                                      color: SatorioColor.textBlack),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'txt_terms_of_service'.tr,
-                                      style: textTheme.bodyText1!.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                          color: SatorioColor.interactive),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          controller.toTermsOfService();
-                                        },
-                                    ),
-                                  ]),
+                                text: 'txt_terms_of_service_description'.tr,
+                                style: textTheme.bodyText1!.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: SatorioColor.textBlack),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'txt_terms_of_service'.tr,
+                                    style: textTheme.bodyText1!.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: SatorioColor.interactive),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        controller.toTermsOfService();
+                                      },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -139,22 +140,23 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                   padding: const EdgeInsets.all(24.0),
                   child: RichText(
                     text: TextSpan(
-                        text: 'txt_already_member'.tr,
-                        style: textTheme.bodyText1!.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: SatorioColor.textBlack),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: 'txt_sign_in'.tr,
-                            style: textTheme.bodyText1!.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: SatorioColor.interactive),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                controller.toSignIn();
-                              },
-                          ),
-                        ]),
+                      text: 'txt_already_member'.tr,
+                      style: textTheme.bodyText1!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: SatorioColor.textBlack),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'txt_sign_in'.tr,
+                          style: textTheme.bodyText1!.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: SatorioColor.interactive),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              controller.toSignIn();
+                            },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
