@@ -23,4 +23,6 @@ class SatorioColor {
   static const Color manatee = Color(0xFF838795);
   static const Color bright_grey = Color(0xFF525560);
   static const Color magic_mint = Color(0xFFB1F7F2);
+  static const Color yellow_orange = Color(0xFFFFB546);
+  static const Color tomato = Color(0xFFFF7246);
 }

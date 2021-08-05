@@ -98,5 +98,6 @@ const Map<String, String> en = {
   'txt_profile': 'Profile',
   'txt_activity': 'Activity',
   'txt_friends': 'Friends',
-  'txt_invite_friends': 'Invite Friends'
+  'txt_invite_friends': 'Invite Friends',
+  'txt_realms_open': 'Realms open',
 };
