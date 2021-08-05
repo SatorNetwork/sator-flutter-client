@@ -1,8 +1,12 @@
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
+import 'package:satorio/data/model/message_model.dart';
+import 'package:satorio/domain/entities/message.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -393,6 +397,41 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     children: [
                       SizedBox(
                         height: 48 * coefficient,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Realm chat',
+                            style: textTheme.headline4!.copyWith(
+                              color: Colors.black,
+                              fontSize: 24 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => controller.toChatPage(),
+                            child: Icon(
+                              Icons.chevron_right_rounded,
+                              size: 32 * coefficient,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                          height: 148,
+                          padding: EdgeInsets.all(17),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(13)),
+                            color: SatorioColor.alice_blue,
+                          ),
+                          child: _getMessageList()),
+                      SizedBox(
+                        height: 35 * coefficient,
                       ),
                       Text(
                         'txt_episode_rating'.tr,
@@ -905,6 +944,65 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _getMessageList() {
+    return FirebaseAnimatedList(
+      physics: AlwaysScrollableScrollPhysics(),
+      controller: controller.scrollController,
+      query: controller.getMessageQuery(),
+      itemBuilder: (context, snapshot, animation, index) {
+        final json = snapshot.value as Map<dynamic, dynamic>;
+        final message = MessageModel.fromJson(json);
+        Color color = _colors[index % _colors.length];
+        return _showMessage(message, color);
+      },
+    );
+  }
+
+  final List<Color> _colors = [
+    SatorioColor.lavender_rose,
+    SatorioColor.mona_lisa,
+    SatorioColor.light_sky_blue
+  ];
+
+  Widget _showMessage(Message message, Color color) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            message.fromUserName,
+            style: textTheme.bodyText2!.copyWith(
+              color: color,
+              fontSize: 12 * coefficient,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          SizedBox(
+            height: 4,
+          ),
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(message.text, style: textTheme.bodyText2!.copyWith(
+                color: Colors.black,
+                fontSize: 14 * coefficient,
+                fontWeight: FontWeight.w400,
+              ),),
+              Text(
+                DateFormat('yyyy-MM-dd hh.mm')
+                    .format(message.createdAt)
+                    .toString(),
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          )),
+        ],
       ),
     );
   }
