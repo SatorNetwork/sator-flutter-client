@@ -15,7 +15,7 @@ import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
-import 'package:satorio/data/model/qr/qr_payload_show_model.dart';
+import 'package:satorio/data/model/qr_result_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
@@ -41,8 +41,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   AuthDataSource _authDataSource;
 
   ApiDataSourceImpl(this._authDataSource) {
-    // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.stage.sator.io/';
+    _getConnect.baseUrl = 'https://api.stage.sator.io/dev/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -469,13 +468,13 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<QrPayLoadShowModel> getShowEpisodeByQR(String qrCodeId) {
+  Future<QrResultModel> getShowEpisodeByQR(String qrCodeId) {
     return _requestGet(
       'qrcodes/$qrCodeId',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
 
-      return QrPayLoadShowModel.fromJson(jsonData['data']);
+      return QrResultModel.fromJson(jsonData['data']);
     });
   }
 

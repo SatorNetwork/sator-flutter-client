@@ -23,7 +23,7 @@ const Map<String, String> en = {
       'Please enter the verification code we’ve sent to your email address',
   'txt_reset_password': 'Reset password',
   'txt_reset_password_text':
-      'The old password will be reset.\nPlease enter your new password.',
+      'The old password will reset.\nPlease enter your new password.',
   'txt_new_password': 'New password',
   'txt_save': 'Save',
   'txt_challenge': 'Challenge',
@@ -32,7 +32,7 @@ const Map<String, String> en = {
   'txt_challenges': 'Challenges',
   'txt_nfts': 'NFTs',
   'txt_log_out': 'Log out',
-  'txt_log_out_message': 'Are you sure you want to log out?',
+  'txt_log_out_message': 'Are you sure you to want log out?',
   'txt_yes': 'Yes',
   'txt_ok': 'OK',
   'txt_new': 'New',
@@ -93,7 +93,4 @@ const Map<String, String> en = {
   'txt_done': 'Done!',
   'txt_episode_naming': 'S%d.E%d %s',
   'txt_episode_entrance_quiz': 'S%d.E%d Entrance Quiz',
-  'txt_watch': 'Watch',
-  'txt_scan': 'Scan',
-  'txt_profile': 'Profile',
 };
