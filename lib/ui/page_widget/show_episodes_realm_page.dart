@@ -994,12 +994,12 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                 fontSize: 14 * coefficient,
                 fontWeight: FontWeight.w400,
               ),),
-              Text(
-                DateFormat('yyyy-MM-dd hh.mm')
-                    .format(message.createdAt)
-                    .toString(),
-                style: TextStyle(color: Colors.grey),
-              ),
+              // Text(
+              //   DateFormat('yyyy-MM-dd hh.mm')
+              //       .format(message.createdAt)
+              //       .toString(),
+              //   style: TextStyle(color: Colors.grey),
+              // ),
             ],
           )),
         ],

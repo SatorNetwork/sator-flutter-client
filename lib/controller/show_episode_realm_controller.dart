@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
@@ -7,6 +8,7 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -53,11 +55,10 @@ class ShowEpisodeRealmController extends GetxController {
   }
 
   void toChatPage() {
-    ShowEpisodeRealmArgument argument = Get.arguments;
     Get.to(
           () => ChatPage(),
       binding: ChatBinding(),
-      arguments: ChatArgument(_messagesRef, argument.showDetail, argument.showSeason, argument.showEpisode),
+      arguments: ChatArgument(_messagesRef, showDetailRx.value, showSeasonRx.value, showEpisodeRx.value),
     );
   }
 
