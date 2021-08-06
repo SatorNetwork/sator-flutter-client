@@ -606,10 +606,7 @@ class ProfilePage extends GetView<ProfileController> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.05),
-                  Colors.black.withOpacity(0.01),
-                ],
+                colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
               ),
             ),
             child: Row(
@@ -681,7 +678,7 @@ class ProfilePage extends GetView<ProfileController> {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
