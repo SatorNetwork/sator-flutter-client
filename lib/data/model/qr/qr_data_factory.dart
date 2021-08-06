@@ -29,13 +29,18 @@ class QrDataModelFactory {
     Map payloadJson = json['data'];
     switch (type) {
       case QrType.show:
-        return QrDataShowModel(
-          QrPayloadShowModel.fromJson(payloadJson),
-        );
+        QrPayloadShowModel payload = QrPayloadShowModel.fromJson(payloadJson);
+        if (payload.code.isEmpty)
+          throw FormatException('unsupported type $type for QrData');
+        else
+          return QrDataShowModel(payload);
       case QrType.walletSend:
-        return QrDataWalletModel(
-          QrPayloadWalletSendModel.fromJson(payloadJson),
-        );
+        QrPayloadWalletSendModel payload =
+            QrPayloadWalletSendModel.fromJson(payloadJson);
+        if (payload.walletAddress.isEmpty)
+          throw FormatException('unsupported type $type for QrData');
+        else
+          return QrDataWalletModel(payload);
       default:
         throw FormatException('unsupported type $type for QrData');
     }
