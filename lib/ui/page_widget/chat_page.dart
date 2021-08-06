@@ -19,6 +19,7 @@ class ChatPage extends GetView<ChatController> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -27,7 +28,7 @@ class ChatPage extends GetView<ChatController> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Obx(
-                  () => Text(
+              () => Text(
                 controller.showDetailRx.value.title,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.white,
@@ -40,7 +41,7 @@ class ChatPage extends GetView<ChatController> {
               height: 2,
             ),
             Obx(
-                  () => Text(
+              () => Text(
                 'txt_episode_naming'.tr.format([
                   controller.showSeasonRx.value.seasonNumber,
                   controller.showEpisodeRx.value.episodeNumber,
@@ -54,20 +55,27 @@ class ChatPage extends GetView<ChatController> {
             ),
           ],
         ),
-        leading: InkWell(
-          onTap: () => controller.back(),
-          child: Icon(
-            Icons.close,
-            size: 32,
-            color: Colors.white,
+        leading: Container(),
+        actions: [
+          Container(
+            height: kToolbarHeight,
+            width: kToolbarHeight,
+            child: InkWell(
+              onTap: () => controller.back(),
+              child: Icon(
+                Icons.close,
+                size: 32,
+                color: Colors.white,
+              ),
+            ),
           ),
-        ),
+        ],
       ),
       body: Container(
         child: Stack(
           children: [
             Obx(
-                  () => Image.network(
+              () => Image.network(
                 controller.showEpisodeRx.value.cover,
                 height: 300,
                 fit: BoxFit.cover,
@@ -79,76 +87,135 @@ class ChatPage extends GetView<ChatController> {
           ],
         ),
       ),
-      bottomSheet: _bottomSheetContent(),
+      bottomSheet: _chatContent(),
     );
   }
 
-  Widget _bottomSheetContent() {
-    final double minSize = (Get.height - 260 * coefficient) / Get.height;
+  Widget _chatContent() {
+    final double minSize = (Get.height - 120 * coefficient) / Get.height;
     final double maxSize =
         (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
+    final double kHeight = 120;
 
     return Container(
-      color: Color(0xFF131B37),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(22),
+          topRight: Radius.circular(22),
+        ),
+        color: Color(0xFF131B37),
+      ),
       child: DraggableScrollableSheet(
         initialChildSize: minSize,
         minChildSize: minSize,
         maxChildSize: maxSize,
         expand: false,
         builder: (context, scrollController) => LayoutBuilder(
-          builder: (context, constraints) => SingleChildScrollView(
-              controller: scrollController,
-              child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                      minWidth: constraints.maxWidth,
-                      minHeight: constraints.maxHeight),
-                  child: Column(
+          builder: (context, constraints) => Column(
+            children: [
+              Container(
+                height: 60,
+                child: Center(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                        child: _getMessageList(),
+                      Icon(
+                        Icons.question_answer_rounded,
+                        color: Colors.white,
+                        size: 24,
                       ),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                child: TextField(
-                                  keyboardType: TextInputType.text,
-                                  controller: controller.messageController,
-                                  onChanged: (text) {},
-                                  onSubmitted: (input) {
-                                    controller.sendMessage();
-                                  },
-                                  decoration: const InputDecoration(
-                                      hintText: 'Enter new message'),
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(controller.canSendMessage()
-                                    ? CupertinoIcons.arrow_right_circle_fill
-                                    : CupertinoIcons.arrow_right_circle),
-                                onPressed: () {
-                                  controller.sendMessage();
-                                })
-                          ],
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        'Realm chat',
+                        style: textTheme.bodyText1!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
-                  ))),
+                  ),
+                ),
+              ),
+              Flexible(
+                child: SingleChildScrollView(
+                    controller: controller.scrollController,
+                    child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            minWidth: constraints.maxWidth,
+                            minHeight: constraints.maxHeight),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
+                              child: _getMessageList(),
+                            ),
+                          ],
+                        ))),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  color: Color(0xFF767E9B),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: TextField(
+                            autofocus: true,
+                            style: textTheme.bodyText1!.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            keyboardType: TextInputType.text,
+                            controller: controller.messageController,
+                            onChanged: (text) {},
+                            onSubmitted: (input) {
+                              controller.sendMessage();
+                            },
+                            decoration: const InputDecoration(
+                                hintText: 'Join in the conversation',
+                                hintStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400)),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            controller.sendMessage();
+                          },
+                          child: Text(
+                            "Send",
+                            style: textTheme.bodyText1!.copyWith(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _getMessageList() {
+    ScrollController _controller = ScrollController();
     return FirebaseAnimatedList(
-      physics: NeverScrollableScrollPhysics(),
-      controller: controller.scrollController,
+      // physics: NeverScrollableScrollPhysics(),
+      controller: _controller,
       shrinkWrap: true,
       query: controller.getMessageQuery(),
       itemBuilder: (context, snapshot, animation, index) {
@@ -185,21 +252,24 @@ class ChatPage extends GetView<ChatController> {
           ),
           Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(message.text, style: textTheme.bodyText2!.copyWith(
-                    color: Colors.white,
-                    fontSize: 14 * coefficient,
-                    fontWeight: FontWeight.w400,
-                  ),),
-                  Text(
-                    DateFormat('yyyy-MM-dd hh.mm')
-                        .format(message.createdAt)
-                        .toString(),
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              )),
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message.text,
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.white,
+                  fontSize: 14 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              // Text(
+              //   DateFormat('yyyy-MM-dd hh.mm')
+              //       .format(message.createdAt)
+              //       .toString(),
+              //   style: TextStyle(color: Colors.grey),
+              // ),
+            ],
+          )),
         ],
       ),
     );
