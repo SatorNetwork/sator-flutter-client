@@ -1,10 +1,7 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/data/model/message_model.dart';
 import 'package:satorio/domain/entities/message.dart';
@@ -95,7 +92,6 @@ class ChatPage extends GetView<ChatController> {
     final double minSize = (Get.height - 120 * coefficient) / Get.height;
     final double maxSize =
         (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
-    final double kHeight = 120;
 
     return Container(
       decoration: BoxDecoration(
@@ -180,6 +176,7 @@ class ChatPage extends GetView<ChatController> {
                               controller.sendMessage();
                             },
                             decoration: const InputDecoration(
+                              border: InputBorder.none,
                                 hintText: 'Join in the conversation',
                                 hintStyle: TextStyle(
                                     color: Colors.white,
@@ -204,6 +201,7 @@ class ChatPage extends GetView<ChatController> {
                   ),
                 ),
               ),
+              SizedBox(height: 40,)
             ],
           ),
         ),

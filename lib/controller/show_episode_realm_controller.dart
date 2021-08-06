@@ -1,5 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
@@ -8,7 +7,6 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
-import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
