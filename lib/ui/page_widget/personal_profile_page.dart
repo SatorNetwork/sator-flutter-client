@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/personal_profile_controller.dart';
+import 'package:satorio/ui/page_widget/activity_page.dart';
 import 'package:satorio/ui/page_widget/profile_page.dart';
 import 'package:satorio/ui/page_widget/some_page.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -103,7 +104,7 @@ class PersonalProfilePage extends GetView<PersonalProfileController> {
               controller: controller.tabController,
               children: [
                 ProfilePage(),
-                EmptyPage(),
+                ActivityPage(),
                 EmptyPage(),
               ],
             ),

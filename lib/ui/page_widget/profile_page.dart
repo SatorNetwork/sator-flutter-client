@@ -209,7 +209,7 @@ class ProfilePage extends GetView<ProfileController> {
                         ),
                         itemCount: _activities.length,
                         itemBuilder: (context, index) {
-                          ActivityTmp activity = _activities[index];
+                          ActivitySimpleTmp activity = _activities[index];
                           return _activityItem(activity);
                         },
                       ),
@@ -385,7 +385,7 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _activityItem(ActivityTmp activity) {
+  Widget _activityItem(ActivitySimpleTmp activity) {
     return Container(
       height: 74 * coefficient,
       decoration: BoxDecoration(
@@ -694,20 +694,20 @@ class ProfilePage extends GetView<ProfileController> {
     BadgeTmp('images/tmp_badge_4.png', 'Collector', 0),
   ];
 
-  final List<ActivityTmp> _activities = [
-    ActivityTmp(
+  final List<ActivitySimpleTmp> _activities = [
+    ActivitySimpleTmp(
       'images/tmp_stranger_things.png',
       'You scored top 50 in S1. E4 realm.',
     ),
-    ActivityTmp(
+    ActivitySimpleTmp(
       'images/tmp_breaking_bad.png',
       'Finished all of 2nd season.',
     ),
-    ActivityTmp(
+    ActivitySimpleTmp(
       'images/tmp_stranger_things.png',
       'Beat @jerry24 in 1-1 super challenge.',
     ),
-    ActivityTmp(
+    ActivitySimpleTmp(
       'images/tmp_stranger_things.png',
       'Beat @jerry in 1-1 super challenge.',
     ),
@@ -735,8 +735,8 @@ class BadgeTmp {
   final int count;
 }
 
-class ActivityTmp {
-  const ActivityTmp(this.asset, this.text);
+class ActivitySimpleTmp {
+  const ActivitySimpleTmp(this.asset, this.text);
 
   final String asset;
   final String text;

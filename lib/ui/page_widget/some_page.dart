@@ -5,7 +5,9 @@ class EmptyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Container(),
+      body: Container(
+        color: Colors.transparent,
+      ),
     );
   }
 }
