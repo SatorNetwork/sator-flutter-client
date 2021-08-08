@@ -254,6 +254,33 @@ class ActivityPage extends GetView<ActivityController> {
         'SAO',
         DateTime(2021, 7, 3, 11, 12),
       ),
+      ActivityTmp(
+        'images/tmp_stranger_things.png',
+        'Beat @jerry in 1-1 super challenge.',
+        avatars[random.nextInt(avatars.length)],
+        'roberto21',
+        '+4.42',
+        'SAO',
+        DateTime(2021, 7, 1, 12, 25),
+      ),
+      ActivityTmp(
+        'images/tmp_breaking_bad.png',
+        'Finished all of 2nd season.',
+        avatars[random.nextInt(avatars.length)],
+        'billyBOB!i',
+        '+4.42',
+        'SAO',
+        DateTime(2021, 7, 1, 10, 45),
+      ),
+      ActivityTmp(
+        'images/tmp_breaking_bad.png',
+        'Scored top 50 in S1.E4 realm.',
+        avatars[random.nextInt(avatars.length)],
+        'Dorgan5',
+        '+4.42',
+        'SAO',
+        DateTime(2021, 7, 1, 5, 11),
+      ),
     ];
   }
 }

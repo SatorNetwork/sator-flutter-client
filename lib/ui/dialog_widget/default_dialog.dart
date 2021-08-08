@@ -28,39 +28,41 @@ class DefaultDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            icon == null
-                ? SizedBox(height: 0)
-                : Container(
-                    width: 48 * coefficient,
-                    height: 48 * coefficient,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: SatorioColor.interactive,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        icon,
-                        size: 32 * coefficient,
-                        color: Colors.white,
-                      ),
-                    ),
+            if (icon != null)
+              Container(
+                width: 36 * coefficient,
+                height: 36 * coefficient,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: SatorioColor.interactive,
+                ),
+                child: Center(
+                  child: Icon(
+                    icon,
+                    size: 24 * coefficient,
+                    color: Colors.white,
                   ),
-            SizedBox(height: icon == null ? 0 : 24),
+                ),
+              ),
+            if (icon != null) SizedBox(height: 16),
             Text(
               title,
               style: textTheme.headline1!.copyWith(
                   color: SatorioColor.textBlack,
-                  fontSize: 34.0 * coefficient,
+                  fontSize: 24.0 * coefficient,
                   fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 8),
             Text(
               text.capitalize(),
               textAlign: TextAlign.center,
-              style: textTheme.bodyText1!
-                  .copyWith(color: Colors.black, fontWeight: FontWeight.w400),
+              style: textTheme.bodyText1!.copyWith(
+                fontSize: 17 * coefficient,
+                color: Colors.black,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 16),
             ElevatedGradientButton(
               text: buttonText,
               onPressed: onPressed,
