@@ -116,7 +116,7 @@ class ProfilePage extends GetView<ProfileController> {
                   size: 24,
                 ),
                 onPressed: () {
-                  controller.logout();
+                  controller.toLogoutDialog();
                 },
               )
             ],

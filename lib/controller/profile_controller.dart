@@ -1,8 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 class ProfileController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -32,8 +34,18 @@ class ProfileController extends GetxController {
 
   void showInvite() {}
 
-  void logout() {
-    _satorioRepository.logout();
+  void toLogoutDialog() {
+    Get.dialog(
+      DefaultDialog(
+        'txt_log_out'.tr,
+        'txt_log_out_message'.tr,
+        'txt_yes'.tr,
+        icon: Icons.logout,
+        onPressed: () {
+          _satorioRepository.logout();
+        },
+      ),
+    );
   }
 
   void _profileListener() {
