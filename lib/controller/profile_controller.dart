@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/dialog_widget/send_invite_dialog.dart';
 
 class ProfileController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -32,7 +33,11 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  void showInvite() {}
+  void showInvite() {
+    Get.dialog(
+      SendInviteDialog(),
+    );
+  }
 
   void toLogoutDialog() {
     Get.dialog(
