@@ -10,11 +10,13 @@ import 'package:satorio/ui/widget/wallet_detail_container.dart';
 typedef SelectWalletDetailCallback = void Function(WalletDetail walletDetail);
 
 class ChooseWalletDialog extends StatelessWidget {
-  ChooseWalletDialog(this.title, this.walletDetails, this.onSelected);
+  ChooseWalletDialog(this.title, this.walletDetails, this.onSelected,
+      {this.closeOverlays = false});
 
   final String title;
   final List<WalletDetail> walletDetails;
   final SelectWalletDetailCallback onSelected;
+  final bool closeOverlays;
 
   final PageController _pageController = PageController(
     keepPage: true,
@@ -28,49 +30,65 @@ class ChooseWalletDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(32),
       ),
       backgroundColor: Colors.white,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: textTheme.headline1!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 21.0 * coefficient,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              height: 150,
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: walletDetails.length,
-                itemBuilder: (context, index) {
-                  WalletDetail walletDetail = walletDetails[index];
-                  return InkWell(
-                    onTap: () {
-                      Get.back();
-                      onSelected(walletDetail);
+      child: Stack(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 32),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: textTheme.headline1!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 21.0 * coefficient,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Container(
+                  height: 150,
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: walletDetails.length,
+                    itemBuilder: (context, index) {
+                      WalletDetail walletDetail = walletDetails[index];
+                      return InkWell(
+                        onTap: () {
+                          Get.back();
+                          onSelected(walletDetail);
+                        },
+                        child: WalletDetailContainer(
+                          walletDetail,
+                          height: 150,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                        ),
+                      );
+                      // return _walletItem(walletDetail);
                     },
-                    child: WalletDetailContainer(
-                      walletDetail,
-                      height: 150,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 8,
-                      ),
-                    ),
-                  );
-                  // return _walletItem(walletDetail);
-                },
+                  ),
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: IconButton(
+              icon: Icon(
+                Icons.close_rounded,
               ),
-            )
-          ],
-        ),
+              onPressed: () {
+                Get.back(closeOverlays: closeOverlays);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

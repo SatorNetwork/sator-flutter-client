@@ -155,7 +155,8 @@ class WalletSendController extends GetxController {
     Get.dialog(
       WillPopScope(
         onWillPop: () async {
-          return fromWalletDetailRx.value != null;
+          Get.back(closeOverlays: true);
+          return true;
         },
         child: ChooseWalletDialog(
           'txt_choose_your_source_wallet'.tr,
@@ -163,6 +164,7 @@ class WalletSendController extends GetxController {
           (walletDetail) {
             fromWalletDetailRx.value = walletDetail;
           },
+          closeOverlays: true,
         ),
       ),
       barrierDismissible: false,
