@@ -272,8 +272,109 @@ class ProfilePage extends GetView<ProfileController> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      Container(
                         height: 181 * coefficient,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(17 * coefficient),
+                                      ),
+                                      child: Image.asset(
+                                        'images/tmp_nft_1.png',
+                                        width: (Get.width -
+                                                2 * 20 -
+                                                16 * coefficient) /
+                                            2,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16 * coefficient,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(17 * coefficient),
+                                            ),
+                                            child: Image.asset(
+                                              'images/tmp_nft_2.png',
+                                              width: (Get.width -
+                                                      2 * 20 -
+                                                      16 * coefficient) /
+                                                  2,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                              top: 16 * coefficient,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.asset(
+                                                      'images/tmp_nft_3.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15 * coefficient,
+                                                ),
+                                                Expanded(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.asset(
+                                                      'images/tmp_nft_4.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              'Breaking Bad',
+                              style: textTheme.headline3!.copyWith(
+                                color: SatorioColor.interactive,
+                                fontSize: 15.0 * coefficient,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
