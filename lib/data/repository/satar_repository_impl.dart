@@ -16,6 +16,7 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transaction.dart';
+import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -291,6 +292,21 @@ class SatorioRepositoryImpl implements SatorioRepository {
           (List<Transaction> transactions) =>
               _localDataSource.saveTransactions(transactions),
         );
+  }
+
+  @override
+  Future<Transfer> createTransfer(
+      String fromWalletId, String recipientAddress, double amount) {
+    return _apiDataSource
+        .createTransfer(fromWalletId, recipientAddress, amount)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> confirmTransfer(String fromWalletId, String txHash) {
+    return _apiDataSource
+        .confirmTransfer(fromWalletId, txHash)
+        .catchError((value) => _handleException(value));
   }
 
   //

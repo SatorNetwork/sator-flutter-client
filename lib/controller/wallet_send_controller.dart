@@ -5,7 +5,9 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/binding/transaction_preview_binding.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
+import 'package:satorio/controller/transaction_preview_controller.dart';
 import 'package:satorio/domain/entities/qr/qr_data.dart';
+import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
@@ -23,6 +25,7 @@ class WalletSendController extends GetxController {
 
   late final Rx<WalletDetail?> fromWalletDetailRx;
   late final RxString toAddressRx;
+  late final RxDouble amountRx = 0.0.obs;
 
   late final RxBool toAddressVisibility;
 
@@ -42,6 +45,7 @@ class WalletSendController extends GetxController {
   void onInit() {
     super.onInit();
     toAddressController.addListener(_toAddressListener);
+    amountController.addListener(_amountListener);
   }
 
   @override
@@ -54,6 +58,7 @@ class WalletSendController extends GetxController {
 
   @override
   void onClose() {
+    amountController.removeListener(_amountListener);
     toAddressController.removeListener(_toAddressListener);
     super.onClose();
   }
@@ -68,11 +73,24 @@ class WalletSendController extends GetxController {
     );
   }
 
-  void toPreview() {
-    Get.to(
-      () => TransactionPreviewPage(),
-      binding: TransactionPreviewBinding(),
-    );
+  void createTransfer() {
+    if (fromWalletDetailRx.value != null) {
+      _satorioRepository
+          .createTransfer(
+        fromWalletDetailRx.value!.id,
+        toAddressRx.value,
+        amountRx.value,
+      )
+          .then(
+        (Transfer transfer) {
+          Get.to(
+            () => TransactionPreviewPage(),
+            binding: TransactionPreviewBinding(),
+            arguments: TransactionPreviewArgument(transfer),
+          );
+        },
+      );
+    }
   }
 
   void clearDestinationAddress() {
@@ -173,6 +191,13 @@ class WalletSendController extends GetxController {
 
   void _toAddressListener() {
     toAddressRx.value = toAddressController.text;
+  }
+
+  void _amountListener() {
+    double? amountValue = double.tryParse(amountController.text);
+    if (amountValue != null) {
+      amountRx.value = amountValue;
+    }
   }
 }
 

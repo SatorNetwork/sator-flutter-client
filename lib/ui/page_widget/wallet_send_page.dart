@@ -184,9 +184,10 @@ class WalletSendPage extends GetView<WalletSendController> {
                           text: 'txt_preview'.tr,
                           isEnabled:
                               controller.fromWalletDetailRx.value != null &&
-                                  controller.toAddressRx.value.isNotEmpty,
+                                  controller.toAddressRx.value.isNotEmpty &&
+                                  controller.amountRx.value > 0,
                           onPressed: () {
-                            controller.toPreview();
+                            controller.createTransfer();
                           },
                         ),
                       )

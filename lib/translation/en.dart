@@ -129,5 +129,9 @@ const Map<String, String> en = {
   'txt_current': 'Current',
   'txt_coming_soon': 'Coming soon...',
   'txt_choose_your_destination_wallet': 'Choose your destination wallet',
-  'txt_choose_your_source_wallet': 'Choose your source wallet'
+  'txt_choose_your_source_wallet': 'Choose your source wallet',
+  'txt_success': 'Success',
+  'txt_transaction_sent': 'Transaction was sent',
+  'txt_transaction_not_sent': 'Transaction was not sent',
+  'txt_cool': 'Cool',
 };
