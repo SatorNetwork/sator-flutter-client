@@ -113,7 +113,10 @@ class WalletController extends GetxController {
   }
 
   void _walletDetailsListener() {
-    walletDetailsRx.value = _walletDetailsListenable!.value.values.toList();
+    List<WalletDetail> walletDetails =
+        _walletDetailsListenable!.value.values.toList();
+    walletDetails.sort((a, b) => a.order.compareTo(b.order));
+    walletDetailsRx.value = walletDetails;
   }
 
   void _transactionsListener() {

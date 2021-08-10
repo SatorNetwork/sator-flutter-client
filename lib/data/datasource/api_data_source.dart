@@ -10,6 +10,7 @@ import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 
@@ -62,6 +63,14 @@ abstract class ApiDataSource {
 
   Future<List<TransactionModel>> walletTransactions(String transactionsPath,
       {DateTime? from, DateTime? to});
+
+  Future<TransferModel> createTransfer(
+    String fromWalletId,
+    String recipientAddress,
+    double amount,
+  );
+
+  Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
   // endregion
 

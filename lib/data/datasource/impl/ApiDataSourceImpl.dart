@@ -21,8 +21,11 @@ import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
+import 'package:satorio/data/request/confirm_transfer_request.dart';
+import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
@@ -357,6 +360,28 @@ class ApiDataSourceImpl implements ApiDataSource {
             .toList();
       else
         return [];
+    });
+  }
+
+  @override
+  Future<TransferModel> createTransfer(
+      String fromWalletId, String recipientAddress, double amount) {
+    return _requestPost(
+      'wallets/$fromWalletId/create-transfer',
+      CreateTransferRequest(recipientAddress, amount),
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      return TransferModel.fromJson(jsonData['data']);
+    });
+  }
+
+  @override
+  Future<bool> confirmTransfer(String fromWalletId, String txHash) {
+    return _requestPost(
+      'wallets/$fromWalletId/confirm-transfer',
+      ConfirmTransferRequest(txHash),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 

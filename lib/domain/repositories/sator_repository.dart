@@ -8,6 +8,7 @@ import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 
 abstract class SatorioRepository {
@@ -39,6 +40,14 @@ abstract class SatorioRepository {
 
   Future<void> updateWalletTransactions(String transactionsPath,
       {DateTime? from, DateTime? to});
+
+  Future<Transfer> createTransfer(
+    String fromWalletId,
+    String recipientAddress,
+    double amount,
+  );
+
+  Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
   Future<List<Show>> shows({int? page, int? itemsPerPage});
 

@@ -107,13 +107,15 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                         borderRadius: BorderRadius.circular(15),
                                         color: SatorioColor.mauve,
                                       ),
-                                      child: Text(
-                                        'SAO',
-                                        textAlign: TextAlign.end,
-                                        style: textTheme.headline5!.copyWith(
-                                          fontSize: 15 * coefficient,
-                                          fontWeight: FontWeight.w600,
-                                          color: SatorioColor.brand,
+                                      child: Obx(
+                                        () => Text(
+                                          controller.transferRx.value.assetName,
+                                          textAlign: TextAlign.end,
+                                          style: textTheme.headline5!.copyWith(
+                                            fontSize: 15 * coefficient,
+                                            fontWeight: FontWeight.w600,
+                                            color: SatorioColor.brand,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -140,13 +142,18 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: Text(
-                                        '25.33',
-                                        textAlign: TextAlign.end,
-                                        style: textTheme.headline5!.copyWith(
-                                          fontSize: 17 * coefficient,
-                                          fontWeight: FontWeight.w600,
-                                          color: SatorioColor.textBlack,
+                                      child: Obx(
+                                        () => Text(
+                                          controller.transferRx.value.amount
+                                              .toString(),
+                                          textAlign: TextAlign.end,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: textTheme.headline5!.copyWith(
+                                            fontSize: 17 * coefficient,
+                                            fontWeight: FontWeight.w600,
+                                            color: SatorioColor.textBlack,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -173,13 +180,18 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: Text(
-                                        '@',
-                                        textAlign: TextAlign.end,
-                                        style: textTheme.headline5!.copyWith(
-                                          fontSize: 17 * coefficient,
-                                          fontWeight: FontWeight.w600,
-                                          color: SatorioColor.textBlack,
+                                      child: Obx(
+                                        () => Text(
+                                          controller.transferRx.value
+                                              .recipientAddress,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.end,
+                                          style: textTheme.headline5!.copyWith(
+                                            fontSize: 17 * coefficient,
+                                            fontWeight: FontWeight.w600,
+                                            color: SatorioColor.textBlack,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -206,13 +218,17 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                       ),
                                     ),
                                     Expanded(
-                                      child: Text(
-                                        '\$9.24',
-                                        textAlign: TextAlign.end,
-                                        style: textTheme.headline5!.copyWith(
-                                          fontSize: 17 * coefficient,
-                                          fontWeight: FontWeight.w600,
-                                          color: SatorioColor.textBlack,
+                                      child: Obx(
+                                        () => Text(
+                                          '${controller.transferRx.value.fee} ${controller.transferRx.value.assetName}',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.end,
+                                          style: textTheme.headline5!.copyWith(
+                                            fontSize: 17 * coefficient,
+                                            fontWeight: FontWeight.w600,
+                                            color: SatorioColor.textBlack,
+                                          ),
                                         ),
                                       ),
                                     ),
