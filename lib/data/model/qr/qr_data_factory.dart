@@ -9,7 +9,7 @@ class QrDataShowModel extends QrDataShow implements ToJsonInterface {
   @override
   Map toJson() => {
         'type': type,
-        'payload': (payload as ToJsonInterface).toJson(),
+        'data': (payload as ToJsonInterface).toJson(),
       };
 }
 
@@ -19,7 +19,7 @@ class QrDataWalletModel extends QrDataWalletSend implements ToJsonInterface {
   @override
   Map toJson() => {
         'type': type,
-        'payload': (payload as ToJsonInterface).toJson(),
+        'data': (payload as ToJsonInterface).toJson(),
       };
 }
 
@@ -27,6 +27,7 @@ class QrDataModelFactory {
   static QrData createQrData(Map json) {
     String type = json['type'];
     Map payloadJson = json['data'];
+
     switch (type) {
       case QrType.show:
         QrPayloadShowModel payload = QrPayloadShowModel.fromJson(payloadJson);
