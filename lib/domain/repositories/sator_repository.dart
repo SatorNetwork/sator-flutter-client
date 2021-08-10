@@ -70,6 +70,8 @@ abstract class SatorioRepository {
 
   Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
+  Future<bool> sendInvite(String email);
+
   //
 
   ValueListenable profileListenable();

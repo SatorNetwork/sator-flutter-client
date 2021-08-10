@@ -26,6 +26,7 @@ import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
+import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
@@ -42,7 +43,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.stage.sator.io/dev/';
+    _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -546,6 +547,20 @@ class ApiDataSourceImpl implements ApiDataSource {
     ).then((Response response) {
       return ClaimRewardModel.fromJson(
           json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  // endregion
+
+  // region Invitations
+
+  @override
+  Future<bool> sendInvite(String email) {
+    return _requestPost(
+      'invitations',
+      SendInviteRequest(email),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
