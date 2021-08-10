@@ -102,4 +102,6 @@ const Map<String, String> en = {
   'txt_realms_open': 'Realms open',
   'txt_enter_invite_email': 'Enter an email where to send an invite',
   'txt_send_invite': 'Send Invite',
+  'txt_success': 'Success',
+  'txt_invitation_sent': 'Invitation was sent',
 };

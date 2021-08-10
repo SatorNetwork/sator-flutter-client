@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -62,7 +63,20 @@ class SendInviteDialog extends StatelessWidget {
                   SatorioRepository satorioRepository = Get.find();
                   satorioRepository.sendInvite(text).then(
                     (bool result) {
-                      if (result) Get.back();
+                      if (result) {
+                        Get.back();
+                        Get.dialog(
+                          DefaultDialog(
+                            'txt_success'.tr,
+                            'txt_invitation_sent'.tr,
+                            'txt_ok'.tr,
+                            icon: Icons.check_rounded,
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        );
+                      }
                     },
                   );
                 }
