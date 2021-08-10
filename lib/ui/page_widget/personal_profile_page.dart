@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/personal_profile_controller.dart';
 import 'package:satorio/ui/page_widget/activity_page.dart';
 import 'package:satorio/ui/page_widget/profile_page.dart';
-import 'package:satorio/ui/page_widget/some_page.dart';
+import 'package:satorio/ui/page_widget/empty_page.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
