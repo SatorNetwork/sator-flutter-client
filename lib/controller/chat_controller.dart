@@ -56,8 +56,6 @@ class ChatController extends GetxController with BackToMainMixin {
       final message = MessageModel(
           messageController.text, profile.id, profile.username, DateTime.now());
       _saveMessage(message);
-      scrollController.animateTo(scrollController.position.maxScrollExtent + 100,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
       messageController.clear();
     }
   }

@@ -81,6 +81,19 @@ class ChatPage extends GetView<ChatController> {
                 ),
               ),
             ),
+            Container(
+              height: Get.mediaQuery.padding.top + kToolbarHeight + 20,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withOpacity(0),
+                    Colors.black.withOpacity(0.5),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -138,12 +151,14 @@ class ChatPage extends GetView<ChatController> {
               Flexible(
                 child: SingleChildScrollView(
                     controller: controller.scrollController,
+                    reverse: true,
                     child: ConstrainedBox(
                         constraints: BoxConstraints(
                             minWidth: constraints.maxWidth,
                             minHeight: constraints.maxHeight),
                         child: Column(
                           children: [
+                            SizedBox(height: 160,),
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
@@ -221,6 +236,7 @@ class ChatPage extends GetView<ChatController> {
         final message = MessageModel.fromJson(json);
         Color color = _colors[index % _colors.length];
         return _showMessage(message, color);
+
       },
     );
   }
@@ -252,12 +268,14 @@ class ChatPage extends GetView<ChatController> {
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                message.text,
-                style: textTheme.bodyText2!.copyWith(
-                  color: Colors.white,
-                  fontSize: 14 * coefficient,
-                  fontWeight: FontWeight.w400,
+              Flexible(
+                child: Text(
+                  message.text,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.white,
+                    fontSize: 14 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
               // Text(

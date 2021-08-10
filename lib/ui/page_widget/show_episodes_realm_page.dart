@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/message_model.dart';
 import 'package:satorio/domain/entities/message.dart';
@@ -73,7 +72,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               children: [
                 Center(
                   child: InkWell(
-                    onTap: () => controller.back(),
+                    onTap: () => controller.toChatPage(),
                     child: Icon(
                       Icons.question_answer_rounded,
                       color: Colors.white,
@@ -968,6 +967,17 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     SatorioColor.light_sky_blue
   ];
 
+  // Widget _emptyState() {
+  //   return Center(
+  //     child: ElevatedGradientButton(
+  //       text: 'Say hi',
+  //       onPressed: () {
+  //         controller.toChatPage();
+  //       },
+  //     ),
+  //   );
+  // }
+
   Widget _showMessage(Message message, Color color) {
     return Container(
       margin: EdgeInsets.only(bottom: 20),
@@ -989,11 +999,16 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(message.text, style: textTheme.bodyText2!.copyWith(
-                color: Colors.black,
-                fontSize: 14 * coefficient,
-                fontWeight: FontWeight.w400,
-              ),),
+              Flexible(
+                child: Text(
+                  message.text,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 14 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
               // Text(
               //   DateFormat('yyyy-MM-dd hh.mm')
               //       .format(message.createdAt)
