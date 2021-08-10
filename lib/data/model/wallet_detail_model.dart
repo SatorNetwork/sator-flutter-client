@@ -9,9 +9,10 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
   const WalletDetailModel(
     String id,
     String solanaAccountAddress,
+    int order,
     List<AmountCurrency> balance,
     List<WalletAction> actions,
-  ) : super(id, solanaAccountAddress, balance, actions);
+  ) : super(id, solanaAccountAddress, order, balance, actions);
 
   factory WalletDetailModel.fromJson(Map json) {
     List<AmountCurrency> balance =
@@ -35,6 +36,7 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
       json['solana_account_address'] == null
           ? ''
           : json['solana_account_address'],
+      json['order'] == null ? 0 : json['order'],
       balance,
       actions,
     );
@@ -44,6 +46,7 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
   Map toJson() => {
         'id': id,
         'solana_account_address': solanaAccountAddress,
+        'order': order,
         'balance': balance
             .where((element) => element is ToJsonInterface)
             .map((element) => (element as ToJsonInterface).toJson())

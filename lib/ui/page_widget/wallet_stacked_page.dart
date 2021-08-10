@@ -538,6 +538,7 @@ class WalletStackedPage extends GetView<WalletStackedController> {
     return WalletDetail(
       'id',
       'solanaAccountAddress',
+      0,
       [
         AmountCurrency(852.2, 'SAO'),
         AmountCurrency(2642.59, 'USD'),
