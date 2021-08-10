@@ -841,13 +841,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 20,
                             width: 20,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                  Color(0xFFFFB546),
-                                  Color(0xFFFF7246)
-                                ])),
+                              gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  SatorioColor.yellow_orange,
+                                  SatorioColor.tomato,
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -1011,13 +1013,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         height: 20,
                         width: 20,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                              Color(0xFFFFB546),
-                              Color(0xFFFF7246)
-                            ])),
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              SatorioColor.yellow_orange,
+                              SatorioColor.tomato,
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(

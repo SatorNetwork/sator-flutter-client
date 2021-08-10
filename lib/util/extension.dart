@@ -11,13 +11,20 @@ extension Ellipsize on String {
     if (this.length <= startCount + endCount)
       return this;
     else
-      return '${this.substring(0, startCount)}...${this.substring(
-          length - endCount, length)}';
+      return '${this.substring(0, startCount)}...${this.substring(length - endCount, length)}';
   }
 }
 
 extension Capitalize on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${this.substring(1)}";
+  }
+}
+
+extension EmailValidation on String {
+  bool isEmail() {
+    return RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(this);
   }
 }

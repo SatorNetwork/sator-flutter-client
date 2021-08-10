@@ -116,6 +116,12 @@ abstract class ApiDataSource {
 
   // endregion
 
+  // region Invitations
+
+  Future<bool> sendInvite(String email);
+
+  // endregion
+
   // region Socket
 
   Future<GetSocket> createSocket(String url);

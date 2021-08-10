@@ -244,6 +244,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> sendInvite(String email) {
+    return _apiDataSource
+        .sendInvite(email)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> updateProfile() {
     return _apiDataSource
         .profile()

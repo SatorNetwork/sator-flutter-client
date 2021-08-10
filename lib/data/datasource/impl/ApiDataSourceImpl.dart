@@ -29,6 +29,7 @@ import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
+import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
@@ -571,6 +572,20 @@ class ApiDataSourceImpl implements ApiDataSource {
     ).then((Response response) {
       return ClaimRewardModel.fromJson(
           json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  // endregion
+
+  // region Invitations
+
+  @override
+  Future<bool> sendInvite(String email) {
+    return _requestPost(
+      'invitations',
+      SendInviteRequest(email),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
