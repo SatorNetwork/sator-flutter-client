@@ -130,4 +130,12 @@ const Map<String, String> en = {
   'txt_coming_soon': 'Coming soon...',
   'txt_choose_your_destination_wallet': 'Choose your destination wallet',
   'txt_choose_your_source_wallet': 'Choose your source wallet'
+  'txt_activity': 'Activity',
+  'txt_friends': 'Friends',
+  'txt_invite_friends': 'Invite Friends',
+  'txt_realms_open': 'Realms open',
+  'txt_enter_invite_email': 'Enter an email where to send an invite',
+  'txt_send_invite': 'Send Invite',
+  'txt_success': 'Success',
+  'txt_invitation_sent': 'Invitation was sent',
 };

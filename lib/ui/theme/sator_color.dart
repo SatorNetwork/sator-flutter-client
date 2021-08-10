@@ -26,4 +26,8 @@ class SatorioColor {
   static const Color lavender_blue = Color(0xFFDDDEFF);
   static const Color royal_blue_2 = Color(0xFF6359DF);
   static const Color matterhorn = Color(0xFF4E4E4E);
+  static const Color magic_mint = Color(0xFFB1F7F2);
+  static const Color yellow_orange = Color(0xFFFFB546);
+  static const Color tomato = Color(0xFFFF7246);
+  static const Color alice_blue2 = Color(0xFFDBE7FF);
 }

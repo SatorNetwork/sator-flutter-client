@@ -24,26 +24,25 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.3
-  get: ^4.1.4
+  get: ^4.2.0
   get_storage: ^2.0.2
   hive: ^2.0.4
-  hive_flutter: ^1.0.0
+  hive_flutter: ^1.1.0
   smooth_page_indicator: ^0.3.0-nullsafety.0
   flutter_svg: ^0.22.0
   sprintf: ^6.0.0
   circular_countdown_timer: ^0.2.0
-  url_launcher: ^6.0.6
-  pin_code_fields: ^7.2.0
-  qr_code_scanner: ^0.5.1
+  url_launcher: ^6.0.9
+  pin_code_fields: ^7.3.0
+  qr_code_scanner: ^0.5.2
   intl: ^0.17.0
   qr_flutter: ^4.0.0
   share: ^2.0.4
   firebase_core: ^1.4.0
   firebase_database: ^7.1.2
+  grouped_list: ^4.1.0
 
 dev_dependencies:
-  # hive_generator: ^1.1.0
-  # build_runner: ^2.0.4
   flutter_test:
     sdk: flutter
 
