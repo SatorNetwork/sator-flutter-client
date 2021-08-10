@@ -133,6 +133,7 @@ const Map<String, String> en = {
   'txt_activity': 'Activity',
   'txt_friends': 'Friends',
   'txt_invite_friends': 'Invite Friends',
+  'txt_your_activity': 'Your activity',
   'txt_realms_open': 'Realms open',
   'txt_enter_invite_email': 'Enter an email where to send an invite',
   'txt_send_invite': 'Send Invite',
