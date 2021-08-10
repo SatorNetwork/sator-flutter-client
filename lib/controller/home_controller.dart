@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/show_challenges_binding.dart';
 import 'package:satorio/binding/show_detail_binding.dart';
-import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/show_challenges_controller.dart';
+import 'package:satorio/controller/show_detail_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -77,11 +78,19 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   void toShowChallenges(Show show) {
-    Get.to(() => ShowChallengesPage(show), binding: ShowChallengesBinding());
+    Get.to(
+      () => ShowChallengesPage(),
+      binding: ShowChallengesBinding(),
+      arguments: ShowChallengesArgument(show),
+    );
   }
 
   void toShowDetail(Show show) {
-    Get.to(() => ShowDetailPage(show), binding: ShowDetailBinding());
+    Get.to(
+      () => ShowDetailPage(),
+      binding: ShowDetailBinding(),
+      arguments: ShowDetailArgument(show),
+    );
   }
 
   void toLogoutDialog() {

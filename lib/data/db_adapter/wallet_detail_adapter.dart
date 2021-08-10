@@ -12,6 +12,7 @@ class WalletDetailAdapter extends TypeAdapter<WalletDetail> {
   WalletDetail read(BinaryReader reader) => WalletDetail(
         reader.readString(),
         reader.readString(),
+        reader.readInt(),
         reader.readList().map((e) => e as AmountCurrency).toList(),
         reader.readList().map((e) => e as WalletAction).toList(),
       );
@@ -20,6 +21,7 @@ class WalletDetailAdapter extends TypeAdapter<WalletDetail> {
   void write(BinaryWriter writer, WalletDetail walletDetail) {
     writer.writeString(walletDetail.id);
     writer.writeString(walletDetail.solanaAccountAddress);
+    writer.writeInt(walletDetail.order);
     writer.writeList(walletDetail.balance);
     writer.writeList(walletDetail.actions);
   }

@@ -24,7 +24,7 @@ abstract class LocalDataSource {
 
   Future<void> saveWalletDetail(WalletDetail walletDetail);
 
-  ValueListenable walletDetailsListenable(List<String> ids);
+  ValueListenable walletDetailsListenable(List<String>? ids);
 
   Future<void> saveTransactions(List<Transaction> transactions);
 

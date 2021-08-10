@@ -1,20 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/qr_result_show_controller.dart';
-import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
-import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QrResultShowPage extends GetView<QrResultShowController> {
-  QrResultShowPage(Show show, QrShowPayload showPayload) : super() {
-    controller.loadData(show, showPayload);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,71 +37,79 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                   SizedBox(
                     height: 34 * coefficient,
                   ),
-                  Obx(
-                    () => ClipRRect(
-                      borderRadius: BorderRadius.circular(32),
-                      child: Container(
-                          height: 400 * coefficient,
-                          width: Get.width - 40,
-                          child: Image.network(
-                            controller.showRx.value!.cover,
-                            fit: BoxFit.cover,
-                          )),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(32),
+                    child: Container(
+                      height: 400 * coefficient,
+                      width: Get.width - 40,
+                      child: Obx(
+                        () => Image.network(
+                          controller.showRx.value.cover,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Container(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 16,
                   ),
-                  Obx(
-                    () => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(controller.showRx.value!.title,
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.darkAccent,
-                                fontSize: 18.0 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(child: Container()),
-                  Obx(
-                    () => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "txt_rewards_amount".tr,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Obx(
+                          () => Text(
+                            controller.showRx.value.title,
                             style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.darkAccent,
                               fontSize: 18.0 * coefficient,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
-                          Container(
-                            height: 36,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 7, horizontal: 12),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                                color:
-                                    SatorioColor.interactive.withOpacity(0.2)),
-                            child: Text(
-                              "${controller.showPayloadRx.value!.rewardAmount.toString()} SAO",
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "txt_rewards_amount".tr,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: SatorioColor.darkAccent,
+                            fontSize: 18.0 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Container(
+                          height: 36,
+                          padding:
+                              EdgeInsets.symmetric(vertical: 7, horizontal: 12),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              color: SatorioColor.interactive.withOpacity(0.2)),
+                          child: Obx(
+                            () => Text(
+                              "${controller.qrShowRx.value.rewardAmount} SAO",
                               style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.interactive,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                          )
-                        ],
-                      ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -151,7 +152,7 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                                 color: SatorioColor.darkAccent,
                                 fontSize: 16.0 * coefficient,
                                 fontWeight: FontWeight.w700,
-                              )
+                              ),
                             ),
                           ],
                         ),

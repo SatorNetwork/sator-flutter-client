@@ -11,10 +11,12 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transaction.dart';
+import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -162,14 +164,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<dynamic> loadShow(String showId) {
+  Future<Show> loadShow(String showId) {
     return _apiDataSource
         .loadShow(showId)
         .catchError((value) => _handleException(value));
   }
 
   @override
-  Future<dynamic> getShowEpisodeByQR(String qrCodeId) {
+  Future<QrShow> getShowEpisodeByQR(String qrCodeId) {
     return _apiDataSource
         .getShowEpisodeByQR(qrCodeId)
         .catchError((value) => _handleException(value));
@@ -299,6 +301,21 @@ class SatorioRepositoryImpl implements SatorioRepository {
         );
   }
 
+  @override
+  Future<Transfer> createTransfer(
+      String fromWalletId, String recipientAddress, double amount) {
+    return _apiDataSource
+        .createTransfer(fromWalletId, recipientAddress, amount)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> confirmTransfer(String fromWalletId, String txHash) {
+    return _apiDataSource
+        .confirmTransfer(fromWalletId, txHash)
+        .catchError((value) => _handleException(value));
+  }
+
   //
 
   @override
@@ -317,7 +334,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  ValueListenable walletDetailsListenable(List<String> ids) {
+  ValueListenable walletDetailsListenable(List<String>? ids) {
     return _localDataSource.walletDetailsListenable(ids);
   }
 

@@ -21,12 +21,18 @@ import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart'
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 class QuizController extends GetxController with BackToMainMixin {
-  late Challenge challenge;
+  late final Rx<Challenge> challengeRx;
   GetSocket? _socket;
 
   final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
 
   final SatorioRepository _satorioRepository = Get.find();
+
+  QuizController() {
+    QuizArgument argument = Get.arguments as QuizArgument;
+    challengeRx = Rx(argument.challenge);
+    _initSocket(argument.challenge.id);
+  }
 
   @override
   void onClose() {
@@ -39,12 +45,6 @@ class QuizController extends GetxController with BackToMainMixin {
 
   void back() {
     Get.back();
-  }
-
-  void setChallenge(Challenge challenge) {
-    this.challenge = challenge;
-
-    _initSocket(challenge.id);
   }
 
   Future<void> sendAnswer(String questionId, String answerId) {
@@ -171,4 +171,10 @@ class QuizController extends GetxController with BackToMainMixin {
     QuizResultController quizResultController = Get.find();
     quizResultController.resultRx.value = payloadChallengeResult;
   }
+}
+
+class QuizArgument {
+  final Challenge challenge;
+
+  const QuizArgument(this.challenge);
 }

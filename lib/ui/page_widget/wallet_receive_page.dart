@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:satorio/controller/wallet_receive_controller.dart';
-import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class WalletReceivePage extends GetView<WalletReceiveController> {
-  WalletReceivePage(WalletDetail walletDetail) {
-    controller.walletDetailRx.value = walletDetail;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,9 +84,7 @@ class WalletReceivePage extends GetView<WalletReceiveController> {
                 ),
                 Obx(
                   () => QrImage(
-                    data:
-                        controller.walletDetailRx.value?.solanaAccountAddress ??
-                            '',
+                    data: controller.qrCodeDataRx.value,
                     size: 0.64 * Get.width,
                   ),
                 ),
@@ -121,7 +114,7 @@ class WalletReceivePage extends GetView<WalletReceiveController> {
                 ),
                 Obx(
                   () => Text(
-                    controller.walletDetailRx.value?.solanaAccountAddress ?? '',
+                    controller.walletDetailRx.value.solanaAccountAddress,
                     textAlign: TextAlign.center,
                     style: textTheme.headline6!.copyWith(
                       color: SatorioColor.textBlack,
