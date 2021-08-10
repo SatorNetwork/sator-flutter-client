@@ -13,6 +13,9 @@ import 'package:satorio/util/avatar_list.dart';
 class ProfilePage extends GetView<ProfileController> {
   final int avatarIndex = Random().nextInt(avatars.length);
 
+  final double nftsLargestImageSize =
+      (Get.width - 2 * 20 - 16 * coefficient) / 2;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -273,7 +276,7 @@ class ProfilePage extends GetView<ProfileController> {
                         ),
                       ),
                       Container(
-                        height: 181 * coefficient,
+                        height: nftsLargestImageSize + 21 * coefficient,
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,10 +291,8 @@ class ProfilePage extends GetView<ProfileController> {
                                       ),
                                       child: Image.asset(
                                         'images/tmp_nft_1.png',
-                                        width: (Get.width -
-                                                2 * 20 -
-                                                16 * coefficient) /
-                                            2,
+                                        width: nftsLargestImageSize,
+                                        height: nftsLargestImageSize,
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -311,10 +312,8 @@ class ProfilePage extends GetView<ProfileController> {
                                             ),
                                             child: Image.asset(
                                               'images/tmp_nft_2.png',
-                                              width: (Get.width -
-                                                      2 * 20 -
-                                                      16 * coefficient) /
-                                                  2,
+                                              width: nftsLargestImageSize,
+                                              height: nftsLargestImageSize,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
