@@ -114,7 +114,7 @@ const Map<String, String> en = {
   'txt_preview': 'Preview',
   'txt_transacting_tips': 'Transacting Tips',
   'txt_transacting_tips_description':
-  'Before you finalize your transaction, keep in mind a couple of tips:',
+      'Before you finalize your transaction, keep in mind a couple of tips:',
   'txt_more_info_transacting_tips': 'For more info about transactions tap ',
   'txt_here': 'here',
   'txt_i_understand': 'I understand',
@@ -138,7 +138,6 @@ const Map<String, String> en = {
   'txt_coming_soon': 'Coming soon...',
   'txt_choose_your_destination_wallet': 'Choose your destination wallet',
   'txt_choose_your_source_wallet': 'Choose your source wallet',
-  'txt_success': 'Success',
   'txt_transaction_sent': 'Transaction was sent',
   'txt_transaction_not_sent': 'Transaction was not sent',
   'txt_cool': 'Cool',
