@@ -1,12 +1,12 @@
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
+import 'package:satorio/data/model/message_model.dart';
+import 'package:satorio/domain/entities/message.dart';
 import 'package:satorio/domain/entities/review.dart';
-import 'package:satorio/domain/entities/show_detail.dart';
-import 'package:satorio/domain/entities/show_episode.dart';
-import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -14,12 +14,6 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
-  ShowEpisodesRealmPage(
-      ShowDetail showDetail, ShowSeason showSeason, ShowEpisode showEpisode)
-      : super() {
-    controller.updateData(showDetail, showSeason, showEpisode);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +29,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           children: [
             Obx(
               () => Text(
-                controller.showDetailRx.value?.title ?? '',
+                controller.showDetailRx.value.title,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.white,
                   fontSize: 12.0 * coefficient,
@@ -49,9 +43,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             Obx(
               () => Text(
                 'txt_episode_naming'.tr.format([
-                  controller.showSeasonRx.value?.seasonNumber ?? 0,
-                  controller.showEpisodeRx.value?.episodeNumber ?? 0,
-                  controller.showEpisodeRx.value?.title ?? '',
+                  controller.showSeasonRx.value.seasonNumber,
+                  controller.showEpisodeRx.value.episodeNumber,
+                  controller.showEpisodeRx.value.title,
                 ]),
                 style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
@@ -78,7 +72,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               children: [
                 Center(
                   child: InkWell(
-                    onTap: () => controller.back(),
+                    onTap: () => controller.toChatPage(),
                     child: Icon(
                       Icons.question_answer_rounded,
                       color: Colors.white,
@@ -122,7 +116,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
       children: [
         Obx(
           () => Image.network(
-            controller.showEpisodeRx.value?.cover ?? '',
+            controller.showEpisodeRx.value.cover,
             height: 300,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) => Container(
@@ -402,6 +396,41 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     children: [
                       SizedBox(
                         height: 48 * coefficient,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Realm chat',
+                            style: textTheme.headline4!.copyWith(
+                              color: Colors.black,
+                              fontSize: 24 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () => controller.toChatPage(),
+                            child: Icon(
+                              Icons.chevron_right_rounded,
+                              size: 32 * coefficient,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Container(
+                          height: 148,
+                          padding: EdgeInsets.all(17),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(13)),
+                            color: SatorioColor.alice_blue,
+                          ),
+                          child: _getMessageList()),
+                      SizedBox(
+                        height: 35 * coefficient,
                       ),
                       Text(
                         'txt_episode_rating'.tr,
@@ -850,13 +879,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 20,
                             width: 20,
                             decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    colors: [
-                                  Color(0xFFFFB546),
-                                  Color(0xFFFF7246)
-                                ])),
+                              gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  SatorioColor.yellow_orange,
+                                  SatorioColor.tomato,
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -914,6 +945,81 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _getMessageList() {
+    return FirebaseAnimatedList(
+      physics: AlwaysScrollableScrollPhysics(),
+      controller: controller.scrollController,
+      query: controller.getMessageQuery(),
+      itemBuilder: (context, snapshot, animation, index) {
+        final json = snapshot.value as Map<dynamic, dynamic>;
+        final message = MessageModel.fromJson(json);
+        Color color = _colors[index % _colors.length];
+        return _showMessage(message, color);
+      },
+    );
+  }
+
+  final List<Color> _colors = [
+    SatorioColor.lavender_rose,
+    SatorioColor.mona_lisa,
+    SatorioColor.light_sky_blue
+  ];
+
+  // Widget _emptyState() {
+  //   return Center(
+  //     child: ElevatedGradientButton(
+  //       text: 'Say hi',
+  //       onPressed: () {
+  //         controller.toChatPage();
+  //       },
+  //     ),
+  //   );
+  // }
+
+  Widget _showMessage(Message message, Color color) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            message.fromUserName,
+            style: textTheme.bodyText2!.copyWith(
+              color: color,
+              fontSize: 12 * coefficient,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          SizedBox(
+            height: 4,
+          ),
+          Container(
+              child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Text(
+                  message.text,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 14 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              // Text(
+              //   DateFormat('yyyy-MM-dd hh.mm')
+              //       .format(message.createdAt)
+              //       .toString(),
+              //   style: TextStyle(color: Colors.grey),
+              // ),
+            ],
+          )),
+        ],
       ),
     );
   }
@@ -1020,13 +1126,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         height: 20,
                         width: 20,
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                              Color(0xFFFFB546),
-                              Color(0xFFFF7246)
-                            ])),
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              SatorioColor.yellow_orange,
+                              SatorioColor.tomato,
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                     SizedBox(

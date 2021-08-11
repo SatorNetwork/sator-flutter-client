@@ -102,7 +102,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  ValueListenable walletDetailsListenable(List<String> ids) {
+  ValueListenable walletDetailsListenable(List<String>? ids) {
     return Hive.box<WalletDetail>(_walletDetailBox).listenable(keys: ids);
   }
 

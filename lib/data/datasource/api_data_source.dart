@@ -5,10 +5,12 @@ import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 
@@ -62,6 +64,14 @@ abstract class ApiDataSource {
   Future<List<TransactionModel>> walletTransactions(String transactionsPath,
       {DateTime? from, DateTime? to});
 
+  Future<TransferModel> createTransfer(
+    String fromWalletId,
+    String recipientAddress,
+    double amount,
+  );
+
+  Future<bool> confirmTransfer(String fromWalletId, String txHash);
+
   // endregion
 
   // region Shows
@@ -76,9 +86,9 @@ abstract class ApiDataSource {
 
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
-  Future<dynamic> loadShow(String showId);
+  Future<ShowModel> loadShow(String showId);
 
-  Future<dynamic> getShowEpisodeByQR(String qrCodeId);
+  Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
   // endregion
 
@@ -103,6 +113,12 @@ abstract class ApiDataSource {
   // region Rewards
 
   Future<ClaimRewardModel> claimReward([String? claimRewardsPath]);
+
+  // endregion
+
+  // region Invitations
+
+  Future<bool> sendInvite(String email);
 
   // endregion
 

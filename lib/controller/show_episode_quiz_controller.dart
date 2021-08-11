@@ -12,27 +12,28 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 class ShowEpisodeQuizController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  final Rx<ShowSeason?> showSeasonRx = Rx(null);
-  final Rx<ShowEpisode?> showEpisodeRx = Rx(null);
+  late final Rx<ShowSeason> showSeasonRx;
+  late final Rx<ShowEpisode> showEpisodeRx;
 
   final Rx<PayloadQuestion?> questionRx = Rx(null);
   final Rx<String> answerIdRx = Rx('');
   final Rx<bool> isAnswerSentRx = Rx(false);
   final CountDownController countdownController = CountDownController();
 
-  void back() {
-    Get.back();
-  }
-
-  void loadValidationQuestion(ShowSeason showSeason, ShowEpisode showEpisode) {
-    showSeasonRx.value = showSeason;
-    showEpisodeRx.value = showEpisode;
+  ShowEpisodeQuizController() {
+    ShowEpisodeQuizArgument argument = Get.arguments as ShowEpisodeQuizArgument;
+    showSeasonRx = Rx(argument.showSeason);
+    showEpisodeRx = Rx(argument.showEpisode);
 
     _satorioRepository
-        .showEpisodeQuizQuestion(showEpisode.id)
+        .showEpisodeQuizQuestion(argument.showEpisode.id)
         .then((PayloadQuestion payloadQuestion) {
       _updatePayloadQuestion(payloadQuestion);
     });
+  }
+
+  void back() {
+    Get.back();
   }
 
   void _updatePayloadQuestion(PayloadQuestion payloadQuestion) {
@@ -100,4 +101,11 @@ class ShowEpisodeQuizController extends GetxController {
       barrierDismissible: false,
     );
   }
+}
+
+class ShowEpisodeQuizArgument {
+  final ShowSeason showSeason;
+  final ShowEpisode showEpisode;
+
+  const ShowEpisodeQuizArgument(this.showSeason, this.showEpisode);
 }

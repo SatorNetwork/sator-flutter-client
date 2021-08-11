@@ -115,7 +115,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
                   ),
                   Obx(
                     () => Text(
-                      '${controller.usersRx.value.length} / ${controller.quizController.challenge.players}',
+                      '${controller.usersRx.value.length} / ${controller.quizController.challengeRx.value.players}',
                       style: TextStyle(
                         color: SatorioColor.darkAccent,
                         fontSize: 28.0,

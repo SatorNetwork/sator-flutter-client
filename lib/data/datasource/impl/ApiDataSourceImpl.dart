@@ -15,17 +15,21 @@ import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
-import 'package:satorio/data/model/qr/qr_payload_show_model.dart';
+import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/transaction_model.dart';
+import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
+import 'package:satorio/data/request/confirm_transfer_request.dart';
+import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
+import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
@@ -113,7 +117,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     //   body: response.body,
     // );
 
-    logResponse(utf8Response);
+    _logResponse(utf8Response);
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
@@ -136,7 +140,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     return utf8Response;
   }
 
-  void logResponse(Response response) {
+  void _logResponse(Response response) {
     print('--------');
 
     // print('Request headers:');
@@ -359,6 +363,28 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  @override
+  Future<TransferModel> createTransfer(
+      String fromWalletId, String recipientAddress, double amount) {
+    return _requestPost(
+      'wallets/$fromWalletId/create-transfer',
+      CreateTransferRequest(recipientAddress, amount),
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      return TransferModel.fromJson(jsonData['data']);
+    });
+  }
+
+  @override
+  Future<bool> confirmTransfer(String fromWalletId, String txHash) {
+    return _requestPost(
+      'wallets/$fromWalletId/confirm-transfer',
+      ConfirmTransferRequest(txHash),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
   // endregion
 
   // region Shows
@@ -458,7 +484,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Challenges
 
   @override
-  Future<dynamic> loadShow(String showId) {
+  Future<ShowModel> loadShow(String showId) {
     return _requestGet(
       'shows/$showId',
     ).then((Response response) {
@@ -469,13 +495,13 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<QrPayLoadShowModel> getShowEpisodeByQR(String qrCodeId) {
+  Future<QrShowModel> getShowEpisodeByQR(String qrCodeId) {
     return _requestGet(
       'qrcodes/$qrCodeId',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
 
-      return QrPayLoadShowModel.fromJson(jsonData['data']);
+      return QrShowModel.fromJson(jsonData['data']);
     });
   }
 
@@ -546,6 +572,20 @@ class ApiDataSourceImpl implements ApiDataSource {
     ).then((Response response) {
       return ClaimRewardModel.fromJson(
           json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  // endregion
+
+  // region Invitations
+
+  @override
+  Future<bool> sendInvite(String email) {
+    return _requestPost(
+      'invitations',
+      SendInviteRequest(email),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 

@@ -8,10 +8,6 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ChallengePage extends GetView<ChallengeController> {
-  ChallengePage(String challengeId) : super() {
-    controller.loadChallenge(challengeId);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -38,6 +38,9 @@ dependencies:
   intl: ^0.17.0
   qr_flutter: ^4.0.0
   share: ^2.0.4
+  firebase_core: ^1.4.0
+  firebase_database: ^7.1.2
+  grouped_list: ^4.1.0
 
 dev_dependencies:
   flutter_test:

@@ -1,20 +1,22 @@
 import 'package:get/get.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
-import 'package:satorio/domain/entities/qr/qr_show_pyaload.dart';
+import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 
 class QrResultShowController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
-  Rx<bool> isRequested = Rx(false);
-  Rx<Show?> showRx = Rx(Show("", "", "", false));
-  Rx<QrShowPayload?> showPayloadRx = Rx(QrShowPayload("", "", "", 0));
+  final RxBool isRequested = false.obs;
+  late final Rx<Show> showRx;
+  late final Rx<QrShow> qrShowRx;
 
-  void loadData(Show show, QrShowPayload showPayload) {
-    showRx.value = show;
-    showPayloadRx.value = showPayload;
+  QrResultShowController() {
+    QrResultShowArgument argument = Get.arguments as QrResultShowArgument;
+
+    showRx = Rx(argument.show);
+    qrShowRx = Rx(argument.qrShow);
   }
 
   void claimRewards() {
@@ -40,4 +42,11 @@ class QrResultShowController extends GetxController with BackToMainMixin {
           },
         );
   }
+}
+
+class QrResultShowArgument {
+  final Show show;
+  final QrShow qrShow;
+
+  const QrResultShowArgument(this.show, this.qrShow);
 }
