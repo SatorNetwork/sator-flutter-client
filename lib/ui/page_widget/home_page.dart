@@ -279,9 +279,6 @@ class HomePage extends GetView<HomeController> {
       onTap: () {
         controller.toShowDetail(show);
       },
-      onLongPress: () {
-        controller.toShowChallenges(show);
-      },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: Container(
