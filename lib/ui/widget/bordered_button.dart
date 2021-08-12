@@ -6,13 +6,17 @@ import 'package:satorio/ui/theme/text_theme.dart';
 class BorderedButton extends StatelessWidget {
   const BorderedButton({
     this.text = '',
+    this.textColor = SatorioColor.darkAccent,
     this.borderColor = SatorioColor.darkAccent,
+    this.borderWidth = 1.0,
     this.icon,
     this.onPressed,
   });
 
   final String text;
+  final Color textColor;
   final Color borderColor;
+  final double borderWidth;
   final VoidCallback? onPressed;
   final Widget? icon;
 
@@ -30,7 +34,7 @@ class BorderedButton extends StatelessWidget {
             Radius.circular(8),
           ),
         ),
-        side: BorderSide(color: borderColor, width: 1),
+        side: BorderSide(color: borderColor, width: borderWidth),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +43,7 @@ class BorderedButton extends StatelessWidget {
           Text(
             text,
             style: textTheme.bodyText2!.copyWith(
-              color: SatorioColor.darkAccent,
+              color: textColor,
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
             ),

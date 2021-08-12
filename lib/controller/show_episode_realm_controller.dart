@@ -7,8 +7,6 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
-import 'package:satorio/controller/challenge_controller.dart';
-import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -31,7 +29,6 @@ class ShowEpisodeRealmController extends GetxController {
 
   late final DatabaseReference _messagesRef;
 
-
   Query getMessageQuery() {
     return _messagesRef;
   }
@@ -41,7 +38,9 @@ class ShowEpisodeRealmController extends GetxController {
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
-    _messagesRef = FirebaseDatabase.instance.reference().child(argument.showEpisode.id.toString());
+    _messagesRef = FirebaseDatabase.instance
+        .reference()
+        .child(argument.showEpisode.id.toString());
 
     _satorioRepository
         .isChallengeActivated(argument.showEpisode.id)
@@ -56,9 +55,10 @@ class ShowEpisodeRealmController extends GetxController {
 
   void toChatPage() {
     Get.to(
-          () => ChatPage(),
+      () => ChatPage(),
       binding: ChatBinding(),
-      arguments: ChatArgument(_messagesRef, showDetailRx.value, showSeasonRx.value, showEpisodeRx.value),
+      arguments: ChatArgument(_messagesRef, showDetailRx.value,
+          showSeasonRx.value, showEpisodeRx.value),
     );
   }
 

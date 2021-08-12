@@ -29,8 +29,8 @@ class SplashController extends GetxController {
         } else {
           Get.off(() => LoginPage(), binding: LoginBinding());
         }
-      }).catchError((Exception exception) {
-        if (!(exception is ApiUnauthorizedException))
+      }).catchError((value) {
+        if (!(value is ApiUnauthorizedException))
           Get.off(() => LoginPage(), binding: LoginBinding());
       });
     });
