@@ -7,6 +7,8 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/controller/challenge_controller.dart';
+import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
