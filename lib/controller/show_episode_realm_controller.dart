@@ -38,9 +38,8 @@ class ShowEpisodeRealmController extends GetxController {
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
-    _messagesRef = FirebaseDatabase.instance
-        .reference()
-        .child(argument.showEpisode.id);
+    _messagesRef =
+        FirebaseDatabase.instance.reference().child(argument.showEpisode.id);
 
     _satorioRepository
         .isChallengeActivated(argument.showEpisode.id)
@@ -65,9 +64,10 @@ class ShowEpisodeRealmController extends GetxController {
   void toEpisodeRealmDialog() {
     Get.dialog(
       EpisodeRealmDialog(
-        onStartQuizPressed: () {
+        onStartQuizPressed: () async {
           Get.back();
-          Get.to(
+
+          final result = await Get.to(
             () => ShowEpisodeQuizPage(),
             binding: ShowEpisodeQuizBinding(),
             arguments: ShowEpisodeQuizArgument(
@@ -75,6 +75,10 @@ class ShowEpisodeRealmController extends GetxController {
               showEpisodeRx.value,
             ),
           );
+
+          if (result != null && result is bool) {
+            isRealmActivatedRx.value = result;
+          }
         },
         onScanQrPressed: () {
           Get.back();
