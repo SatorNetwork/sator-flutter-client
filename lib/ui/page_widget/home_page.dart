@@ -31,7 +31,6 @@ class HomePage extends GetView<HomeController> {
             children: [
               Container(
                 color: SatorioColor.darkAccent,
-                //
                 child: Stack(
                   children: [
                     SvgPicture.asset(
@@ -59,18 +58,15 @@ class HomePage extends GetView<HomeController> {
                                     child: Container(
                                       width: 50,
                                       height: 50,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
-                                        color: SatorioColor.casablanca,
-                                      ),
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          avatars[avatarIndex],
-                                          width: 50,
-                                          height: 50,
-                                          fit: BoxFit.fitWidth,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            avatars[avatarIndex],
+                                            width: 50,
+                                            height: 50,
+                                            fit: BoxFit.fitWidth,
+                                          ),
                                         ),
                                       ),
                                     ),
