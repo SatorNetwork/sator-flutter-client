@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
@@ -13,7 +14,30 @@ class SplashController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _handleDynamicLinks();
     _checkToken();
+  }
+
+  Future _handleDynamicLinks() async {
+    final PendingDynamicLinkData? data =
+    await FirebaseDynamicLinks.instance.getInitialLink();
+
+    void _handleDeepLink(PendingDynamicLinkData data) {
+      final Uri? deepLink = data.link;
+      if (deepLink != null) {
+
+        print('_handleDeepLink | deeplink: $deepLink');
+      }
+    }
+
+    _handleDeepLink(data!);
+
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
+          _handleDeepLink(dynamicLink!);
+        }, onError: (OnLinkErrorException e) async {
+      print('Link Failed: ${e.message}');
+    });
   }
 
   void dummy() {}
