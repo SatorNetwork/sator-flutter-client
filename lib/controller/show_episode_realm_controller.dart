@@ -40,7 +40,7 @@ class ShowEpisodeRealmController extends GetxController {
     showEpisodeRx = Rx(argument.showEpisode);
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child(argument.showEpisode.id.toString());
+        .child(argument.showEpisode.id);
 
     _satorioRepository
         .isChallengeActivated(argument.showEpisode.id)
