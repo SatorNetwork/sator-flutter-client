@@ -31,7 +31,7 @@ class HomePage extends GetView<HomeController> {
             children: [
               Container(
                 color: SatorioColor.darkAccent,
-                // height: 190,
+                //
                 child: Stack(
                   children: [
                     SvgPicture.asset(
@@ -142,7 +142,33 @@ class HomePage extends GetView<HomeController> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(textCode: 'Highest Rewarding', onTap: () {}),
+          child: TitleWithButton(textCode: 'All shows', onTap: () {
+            controller.toShowsCategory('all');
+          }),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          height: 168 * coefficient,
+          child: Obx(
+                () => ListView.separated(
+              separatorBuilder: (context, index) => SizedBox(
+                width: 16,
+              ),
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              itemCount: controller.allShowsRx.value.length,
+              itemBuilder: (context, index) {
+                Show show = controller.allShowsRx.value[index];
+                return _showItem(show);
+              },
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+          child: TitleWithButton(textCode: 'Highest Rewards', onTap: () {
+            controller.toShowsCategory('highest_rewarding');
+          }),
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
@@ -164,7 +190,9 @@ class HomePage extends GetView<HomeController> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(textCode: 'Most Socializing', onTap: () {}),
+          child: TitleWithButton(textCode: 'Most Social', onTap: () {
+            controller.toShowsCategory('most_socializing');
+          }),
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
@@ -186,7 +214,9 @@ class HomePage extends GetView<HomeController> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(textCode: 'Newest Added', onTap: () {}),
+          child: TitleWithButton(textCode: 'Newest Added', onTap: () {
+            controller.toShowsCategory('newest_added');
+          }),
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
