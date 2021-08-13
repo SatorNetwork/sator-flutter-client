@@ -62,6 +62,7 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   void refreshHomePage() {
     _satorioRepository.updateProfile();
     _satorioRepository.updateWalletBalance();
+    _loadAllShows();
     _loadShowByCategoryName();
   }
 
