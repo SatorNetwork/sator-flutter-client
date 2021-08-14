@@ -281,7 +281,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                   child: Container(),
                                 ),
                                 Text(
-                                  'txt_fans'.tr.toLowerCase(),
+                                  'txt_realmers'.tr.toLowerCase(),
                                   style: textTheme.bodyText2!.copyWith(
                                     color: SatorioColor.textBlack,
                                     fontSize: 12 * coefficient,
@@ -482,8 +482,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 physics: AlwaysScrollableScrollPhysics(),
                                 controller: controller.scrollController,
                                 query: controller.getMessageQuery(),
-                                itemBuilder: (context, snapshot, animation, index) {
-                                  final json = snapshot.value as Map<dynamic, dynamic>;
+                                itemBuilder:
+                                    (context, snapshot, animation, index) {
+                                  final json =
+                                      snapshot.value as Map<dynamic, dynamic>;
                                   final message = MessageModel.fromJson(json);
                                   Color color = _colors[index % _colors.length];
                                   return _showMessage(message, color);
@@ -841,12 +843,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,
                   decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(24),
+                    ),
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.white.withOpacity(0),
                         Colors.white,
+                        Colors.white.withOpacity(0.25),
                       ],
                     ),
                   ),
@@ -854,9 +859,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Expanded(
-                        child: Container(),
-                      ),
                       Text(
                         'txt_start_watching_earn_sao'.tr,
                         style: textTheme.bodyText2!.copyWith(
@@ -869,10 +871,13 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         height: 12,
                       ),
                       ElevatedGradientButton(
-                        text: 'txt_activate_realm'.tr,
+                        text: 'txt_unlock_realm'.tr,
                         onPressed: () {
                           controller.toEpisodeRealmDialog();
                         },
+                      ),
+                      Expanded(
+                        child: Container(),
                       ),
                     ],
                   ),
