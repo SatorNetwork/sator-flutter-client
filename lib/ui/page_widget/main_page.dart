@@ -24,7 +24,7 @@ class MainPage extends GetView<MainController> {
           selectedIndex: controller.selectedBottomTabIndex.value,
           showElevation: false,
           iconSize: 24,
-          backgroundColor: Colors.white,
+          // backgroundColor: Colors.transparent,
           itemCornerRadius: 14,
           animationDuration: Duration(milliseconds: 200),
           onItemSelected: (index) {
