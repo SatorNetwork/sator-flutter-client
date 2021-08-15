@@ -58,12 +58,7 @@ class ShowEpisodeQuizController extends GetxController {
             .then((bool result) {
           isAnswerSentRx.value = true;
           if (result) {
-            if (Get.isRegistered<ShowEpisodeRealmController>()) {
-              ShowEpisodeRealmController showEpisodeRealmController =
-                  Get.find();
-              showEpisodeRealmController.isRealmActivatedRx.value = true;
-              Get.back(closeOverlays: true);
-            }
+            Get.back(closeOverlays: true, result: true);
           } else {
             Get.dialog(
               DefaultDialog(
