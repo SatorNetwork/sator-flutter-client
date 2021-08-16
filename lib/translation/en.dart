@@ -160,4 +160,9 @@ const Map<String, String> en = {
   'txt_available': 'Available',
   'txt_stake_success': '%s %s was added to a staking pool',
   'txt_unstake_success': '%s %s was substracted to a staking pool',
+  'txt_no_thanks': 'No thanks',
+  'txt_tip_to_extend': 'Tip 10 SAO to extend the realm for 2 hours',
+  'txt_extend_realm': 'Extend realm',
+  'txt_2_hours_left': '2 hours left',
+  'txt_realm_expiring': 'Realm is expiring!',
 };

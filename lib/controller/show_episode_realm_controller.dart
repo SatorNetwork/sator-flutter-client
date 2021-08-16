@@ -11,6 +11,7 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
@@ -97,7 +98,10 @@ class ShowEpisodeRealmController extends GetxController {
   }
 
   void toRealmExpiringBottomSheet() {
-
+    Get.bottomSheet(
+      RealmExpiringBottomSheet(),
+      isScrollControlled: true,
+    );
   }
 }
 
