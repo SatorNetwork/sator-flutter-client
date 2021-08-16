@@ -33,7 +33,7 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  void showInvite() {
+  void toInviteDialog() {
     Get.dialog(
       SendInviteDialog(),
     );

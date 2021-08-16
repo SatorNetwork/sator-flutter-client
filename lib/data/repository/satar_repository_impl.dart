@@ -325,6 +325,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> unstake(String walletId, double amount) {
+    return _apiDataSource
+        .unstake(walletId, amount)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<WalletStake> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)

@@ -1,5 +1,6 @@
 const Map<String, String> en = {
   'txt_oops': 'Oops!',
+  'txt_something_wrong': 'Something wrong',
   'txt_skip': 'Skip',
   'txt_email_address': 'Email address',
   'txt_password': 'Password',
@@ -142,4 +143,7 @@ const Map<String, String> en = {
   'txt_transaction_sent': 'Transaction was sent',
   'txt_transaction_not_sent': 'Transaction was not sent',
   'txt_cool': 'Cool',
+  'txt_available': 'Available',
+  'txt_stake_success': '%s %s was added to a staking pool',
+  'txt_unstake_success': '%s %s was substracted to a staking pool',
 };

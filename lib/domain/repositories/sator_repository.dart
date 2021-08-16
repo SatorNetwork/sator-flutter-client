@@ -52,6 +52,8 @@ abstract class SatorioRepository {
 
   Future<bool> stake(String walletId, double amount);
 
+  Future<bool> unstake(String walletId, double amount);
+
   Future<WalletStake> getStake(String walletId);
 
   Future<List<Show>> shows({int? page, int? itemsPerPage});

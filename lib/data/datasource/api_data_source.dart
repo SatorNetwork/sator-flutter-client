@@ -75,6 +75,8 @@ abstract class ApiDataSource {
 
   Future<bool> stake(String walletId, double amount);
 
+  Future<bool> unstake(String walletId, double amount);
+
   Future<WalletStakeModel> getStake(String walletId);
 
   // endregion

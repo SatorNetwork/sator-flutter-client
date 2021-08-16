@@ -398,6 +398,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<bool> unstake(String walletId, double amount) {
+    return _requestPost(
+      'wallets/$walletId/unstake',
+      WalletStakeRequest(amount),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
   Future<WalletStakeModel> getStake(String walletId) {
     return _requestGet(
       'wallets/$walletId/stake',
