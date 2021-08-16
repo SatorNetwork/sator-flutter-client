@@ -343,7 +343,7 @@ class WalletPage extends GetView<WalletController> {
       case Type.claim_rewards:
         return Icons.arrow_downward_rounded;
       default:
-        return Icons.error_outline_rounded;
+        return Icons.arrow_forward_rounded;
     }
   }
 }
