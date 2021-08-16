@@ -348,7 +348,7 @@ class WalletPage extends GetView<WalletController> {
       case Type.stake_tokens:
         return Icons.arrow_forward_rounded;
       default:
-        return Icons.error_outline_rounded;
+        return Icons.arrow_forward_rounded;
     }
   }
 }
