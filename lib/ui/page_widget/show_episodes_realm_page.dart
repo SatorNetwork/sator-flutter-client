@@ -160,57 +160,64 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   shrinkWrap: true,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8),
-                        ),
-                        color: Colors.white.withOpacity(0.6),
-                      ),
-                      padding: EdgeInsets.all(16),
-                      child: Center(
-                        child: Row(
-                          children: [
-                            Obx(
-                              () => controller.isRealmActivatedRx.value
-                                  ? SvgPicture.asset('images/unlocked_icon.svg')
-                                  : SvgPicture.asset('images/locked_icon.svg'),
+                    Obx(
+                      () => InkWell(
+                        onTap: controller.isRealmActivatedRx.value
+                            ? () {
+                                controller.toRealmExpiringBottomSheet();
+                              }
+                            : null,
+                        child: Container(
+                          margin: EdgeInsets.only(right: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
                             ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
+                            color: Colors.white.withOpacity(0.6),
+                          ),
+                          padding: EdgeInsets.all(16),
+                          child: Center(
+                            child: Row(
                               children: [
-                                Obx(
-                                  () => Text(
-                                    controller.isRealmActivatedRx.value
-                                        ? 'txt_2h_left'.tr
-                                        : 'txt_locked'.tr,
-                                    style: textTheme.bodyText2!.copyWith(
-                                      color: SatorioColor.textBlack,
-                                      fontSize: 15 * coefficient,
-                                      fontWeight: FontWeight.w600,
+                                SvgPicture.asset(
+                                  controller.isRealmActivatedRx.value
+                                      ? 'images/unlocked_icon.svg'
+                                      : 'images/locked_icon.svg',
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Text(
+                                      controller.isRealmActivatedRx.value
+                                          ? 'txt_2h_left'.tr
+                                          : 'txt_locked'.tr,
+                                      style: textTheme.bodyText2!.copyWith(
+                                        color: SatorioColor.textBlack,
+                                        fontSize: 15 * coefficient,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Text(
-                                  'txt_status'.tr,
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 12 * coefficient,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                                    Expanded(
+                                      child: Container(),
+                                    ),
+                                    Text(
+                                      'txt_status'.tr,
+                                      style: textTheme.bodyText2!.copyWith(
+                                        color: SatorioColor.textBlack,
+                                        fontSize: 12 * coefficient,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),

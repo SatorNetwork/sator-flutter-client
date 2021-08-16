@@ -95,6 +95,10 @@ class ShowEpisodeRealmController extends GetxController {
       arguments: ChallengeArgument(showEpisodeRx.value.challengeId),
     );
   }
+
+  void toRealmExpiringBottomSheet() {
+
+  }
 }
 
 class ShowEpisodeRealmArgument {
