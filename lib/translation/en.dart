@@ -119,7 +119,7 @@ const Map<String, String> en = {
   'txt_staked': 'Staked',
   'txt_your_share': 'Your Share',
   'txt_stake': 'Stake',
-  'txt_substract': 'Substract',
+  'txt_substract': 'Subtract',
   'txt_add': 'Add',
   'txt_loyalty_levels': 'Loyalty Levels',
   'txt_data': 'Data',
