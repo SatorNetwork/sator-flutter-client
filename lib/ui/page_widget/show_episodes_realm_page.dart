@@ -188,7 +188,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 Obx(
                                   () => Text(
                                     controller.isRealmActivatedRx.value
-                                        ? 'txt_24h'.tr
+                                        ? 'txt_2h_left'.tr
                                         : 'txt_locked'.tr,
                                     style: textTheme.bodyText2!.copyWith(
                                       color: SatorioColor.textBlack,

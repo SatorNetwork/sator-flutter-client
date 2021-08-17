@@ -24,6 +24,7 @@ import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
+import 'package:satorio/data/model/wallet_stake_model.dart';
 import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
@@ -34,6 +35,7 @@ import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
+import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
@@ -382,6 +384,36 @@ class ApiDataSourceImpl implements ApiDataSource {
       ConfirmTransferRequest(txHash),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> stake(String walletId, double amount) {
+    return _requestPost(
+      'wallets/$walletId/stake',
+      WalletStakeRequest(amount),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> unstake(String walletId, double amount) {
+    return _requestPost(
+      'wallets/$walletId/unstake',
+      WalletStakeRequest(amount),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<WalletStakeModel> getStake(String walletId) {
+    return _requestGet(
+      'wallets/$walletId/stake',
+    ).then((Response response) {
+      return WalletStakeModel.fromJson(
+          json.decode(response.bodyString!)['data']);
     });
   }
 
