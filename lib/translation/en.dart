@@ -1,5 +1,6 @@
 const Map<String, String> en = {
   'txt_oops': 'Oops!',
+  'txt_something_wrong': 'Something wrong',
   'txt_skip': 'Skip',
   'txt_email_address': 'Email address',
   'txt_password': 'Password',
@@ -144,7 +145,7 @@ const Map<String, String> en = {
   'txt_cool': 'Cool',
   'txt_tip': 'Tip!',
   'txt_write_review': 'Write a review',
-  'txt_24h': '24hrs',
+  'txt_2h_left': '2hrs left',
   'txt_locked': 'Locked',
   'txt_status': 'Status',
   'txt_you': 'You',
@@ -153,7 +154,10 @@ const Map<String, String> en = {
   'txt_ranking': 'Ranking',
   'txt_realm_chat': 'Realm chat',
   'txt_remains': 'Remains',
-  'txt_earn_sao_upvoted!': 'Earn SAO if upvoted!',
+  'txt_earn_sao_upvoted': 'Earn SAO if upvoted!',
   'txt_start_watching_earn_sao': 'Start watching this episode to earn SAO.',
   'txt_reserve_price': 'Reserve price',
+  'txt_available': 'Available',
+  'txt_stake_success': '%s %s was added to a staking pool',
+  'txt_unstake_success': '%s %s was substracted to a staking pool',
 };
