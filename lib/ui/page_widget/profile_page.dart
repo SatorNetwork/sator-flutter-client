@@ -147,119 +147,6 @@ class ProfilePage extends GetView<ProfileController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'txt_badges'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 121 * coefficient,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          separatorBuilder: (context, index) => SizedBox(
-                            width: 12 * coefficient,
-                          ),
-                          itemCount: _badges.length,
-                          itemBuilder: (context, index) {
-                            BadgeTmp badge = _badges[index];
-                            return _badgeItem(badge);
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                          top: 32,
-                          bottom: 16,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_your_activity'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        separatorBuilder: (context, index) => SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        itemCount: _activities.length,
-                        itemBuilder: (context, index) {
-                          ActivitySimpleTmp activity = _activities[index];
-                          return _activityItem(activity);
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 28, bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_realms_open'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 180 * coefficient,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          separatorBuilder: (context, index) => SizedBox(
-                            width: 16 * coefficient,
-                          ),
-                          itemCount: _realms.length,
-                          itemBuilder: (context, index) {
-                            RealmTmp realm = _realms[index];
-                            return _realmItem(realm);
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 28, bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
                               'txt_nfts'.tr,
                               style: textTheme.headline3!.copyWith(
                                 color: SatorioColor.textBlack,
@@ -373,6 +260,119 @@ class ProfilePage extends GetView<ProfileController> {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 20,
+                          right: 20,
+                          top: 32,
+                          bottom: 16,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'txt_your_activity'.tr,
+                              style: textTheme.headline3!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 24.0 * coefficient,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              size: 32 * coefficient,
+                              color: SatorioColor.textBlack,
+                            )
+                          ],
+                        ),
+                      ),
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 8 * coefficient,
+                        ),
+                        itemCount: _activities.length,
+                        itemBuilder: (context, index) {
+                          ActivitySimpleTmp activity = _activities[index];
+                          return _activityItem(activity);
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 28, bottom: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'txt_realms_open'.tr,
+                              style: textTheme.headline3!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 24.0 * coefficient,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              size: 32 * coefficient,
+                              color: SatorioColor.textBlack,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 180 * coefficient,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          separatorBuilder: (context, index) => SizedBox(
+                            width: 16 * coefficient,
+                          ),
+                          itemCount: _realms.length,
+                          itemBuilder: (context, index) {
+                            RealmTmp realm = _realms[index];
+                            return _realmItem(realm);
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 28, bottom: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'txt_badges'.tr,
+                              style: textTheme.headline3!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 24.0 * coefficient,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              size: 32 * coefficient,
+                              color: SatorioColor.textBlack,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 121 * coefficient,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          separatorBuilder: (context, index) => SizedBox(
+                            width: 12 * coefficient,
+                          ),
+                          itemCount: _badges.length,
+                          itemBuilder: (context, index) {
+                            BadgeTmp badge = _badges[index];
+                            return _badgeItem(badge);
+                          },
                         ),
                       ),
                       Padding(

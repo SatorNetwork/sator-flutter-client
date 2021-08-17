@@ -34,4 +34,7 @@ class SatorioColor {
   static const Color medium_slate_blue = Color(0xFF6359E4);
   static const Color medium_slate_blue_2 = Color(0xFF7C73E8);
   static const Color comet = Color(0xFF676B79);
+  static const Color lavender = Color(0xFFE3E1FB);
+  static const Color razzle_dazzle_rose = Color(0xFFFF46ED);
+  static const Color dodger_blue = Color(0xFF46A6FF);
 }

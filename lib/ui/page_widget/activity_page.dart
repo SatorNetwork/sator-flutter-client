@@ -63,7 +63,7 @@ class ActivityPage extends GetView<ActivityController> {
           top: 28 * coefficient, bottom: 12 * coefficient, left: 20, right: 20),
       color: Colors.transparent,
       child: Text(
-        '${DateFormat('MMMM d, yyyy').format(dateTime)}',
+        '${DateFormat('MMMM d').format(dateTime)}',
         style: textTheme.bodyText2!.copyWith(
           color: SatorioColor.textBlack,
           fontSize: 15.0 * coefficient,
