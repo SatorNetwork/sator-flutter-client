@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/wallet_stacked_controller.dart';
-import 'package:satorio/domain/entities/amount_currency.dart';
-import 'package:satorio/domain/entities/wallet_detail.dart';
+import 'package:satorio/controller/wallet_stake_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
@@ -12,7 +10,7 @@ import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/wallet_detail_container.dart';
 
-class WalletStackedPage extends GetView<WalletStackedController> {
+class WalletStakePage extends GetView<WalletStakeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,9 +61,11 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      WalletDetailContainer(
-                        _mockWalletDetail(),
-                        height: 200,
+                      Obx(
+                        () => WalletDetailContainer(
+                          controller.walletDetailRx.value,
+                          height: 200,
+                        ),
                       ),
                       SizedBox(
                         height: 32 * coefficient,
@@ -81,7 +81,11 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                       SizedBox(
                         height: 16 * coefficient,
                       ),
-                      _stackingCard2(),
+                      Obx(
+                        () => controller.tmpState.value
+                            ? _stackingCard2()
+                            : _stackingCard1(),
+                      ),
                       SizedBox(
                         height: 32 * coefficient,
                       ),
@@ -108,7 +112,7 @@ class WalletStackedPage extends GetView<WalletStackedController> {
     );
   }
 
-  Widget _stackingCard() {
+  Widget _stackingCard1() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
@@ -175,8 +179,9 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                 ),
               ),
               Expanded(
-                child: Text(
-                  '138.7%',
+                  child: Obx(
+                () => Text(
+                  '${controller.walletStakeRx.value?.walletStaking?.apy.toStringAsFixed(2) ?? ''}%',
                   textAlign: TextAlign.end,
                   style: textTheme.bodyText2!.copyWith(
                     color: Colors.black,
@@ -184,7 +189,7 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
+              )),
             ],
           ),
           SizedBox(
@@ -201,13 +206,17 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                 ),
               ),
               Expanded(
-                child: Text(
-                  '25,438,101.353',
-                  textAlign: TextAlign.end,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: Colors.black,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w600,
+                child: Obx(
+                  () => Text(
+                    controller.walletStakeRx.value?.walletStaking?.totalStaked
+                            .toStringAsFixed(2) ??
+                        '',
+                    textAlign: TextAlign.end,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: Colors.black,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -218,6 +227,9 @@ class WalletStackedPage extends GetView<WalletStackedController> {
           ),
           ElevatedGradientButton(
             text: 'txt_stake'.tr,
+            onPressed: () {
+              controller.toStakeDialog();
+            },
           ),
         ],
       ),
@@ -291,13 +303,17 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                 ),
               ),
               Expanded(
-                child: Text(
-                  '25316.22',
-                  textAlign: TextAlign.end,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: Colors.black,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w600,
+                child: Obx(
+                  () => Text(
+                    controller.walletStakeRx.value?.walletStaking?.staked
+                            .toStringAsFixed(2) ??
+                        '',
+                    textAlign: TextAlign.end,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: Colors.black,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -317,13 +333,15 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                 ),
               ),
               Expanded(
-                child: Text(
-                  '135.2%',
-                  textAlign: TextAlign.end,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: Colors.black,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w600,
+                child: Obx(
+                  () => Text(
+                    '${controller.walletStakeRx.value?.walletStaking?.yourShare.toStringAsFixed(2) ?? ''}%',
+                    textAlign: TextAlign.end,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: Colors.black,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -338,7 +356,9 @@ class WalletStackedPage extends GetView<WalletStackedController> {
               Expanded(
                 child: BorderedButton(
                   text: 'txt_substract'.tr,
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.toUnStakeDialog();
+                  },
                 ),
               ),
               SizedBox(
@@ -347,7 +367,9 @@ class WalletStackedPage extends GetView<WalletStackedController> {
               Expanded(
                 child: ElevatedGradientButton(
                   text: 'txt_add'.tr,
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.toStakeDialog();
+                  },
                 ),
               ),
             ],
@@ -382,20 +404,28 @@ class WalletStackedPage extends GetView<WalletStackedController> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Gold',
-                            style: textTheme.headline5!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 20 * coefficient,
-                              fontWeight: FontWeight.w700,
+                          Obx(
+                            () => Text(
+                              controller.walletStakeRx.value?.walletLoyalty
+                                      ?.levelTitle ??
+                                  '',
+                              style: textTheme.headline5!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 20 * coefficient,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
-                          Text(
-                            '5-10%',
-                            style: textTheme.bodyText1!.copyWith(
-                              color: SatorioColor.manatee,
-                              fontSize: 12 * coefficient,
-                              fontWeight: FontWeight.w400,
+                          Obx(
+                            () => Text(
+                              controller.walletStakeRx.value?.walletLoyalty
+                                      ?.levelSubtitle ??
+                                  '',
+                              style: textTheme.bodyText1!.copyWith(
+                                color: SatorioColor.manatee,
+                                fontSize: 12 * coefficient,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                         ],
@@ -531,20 +561,6 @@ class WalletStackedPage extends GetView<WalletStackedController> {
           )
         ],
       ),
-    );
-  }
-
-  WalletDetail _mockWalletDetail() {
-    return WalletDetail(
-      'id',
-      'solanaAccountAddress',
-      0,
-      [
-        AmountCurrency(852.2, 'SAO'),
-        AmountCurrency(2642.59, 'USD'),
-        AmountCurrency(2525.59, 'Rewards'),
-      ],
-      [],
     );
   }
 }

@@ -46,7 +46,7 @@ class WalletSendPage extends GetView<WalletSendController> {
               color: SatorioColor.darkAccent,
             ),
             onPressed: () {
-              controller.showTransactingTips();
+              controller.toTransactingTipsDialog();
             },
           )
         ],

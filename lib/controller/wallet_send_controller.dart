@@ -67,7 +67,7 @@ class WalletSendController extends GetxController {
     Get.back();
   }
 
-  void showTransactingTips() {
+  void toTransactingTipsDialog() {
     Get.bottomSheet(
       TransactingTipsBottomSheet(),
     );
