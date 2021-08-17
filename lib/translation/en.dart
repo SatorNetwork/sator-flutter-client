@@ -85,7 +85,7 @@ const Map<String, String> en = {
   'txt_enter_episode_realm_step_2': 'Verify viewing.',
   'txt_enter_episode_realm_step_3': 'Earn SAO!',
   'txt_verify_via_quiz': 'Verify via quiz',
-  'txt_unlock_with_sao': 'Unlock with 12 SAO',
+  'txt_unlock_with_sao': 'Unlock with SAO',
   'txt_share_qr': 'Share QR',
   'txt_account_address': 'Account Address',
   'txt_copy_address': 'Copy address',
@@ -165,4 +165,5 @@ const Map<String, String> en = {
   'txt_realm_expiring': 'Realm is expiring!',
   'txt_realm_extend_success': 'You have extended the realm for %d hours',
   'txt_or': 'or',
+  'txt_unlock_the_realm': 'Unlock the realm',
 };

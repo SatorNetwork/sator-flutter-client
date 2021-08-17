@@ -13,6 +13,7 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
@@ -82,7 +83,7 @@ class ShowEpisodeRealmController extends GetxController {
           }
         },
         onPaidUnlockPressed: () {
-          // TODO: open qr scanner
+          toRealmPaidActivationBottomSheet();
         },
       ),
     );
@@ -100,14 +101,25 @@ class ShowEpisodeRealmController extends GetxController {
     Get.bottomSheet(
       RealmExpiringBottomSheet(
         (extendRealmItem) {
-          _paidUnlock(extendRealmItem);
+          _paidUnlock(extendRealmItem.hours);
         },
       ),
       isScrollControlled: true,
     );
   }
 
-  void _paidUnlock(ExtendRealmItem extendRealmItem) {
+  void toRealmPaidActivationBottomSheet() {
+    Get.bottomSheet(
+      RealmPaidActivationBottomSheet(
+        (paidActivationRealmItem) {
+          _paidUnlock(paidActivationRealmItem.hours);
+        },
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  void _paidUnlock(int hours) {
     _satorioRepository.paidUnlockEpisode(showEpisodeRx.value.id).then(
       (bool result) {
         isRealmActivatedRx.value = result;
@@ -115,7 +127,7 @@ class ShowEpisodeRealmController extends GetxController {
           Get.bottomSheet(
             DefaultBottomSheet(
               'txt_success'.tr,
-              'txt_realm_extend_success'.tr.format([extendRealmItem.hours]),
+              'txt_realm_extend_success'.tr.format([hours]),
               'txt_awesome'.tr,
               icon: Icons.check_rounded,
               onPressed: () {
