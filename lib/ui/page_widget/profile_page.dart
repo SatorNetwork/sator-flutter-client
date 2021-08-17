@@ -147,6 +147,128 @@ class ProfilePage extends GetView<ProfileController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
+                              'txt_nfts'.tr,
+                              style: textTheme.headline3!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 24.0 * coefficient,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              size: 32 * coefficient,
+                              color: SatorioColor.textBlack,
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: nftsLargestImageSize + 21 * coefficient,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(17 * coefficient),
+                                      ),
+                                      child: Image.asset(
+                                        'images/tmp_nft_1.png',
+                                        width: nftsLargestImageSize,
+                                        height: nftsLargestImageSize,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 16 * coefficient,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(17 * coefficient),
+                                            ),
+                                            child: Image.asset(
+                                              'images/tmp_nft_2.png',
+                                              width: nftsLargestImageSize,
+                                              height: nftsLargestImageSize,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            margin: EdgeInsets.only(
+                                              top: 16 * coefficient,
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.asset(
+                                                      'images/tmp_nft_3.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 15 * coefficient,
+                                                ),
+                                                Expanded(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                    BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.asset(
+                                                      'images/tmp_nft_4.png',
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Text(
+                              'Breaking Bad',
+                              style: textTheme.headline3!.copyWith(
+                                color: SatorioColor.interactive,
+                                fontSize: 15.0 * coefficient,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 28, bottom: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
                               'txt_badges'.tr,
                               style: textTheme.headline3!.copyWith(
                                 color: SatorioColor.textBlack,
@@ -251,128 +373,6 @@ class ProfilePage extends GetView<ProfileController> {
                             RealmTmp realm = _realms[index];
                             return _realmItem(realm);
                           },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 28, bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_nfts'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: nftsLargestImageSize + 21 * coefficient,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(17 * coefficient),
-                                      ),
-                                      child: Image.asset(
-                                        'images/tmp_nft_1.png',
-                                        width: nftsLargestImageSize,
-                                        height: nftsLargestImageSize,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 16 * coefficient,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(17 * coefficient),
-                                            ),
-                                            child: Image.asset(
-                                              'images/tmp_nft_2.png',
-                                              width: nftsLargestImageSize,
-                                              height: nftsLargestImageSize,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                              top: 16 * coefficient,
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(
-                                                          17 * coefficient),
-                                                    ),
-                                                    child: Image.asset(
-                                                      'images/tmp_nft_3.png',
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 15 * coefficient,
-                                                ),
-                                                Expanded(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(
-                                                          17 * coefficient),
-                                                    ),
-                                                    child: Image.asset(
-                                                      'images/tmp_nft_4.png',
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Text(
-                              'Breaking Bad',
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.interactive,
-                                fontSize: 15.0 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                       Padding(
