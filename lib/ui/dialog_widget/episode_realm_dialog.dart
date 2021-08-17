@@ -8,11 +8,11 @@ import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class EpisodeRealmDialog extends StatelessWidget {
-  final VoidCallback? onStartQuizPressed;
-  final VoidCallback? onScanQrPressed;
+  final VoidCallback? onQuizPressed;
+  final VoidCallback? onPaidUnlockPressed;
 
   const EpisodeRealmDialog(
-      {Key? key, this.onStartQuizPressed, this.onScanQrPressed})
+      {Key? key, this.onQuizPressed, this.onPaidUnlockPressed})
       : super(key: key);
 
   @override
@@ -38,110 +38,152 @@ class EpisodeRealmDialog extends StatelessWidget {
                       fontWeight: FontWeight.w700),
                 ),
                 SizedBox(
-                  height: 32 * coefficient,
+                  height: 30 * coefficient,
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      width: 69 * coefficient,
-                      child: Center(
-                          child: Text(
-                        '1',
-                        style: textTheme.headline4!.copyWith(
-                            color: SatorioColor.interactive,
-                            fontSize: 28.0 * coefficient,
-                            fontWeight: FontWeight.w700),
-                      )),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 19),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(13),
                     ),
-                    Expanded(
-                      child: Text(
-                        'txt_enter_episode_realm_step_1'.tr,
-                        textAlign: TextAlign.start,
-                        style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 14.0 * coefficient,
-                            fontWeight: FontWeight.w400),
+                    color: SatorioColor.alice_blue,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            width: 106 * coefficient,
+                            padding: EdgeInsets.only(left: 36 * coefficient),
+                            child: Center(
+                              child: Text(
+                                '1',
+                                style: textTheme.headline4!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 28.0 * coefficient,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'txt_enter_episode_realm_step_1'.tr,
+                              textAlign: TextAlign.start,
+                              style: textTheme.bodyText2!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 14.0 * coefficient,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 32 * coefficient,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            width: 106 * coefficient,
+                            padding: EdgeInsets.only(left: 36 * coefficient),
+                            child: Center(
+                                child: Text(
+                              '2',
+                              style: textTheme.headline4!.copyWith(
+                                  color: SatorioColor.interactive,
+                                  fontSize: 28.0 * coefficient,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'txt_enter_episode_realm_step_2'.tr,
+                              textAlign: TextAlign.start,
+                              style: textTheme.bodyText2!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 14.0 * coefficient,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 32 * coefficient,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            width: 106 * coefficient,
+                            padding: EdgeInsets.only(left: 36 * coefficient),
+                            child: Center(
+                                child: Text(
+                              '3',
+                              style: textTheme.headline4!.copyWith(
+                                  color: SatorioColor.interactive,
+                                  fontSize: 28.0 * coefficient,
+                                  fontWeight: FontWeight.w700),
+                            )),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'txt_enter_episode_realm_step_3'.tr,
+                              textAlign: TextAlign.start,
+                              style: textTheme.bodyText2!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 14.0 * coefficient,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(
-                  height: 32 * coefficient,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      width: 69 * coefficient,
-                      child: Center(
-                          child: Text(
-                        '2',
-                        style: textTheme.headline4!.copyWith(
-                            color: SatorioColor.interactive,
-                            fontSize: 28.0 * coefficient,
-                            fontWeight: FontWeight.w700),
-                      )),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'txt_enter_episode_realm_step_2'.tr,
-                        textAlign: TextAlign.start,
-                        style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 14.0 * coefficient,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 32 * coefficient,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      width: 69 * coefficient,
-                      child: Center(
-                          child: Text(
-                        '3',
-                        style: textTheme.headline4!.copyWith(
-                            color: SatorioColor.interactive,
-                            fontSize: 28.0 * coefficient,
-                            fontWeight: FontWeight.w700),
-                      )),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'txt_enter_episode_realm_step_3'.tr,
-                        textAlign: TextAlign.start,
-                        style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 14.0 * coefficient,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 32 * coefficient,
+                  height: 30 * coefficient,
                 ),
                 ElevatedGradientButton(
-                    text: 'txt_start_entrance_quiz'.tr,
-                    onPressed: onStartQuizPressed),
+                  text: 'txt_verify_via_quiz'.tr,
+                  onPressed: () {
+                    Get.back();
+                    if (onQuizPressed != null) {
+                      onQuizPressed!();
+                    }
+                  },
+                ),
+                SizedBox(
+                  height: 8 * coefficient,
+                ),
+                Text(
+                  'txt_or'.tr,
+                  style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 14.0 * coefficient,
+                      fontWeight: FontWeight.w400),
+                ),
                 SizedBox(
                   height: 8 * coefficient,
                 ),
                 BorderedButton(
-                    text: 'txt_qr_scan'.tr,
-                    textColor: SatorioColor.interactive,
-                    borderColor: SatorioColor.interactive,
-                    borderWidth: 2,
-                    onPressed: onScanQrPressed),
+                  text: 'txt_unlock_with_sao'.tr,
+                  textColor: SatorioColor.interactive,
+                  borderColor: SatorioColor.interactive,
+                  borderWidth: 2,
+                  onPressed: () {
+                    Get.back();
+                    if (onPaidUnlockPressed != null) {
+                      onPaidUnlockPressed!();
+                    }
+                  },
+                ),
               ],
             ),
           ),

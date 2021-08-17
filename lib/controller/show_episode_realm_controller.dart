@@ -67,9 +67,7 @@ class ShowEpisodeRealmController extends GetxController {
   void toEpisodeRealmDialog() {
     Get.dialog(
       EpisodeRealmDialog(
-        onStartQuizPressed: () async {
-          Get.back();
-
+        onQuizPressed: () async {
           final result = await Get.to(
             () => ShowEpisodeQuizPage(),
             binding: ShowEpisodeQuizBinding(),
@@ -83,8 +81,7 @@ class ShowEpisodeRealmController extends GetxController {
             isRealmActivatedRx.value = result;
           }
         },
-        onScanQrPressed: () {
-          Get.back();
+        onPaidUnlockPressed: () {
           // TODO: open qr scanner
         },
       ),
@@ -103,15 +100,15 @@ class ShowEpisodeRealmController extends GetxController {
     Get.bottomSheet(
       RealmExpiringBottomSheet(
         (extendRealmItem) {
-          _unlockByPaid(extendRealmItem);
+          _paidUnlock(extendRealmItem);
         },
       ),
       isScrollControlled: true,
     );
   }
 
-  void _unlockByPaid(ExtendRealmItem extendRealmItem) {
-    _satorioRepository.unlockEpisodeByPaid(showEpisodeRx.value.id).then(
+  void _paidUnlock(ExtendRealmItem extendRealmItem) {
+    _satorioRepository.paidUnlockEpisode(showEpisodeRx.value.id).then(
       (bool result) {
         isRealmActivatedRx.value = result;
         if (result) {

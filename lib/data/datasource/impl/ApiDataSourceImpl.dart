@@ -556,7 +556,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> unlockEpisodeByPaid(String episodeId) {
+  Future<bool> paidUnlockEpisode(String episodeId) {
     return _requestPost(
       'challenges/unlock/$episodeId',
       EmptyRequest(),

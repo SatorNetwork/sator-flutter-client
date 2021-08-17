@@ -208,9 +208,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> unlockEpisodeByPaid(String episodeId) {
+  Future<bool> paidUnlockEpisode(String episodeId) {
     return _apiDataSource
-        .unlockEpisodeByPaid(episodeId)
+        .paidUnlockEpisode(episodeId)
         .catchError((value) => _handleException(value));
   }
 
