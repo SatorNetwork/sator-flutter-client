@@ -11,18 +11,22 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
+import 'package:satorio/util/extension.dart';
 
 class ShowEpisodeRealmController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
-
   late final Rx<ShowEpisode> showEpisodeRx;
+
   final RxBool isRealmActivatedRx = false.obs;
 
   ScrollController scrollController = ScrollController();
@@ -64,9 +68,7 @@ class ShowEpisodeRealmController extends GetxController {
   void toEpisodeRealmDialog() {
     Get.dialog(
       EpisodeRealmDialog(
-        onStartQuizPressed: () async {
-          Get.back();
-
+        onQuizPressed: () async {
           final result = await Get.to(
             () => ShowEpisodeQuizPage(),
             binding: ShowEpisodeQuizBinding(),
@@ -80,9 +82,8 @@ class ShowEpisodeRealmController extends GetxController {
             isRealmActivatedRx.value = result;
           }
         },
-        onScanQrPressed: () {
-          Get.back();
-          // TODO: open qr scanner
+        onPaidUnlockPressed: () {
+          toRealmPaidActivationBottomSheet();
         },
       ),
     );
@@ -93,6 +94,49 @@ class ShowEpisodeRealmController extends GetxController {
       () => ChallengePage(),
       binding: ChallengeBinding(),
       arguments: ChallengeArgument(showEpisodeRx.value.challengeId),
+    );
+  }
+
+  void toRealmExpiringBottomSheet() {
+    Get.bottomSheet(
+      RealmExpiringBottomSheet(
+        (extendRealmItem) {
+          _paidUnlock(extendRealmItem.hours);
+        },
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  void toRealmPaidActivationBottomSheet() {
+    Get.bottomSheet(
+      RealmPaidActivationBottomSheet(
+        (paidActivationRealmItem) {
+          _paidUnlock(paidActivationRealmItem.hours);
+        },
+      ),
+      isScrollControlled: true,
+    );
+  }
+
+  void _paidUnlock(int hours) {
+    _satorioRepository.paidUnlockEpisode(showEpisodeRx.value.id).then(
+      (bool result) {
+        isRealmActivatedRx.value = result;
+        if (result) {
+          Get.bottomSheet(
+            DefaultBottomSheet(
+              'txt_success'.tr,
+              'txt_realm_extend_success'.tr.format([hours]),
+              'txt_awesome'.tr,
+              icon: Icons.check_rounded,
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }
