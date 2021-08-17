@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -133,6 +134,10 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _contentWithCategories() {
+    final double nftsLargestImageSize =
+        (Get.width - 2 * 20 - 16 * coefficient) / 2;
+
+    final MainController mainController = Get.find();
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,28 +145,105 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Best NFTs',
+            textCode: 'Top NFTs',
             onTap: () {
-              controller.toShowsCategory('all');
+              mainController.selectedBottomTabIndex.value = 2;
             },
           ),
         ),
+        SizedBox(height: 15,),
         Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-                () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
+          height: nftsLargestImageSize + 21 * coefficient,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(17 * coefficient),
+                        ),
+                        child: Image.asset(
+                          'images/tmp_nft_1.png',
+                          width: nftsLargestImageSize,
+                          height: Get.height,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16 * coefficient,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(17 * coefficient),
+                              ),
+                              child: Image.asset(
+                                'images/tmp_nft_2.png',
+                                width: nftsLargestImageSize,
+                                height: Get.height,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                top: 16 * coefficient,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.all(
+                                        Radius.circular(
+                                            17 * coefficient),
+                                      ),
+                                      child: Image.asset(
+                                        'images/tmp_nft_3.png',
+                                        height: Get.height,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 15 * coefficient,
+                                  ),
+                                  Expanded(
+                                    child: ClipRRect(
+                                      borderRadius:
+                                      BorderRadius.all(
+                                        Radius.circular(
+                                            17 * coefficient),
+                                      ),
+                                      child: Image.asset(
+                                        'images/tmp_nft_4.png',
+                                        height: Get.height,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.allShowsRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.allShowsRx.value[index];
-                return _showItem(show);
-              },
-            ),
+            ],
           ),
         ),
         Padding(
