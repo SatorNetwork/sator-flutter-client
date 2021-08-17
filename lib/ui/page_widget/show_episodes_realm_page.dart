@@ -1039,7 +1039,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           height: 6,
                         ),
                         Text(
-                          '15.00 ETH',
+                          '15.00 SAO',
                           style: textTheme.bodyText2!.copyWith(
                             color: SatorioColor.textBlack,
                             fontSize: 15 * coefficient,
