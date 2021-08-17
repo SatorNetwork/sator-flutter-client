@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
+import 'package:satorio/ui/page_widget/nfts_page.dart';
 import 'package:satorio/ui/page_widget/personal_profile_page.dart';
-import 'package:satorio/ui/page_widget/shows_page.dart';
 import 'package:satorio/ui/page_widget/empty_page.dart';
 import 'package:satorio/ui/page_widget/wallet_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -28,6 +28,7 @@ class MainPage extends GetView<MainController> {
           itemCornerRadius: 14,
           animationDuration: Duration(milliseconds: 200),
           onItemSelected: (index) {
+            print(index);
             switch (index) {
               case MainController.TabScan:
                 controller.toQrScanner();
@@ -134,7 +135,7 @@ class MainPage extends GetView<MainController> {
   final List<Widget> _bodyContent = [
     HomePage(),
     EmptyPage(),
-    ShowsPage(),
+    NFTsPage(),
     WalletPage(),
     PersonalProfilePage(),
   ];
