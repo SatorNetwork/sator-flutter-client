@@ -32,7 +32,7 @@ class NFTsPage extends GetView<NFTsController> {
               hintText: 'Search',
               hintStyle: TextStyle(
                 color: SatorioColor.darkAccent,
-                fontSize: 15.0,
+                fontSize: 14.0,
                 fontWeight: FontWeight.w400,
               ),
               prefixIcon: Image.asset('images/search.png'),
@@ -114,19 +114,12 @@ class NFTsPage extends GetView<NFTsController> {
                         ),
                         Row(
                           children: [
-                            Image.asset(
-                              'images/nft_logo.png',
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
                             RichText(
                               text: TextSpan(
-                                text: '3,284',
+                                text: '1,784',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 17.0,
+                                  fontSize: 14.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -136,7 +129,7 @@ class NFTsPage extends GetView<NFTsController> {
                                     text: 'sao',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 17.0,
+                                      fontSize: 14.0,
                                       fontWeight: FontWeight.w500,
                                       backgroundColor: Colors.transparent,
                                     ),
@@ -175,7 +168,7 @@ class NFTsPage extends GetView<NFTsController> {
                             text: '32,284',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 17.0,
+                              fontSize: 14.0,
                               fontWeight: FontWeight.w500,
                               backgroundColor: Colors.transparent,
                             ),
@@ -185,17 +178,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: 'sao',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                              TextSpan(text: ' / '),
-                              TextSpan(
-                                text: '\$1,300',
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.7),
-                                  fontSize: 17.0,
+                                  fontSize: 14.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -236,7 +219,7 @@ class NFTsPage extends GetView<NFTsController> {
                             text: '3,284',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 17.0,
+                              fontSize: 14.0,
                               fontWeight: FontWeight.w500,
                               backgroundColor: Colors.transparent,
                             ),
@@ -246,17 +229,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: 'sao',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                              TextSpan(text: ' / '),
-                              TextSpan(
-                                text: '\$1,30',
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.7),
-                                  fontSize: 17.0,
+                                  fontSize: 14.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -284,11 +257,11 @@ class NFTsPage extends GetView<NFTsController> {
             iconColor: SatorioColor.darkAccent,
           ),
           SizedBox(
-            height: 20,
+            height: 10, 
           ),
           _allShows(),
           SizedBox(
-            height: 20,
+            height: 15,
           ),
         ],
       ),

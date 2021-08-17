@@ -85,8 +85,15 @@ class ShowDetailPage extends GetView<ShowDetailController> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.favorite_outline_rounded,
+                // Icon(
+                //   Icons.favorite_outline_rounded,
+                //   size: 22.0 * coefficient,
+                //   color: Colors.white,
+                // ),
+
+
+                ImageIcon(
+                  AssetImage("images/show/claps.png"),
                   size: 22.0 * coefficient,
                   color: Colors.white,
                 ),
@@ -104,8 +111,14 @@ class ShowDetailPage extends GetView<ShowDetailController> {
                 SizedBox(
                   height: 23.0 * coefficient,
                 ),
-                Icon(
-                  Icons.photo_outlined,
+                // Icon(
+                //   Icons.photo_outlined,
+                //   size: 22.0 * coefficient,
+                //   color: Colors.white,
+                // ),
+
+                ImageIcon(
+                  AssetImage("images/show/nft.png"),
                   size: 22.0 * coefficient,
                   color: Colors.white,
                 ),
@@ -123,8 +136,14 @@ class ShowDetailPage extends GetView<ShowDetailController> {
                 SizedBox(
                   height: 23.0 * coefficient,
                 ),
-                Icon(
-                  Icons.mode_comment_outlined,
+                // Icon(
+                //   Icons.mode_comment_outlined,
+                //   size: 22.0 * coefficient,
+                //   color: Colors.white,
+                // ),
+
+                ImageIcon(
+                  AssetImage("images/show/watch.png"),
                   size: 22.0 * coefficient,
                   color: Colors.white,
                 ),
@@ -132,7 +151,7 @@ class ShowDetailPage extends GetView<ShowDetailController> {
                   height: 6.0 * coefficient,
                 ),
                 Text(
-                  '35',
+                  'Netflix',
                   style: textTheme.subtitle2!.copyWith(
                     color: Colors.white,
                     fontSize: 15.0 * coefficient,
