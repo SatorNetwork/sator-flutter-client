@@ -8,8 +8,21 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+
+typedef SelectExtendRealmItemCallback = void Function(
+    ExtendRealmItem extendRealmItem);
 
 class RealmExpiringBottomSheet extends StatelessWidget {
+  RealmExpiringBottomSheet(
+    this.onExtend, {
+    Key? key,
+  }) : super(key: key);
+
+  final Rx<ExtendRealmItem?> _selectedItemRx = Rx(null);
+
+  final SelectExtendRealmItemCallback onExtend;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -100,7 +113,7 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                     height: 8 * coefficient,
                   ),
                   Text(
-                    'txt_tip_to_extend'.tr,
+                    'txt_choose_option'.tr,
                     textAlign: TextAlign.center,
                     style: textTheme.bodyText1!.copyWith(
                       color: SatorioColor.textBlack,
@@ -115,20 +128,35 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      _item(10.0),
-                      _item(100.0),
-                      _item(1000.0),
-                    ],
+                    children:
+                        _itemsTmp.map((item) => _itemWidget(item)).toList(),
                   ),
                   SizedBox(
                     height: 24 * coefficient,
+                  ),
+                  Obx(
+                    () => ElevatedGradientButton(
+                      text: 'txt_extend_realm'.tr,
+                      isEnabled: _selectedItemRx.value != null,
+                      onPressed: () {
+                        Get.back();
+                        if (_selectedItemRx.value != null) {
+                          onExtend(_selectedItemRx.value!);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8 * coefficient,
                   ),
                   BorderedButton(
                     text: 'txt_no_thanks'.tr,
                     textColor: SatorioColor.interactive,
                     borderColor: SatorioColor.interactive,
                     borderWidth: 2,
+                    onPressed: () {
+                      Get.back();
+                    },
                   ),
                 ],
               ),
@@ -139,54 +167,91 @@ class RealmExpiringBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _item(double amount) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(8),
-        ),
-        color: SatorioColor.lavender,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 20 * coefficient,
-            height: 20 * coefficient,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  SatorioColor.razzle_dazzle_rose,
-                  SatorioColor.dodger_blue
+  Widget _itemWidget(ExtendRealmItem item) {
+    return Obx(
+      () => InkWell(
+        onTap: () {
+          _selectedItemRx.value = _selectedItemRx.value == item ? null : item;
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
+            color: _selectedItemRx.value == item
+                ? SatorioColor.interactive.withOpacity(0.5)
+                : SatorioColor.lavender,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 20 * coefficient,
+                height: 20 * coefficient,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      SatorioColor.razzle_dazzle_rose,
+                      SatorioColor.dodger_blue
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Icon(
+                    SatorIcons.logo,
+                    size: 16 * coefficient,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 6 * coefficient,
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.text,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    item.amount.toStringAsFixed(2),
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ],
               ),
-            ),
-            child: Center(
-              child: Icon(
-                SatorIcons.logo,
-                size: 16 * coefficient,
-                color: Colors.white,
-              ),
-            ),
+            ],
           ),
-          SizedBox(
-            width: 6 * coefficient,
-          ),
-          Text(
-            amount.toStringAsFixed(2),
-            style: textTheme.bodyText2!.copyWith(
-              color: SatorioColor.textBlack,
-              fontSize: 15 * coefficient,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
+
+  final List<ExtendRealmItem> _itemsTmp = [
+    ExtendRealmItem('2h for', 10.0, 2),
+    ExtendRealmItem('24h for', 100.0, 24),
+    ExtendRealmItem('week for', 500.0, 7 * 24),
+  ];
+}
+
+class ExtendRealmItem {
+  final String text;
+  final double amount;
+  final int hours;
+
+  const ExtendRealmItem(this.text, this.amount, this.hours);
 }
