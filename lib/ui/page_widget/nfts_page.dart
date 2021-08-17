@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/nfts_controller.dart';
-import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/nft_preview.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -20,7 +20,7 @@ class NFTsPage extends GetView<NFTsController> {
       appBar: AppBar(
         toolbarHeight: 80,
         elevation: 0,
-        backgroundColor: Colors.white.withOpacity(0.3),
+        backgroundColor: Colors.white.withOpacity(0.7),
         centerTitle: true,
         title: Container(
           height: 38,
@@ -103,7 +103,8 @@ class NFTsPage extends GetView<NFTsController> {
                             Radius.circular(17 * coefficient),
                           ),
                           child: Image.asset(
-                            'images/tmp_nft_2.png',
+                            'images/tmp_nft_5.png',
+                            width: Get.width,
                             height: 200,
                             fit: BoxFit.cover,
                           ),
@@ -160,8 +161,9 @@ class NFTsPage extends GetView<NFTsController> {
                             Radius.circular(17 * coefficient),
                           ),
                           child: Image.asset(
-                            'images/tmp_nft_2.png',
+                            'images/tmp_nft_6.png',
                             height: 200,
+                            width: Get.width,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -220,8 +222,9 @@ class NFTsPage extends GetView<NFTsController> {
                             Radius.circular(17 * coefficient),
                           ),
                           child: Image.asset(
-                            'images/tmp_nft_2.png',
+                            'images/tmp_nft_7.png',
                             height: 200,
+                            width: Get.width,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -296,23 +299,21 @@ class NFTsPage extends GetView<NFTsController> {
     return Container(
       margin: const EdgeInsets.only(top: 16),
       height: 168 * coefficient,
-      child: Obx(
-        () => ListView.separated(
+      child: ListView.separated(
           separatorBuilder: (context, index) => SizedBox(
             width: 16,
           ),
           scrollDirection: Axis.horizontal,
-          itemCount: controller.allShowsRx.value.length,
+          itemCount: nftsList.length,
           itemBuilder: (context, index) {
-            Show show = controller.allShowsRx.value[index];
-            return _showItem(show);
+            NFTPreview nftPreview = nftsList[index];
+            return _showItem(nftPreview);
           },
         ),
-      ),
     );
   }
 
-  Widget _showItem(Show show) {
+  Widget _showItem(NFTPreview nftPreview) {
     final double width = 125.0;
     return InkWell(
       onTap: () {},
@@ -325,15 +326,11 @@ class NFTsPage extends GetView<NFTsController> {
             ClipOval(
               child: Container(
                 color: Colors.white,
-                child: Image(
+                child: Image.asset(nftPreview.cover,
                   width: width,
                   height: width,
                   fit: BoxFit.cover,
-                  image: NetworkImage(show.cover),
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: SatorioColor.grey,
-                  ),
-                ),
+                )
               ),
             ),
             SizedBox(
@@ -341,7 +338,7 @@ class NFTsPage extends GetView<NFTsController> {
             ),
             Expanded(
               child: Text(
-                show.title,
+                nftPreview.title,
                 textAlign: TextAlign.center,
                 style: textTheme.headline4!.copyWith(
                   color: Colors.black,
@@ -355,4 +352,15 @@ class NFTsPage extends GetView<NFTsController> {
       ),
     );
   }
+
+  final List<NFTPreview> nftsList = [
+    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
+    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
+    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
+    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
+    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
+    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
+    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
+    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
+  ];
 }
