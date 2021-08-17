@@ -115,7 +115,7 @@ class NFTsPage extends GetView<NFTsController> {
                           children: [
                             Image.asset(
                               'images/nft_logo.png',
-                              height: 14,
+                              height: 20,
                             ),
                             SizedBox(
                               width: 10,
@@ -125,7 +125,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: '3,284',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 12.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -135,7 +135,7 @@ class NFTsPage extends GetView<NFTsController> {
                                     text: 'sao',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 12.0,
+                                      fontSize: 17.0,
                                       fontWeight: FontWeight.w500,
                                       backgroundColor: Colors.transparent,
                                     ),
@@ -173,7 +173,7 @@ class NFTsPage extends GetView<NFTsController> {
                             text: '32,284',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 12.0,
+                              fontSize: 17.0,
                               fontWeight: FontWeight.w500,
                               backgroundColor: Colors.transparent,
                             ),
@@ -183,7 +183,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: 'sao',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 12.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -193,7 +193,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: '\$1,300',
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.7),
-                                  fontSize: 12.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -233,7 +233,7 @@ class NFTsPage extends GetView<NFTsController> {
                             text: '3,284',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 12.0,
+                              fontSize: 17.0,
                               fontWeight: FontWeight.w500,
                               backgroundColor: Colors.transparent,
                             ),
@@ -243,7 +243,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: 'sao',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 12.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -253,7 +253,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: '\$1,30',
                                 style: TextStyle(
                                   color: Colors.black.withOpacity(0.7),
-                                  fontSize: 12.0,
+                                  fontSize: 17.0,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
