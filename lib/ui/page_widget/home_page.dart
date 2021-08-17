@@ -142,6 +142,7 @@ class HomePage extends GetView<HomeController> {
           child: TitleWithButton(
             textCode: 'Best NFTs',
             onTap: () {
+              controller.toShowsCategory('all');
             },
           ),
         ),

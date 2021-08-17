@@ -41,8 +41,9 @@ class EpisodeRealmDialog extends StatelessWidget {
                   height: 30 * coefficient,
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 15),
-                  padding: const EdgeInsets.symmetric(vertical: 19),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 28 * coefficient,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(13),
@@ -58,8 +59,15 @@ class EpisodeRealmDialog extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
-                            width: 106 * coefficient,
-                            padding: EdgeInsets.only(left: 36 * coefficient),
+                            width: 50 * coefficient,
+                            height: 50 * coefficient,
+                            margin: EdgeInsets.only(left: 36 * coefficient),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                              color: Colors.white,
+                            ),
                             child: Center(
                               child: Text(
                                 '1',
@@ -70,14 +78,17 @@ class EpisodeRealmDialog extends StatelessWidget {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            width: 24 * coefficient,
+                          ),
                           Expanded(
                             child: Text(
                               'txt_enter_episode_realm_step_1'.tr,
                               textAlign: TextAlign.start,
                               style: textTheme.bodyText2!.copyWith(
                                   color: SatorioColor.textBlack,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 18.0 * coefficient,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ],
@@ -90,16 +101,27 @@ class EpisodeRealmDialog extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
-                            width: 106 * coefficient,
-                            padding: EdgeInsets.only(left: 36 * coefficient),
+                            width: 50 * coefficient,
+                            height: 50 * coefficient,
+                            margin: EdgeInsets.only(left: 36 * coefficient),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                              color: Colors.white,
+                            ),
                             child: Center(
-                                child: Text(
-                              '2',
-                              style: textTheme.headline4!.copyWith(
-                                  color: SatorioColor.interactive,
-                                  fontSize: 28.0 * coefficient,
-                                  fontWeight: FontWeight.w700),
-                            )),
+                              child: Text(
+                                '2',
+                                style: textTheme.headline4!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 28.0 * coefficient,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 24 * coefficient,
                           ),
                           Expanded(
                             child: Text(
@@ -107,8 +129,8 @@ class EpisodeRealmDialog extends StatelessWidget {
                               textAlign: TextAlign.start,
                               style: textTheme.bodyText2!.copyWith(
                                   color: SatorioColor.textBlack,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 18.0 * coefficient,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ],
@@ -121,16 +143,27 @@ class EpisodeRealmDialog extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Container(
-                            width: 106 * coefficient,
-                            padding: EdgeInsets.only(left: 36 * coefficient),
+                            width: 50 * coefficient,
+                            height: 50 * coefficient,
+                            margin: EdgeInsets.only(left: 36 * coefficient),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(12),
+                              ),
+                              color: Colors.white,
+                            ),
                             child: Center(
-                                child: Text(
-                              '3',
-                              style: textTheme.headline4!.copyWith(
-                                  color: SatorioColor.interactive,
-                                  fontSize: 28.0 * coefficient,
-                                  fontWeight: FontWeight.w700),
-                            )),
+                              child: Text(
+                                '3',
+                                style: textTheme.headline4!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 28.0 * coefficient,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 24 * coefficient,
                           ),
                           Expanded(
                             child: Text(
@@ -138,8 +171,8 @@ class EpisodeRealmDialog extends StatelessWidget {
                               textAlign: TextAlign.start,
                               style: textTheme.bodyText2!.copyWith(
                                   color: SatorioColor.textBlack,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w700),
+                                  fontSize: 18.0 * coefficient,
+                                  fontWeight: FontWeight.w600),
                             ),
                           ),
                         ],
