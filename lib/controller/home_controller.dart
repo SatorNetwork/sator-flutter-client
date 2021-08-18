@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/show_challenges_binding.dart';
 import 'package:satorio/binding/show_detail_binding.dart';
+import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/show_challenges_controller.dart';
 import 'package:satorio/controller/show_detail_controller.dart';
+import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -15,6 +17,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_page.dart';
+import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class HomeController extends GetxController with SingleGetTickerProviderMixin {
@@ -110,10 +113,15 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   void toShowDetail(Show show) {
+    // Get.to(
+    //   () => ShowDetailPage(),
+    //   binding: ShowDetailBinding(),
+    //   arguments: ShowDetailArgument(show),
+    // );
     Get.to(
-      () => ShowDetailPage(),
-      binding: ShowDetailBinding(),
-      arguments: ShowDetailArgument(show),
+          () => ShowDetailWithEpisodesPage(),
+      binding: ShowDetailWithEpisodesBinding(),
+      arguments: ShowDetailWithEpisodesArgument(show),
     );
   }
 
