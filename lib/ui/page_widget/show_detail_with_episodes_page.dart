@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -63,72 +64,72 @@ class ShowDetailWithEpisodesPage
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              margin: const EdgeInsets.only(top: 214, left: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ImageIcon(
-                    AssetImage("images/show/claps.png"),
-                    size: 22.0 * coefficient,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    height: 6.0 * coefficient,
-                  ),
-                  Text(
-                    '32',
-                    style: textTheme.subtitle2!.copyWith(
-                      color: Colors.white,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 23.0 * coefficient,
-                  ),
-                  ImageIcon(
-                    AssetImage("images/show/nft.png"),
-                    size: 22.0 * coefficient,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    height: 6.0 * coefficient,
-                  ),
-                  Text(
-                    '325',
-                    style: textTheme.subtitle2!.copyWith(
-                      color: Colors.white,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 23.0 * coefficient,
-                  ),
-                  ImageIcon(
-                    AssetImage("images/show/watch.png"),
-                    size: 22.0 * coefficient,
-                    color: Colors.white,
-                  ),
-                  SizedBox(
-                    height: 6.0 * coefficient,
-                  ),
-                  Text(
-                    'Netflix',
-                    style: textTheme.subtitle2!.copyWith(
-                      color: Colors.white,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.topLeft,
+          //   child: Container(
+          //     margin: const EdgeInsets.only(top: 214, left: 20),
+          //     child: Column(
+          //       mainAxisSize: MainAxisSize.min,
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: [
+          //         ImageIcon(
+          //           AssetImage("images/show/claps.png"),
+          //           size: 22.0 * coefficient,
+          //           color: Colors.white,
+          //         ),
+          //         SizedBox(
+          //           height: 6.0 * coefficient,
+          //         ),
+          //         Text(
+          //           '32',
+          //           style: textTheme.subtitle2!.copyWith(
+          //             color: Colors.white,
+          //             fontSize: 15.0 * coefficient,
+          //             fontWeight: FontWeight.w500,
+          //           ),
+          //         ),
+          //         SizedBox(
+          //           height: 23.0 * coefficient,
+          //         ),
+          //         ImageIcon(
+          //           AssetImage("images/show/nft.png"),
+          //           size: 22.0 * coefficient,
+          //           color: Colors.white,
+          //         ),
+          //         SizedBox(
+          //           height: 6.0 * coefficient,
+          //         ),
+          //         Text(
+          //           '325',
+          //           style: textTheme.subtitle2!.copyWith(
+          //             color: Colors.white,
+          //             fontSize: 15.0 * coefficient,
+          //             fontWeight: FontWeight.w500,
+          //           ),
+          //         ),
+          //         SizedBox(
+          //           height: 23.0 * coefficient,
+          //         ),
+          //         ImageIcon(
+          //           AssetImage("images/show/watch.png"),
+          //           size: 22.0 * coefficient,
+          //           color: Colors.white,
+          //         ),
+          //         SizedBox(
+          //           height: 6.0 * coefficient,
+          //         ),
+          //         Text(
+          //           'Netflix',
+          //           style: textTheme.subtitle2!.copyWith(
+          //             color: Colors.white,
+          //             fontSize: 15.0 * coefficient,
+          //             fontWeight: FontWeight.w500,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           RefreshIndicator(
             color: SatorioColor.brand,
             onRefresh: () async {
@@ -143,6 +144,18 @@ class ShowDetailWithEpisodesPage
                   collapsedHeight: kToolbarHeight,
                   floating: true,
                   pinned: true,
+                  leading: Material(
+                    color: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    child: InkWell(
+                      onTap: () => controller.back(),
+                      child: Icon(
+                        Icons.chevron_left_rounded,
+                        size: 32,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                   flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     collapseMode: CollapseMode.none,
@@ -158,6 +171,129 @@ class ShowDetailWithEpisodesPage
                           fontWeight: FontWeight.w500,
                         ),
                       ),
+                    ),
+                    background: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 214 * coefficient),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    primary: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 0,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'images/show/claps.svg',
+                                        width: 22.0 * coefficient,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        height: 6.0 * coefficient,
+                                      ),
+                                      Text(
+                                        '32',
+                                        style: textTheme.subtitle2!.copyWith(
+                                          color: Colors.white,
+                                          fontSize: 15.0 * coefficient,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 23.0 * coefficient,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    primary: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 0,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      ImageIcon(
+                                        AssetImage("images/show/nft.png"),
+                                        size: 22.0 * coefficient,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        height: 6.0 * coefficient,
+                                      ),
+                                      Text(
+                                        '325',
+                                        style: textTheme.subtitle2!.copyWith(
+                                          color: Colors.white,
+                                          fontSize: 15.0 * coefficient,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 23.0 * coefficient,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    controller.toNetflixDialog();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    primary: Colors.transparent,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 0,
+                                    ),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'images/show/watch.svg',
+                                        width: 22.0 * coefficient,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        height: 6.0 * coefficient,
+                                      ),
+                                      Text(
+                                        'Netflix',
+                                        style: textTheme.subtitle2!.copyWith(
+                                          color: Colors.white,
+                                          fontSize: 15.0 * coefficient,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
                     ),
                   ),
                 ),

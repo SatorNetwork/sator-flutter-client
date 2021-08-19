@@ -166,4 +166,6 @@ const Map<String, String> en = {
   'txt_realm_extend_success': 'You have extended the realm for %d hours',
   'txt_or': 'or',
   'txt_unlock_the_realm': 'Unlock the realm',
+  'txt_where_can_watch': 'Where can I watch?',
+  'txt_is_live_on': 'is currently live on',
 };
