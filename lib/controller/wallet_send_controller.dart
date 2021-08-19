@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/binding/transaction_preview_binding.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
@@ -194,10 +195,15 @@ class WalletSendController extends GetxController {
   }
 
   void _amountListener() {
-    double? amountValue = double.tryParse(amountController.text);
-    if (amountValue != null) {
-      amountRx.value = amountValue;
-    }
+    try {
+      double amount = NumberFormat().parse(amountController.text).toDouble();
+      amountRx.value = amount;
+    } catch (FormatException) {}
+
+    // double? amountValue = double.tryParse(amountController.text);
+    // if (amountValue != null) {
+    //   amountRx.value = amountValue;
+    // }
   }
 }
 
