@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,39 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
 
     this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
+  }
+
+  Future<String> createLink(String id) async {
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://satorio.page.link',
+      link: Uri.parse('$id'),
+      androidParameters: AndroidParameters(
+        packageName: 'com.satorio.app',
+      ),
+      // NOT ALL ARE REQUIRED ===== HERE AS AN EXAMPLE =====
+      // iosParameters: IosParameters(
+      //   bundleId: 'com.example.ios',
+      //   minimumVersion: '1.0.1',
+      //   appStoreId: '123456789',
+      // ),
+      // googleAnalyticsParameters: GoogleAnalyticsParameters(
+      //   campaign: 'example-promo',
+      //   medium: 'social',
+      //   source: 'orkut',
+      // ),
+      // itunesConnectAnalyticsParameters: ItunesConnectAnalyticsParameters(
+      //   providerToken: '123456',
+      //   campaignToken: 'example-promo',
+      // ),
+      // socialMetaTagParameters: SocialMetaTagParameters(
+      //   title: 'Example of a Dynamic Link',
+      //   description: 'This link works whether app is installed or not!',
+      // ),
+    );
+
+    final Uri dynamicUrl = await parameters.buildUrl();
+
+    return dynamicUrl.toString();
   }
 
   @override
