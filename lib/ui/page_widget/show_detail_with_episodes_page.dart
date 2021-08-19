@@ -135,6 +135,7 @@ class ShowDetailWithEpisodesPage
               SliverAppBar(
                 backgroundColor: Colors.transparent,
                 expandedHeight: appBarHeight,
+                collapsedHeight: kToolbarHeight,
                 floating: true,
                 pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
