@@ -80,6 +80,7 @@ class NetflixDialog extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
+                Get.back();
                 String url = 'https://netflix.com';
                 await canLaunch(url)
                     ? await launch(url)
