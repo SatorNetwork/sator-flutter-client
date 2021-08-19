@@ -10,18 +10,15 @@ import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowDetailWithEpisodesPage
     extends GetView<ShowDetailWithEpisodesController> {
-  late final appBarHeight;
-  late final tabsBlockHeight;
-  late final episodesBlockHeight;
+  get appBarHeight => 411 * coefficient;
 
-  ShowDetailWithEpisodesPage() {
-    appBarHeight = 411 * coefficient;
-    tabsBlockHeight = kTextTabBarHeight + 32 + 16 + 36 * coefficient;
-    episodesBlockHeight = Get.height -
-        Get.mediaQuery.padding.top -
-        kToolbarHeight -
-        tabsBlockHeight;
-  }
+  get tabsBlockHeight => _tabBarHeight() + 32 + 16 + 36 * coefficient;
+
+  get episodesBlockHeight =>
+      Get.height -
+      Get.mediaQuery.padding.top -
+      kToolbarHeight -
+      tabsBlockHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +143,8 @@ class ShowDetailWithEpisodesPage
                   title: Obx(
                     () => Text(
                       controller.showDetailRx.value?.title ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: textTheme.bodyText2!.copyWith(
                         color: Colors.white
                             .withOpacity(controller.titleAlphaRx.value),
@@ -156,16 +155,21 @@ class ShowDetailWithEpisodesPage
                   ),
                 ),
               ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: _SliverAppBarDelegate(controller),
+              Obx(
+                () => SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _SliverAppBarDelegate(
+                    controller,
+                    _tabBarHeight(),
+                  ),
+                ),
               ),
               SliverFillRemaining(
                 hasScrollBody: false,
-                child: Container(
-                  height: episodesBlockHeight,
-                  child: Obx(
-                    () => controller.seasonsRx.value.length > 0
+                child: Obx(
+                  () => Container(
+                    height: episodesBlockHeight,
+                    child: controller.seasonsRx.value.length > 0
                         ? TabBarView(
                             controller: controller.tabController,
                             children: controller.seasonsRx.value
@@ -273,18 +277,28 @@ class ShowDetailWithEpisodesPage
       ),
     );
   }
+
+  double _tabBarHeight() {
+    return _isTabBarVisible() ? kTextTabBarHeight : 0.0;
+  }
+
+  bool _isTabBarVisible() {
+    return !(controller.seasonsRx.value.length == 1 &&
+        controller.seasonsRx.value[0].seasonNumber == 0);
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this.controller);
+  _SliverAppBarDelegate(this.controller, this.tabBarHeight);
 
   final ShowDetailWithEpisodesController controller;
+  final double tabBarHeight;
 
   @override
-  double get minExtent => _tabBarHeight() + 32 + 16 + 36 * coefficient;
+  double get minExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
 
   @override
-  double get maxExtent => _tabBarHeight() + 32 + 16 + 36 * coefficient;
+  double get maxExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
 
   @override
   Widget build(
@@ -319,10 +333,10 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
           ),
           Obx(
             () => Container(
-              height: _tabBarHeight(),
+              height: tabBarHeight,
               child: Center(
                 child: TabBar(
-                  indicatorColor: _isTabBarVisible()
+                  indicatorColor: tabBarHeight > 0
                       ? SatorioColor.interactive
                       : Colors.transparent,
                   automaticIndicatorColorAdjustment: false,
@@ -355,15 +369,6 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
-
-  double _tabBarHeight() {
-    return _isTabBarVisible() ? kTextTabBarHeight : 0.0;
-  }
-
-  bool _isTabBarVisible() {
-    return !(controller.seasonsRx.value.length == 1 &&
-        controller.seasonsRx.value[0].seasonNumber == 0);
+    return oldDelegate.tabBarHeight != tabBarHeight;
   }
 }
