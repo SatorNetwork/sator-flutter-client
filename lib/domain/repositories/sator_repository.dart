@@ -10,6 +10,7 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
   Future<bool> isTokenValid();
@@ -49,6 +50,12 @@ abstract class SatorioRepository {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<bool> stake(String walletId, double amount);
+
+  Future<bool> unstake(String walletId, double amount);
+
+  Future<WalletStake> getStake(String walletId);
+
   Future<List<Show>> shows({int? page, int? itemsPerPage});
 
   Future<List<Show>> showsFromCategory(String category);
@@ -66,6 +73,8 @@ abstract class SatorioRepository {
   Future<Challenge> challenge(String challengeId);
 
   Future<bool> isChallengeActivated(String episodeId);
+
+  Future<bool> paidUnlockEpisode(String episodeId);
 
   Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId);
 

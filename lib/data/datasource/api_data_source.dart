@@ -13,6 +13,7 @@ import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
+import 'package:satorio/data/model/wallet_stake_model.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -72,6 +73,12 @@ abstract class ApiDataSource {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<bool> stake(String walletId, double amount);
+
+  Future<bool> unstake(String walletId, double amount);
+
+  Future<WalletStakeModel> getStake(String walletId);
+
   // endregion
 
   // region Shows
@@ -97,6 +104,8 @@ abstract class ApiDataSource {
   Future<ChallengeModel> challenge(String challengeId);
 
   Future<bool> isChallengeActivated(String episodeId);
+
+  Future<bool> paidUnlockEpisode(String episodeId);
 
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId);
 

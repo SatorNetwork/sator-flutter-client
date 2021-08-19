@@ -10,6 +10,7 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/title_button.dart';
 import 'package:satorio/util/avatar_list.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -18,7 +19,7 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SatorioColor.darkAccent,
+      backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
       body: RefreshIndicator(
         color: SatorioColor.brand,
@@ -30,133 +31,91 @@ class HomePage extends GetView<HomeController> {
             children: [
               Container(
                 color: SatorioColor.darkAccent,
-                height: 190,
                 child: Stack(
                   children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 76),
+                    SvgPicture.asset(
+                      'images/bg/gradient.svg',
+                      height: Get.height,
+                      fit: BoxFit.cover,
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 76, right: 20),
+                      child: Align(
+                        alignment: Alignment.topLeft,
                         child: InkWell(
                           onTap: () {
                             controller.toLogoutDialog();
                           },
-                          child: Obx(
-                            () => Text(
-                              controller.profileRx.value?.displayedName ?? '',
-                              style: textTheme.headline1!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 32.0 * coefficient,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 67, right: 20),
-                        width: 60 * coefficient,
-                        height: 60 * coefficient,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 5,
-                            color: Colors.white.withOpacity(0.12),
-                          ),
-                        ),
-                        child: Center(
-                          child: Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: SatorioColor.casablanca,
-                            ),
-                            child: Center(
-                              child: ClipOval(
-                                child: SvgPicture.asset(
-                                  avatars[avatarIndex],
-                                  width: 50,
-                                  height: 50,
-                                  fit: BoxFit.fitWidth,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 158),
-                height: 115,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32),
-                    topRight: Radius.circular(32),
-                  ),
-                  color: SatorioColor.interactive,
-                ),
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 21, left: 20),
-                        child: Text(
-                          'txt_wallet'.tr,
-                          style: textTheme.headline3!.copyWith(
-                            color: Colors.white,
-                            fontSize: 24.0 * coefficient,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20, top: 16),
-                        child: Obx(
-                          () => Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                controller.walletRx.value.length > 0
-                                    ? controller
-                                        .walletRx.value[0].displayedValue
-                                    : '',
-                                style: textTheme.bodyText1!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 18.0 * coefficient,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(12.0),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            avatars[avatarIndex],
+                                            width: 50,
+                                            height: 50,
+                                            fit: BoxFit.fitWidth,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 14,
+                                  ),
+                                  Obx(
+                                    () => Text(
+                                      controller
+                                              .profileRx.value?.displayedName ??
+                                          '',
+                                      style: textTheme.headline1!.copyWith(
+                                          color: SatorioColor.darkAccent,
+                                          fontSize: 14.0 * coefficient,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                controller.walletRx.value.length > 1
-                                    ? controller
-                                        .walletRx.value[1].displayedValue
-                                    : '',
-                                style: textTheme.bodyText2!.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 12.0 * coefficient,
-                                  fontWeight: FontWeight.w400,
+                              Obx(
+                                () => Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      controller.walletRx.value.length > 0
+                                          ? controller
+                                              .walletRx.value[0].displayedValue
+                                          : '',
+                                      style: textTheme.bodyText1!.copyWith(
+                                        color: SatorioColor.darkAccent,
+                                        fontSize: 18.0 * coefficient,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 231),
+                margin: const EdgeInsets.only(top: 160),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(32),
@@ -179,14 +138,39 @@ class HomePage extends GetView<HomeController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 32, left: 20, right: 20),
-          child: Text(
-            'Highest Rewarding',
-            style: textTheme.headline3!.copyWith(
-              color: SatorioColor.textBlack,
-              fontSize: 24.0 * coefficient,
-              fontWeight: FontWeight.w700,
+          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+          child: TitleWithButton(
+            textCode: 'Best NFTs',
+            onTap: () {
+              controller.toShowsCategory('all');
+            },
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          height: 168 * coefficient,
+          child: Obx(
+                () => ListView.separated(
+              separatorBuilder: (context, index) => SizedBox(
+                width: 16,
+              ),
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              itemCount: controller.allShowsRx.value.length,
+              itemBuilder: (context, index) {
+                Show show = controller.allShowsRx.value[index];
+                return _showItem(show);
+              },
             ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+          child: TitleWithButton(
+            textCode: 'Highest Rewards',
+            onTap: () {
+              controller.toShowsCategory('highest_rewarding');
+            },
           ),
         ),
         Container(
@@ -209,13 +193,11 @@ class HomePage extends GetView<HomeController> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: Text(
-            'Most Socializing',
-            style: textTheme.headline3!.copyWith(
-              color: SatorioColor.textBlack,
-              fontSize: 24.0 * coefficient,
-              fontWeight: FontWeight.w700,
-            ),
+          child: TitleWithButton(
+            textCode: 'Most Social',
+            onTap: () {
+              controller.toShowsCategory('most_socializing');
+            },
           ),
         ),
         Container(
@@ -238,13 +220,11 @@ class HomePage extends GetView<HomeController> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: Text(
-            'Newest Added',
-            style: textTheme.headline3!.copyWith(
-              color: SatorioColor.textBlack,
-              fontSize: 24.0 * coefficient,
-              fontWeight: FontWeight.w700,
-            ),
+          child: TitleWithButton(
+            textCode: 'Newest Added',
+            onTap: () {
+              controller.toShowsCategory('newest_added');
+            },
           ),
         ),
         Container(
@@ -265,6 +245,33 @@ class HomePage extends GetView<HomeController> {
             ),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+          child: TitleWithButton(
+            textCode: 'All shows',
+            onTap: () {
+              controller.toShowsCategory('all');
+            },
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          height: 168 * coefficient,
+          child: Obx(
+                () => ListView.separated(
+              separatorBuilder: (context, index) => SizedBox(
+                width: 16,
+              ),
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              itemCount: controller.allShowsRx.value.length,
+              itemBuilder: (context, index) {
+                Show show = controller.allShowsRx.value[index];
+                return _showItem(show);
+              },
+            ),
+          ),
+        ),
         SizedBox(
           height: 24,
         )
@@ -278,9 +285,6 @@ class HomePage extends GetView<HomeController> {
     return InkWell(
       onTap: () {
         controller.toShowDetail(show);
-      },
-      onLongPress: () {
-        controller.toShowChallenges(show);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
