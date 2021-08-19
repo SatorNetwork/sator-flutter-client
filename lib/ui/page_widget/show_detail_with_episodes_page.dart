@@ -129,64 +129,70 @@ class ShowDetailWithEpisodesPage
               ),
             ),
           ),
-          CustomScrollView(
-            controller: controller.scrollController,
-            slivers: [
-              SliverAppBar(
-                backgroundColor: Colors.transparent,
-                expandedHeight: appBarHeight,
-                collapsedHeight: kToolbarHeight,
-                floating: true,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  collapseMode: CollapseMode.none,
-                  title: Obx(
-                    () => Text(
-                      controller.showDetailRx.value?.title ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: Colors.white
-                            .withOpacity(controller.titleAlphaRx.value),
-                        fontSize: 17.0 * coefficient,
-                        fontWeight: FontWeight.w500,
+          RefreshIndicator(
+            color: SatorioColor.brand,
+            onRefresh: () async {
+              controller.refreshShowData();
+            },
+            child: CustomScrollView(
+              controller: controller.scrollController,
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: Colors.transparent,
+                  expandedHeight: appBarHeight,
+                  collapsedHeight: kToolbarHeight,
+                  floating: true,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    collapseMode: CollapseMode.none,
+                    title: Obx(
+                      () => Text(
+                        controller.showDetailRx.value?.title ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: Colors.white
+                              .withOpacity(controller.titleAlphaRx.value),
+                          fontSize: 17.0 * coefficient,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Obx(
-                () => SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _SliverAppBarDelegate(
-                    controller,
-                    _tabBarHeight(),
+                Obx(
+                  () => SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _SliverAppBarDelegate(
+                      controller,
+                      _tabBarHeight(),
+                    ),
                   ),
                 ),
-              ),
-              SliverFillRemaining(
-                hasScrollBody: false,
-                child: Obx(
-                  () => Container(
-                    height: episodesBlockHeight,
-                    child: controller.seasonsRx.value.length > 0
-                        ? TabBarView(
-                            controller: controller.tabController,
-                            children: controller.seasonsRx.value
-                                .map(
-                                  (showSeason) => _episodesList(showSeason),
-                                )
-                                .toList(),
-                          )
-                        : Container(
-                            color: Colors.white,
-                            height: episodesBlockHeight,
-                          ),
+                SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Obx(
+                    () => Container(
+                      height: episodesBlockHeight,
+                      child: controller.seasonsRx.value.length > 0
+                          ? TabBarView(
+                              controller: controller.tabController,
+                              children: controller.seasonsRx.value
+                                  .map(
+                                    (showSeason) => _episodesList(showSeason),
+                                  )
+                                  .toList(),
+                            )
+                          : Container(
+                              color: Colors.white,
+                              height: episodesBlockHeight,
+                            ),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           )
         ],
       ),
