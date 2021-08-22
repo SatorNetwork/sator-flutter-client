@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/binding/transaction_preview_binding.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
@@ -16,6 +15,7 @@ import 'package:satorio/ui/dialog_widget/choose_wallet_dialog.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/transaction_preview_page.dart';
+import 'package:satorio/util/extension.dart';
 
 class WalletSendController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -195,15 +195,10 @@ class WalletSendController extends GetxController {
   }
 
   void _amountListener() {
-    try {
-      double amount = NumberFormat().parse(amountController.text).toDouble();
+    double? amount = amountController.text.tryParse();
+    if (amount != null) {
       amountRx.value = amount;
-    } catch (FormatException) {}
-
-    // double? amountValue = double.tryParse(amountController.text);
-    // if (amountValue != null) {
-    //   amountRx.value = amountValue;
-    // }
+    }
   }
 }
 

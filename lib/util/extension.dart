@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
 extension Format on String {
@@ -26,5 +28,16 @@ extension EmailValidation on String {
     return RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     ).hasMatch(this);
+  }
+}
+
+extension DoubleParse on String {
+  double? tryParse() {
+    String locale = Get.deviceLocale.toString();
+    try {
+      return NumberFormat.decimalPattern(locale).parse(this).toDouble();
+    } catch (FormatException) {
+      return null;
+    }
   }
 }
