@@ -62,7 +62,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _showsList()
+                    _showsList(),
                   ],
                 ),
               ),
@@ -101,7 +101,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
   }
 
   Widget _showItem(Show show) {
-    final width = Get.width - 20 - 32;
+    final width = Get.width - 20 - 20;
     final height = 168.0 * coefficient;
     return InkWell(
       onTap: () {
