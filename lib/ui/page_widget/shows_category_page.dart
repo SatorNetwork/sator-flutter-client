@@ -54,17 +54,17 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(32),
-                topRight: Radius.circular(32),
-              ),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               color: Colors.white,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _showsList()
-                ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _showsList()
+                  ],
+                ),
               ),
             ),
           )
