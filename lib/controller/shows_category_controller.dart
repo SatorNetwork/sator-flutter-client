@@ -89,11 +89,6 @@ class ShowsCategoryController extends GetxController {
   }
 
   void toShowDetail(Show show) {
-    // Get.to(
-    //       () => ShowDetailPage(),
-    //   binding: ShowDetailBinding(),
-    //   arguments: ShowDetailArgument(show),
-    // );
     Get.to(
       () => ShowDetailWithEpisodesPage(),
       binding: ShowDetailWithEpisodesBinding(),

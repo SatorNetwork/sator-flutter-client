@@ -111,11 +111,6 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
   }
 
   void toShowDetail(Show show) {
-    // Get.to(
-    //   () => ShowDetailPage(),
-    //   binding: ShowDetailBinding(),
-    //   arguments: ShowDetailArgument(show),
-    // );
     Get.to(
       () => ShowDetailWithEpisodesPage(),
       binding: ShowDetailWithEpisodesBinding(),
