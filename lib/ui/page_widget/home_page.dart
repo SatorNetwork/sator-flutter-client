@@ -52,42 +52,48 @@ class HomePage extends GetView<HomeController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            avatars[avatarIndex],
-                                            width: 50,
-                                            height: 50,
-                                            fit: BoxFit.fitWidth,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                        width: 50,
+                                        height: 50,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              avatars[avatarIndex],
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.fitWidth,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 14,
-                                  ),
-                                  Obx(
-                                    () => Text(
-                                      controller
-                                              .profileRx.value?.displayedName ??
-                                          '',
-                                      style: textTheme.headline1!.copyWith(
-                                          color: SatorioColor.darkAccent,
-                                          fontSize: 14.0 * coefficient,
-                                          fontWeight: FontWeight.w700),
+                                    SizedBox(
+                                      width: 14,
                                     ),
-                                  ),
-                                ],
+                                    Expanded(
+                                      child: Obx(
+                                        () => Text(
+                                          controller.profileRx.value
+                                                  ?.displayedName ??
+                                              '',
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: textTheme.headline1!.copyWith(
+                                              color: SatorioColor.darkAccent,
+                                              fontSize: 14.0 * coefficient,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Obx(
                                 () => Column(
