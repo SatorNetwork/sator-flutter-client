@@ -18,11 +18,7 @@ class WalletStakeController extends GetxController {
     WalletStakeArgument argument = Get.arguments as WalletStakeArgument;
     walletDetailRx = Rx(argument.walletDetail);
 
-    _satorioRepository
-        .getStake(walletDetailRx.value.id)
-        .then((WalletStake walletStake) {
-      walletStakeRx.value = walletStake;
-    });
+    _updateWalletStake();
   }
 
   void back() {
@@ -60,11 +56,20 @@ class WalletStakeController extends GetxController {
     }
   }
 
+  void _updateWalletStake() {
+    _satorioRepository
+        .getStake(walletDetailRx.value.id)
+        .then((WalletStake walletStake) {
+      walletStakeRx.value = walletStake;
+    });
+  }
+
   void _stakeAmount(double amount) {
     _satorioRepository
         .stake(walletDetailRx.value.id, amount)
         .then((bool result) {
       if (result) {
+        _updateWalletStake();
         tmpState.value = true;
         Get.dialog(
           DefaultDialog(
@@ -99,6 +104,7 @@ class WalletStakeController extends GetxController {
         .unstake(walletDetailRx.value.id, amount)
         .then((bool result) {
       if (result) {
+        _updateWalletStake();
         tmpState.value = false;
         Get.dialog(
           DefaultDialog(
