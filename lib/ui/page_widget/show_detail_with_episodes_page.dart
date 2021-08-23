@@ -8,6 +8,7 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'dart:ui';
 
 class ShowDetailWithEpisodesPage
     extends GetView<ShowDetailWithEpisodesController> {
