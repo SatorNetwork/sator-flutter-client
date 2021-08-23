@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/wallet_stake_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
@@ -156,9 +155,10 @@ class WalletStakePage extends GetView<WalletStakeController> {
                   color: SatorioColor.mauve,
                 ),
                 child: Center(
-                  child: Icon(
-                    SatorIcons.logo,
-                    size: 40 * coefficient,
+                  child: SvgPicture.asset(
+                    'images/sator_logo.svg',
+                    width: 24 * coefficient,
+                    height: 24 * coefficient,
                     color: SatorioColor.brand,
                   ),
                 ),
@@ -280,9 +280,10 @@ class WalletStakePage extends GetView<WalletStakeController> {
                   color: SatorioColor.mauve,
                 ),
                 child: Center(
-                  child: Icon(
-                    SatorIcons.logo,
-                    size: 40 * coefficient,
+                  child: SvgPicture.asset(
+                    'images/sator_logo.svg',
+                    width: 24 * coefficient,
+                    height: 24 * coefficient,
                     color: SatorioColor.brand,
                   ),
                 ),

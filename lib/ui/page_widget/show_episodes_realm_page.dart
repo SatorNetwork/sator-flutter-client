@@ -9,7 +9,6 @@ import 'package:satorio/domain/entities/message.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
@@ -1226,16 +1225,19 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       width: 15,
                     ),
                     Container(
-                      height: 23,
-                      width: 23,
+                      height: 24,
+                      width: 24,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: SatorioColor.interactive,
                       ),
-                      child: Icon(
-                        SatorIcons.logo,
-                        size: 18,
-                        color: Colors.white,
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'images/sator_logo.svg',
+                          width: 12,
+                          height: 12,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     SizedBox(
