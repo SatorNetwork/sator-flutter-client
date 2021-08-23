@@ -1,11 +1,8 @@
 import 'package:get/get.dart';
-import 'package:satorio/binding/show_challenges_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
-import 'package:satorio/controller/show_challenges_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/page_widget/show_challenges_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 
 class ShowsCategoryController extends GetxController {
@@ -78,14 +75,6 @@ class ShowsCategoryController extends GetxController {
     }).catchError((value) {
       _isLoadingRx.value = false;
     });
-  }
-
-  void toShowChallenges(Show show) {
-    Get.to(
-          () => ShowChallengesPage(),
-      binding: ShowChallengesBinding(),
-      arguments: ShowChallengesArgument(show),
-    );
   }
 
   void toShowDetail(Show show) {

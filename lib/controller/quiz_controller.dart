@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -20,7 +19,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
-class QuizController extends GetxController with BackToMainMixin {
+class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
   GetSocket? _socket;
 
@@ -41,6 +40,15 @@ class QuizController extends GetxController with BackToMainMixin {
       _socket = null;
     }
     super.onClose();
+  }
+
+  void backToEpisode() {
+    if (Get.isRegistered<SatorioRepository>()) {
+      SatorioRepository satorioRepository = Get.find();
+      satorioRepository.updateWalletBalance();
+    }
+    Get.until((route) => !Get.isOverlaysOpen);
+    Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
   }
 
   void back() {
@@ -145,10 +153,10 @@ class QuizController extends GetxController with BackToMainMixin {
         DefaultDialog(
           'txt_oops'.tr,
           'txt_wrong_answer'.tr,
-          'txt_back_home'.tr,
+          'txt_back_realm'.tr,
           icon: Icons.sentiment_dissatisfied_rounded,
           onPressed: () {
-            backToMain();
+            backToEpisode();
           },
         ),
         barrierDismissible: false,
