@@ -5,6 +5,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/extension.dart';
 
 typedef AmountEnterCallback = void Function(double amount);
 
@@ -78,7 +79,7 @@ class StakeDialog extends StatelessWidget {
             ElevatedGradientButton(
               text: buttonText,
               onPressed: () {
-                double? amount = double.tryParse(_amountController.text);
+                double? amount = _amountController.text.tryParse();
                 if (amount != null) {
                   Get.back();
                   onPressed(amount);

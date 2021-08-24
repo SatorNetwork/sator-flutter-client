@@ -52,42 +52,48 @@ class HomePage extends GetView<HomeController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            avatars[avatarIndex],
-                                            width: 50,
-                                            height: 50,
-                                            fit: BoxFit.fitWidth,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                        width: 50,
+                                        height: 50,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              avatars[avatarIndex],
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.fitWidth,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 14,
-                                  ),
-                                  Obx(
-                                    () => Text(
-                                      controller
-                                              .profileRx.value?.displayedName ??
-                                          '',
-                                      style: textTheme.headline1!.copyWith(
-                                          color: SatorioColor.darkAccent,
-                                          fontSize: 14.0 * coefficient,
-                                          fontWeight: FontWeight.w700),
+                                    SizedBox(
+                                      width: 14,
                                     ),
-                                  ),
-                                ],
+                                    Expanded(
+                                      child: Obx(
+                                        () => Text(
+                                          controller.profileRx.value
+                                                  ?.displayedName ??
+                                              '',
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: textTheme.headline1!.copyWith(
+                                              color: SatorioColor.darkAccent,
+                                              fontSize: 14.0 * coefficient,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Obx(
                                 () => Column(
@@ -134,9 +140,6 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _contentWithCategories() {
-    final double nftsLargestImageSize =
-        (Get.width - 2 * 20 - 16 * coefficient) / 2;
-
     final MainController mainController = Get.find();
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -145,105 +148,25 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Top NFTs',
+            textCode: 'Featured NFT’s',
             onTap: () {
               mainController.selectedBottomTabIndex.value = 2;
             },
           ),
         ),
-        SizedBox(height: 15,),
         Container(
-          height: nftsLargestImageSize + 21 * coefficient,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(17 * coefficient),
-                        ),
-                        child: Image.asset(
-                          'images/tmp_nft_1.png',
-                          width: nftsLargestImageSize,
-                          height: Get.height,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 16 * coefficient,
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment:
-                        CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(17 * coefficient),
-                              ),
-                              child: Image.asset(
-                                'images/tmp_nft_2.png',
-                                width: nftsLargestImageSize,
-                                height: Get.height,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                top: 16 * coefficient,
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.all(
-                                        Radius.circular(
-                                            17 * coefficient),
-                                      ),
-                                      child: Image.asset(
-                                        'images/tmp_nft_3.png',
-                                        height: Get.height,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 15 * coefficient,
-                                  ),
-                                  Expanded(
-                                    child: ClipRRect(
-                                      borderRadius:
-                                      BorderRadius.all(
-                                        Radius.circular(
-                                            17 * coefficient),
-                                      ),
-                                      child: Image.asset(
-                                        'images/tmp_nft_4.png',
-                                        height: Get.height,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          margin: const EdgeInsets.only(top: 16),
+          height: 225 * coefficient,
+          child: ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(
+              width: 12,
+            ),
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return _nftItem();
+            },
           ),
         ),
         Padding(
@@ -340,7 +263,7 @@ class HomePage extends GetView<HomeController> {
           margin: const EdgeInsets.only(top: 16),
           height: 168 * coefficient,
           child: Obx(
-                () => ListView.separated(
+            () => ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
                 width: 16,
               ),
@@ -438,6 +361,76 @@ class HomePage extends GetView<HomeController> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _nftItem() {
+    final width = (Get.width - 12 - 2 * 20 - 8) / 2;
+    final height = 225 * coefficient;
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        height: height,
+        width: width,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                'images/tmp_nft.png',
+                width: width,
+                height: 200 * coefficient,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 18 * coefficient,
+                    height: 18 * coefficient,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          SatorioColor.razzle_dazzle_rose,
+                          SatorioColor.dodger_blue
+                        ],
+                      ),
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'images/sator_logo.svg',
+                        width: 9 * coefficient,
+                        height: 9 * coefficient,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 6 * coefficient,
+                  ),
+                  Expanded(
+                    child: Text(
+                      '3,284 SAO',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: Colors.black,
+                        fontSize: 12.0 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

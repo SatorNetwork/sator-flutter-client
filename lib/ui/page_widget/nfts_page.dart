@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -15,24 +13,27 @@ import 'package:satorio/ui/widget/title_button.dart';
 class NFTsPage extends GetView<NFTsController> {
   @override
   Widget build(BuildContext context) {
-    final double topMargin = 140;
+    final double topMargin = 160 * coefficient;
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 80,
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0.7),
         centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: null,
         title: Container(
-          height: 38,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderRadius: BorderRadius.all(
+              Radius.circular(8),
+            ),
           ),
           child: TextField(
+            textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
               hintText: 'Search',
               hintStyle: TextStyle(
                 color: SatorioColor.darkAccent,
-                fontSize: 14.0,
+                fontSize: 14.0 * coefficient,
                 fontWeight: FontWeight.w400,
               ),
               prefixIcon: Image.asset('images/search.png'),
@@ -73,7 +74,7 @@ class NFTsPage extends GetView<NFTsController> {
   }
 
   Widget _content() {
-    final double topMargin = 140;
+    final double topMargin = 140 * coefficient;
     return Container(
       margin: EdgeInsets.only(top: topMargin),
       child: Column(
@@ -81,14 +82,14 @@ class NFTsPage extends GetView<NFTsController> {
           TitleWithButton(
             onTap: () {},
             textCode: 'Popular',
-            fontSize: 34.0,
+            fontSize: 34.0 * coefficient,
             fontWeight: FontWeight.w700,
             buttonText: 'View',
             color: Colors.black,
             iconColor: SatorioColor.darkAccent,
           ),
           SizedBox(
-            height: 20,
+            height: 20 * coefficient,
           ),
           Column(
             children: [
@@ -110,7 +111,7 @@ class NFTsPage extends GetView<NFTsController> {
                           ),
                         ),
                         SizedBox(
-                          height: 8,
+                          height: 8 * coefficient,
                         ),
                         Row(
                           children: [
@@ -119,7 +120,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: '1,784',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 14.0,
+                                  fontSize: 14.0 * coefficient,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -129,7 +130,7 @@ class NFTsPage extends GetView<NFTsController> {
                                     text: 'sao',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 14.0,
+                                      fontSize: 14.0 * coefficient,
                                       fontWeight: FontWeight.w500,
                                       backgroundColor: Colors.transparent,
                                     ),
@@ -143,7 +144,7 @@ class NFTsPage extends GetView<NFTsController> {
                     ),
                   ),
                   SizedBox(
-                    width: 15,
+                    width: 15 * coefficient,
                   ),
                   Expanded(
                     child: Column(
@@ -161,14 +162,14 @@ class NFTsPage extends GetView<NFTsController> {
                           ),
                         ),
                         SizedBox(
-                          height: 8,
+                          height: 8 * coefficient,
                         ),
                         RichText(
                           text: TextSpan(
                             text: '32,284',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.0,
+                              fontSize: 14.0 * coefficient,
                               fontWeight: FontWeight.w500,
                               backgroundColor: Colors.transparent,
                             ),
@@ -178,7 +179,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: 'sao',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 14.0,
+                                  fontSize: 14.0 * coefficient,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -192,7 +193,7 @@ class NFTsPage extends GetView<NFTsController> {
                 ],
               ),
               SizedBox(
-                height: 15,
+                height: 15 * coefficient,
               ),
               Row(
                 children: [
@@ -212,14 +213,14 @@ class NFTsPage extends GetView<NFTsController> {
                           ),
                         ),
                         SizedBox(
-                          height: 8,
+                          height: 8 * coefficient,
                         ),
                         RichText(
                           text: TextSpan(
                             text: '3,284',
                             style: TextStyle(
                               color: Colors.black,
-                              fontSize: 14.0,
+                              fontSize: 14.0 * coefficient,
                               fontWeight: FontWeight.w500,
                               backgroundColor: Colors.transparent,
                             ),
@@ -229,7 +230,7 @@ class NFTsPage extends GetView<NFTsController> {
                                 text: 'sao',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontSize: 14.0,
+                                  fontSize: 14.0 * coefficient,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
@@ -245,23 +246,23 @@ class NFTsPage extends GetView<NFTsController> {
             ],
           ),
           SizedBox(
-            height: 34,
+            height: 34 * coefficient,
           ),
           TitleWithButton(
             onTap: () {},
             textCode: 'All Shows',
-            fontSize: 34.0,
+            fontSize: 34.0 * coefficient,
             fontWeight: FontWeight.w700,
             buttonText: 'View',
             color: Colors.black,
             iconColor: SatorioColor.darkAccent,
           ),
           SizedBox(
-            height: 10, 
+            height: 10 * coefficient,
           ),
           _allShows(),
           SizedBox(
-            height: 15,
+            height: 15 * coefficient,
           ),
         ],
       ),
@@ -273,16 +274,16 @@ class NFTsPage extends GetView<NFTsController> {
       margin: const EdgeInsets.only(top: 16),
       height: 168 * coefficient,
       child: ListView.separated(
-          separatorBuilder: (context, index) => SizedBox(
-            width: 16,
-          ),
-          scrollDirection: Axis.horizontal,
-          itemCount: nftsList.length,
-          itemBuilder: (context, index) {
-            NFTPreview nftPreview = nftsList[index];
-            return _showItem(nftPreview);
-          },
+        separatorBuilder: (context, index) => SizedBox(
+          width: 16,
         ),
+        scrollDirection: Axis.horizontal,
+        itemCount: nftsList.length,
+        itemBuilder: (context, index) {
+          NFTPreview nftPreview = nftsList[index];
+          return _showItem(nftPreview);
+        },
+      ),
     );
   }
 
@@ -298,16 +299,16 @@ class NFTsPage extends GetView<NFTsController> {
           children: [
             ClipOval(
               child: Container(
-                color: Colors.white,
-                child: Image.asset(nftPreview.cover,
-                  width: width,
-                  height: width,
-                  fit: BoxFit.cover,
-                )
-              ),
+                  color: Colors.white,
+                  child: Image.asset(
+                    nftPreview.cover,
+                    width: width,
+                    height: width,
+                    fit: BoxFit.cover,
+                  )),
             ),
             SizedBox(
-              height: 10,
+              height: 10 * coefficient,
             ),
             Expanded(
               child: Text(
