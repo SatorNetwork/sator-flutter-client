@@ -8,7 +8,6 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
-import 'dart:ui';
 
 class ShowDetailWithEpisodesPage
     extends GetView<ShowDetailWithEpisodesController> {
@@ -65,72 +64,6 @@ class ShowDetailWithEpisodesPage
               ),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.topLeft,
-          //   child: Container(
-          //     margin: const EdgeInsets.only(top: 214, left: 20),
-          //     child: Column(
-          //       mainAxisSize: MainAxisSize.min,
-          //       crossAxisAlignment: CrossAxisAlignment.center,
-          //       children: [
-          //         ImageIcon(
-          //           AssetImage("images/show/claps.png"),
-          //           size: 22.0 * coefficient,
-          //           color: Colors.white,
-          //         ),
-          //         SizedBox(
-          //           height: 6.0 * coefficient,
-          //         ),
-          //         Text(
-          //           '32',
-          //           style: textTheme.subtitle2!.copyWith(
-          //             color: Colors.white,
-          //             fontSize: 15.0 * coefficient,
-          //             fontWeight: FontWeight.w500,
-          //           ),
-          //         ),
-          //         SizedBox(
-          //           height: 23.0 * coefficient,
-          //         ),
-          //         ImageIcon(
-          //           AssetImage("images/show/nft.png"),
-          //           size: 22.0 * coefficient,
-          //           color: Colors.white,
-          //         ),
-          //         SizedBox(
-          //           height: 6.0 * coefficient,
-          //         ),
-          //         Text(
-          //           '325',
-          //           style: textTheme.subtitle2!.copyWith(
-          //             color: Colors.white,
-          //             fontSize: 15.0 * coefficient,
-          //             fontWeight: FontWeight.w500,
-          //           ),
-          //         ),
-          //         SizedBox(
-          //           height: 23.0 * coefficient,
-          //         ),
-          //         ImageIcon(
-          //           AssetImage("images/show/watch.png"),
-          //           size: 22.0 * coefficient,
-          //           color: Colors.white,
-          //         ),
-          //         SizedBox(
-          //           height: 6.0 * coefficient,
-          //         ),
-          //         Text(
-          //           'Netflix',
-          //           style: textTheme.subtitle2!.copyWith(
-          //             color: Colors.white,
-          //             fontSize: 15.0 * coefficient,
-          //             fontWeight: FontWeight.w500,
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
           RefreshIndicator(
             color: SatorioColor.brand,
             onRefresh: () async {

@@ -47,6 +47,7 @@ const Map<String, String> en = {
   'txt_wrong_answer': 'Wrong answer. You lost :(',
   'txt_time_expire': 'Time expired. You lost :(',
   'txt_back_home': 'Back home',
+  'txt_back_realm': 'Back to the realm',
   'txt_keep_going': 'Keep going!',
   'txt_questions_left': '%d questions left',
   'txt_wait_time_runs_out':
