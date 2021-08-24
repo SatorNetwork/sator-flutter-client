@@ -63,9 +63,7 @@ class ShowsCategoryController extends GetxController {
 
     _isLoadingRx.value = true;
 
-    _satorioRepository
-        .shows(page: _pageRx.value)
-        .then((List<Show> shows) {
+    _satorioRepository.shows(page: _pageRx.value).then((List<Show> shows) {
       showsRx.update((value) {
         if (value != null) value.addAll(shows);
       });

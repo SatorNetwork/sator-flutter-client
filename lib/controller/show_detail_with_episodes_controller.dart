@@ -92,6 +92,9 @@ class ShowDetailWithEpisodesController extends GetxController
         ? 0
         : (scrollController.position.pixels - half) / half;
 
+    if (alpha < 0) alpha = 0;
+    if (alpha > 1) alpha = 1;
+
     titleAlphaRx.value = alpha;
   }
 }
