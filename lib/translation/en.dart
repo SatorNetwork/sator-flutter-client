@@ -47,6 +47,7 @@ const Map<String, String> en = {
   'txt_wrong_answer': 'Wrong answer. You lost :(',
   'txt_time_expire': 'Time expired. You lost :(',
   'txt_back_home': 'Back home',
+  'txt_back_realm': 'Back to the realm',
   'txt_keep_going': 'Keep going!',
   'txt_questions_left': '%d questions left',
   'txt_wait_time_runs_out':
@@ -166,4 +167,6 @@ const Map<String, String> en = {
   'txt_realm_extend_success': 'You have extended the realm for %d hours',
   'txt_or': 'or',
   'txt_unlock_the_realm': 'Unlock the realm',
+  'txt_where_can_watch': 'Where can I watch?',
+  'txt_is_live_on': 'is currently live on',
 };

@@ -15,6 +15,7 @@ import 'package:satorio/ui/dialog_widget/choose_wallet_dialog.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/transaction_preview_page.dart';
+import 'package:satorio/util/extension.dart';
 
 class WalletSendController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -194,9 +195,9 @@ class WalletSendController extends GetxController {
   }
 
   void _amountListener() {
-    double? amountValue = double.tryParse(amountController.text);
-    if (amountValue != null) {
-      amountRx.value = amountValue;
+    double? amount = amountController.text.tryParse();
+    if (amount != null) {
+      amountRx.value = amount;
     }
   }
 }

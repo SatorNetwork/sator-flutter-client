@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/wallet_send_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
@@ -93,10 +92,13 @@ class WalletSendPage extends GetView<WalletSendController> {
                             width: 24,
                             height: 24,
                             color: SatorioColor.mauve,
-                            child: Icon(
-                              SatorIcons.logo,
-                              size: 20,
-                              color: SatorioColor.brand,
+                            child: Center(
+                              child: SvgPicture.asset(
+                                'images/sator_logo.svg',
+                                width: 12,
+                                height: 12,
+                                color: SatorioColor.brand,
+                              ),
                             ),
                           ),
                         ),

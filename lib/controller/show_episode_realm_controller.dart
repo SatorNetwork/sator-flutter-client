@@ -83,13 +83,13 @@ class ShowEpisodeRealmController extends GetxController {
           }
         },
         onPaidUnlockPressed: () {
-          toRealmPaidActivationBottomSheet();
+          _toRealmPaidActivationBottomSheet();
         },
       ),
     );
   }
 
-  toChallenge() {
+  void toChallenge() {
     Get.to(
       () => ChallengePage(),
       binding: ChallengeBinding(),
@@ -108,7 +108,7 @@ class ShowEpisodeRealmController extends GetxController {
     );
   }
 
-  void toRealmPaidActivationBottomSheet() {
+  void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
         (paidActivationRealmItem) {
