@@ -10,7 +10,6 @@ import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 import 'package:satorio/util/avatar_list.dart';
@@ -407,9 +406,10 @@ class HomePage extends GetView<HomeController> {
                       ),
                     ),
                     child: Center(
-                      child: Icon(
-                        SatorIcons.logo,
-                        size: 15 * coefficient,
+                      child: SvgPicture.asset(
+                        'images/sator_logo.svg',
+                        width: 9 * coefficient,
+                        height: 9 * coefficient,
                         color: Colors.white,
                       ),
                     ),
