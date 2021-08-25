@@ -26,6 +26,9 @@ void main() async {
       translations: SatorioTranslation(),
       locale: Locale('en'),
       fallbackLocale: Locale('en'),
+      supportedLocales: [
+        Locale('en'),
+      ],
       home: SplashPage(),
       onInit: () {
         Get.lazyPut<SplashController>(() => SplashController());

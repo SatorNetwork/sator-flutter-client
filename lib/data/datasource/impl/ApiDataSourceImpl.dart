@@ -584,6 +584,12 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  @override
+  Future<bool> rateEpisode(String episodeId, int rate) {
+    // TODO
+    return Future.value(true);
+  }
+
   // endregion
 
   // region Quiz

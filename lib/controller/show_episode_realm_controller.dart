@@ -12,6 +12,7 @@ import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
@@ -137,6 +138,32 @@ class ShowEpisodeRealmController extends GetxController {
           );
         }
       },
+    );
+  }
+
+  void toRateBottomSheet() {
+    Get.bottomSheet(
+      RateBottomSheet(
+        (int rate) {
+          _satorioRepository.rateEpisode(showEpisodeRx.value.id, rate).then(
+            (result) {
+              if (result) {
+                Get.bottomSheet(
+                  DefaultBottomSheet(
+                    'txt_success'.tr,
+                    'txt_rate_success'.tr.format([rate]),
+                    'txt_awesome'.tr,
+                    icon: Icons.check_rounded,
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                );
+              }
+            },
+          );
+        },
+      ),
     );
   }
 }

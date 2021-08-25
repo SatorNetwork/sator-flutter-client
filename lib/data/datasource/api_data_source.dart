@@ -111,6 +111,8 @@ abstract class ApiDataSource {
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
 
+  Future<bool> rateEpisode(String episodeId, int rate);
+
   // endregion
 
   // region Quiz

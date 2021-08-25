@@ -739,10 +739,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 16,
                           ),
                           Container(
-                            padding: EdgeInsets.all(17),
+                            padding: EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(13),
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(13),
                               ),
                               color: SatorioColor.alice_blue,
                             ),
@@ -772,6 +772,37 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              controller.toRateBottomSheet();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(13),
+                                ),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    SatorioColor.alice_blue2,
+                                    SatorioColor.alice_blue,
+                                  ],
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'txt_rate_episode'.tr,
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 14 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                           SizedBox(
