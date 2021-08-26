@@ -15,7 +15,7 @@ class RateBottomSheet extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  static const int minValue = 0;
+  static const int minValue = 1;
   static const int maxValue = 10;
   static const int initValue = 7;
 
