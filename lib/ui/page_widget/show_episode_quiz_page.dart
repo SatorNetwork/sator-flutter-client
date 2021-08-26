@@ -27,35 +27,9 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
               height: Get.height,
               fit: BoxFit.cover,
             ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top: Get.mediaQuery.padding.top + 22, right: 16),
-                child: TextButton(
-                  onPressed: () {
-                    controller.back();
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: SatorioColor.alice_blue.withOpacity(0.6),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    'txt_cancel'.tr,
-                    style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 18.0 * coefficient,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-              ),
-            ),
             Container(
               margin: EdgeInsets.only(
-                top: Get.mediaQuery.padding.top + 40,
+                top: Get.mediaQuery.padding.top,
                 left: _margin,
                 right: _margin,
                 bottom: 20,
@@ -63,73 +37,8 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    child: Center(
-                      child: Obx(
-                        () => controller.questionRx.value == null
-                            ? Container(
-                                width: 119 * coefficient,
-                                height: 119 * coefficient,
-                              )
-                            : CircularCountDownTimer(
-                                controller: controller.countdownController,
-                                width: 119 * coefficient,
-                                height: 119 * coefficient,
-                                duration:
-                                    controller.questionRx.value!.timeForAnswer,
-                                fillColor: SatorioColor.darkAccent,
-                                ringColor: SatorioColor.brand,
-                                isReverse: true,
-                                backgroundColor: Colors.white,
-                                strokeWidth: 7,
-                                autoStart: true,
-                                strokeCap: StrokeCap.round,
-                                textFormat: CountdownTextFormat.S,
-                                textStyle: textTheme.headline1!.copyWith(
-                                  color: Colors.black,
-                                  fontSize: 45.0 * coefficient,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                onComplete: () {
-                                  controller.timeExpire();
-                                },
-                              ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Obx(
-                    () => Text(
-                      'txt_episode_entrance_quiz'.tr.format([
-                        controller.showSeasonRx.value.seasonNumber,
-                        controller.showEpisodeRx.value.episodeNumber,
-                      ]),
-                      style: TextStyle(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      maxLines: 2,
-                    ),
-                  ),
                   Expanded(
-                    child: Container(
-                      child: Center(
-                        child: Obx(
-                          () => Text(
-                            controller.questionRx.value?.questionText ?? '',
-                            textAlign: TextAlign.center,
-                            style: textTheme.headline2!.copyWith(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 24.0 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    child: _textQuestion(),
                   ),
                   Container(
                     width: questionsBlockSize,
@@ -154,9 +63,113 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                 ],
               ),
             ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: Get.mediaQuery.padding.top + 6, right: 16),
+                child: TextButton(
+                  onPressed: () {
+                    controller.back();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: SatorioColor.alice_blue.withOpacity(0.6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'txt_cancel'.tr,
+                    style: textTheme.bodyText1!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 18.0 * coefficient,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _textQuestion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 24,
+        ),
+        Container(
+          child: Center(
+            child: Obx(
+              () => controller.questionRx.value == null
+                  ? Container(
+                      width: 119 * coefficient,
+                      height: 119 * coefficient,
+                    )
+                  : CircularCountDownTimer(
+                      controller: controller.countdownController,
+                      width: 119 * coefficient,
+                      height: 119 * coefficient,
+                      duration: controller.questionRx.value!.timeForAnswer,
+                      fillColor: SatorioColor.darkAccent,
+                      ringColor: SatorioColor.brand,
+                      isReverse: true,
+                      backgroundColor: Colors.white,
+                      strokeWidth: 7,
+                      autoStart: true,
+                      strokeCap: StrokeCap.round,
+                      textFormat: CountdownTextFormat.S,
+                      textStyle: textTheme.headline1!.copyWith(
+                        color: Colors.black,
+                        fontSize: 45.0 * coefficient,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      onComplete: () {
+                        // controller.timeExpire();
+                      },
+                    ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        Obx(
+          () => Text(
+            'txt_episode_entrance_quiz'.tr.format([
+              controller.showSeasonRx.value.seasonNumber,
+              controller.showEpisodeRx.value.episodeNumber,
+            ]),
+            style: TextStyle(
+              color: SatorioColor.darkAccent,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w400,
+            ),
+            maxLines: 2,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            child: Center(
+              child: Obx(
+                () => Text(
+                  controller.questionRx.value?.questionText ?? '',
+                  textAlign: TextAlign.center,
+                  style: textTheme.headline2!.copyWith(
+                    color: SatorioColor.darkAccent,
+                    fontSize: 24.0 * coefficient,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

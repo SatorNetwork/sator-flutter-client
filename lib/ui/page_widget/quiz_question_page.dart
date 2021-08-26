@@ -26,11 +26,49 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
               height: Get.height,
               fit: BoxFit.cover,
             ),
+            Container(
+              margin: EdgeInsets.only(
+                top: Get.mediaQuery.padding.top,
+                left: _margin,
+                right: _margin,
+                bottom: 20,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: _textQuestion(),
+                  ),
+                  Container(
+                    width: questionsBlockSize,
+                    height: questionsBlockSize,
+                    color: Colors.transparent,
+                    child: Obx(
+                      () => GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: _itemSpacing,
+                        mainAxisSpacing: _itemSpacing,
+                        children: controller.questionRx.value == null
+                            ? []
+                            : controller.questionRx.value!.answerOptions
+                                .map((answerOption) => _answerWidget(
+                                    answerOption,
+                                    answerOption.answerId ==
+                                        controller.answerIdRx.value))
+                                .toList(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Align(
               alignment: Alignment.topRight,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: Get.mediaQuery.padding.top + 22, right: 16),
+                    top: Get.mediaQuery.padding.top + 6, right: 16),
                 child: TextButton(
                   onPressed: () {
                     controller.quizController.back();
@@ -52,99 +90,76 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(
-                top: Get.mediaQuery.padding.top + 40,
-                left: _margin,
-                right: _margin,
-                bottom: 20,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Center(
-                      child: CircularCountDownTimer(
-                        controller: controller.countdownController,
-                        width: 119 * coefficient,
-                        height: 119 * coefficient,
-                        duration:
-                            controller.questionRx.value?.timeForAnswer ?? 0,
-                        fillColor: SatorioColor.darkAccent,
-                        ringColor: SatorioColor.brand,
-                        isReverse: true,
-                        backgroundColor: Colors.white,
-                        strokeWidth: 7,
-                        autoStart: true,
-                        strokeCap: StrokeCap.round,
-                        textFormat: CountdownTextFormat.S,
-                        textStyle: textTheme.headline1!.copyWith(
-                          color: Colors.black,
-                          fontSize: 45.0 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Obx(
-                    () => Text(
-                      controller.questionRx.value == null
-                          ? ''
-                          : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',
-                      style: TextStyle(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      maxLines: 2,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Center(
-                        child: Obx(
-                          () => Text(
-                            controller.questionRx.value?.questionText ?? '',
-                            textAlign: TextAlign.center,
-                            style: textTheme.headline2!.copyWith(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 24.0 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: questionsBlockSize,
-                    height: questionsBlockSize,
-                    color: Colors.transparent,
-                    child: Obx(
-                      () => GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: _itemSpacing,
-                        mainAxisSpacing: _itemSpacing,
-                        children: controller.questionRx.value == null
-                            ? []
-                            : controller.questionRx.value!.answerOptions
-                                .map((e) => _answerWidget(e,
-                                    e.answerId == controller.answerIdRx.value))
-                                .toList(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _textQuestion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 24,
+        ),
+        Container(
+          child: Center(
+            child: CircularCountDownTimer(
+              controller: controller.countdownController,
+              width: 119 * coefficient,
+              height: 119 * coefficient,
+              duration: controller.questionRx.value?.timeForAnswer ?? 0,
+              fillColor: SatorioColor.darkAccent,
+              ringColor: SatorioColor.brand,
+              isReverse: true,
+              backgroundColor: Colors.white,
+              strokeWidth: 7,
+              autoStart: true,
+              strokeCap: StrokeCap.round,
+              textFormat: CountdownTextFormat.S,
+              textStyle: textTheme.headline1!.copyWith(
+                color: Colors.black,
+                fontSize: 45.0 * coefficient,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        Obx(
+          () => Text(
+            controller.questionRx.value == null
+                ? ''
+                : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',
+            style: TextStyle(
+              color: SatorioColor.darkAccent,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w400,
+            ),
+            maxLines: 2,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            child: Center(
+              child: Obx(
+                () => Text(
+                  controller.questionRx.value?.questionText ?? '',
+                  textAlign: TextAlign.center,
+                  style: textTheme.headline2!.copyWith(
+                    color: SatorioColor.darkAccent,
+                    fontSize: 24.0 * coefficient,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
