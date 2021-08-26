@@ -523,7 +523,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             ),
                             child: Row(
                               children: [
-                                SvgPicture.asset('images/smile_love.svg'),
+                                SvgPicture.asset(
+                                  'images/smile/smile_10.svg',
+                                  width: 30 * coefficient,
+                                ),
                                 SizedBox(
                                   width: 10 * coefficient,
                                 ),
@@ -1150,7 +1153,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                SvgPicture.asset('images/smile_puke.svg'),
+                SvgPicture.asset(
+                  'images/smile/smile_1.svg',
+                  width: 24 * coefficient,
+                ),
                 SizedBox(
                   width: 12,
                 ),
