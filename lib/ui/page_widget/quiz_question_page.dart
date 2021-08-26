@@ -97,6 +97,68 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
     );
   }
 
+  Widget _imageQuestion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 16,
+        ),
+        _questionNumber(),
+        SizedBox(
+          height: 12 * coefficient,
+        ),
+        Expanded(
+          child: Container(
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12 * coefficient),
+                  child: Obx(
+                    () => Image.network(
+                      controller.questionRx.value?.questionText ?? '',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Obx(
+                    () => controller.questionRx.value == null
+                        ? Container(
+                            width: 48 * coefficient,
+                            height: 48 * coefficient,
+                          )
+                        : CircularCountDownTimer(
+                            controller: controller.countdownController,
+                            width: 48 * coefficient,
+                            height: 48 * coefficient,
+                            duration:
+                                controller.questionRx.value?.timeForAnswer ?? 0,
+                            fillColor: SatorioColor.darkAccent,
+                            ringColor: SatorioColor.brand,
+                            isReverse: true,
+                            backgroundColor: Colors.white,
+                            strokeWidth: 3,
+                            autoStart: true,
+                            strokeCap: StrokeCap.round,
+                            textFormat: CountdownTextFormat.S,
+                            textStyle: textTheme.headline1!.copyWith(
+                              color: Colors.black,
+                              fontSize: 18.0 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _textQuestion() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,30 +192,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
         SizedBox(
           height: 12,
         ),
-        Container(
-          constraints: BoxConstraints(minHeight: 30 * coefficient),
-          padding: EdgeInsets.symmetric(
-            vertical: 4 * coefficient,
-            horizontal: 12 * coefficient,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15 * coefficient),
-            color: Colors.white,
-          ),
-          child: Obx(
-            () => Text(
-              controller.questionRx.value == null
-                  ? ''
-                  : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',
-              style: TextStyle(
-                color: SatorioColor.darkAccent,
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-              ),
-              maxLines: 2,
-            ),
-          ),
-        ),
+        _questionNumber(),
         Expanded(
           child: Container(
             child: Center(
@@ -202,6 +241,33 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                   ),
                 ),
               ),
+      ),
+    );
+  }
+
+  Widget _questionNumber() {
+    return Container(
+      constraints: BoxConstraints(minHeight: 30 * coefficient),
+      padding: EdgeInsets.symmetric(
+        vertical: 4 * coefficient,
+        horizontal: 12 * coefficient,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15 * coefficient),
+        color: Colors.white,
+      ),
+      child: Obx(
+        () => Text(
+          controller.questionRx.value == null
+              ? ''
+              : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',
+          style: TextStyle(
+            color: SatorioColor.darkAccent,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w400,
+          ),
+          maxLines: 2,
+        ),
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
@@ -32,6 +34,8 @@ extension EmailValidation on String {
 }
 
 extension LinkValidation on String {
+  static final Random _random = Random();
+
   bool isLink() {
     // return Uri.tryParse(this)?.isAbsolute ?? false;
     return RegExp(
