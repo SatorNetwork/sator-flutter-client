@@ -7,6 +7,7 @@ import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/util/extension.dart';
 
 class QuizQuestionPage extends GetView<QuizQuestionController> {
   static const double _margin = 20.0;
@@ -129,17 +130,28 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
         SizedBox(
           height: 12,
         ),
-        Obx(
-          () => Text(
-            controller.questionRx.value == null
-                ? ''
-                : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',
-            style: TextStyle(
-              color: SatorioColor.darkAccent,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w400,
+        Container(
+          constraints: BoxConstraints(minHeight: 30 * coefficient),
+          padding: EdgeInsets.symmetric(
+            vertical: 4 * coefficient,
+            horizontal: 12 * coefficient,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15 * coefficient),
+            color: Colors.white,
+          ),
+          child: Obx(
+            () => Text(
+              controller.questionRx.value == null
+                  ? ''
+                  : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',
+              style: TextStyle(
+                color: SatorioColor.darkAccent,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+              ),
+              maxLines: 2,
             ),
-            maxLines: 2,
           ),
         ),
         Expanded(
@@ -174,17 +186,22 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
           borderRadius: BorderRadius.circular(8),
           color: isSelected ? SatorioColor.interactive : Colors.white,
         ),
-        child: Center(
-          child: Text(
-            answerOption.answerText,
-            textAlign: TextAlign.center,
-            style: textTheme.headline4!.copyWith(
-              color: isSelected ? Colors.white : Colors.black,
-              fontSize: 20.0 * coefficient,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
+        child: answerOption.answerText.isLink()
+            ? Image.network(
+                answerOption.answerText,
+                fit: BoxFit.cover,
+              )
+            : Center(
+                child: Text(
+                  answerOption.answerText,
+                  textAlign: TextAlign.center,
+                  style: textTheme.headline4!.copyWith(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontSize: 20.0 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
       ),
     );
   }

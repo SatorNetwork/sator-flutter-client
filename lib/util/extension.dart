@@ -31,6 +31,16 @@ extension EmailValidation on String {
   }
 }
 
+extension LinkValidation on String {
+  bool isLink() {
+    // return Uri.tryParse(this)?.isAbsolute ?? false;
+    return RegExp(
+      r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
+      caseSensitive: false,
+    ).hasMatch(this);
+  }
+}
+
 extension DoubleParse on String {
   double? tryParse() {
     String locale = Get.deviceLocale.toString();
