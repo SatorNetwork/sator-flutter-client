@@ -100,7 +100,7 @@ class RateBottomSheet extends StatelessWidget {
                 onChanged: (value) {
                   rateRx.value = value.toInt();
                 },
-                divisions: maxValue.toInt(),
+                divisions: (maxValue - minValue).toInt(),
                 min: minValue.toDouble(),
                 max: maxValue.toDouble(),
                 value: rateRx.value.toDouble(),
