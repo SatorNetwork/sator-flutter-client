@@ -61,13 +61,13 @@ class ShowDetailWithEpisodesController extends GetxController
   }
 
   void toNetflixDialog() {
-    if (showDetailRx.value != null) {
-      Get.dialog(
-        NetflixDialog(
-          showDetailRx.value!.title,
-        ),
-      );
-    }
+    // if (showDetailRx.value != null) {
+    //   Get.dialog(
+    //     NetflixDialog(
+    //       showDetailRx.value!.title,
+    //     ),
+    //   );
+    // }
   }
 
   void toEpisodeDetail(ShowSeason showSeason, ShowEpisode showEpisode) {
