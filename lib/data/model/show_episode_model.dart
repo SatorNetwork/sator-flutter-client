@@ -12,6 +12,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
     String cover,
     DateTime? releaseDate,
     double rating,
+    int ratingsCount,
   ) : super(
           id,
           showId,
@@ -22,6 +23,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
           cover,
           releaseDate,
           rating,
+          ratingsCount,
         );
 
   factory ShowEpisodeModel.fromJson(Map json) {
@@ -46,6 +48,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
       json['cover'] == null ? '' : json['cover'],
       releaseDate,
       rating,
+      json['ratings_count'] == null ? 0 : json['ratings_count'],
     );
   }
 
@@ -60,5 +63,6 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         'cover': cover,
         'release_date': releaseDate?.toIso8601String() ?? '',
         'rating': rating,
+        'ratings_count': ratingsCount,
       };
 }

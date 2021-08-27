@@ -13,6 +13,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/smile_list.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   final double bodyHeight = 220;
@@ -524,16 +525,27 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             child: Row(
                               children: [
                                 Obx(
-                                  () => SvgPicture.asset(
-                                    _getRatingAsset(
-                                      controller.showEpisodeRx.value.rating
-                                          .toInt(),
-                                    ),
-                                    width: 30 * coefficient,
-                                  ),
+                                  () =>
+                                      controller.showEpisodeRx.value.rating > 1
+                                          ? SvgPicture.asset(
+                                              smile[controller.showEpisodeRx
+                                                      .value.rating
+                                                      .toInt()] ??
+                                                  '',
+                                              width: 30 * coefficient,
+                                            )
+                                          : SizedBox(
+                                              width: 0,
+                                            ),
                                 ),
-                                SizedBox(
-                                  width: 10 * coefficient,
+                                Obx(
+                                  () => SizedBox(
+                                    width:
+                                        controller.showEpisodeRx.value.rating >
+                                                1
+                                            ? 10 * coefficient
+                                            : 0,
+                                  ),
                                 ),
                                 Obx(
                                   () => Text(
@@ -548,12 +560,19 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 Expanded(
                                   child: Container(),
                                 ),
-                                Text(
-                                  '5,120 ratings',
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 15 * coefficient,
-                                    fontWeight: FontWeight.w500,
+                                Obx(
+                                  () => Text(
+                                    'txt_ratings'.tr.format(
+                                      [
+                                        controller
+                                            .showEpisodeRx.value.ratingsCount
+                                      ],
+                                    ),
+                                    style: textTheme.bodyText2!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 15 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1303,35 +1322,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         ],
       ),
     );
-  }
-
-  String _getRatingAsset(int rate) {
-    print('rate $rate');
-    switch (rate) {
-      case 0:
-      case 1:
-        return 'images/smile/smile_1.svg';
-      case 2:
-        return 'images/smile/smile_2.svg';
-      case 3:
-        return 'images/smile/smile_3.svg';
-      case 4:
-        return 'images/smile/smile_4.svg';
-      case 5:
-        return 'images/smile/smile_5.svg';
-      case 6:
-        return 'images/smile/smile_8.svg';
-      case 7:
-        return 'images/smile/smile_8.svg';
-      case 8:
-        return 'images/smile/smile_8.svg';
-      case 9:
-        return 'images/smile/smile_9.svg';
-      case 10:
-        return 'images/smile/smile_10.svg';
-      default:
-        return '';
-    }
   }
 
   final Review review = Review(

@@ -6,6 +6,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/smile_list.dart';
 
 typedef RateCallback = void Function(int rate);
 
@@ -74,7 +75,7 @@ class RateBottomSheet extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 32 * coefficient),
             child: Obx(
               () => SvgPicture.asset(
-                _getRatingAsset(rateRx.value),
+                smile[rateRx.value] ?? '',
                 width: 128 * coefficient,
                 height: 128 * coefficient,
               ),
@@ -121,32 +122,5 @@ class RateBottomSheet extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _getRatingAsset(int rate) {
-    switch (rate) {
-      case 1:
-        return 'images/smile/smile_1.svg';
-      case 2:
-        return 'images/smile/smile_2.svg';
-      case 3:
-        return 'images/smile/smile_3.svg';
-      case 4:
-        return 'images/smile/smile_4.svg';
-      case 5:
-        return 'images/smile/smile_5.svg';
-      case 6:
-        return 'images/smile/smile_8.svg';
-      case 7:
-        return 'images/smile/smile_8.svg';
-      case 8:
-        return 'images/smile/smile_8.svg';
-      case 9:
-        return 'images/smile/smile_9.svg';
-      case 10:
-        return 'images/smile/smile_10.svg';
-      default:
-        return '';
-    }
   }
 }

@@ -172,4 +172,5 @@ const Map<String, String> en = {
   'txt_rate_episode': 'Rate episode',
   'txt_rate': 'Rate',
   'txt_rate_success': 'You have rated the episode with “%d”',
+  'txt_ratings': '%d ratings',
 };
