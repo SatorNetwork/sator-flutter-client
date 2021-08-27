@@ -29,6 +29,7 @@ import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
+import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
@@ -585,9 +586,13 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> rateEpisode(String episodeId, int rate) {
-    // TODO
-    return Future.value(true);
+  Future<bool> rateEpisode(String showId, String episodeId, int rate) {
+    return _requestPost(
+      'shows/$showId/episodes/$episodeId/rate',
+      RateRequest(rate),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
   }
 
   // endregion

@@ -1306,7 +1306,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   String _getRatingAsset(int rate) {
+    print('rate $rate');
     switch (rate) {
+      case 0:
       case 1:
         return 'images/smile/smile_1.svg';
       case 2:

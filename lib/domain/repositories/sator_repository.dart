@@ -80,7 +80,7 @@ abstract class SatorioRepository {
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
 
-  Future<bool> rateEpisode(String episodeId, int rate);
+  Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
   Future<void> logout();
 

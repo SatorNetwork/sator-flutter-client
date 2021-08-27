@@ -145,25 +145,31 @@ class ShowEpisodeRealmController extends GetxController {
     Get.bottomSheet(
       RateBottomSheet(
         (int rate) {
-          _satorioRepository.rateEpisode(showEpisodeRx.value.id, rate).then(
-            (result) {
-              if (result) {
-                Get.bottomSheet(
-                  DefaultBottomSheet(
-                    'txt_success'.tr,
-                    'txt_rate_success'.tr.format([rate]),
-                    'txt_awesome'.tr,
-                    icon: Icons.check_rounded,
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                );
-              }
-            },
-          );
+          _rateEpisode(rate);
         },
       ),
+    );
+  }
+
+  void _rateEpisode(int rate) {
+    _satorioRepository
+        .rateEpisode(showDetailRx.value.id, showEpisodeRx.value.id, rate)
+        .then(
+      (result) {
+        if (result) {
+          Get.bottomSheet(
+            DefaultBottomSheet(
+              'txt_success'.tr,
+              'txt_rate_success'.tr.format([rate]),
+              'txt_awesome'.tr,
+              icon: Icons.check_rounded,
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          );
+        }
+      },
     );
   }
 }

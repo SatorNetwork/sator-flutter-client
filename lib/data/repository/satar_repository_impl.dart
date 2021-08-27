@@ -229,9 +229,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> rateEpisode(String episodeId, int rate) {
+  Future<bool> rateEpisode(String showId, String episodeId, int rate) {
     return _apiDataSource
-        .rateEpisode(episodeId, rate)
+        .rateEpisode(showId, episodeId, rate)
         .catchError((value) => _handleException(value));
   }
 
