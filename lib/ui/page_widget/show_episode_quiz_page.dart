@@ -129,7 +129,7 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                         fontWeight: FontWeight.w600,
                       ),
                       onComplete: () {
-                        // controller.timeExpire();
+                        controller.timeExpire();
                       },
                     ),
             ),
