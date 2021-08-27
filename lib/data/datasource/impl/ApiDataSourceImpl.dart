@@ -558,7 +558,6 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> paidUnlockEpisode(String episodeId, String paidOption) {
-    print('${PaidUnlockRequest(paidOption).toJson().toString()}');
     return _requestPost(
       'challenges/unlock/$episodeId',
       PaidUnlockRequest(paidOption),
