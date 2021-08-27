@@ -25,7 +25,12 @@ class QuizResultController extends GetxController {
           (ClaimReward claimReward) {
             isRequested.value = false;
             Get.bottomSheet(
-              ClaimRewardsBottomSheet(claimReward),
+              ClaimRewardsBottomSheet(
+                claimReward,
+                () {
+                  quizController.backToEpisode();
+                },
+              ),
             );
           },
         )

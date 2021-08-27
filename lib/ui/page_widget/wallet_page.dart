@@ -225,7 +225,7 @@ class WalletPage extends GetView<WalletController> {
             controller.toReceive(walletDetail);
             break;
           case Type.claim_rewards:
-            controller.claimRewards(walletAction.url);
+            controller.toClaimRewards(walletAction.url);
             break;
           case Type.stake_tokens:
             controller.toStake(walletDetail);
