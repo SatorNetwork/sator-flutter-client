@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
+import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
@@ -12,6 +13,7 @@ import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
+import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -57,7 +59,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .clear()
         .then((value) => _apiDataSource.authLogout())
         .then((value) {
-      Get.offAll(() => LoginPage(), binding: LoginBinding());
+      Get.offAll(() => LoginPage(), binding: LoginBinding(), arguments: LoginArgument(null));
       return;
     });
   }
@@ -187,7 +189,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         )
         .then(
       (value) {
-        Get.offAll(() => LoginPage(), binding: LoginBinding());
+        Get.offAll(() => LoginPage(), binding: LoginBinding(), arguments: LoginArgument(null));
         return;
       },
     );
@@ -255,6 +257,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> sendInvite(String email) {
     return _apiDataSource
         .sendInvite(email)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<ReferralCode> getReferralCode() {
+    return _apiDataSource
+        .getReferralCode()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> confirmReferralCode(String referralCode) {
+    return _apiDataSource
+        .confirmReferralCode(referralCode)
         .catchError((value) => _handleException(value));
   }
 

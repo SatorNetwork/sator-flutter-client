@@ -16,6 +16,7 @@ import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
+import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
@@ -41,6 +42,7 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
+import 'package:satorio/domain/entities/referral_code.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -626,6 +628,26 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'invitations',
       SendInviteRequest(email),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<ReferralCode> getReferralCode() {
+    return _requestGet(
+      'ref/my',
+    ).then((Response response) {
+      return ReferralCodeModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<bool> confirmReferralCode(String referralCode) {
+    return _requestPost(
+      'ref/confirm/$referralCode',
+      EmptyRequest(),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

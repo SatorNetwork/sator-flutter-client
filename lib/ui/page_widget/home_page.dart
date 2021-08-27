@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -133,6 +134,7 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _contentWithCategories() {
+    final MainController mainController = Get.find();
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +144,7 @@ class HomePage extends GetView<HomeController> {
           child: TitleWithButton(
             textCode: 'Best NFTs',
             onTap: () {
-              controller.toShowsCategory('all');
+              mainController.selectedBottomTabIndex.value = 2;
             },
           ),
         ),

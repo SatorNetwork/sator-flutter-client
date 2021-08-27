@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/create_account_binding.dart';
+import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -63,6 +64,6 @@ class OnBoardingController extends GetxController {
   }
 
   skip() {
-    Get.off(() => CreateAccountPage(), binding: CreateAccountBinding());
+    Get.off(() => CreateAccountPage(), binding: CreateAccountBinding(), arguments: CreateAccountArgument(null));
   }
 }
