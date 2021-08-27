@@ -38,7 +38,11 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: _textQuestion(),
+                    child: Obx(() =>
+                        (controller.questionRx.value?.questionText ?? '')
+                                .isLink()
+                            ? _imageQuestion()
+                            : _textQuestion()),
                   ),
                   Container(
                     width: questionsBlockSize,
@@ -111,6 +115,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
         Expanded(
           child: Container(
             child: Stack(
+              fit: StackFit.expand,
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12 * coefficient),
@@ -123,37 +128,44 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: Obx(
-                    () => controller.questionRx.value == null
-                        ? Container(
-                            width: 48 * coefficient,
-                            height: 48 * coefficient,
-                          )
-                        : CircularCountDownTimer(
-                            controller: controller.countdownController,
-                            width: 48 * coefficient,
-                            height: 48 * coefficient,
-                            duration:
-                                controller.questionRx.value?.timeForAnswer ?? 0,
-                            fillColor: SatorioColor.darkAccent,
-                            ringColor: SatorioColor.brand,
-                            isReverse: true,
-                            backgroundColor: Colors.white,
-                            strokeWidth: 3,
-                            autoStart: true,
-                            strokeCap: StrokeCap.round,
-                            textFormat: CountdownTextFormat.S,
-                            textStyle: textTheme.headline1!.copyWith(
-                              color: Colors.black,
-                              fontSize: 18.0 * coefficient,
-                              fontWeight: FontWeight.w600,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0 * coefficient),
+                    child: Obx(
+                      () => controller.questionRx.value == null
+                          ? Container(
+                              width: 48 * coefficient,
+                              height: 48 * coefficient,
+                            )
+                          : CircularCountDownTimer(
+                              controller: controller.countdownController,
+                              width: 48 * coefficient,
+                              height: 48 * coefficient,
+                              duration:
+                                  controller.questionRx.value?.timeForAnswer ??
+                                      0,
+                              fillColor: SatorioColor.darkAccent,
+                              ringColor: SatorioColor.brand,
+                              isReverse: true,
+                              backgroundColor: Colors.white,
+                              strokeWidth: 3,
+                              autoStart: true,
+                              strokeCap: StrokeCap.round,
+                              textFormat: CountdownTextFormat.S,
+                              textStyle: textTheme.headline1!.copyWith(
+                                color: Colors.black,
+                                fontSize: 18.0 * coefficient,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+        ),
+        SizedBox(
+          height: 24 * coefficient,
         ),
       ],
     );
