@@ -1,7 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -81,6 +80,8 @@ class ShowEpisodeQuizController extends GetxController {
   }
 
   void timeExpire() {
+    if (isAnswerSentRx.value) return;
+
     Get.dialog(
       DefaultDialog(
         'txt_oops'.tr,
