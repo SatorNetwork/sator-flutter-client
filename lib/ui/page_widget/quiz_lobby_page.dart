@@ -159,6 +159,8 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
           Expanded(
             child: Text(
               payloadUser.username,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: SatorioColor.darkAccent,
                 fontSize: 17.0,

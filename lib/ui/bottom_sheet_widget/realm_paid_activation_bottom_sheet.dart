@@ -6,7 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
@@ -191,9 +190,10 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                   ),
                 ),
                 child: Center(
-                  child: Icon(
-                    SatorIcons.logo,
-                    size: 16 * coefficient,
+                  child: SvgPicture.asset(
+                    'images/sator_logo.svg',
+                    width: 10 * coefficient,
+                    height: 10 * coefficient,
                     color: Colors.white,
                   ),
                 ),

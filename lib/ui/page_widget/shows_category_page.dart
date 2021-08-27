@@ -54,17 +54,17 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(32),
-                topRight: Radius.circular(32),
-              ),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               color: Colors.white,
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _showsList()
-                ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _showsList(),
+                  ],
+                ),
               ),
             ),
           )
@@ -101,14 +101,11 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
   }
 
   Widget _showItem(Show show) {
-    final width = Get.width - 20 - 32;
+    final width = Get.width - 20 - 20;
     final height = 168.0 * coefficient;
     return InkWell(
       onTap: () {
         controller.toShowDetail(show);
-      },
-      onLongPress: () {
-        controller.toShowChallenges(show);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),

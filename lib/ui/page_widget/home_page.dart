@@ -52,42 +52,48 @@ class HomePage extends GetView<HomeController> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                        child: Center(
-                                          child: SvgPicture.asset(
-                                            avatars[avatarIndex],
-                                            width: 50,
-                                            height: 50,
-                                            fit: BoxFit.fitWidth,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Container(
+                                        width: 50,
+                                        height: 50,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              avatars[avatarIndex],
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.fitWidth,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 14,
-                                  ),
-                                  Obx(
-                                    () => Text(
-                                      controller
-                                              .profileRx.value?.displayedName ??
-                                          '',
-                                      style: textTheme.headline1!.copyWith(
-                                          color: SatorioColor.darkAccent,
-                                          fontSize: 14.0 * coefficient,
-                                          fontWeight: FontWeight.w700),
+                                    SizedBox(
+                                      width: 14,
                                     ),
-                                  ),
-                                ],
+                                    Expanded(
+                                      child: Obx(
+                                        () => Text(
+                                          controller.profileRx.value
+                                                  ?.displayedName ??
+                                              '',
+                                          maxLines: 3,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: textTheme.headline1!.copyWith(
+                                              color: SatorioColor.darkAccent,
+                                              fontSize: 14.0 * coefficient,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Obx(
                                 () => Column(
@@ -142,7 +148,7 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Best NFTs',
+            textCode: 'Featured NFT’s',
             onTap: () {
               mainController.selectedBottomTabIndex.value = 2;
             },
@@ -150,20 +156,17 @@ class HomePage extends GetView<HomeController> {
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-                () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.allShowsRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.allShowsRx.value[index];
-                return _showItem(show);
-              },
+          height: 225 * coefficient,
+          child: ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(
+              width: 12,
             ),
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return _nftItem();
+            },
           ),
         ),
         Padding(
@@ -260,7 +263,7 @@ class HomePage extends GetView<HomeController> {
           margin: const EdgeInsets.only(top: 16),
           height: 168 * coefficient,
           child: Obx(
-                () => ListView.separated(
+            () => ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
                 width: 16,
               ),
@@ -358,6 +361,76 @@ class HomePage extends GetView<HomeController> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _nftItem() {
+    final width = (Get.width - 12 - 2 * 20 - 8) / 2;
+    final height = 225 * coefficient;
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        height: height,
+        width: width,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                'images/tmp_nft.png',
+                width: width,
+                height: 200 * coefficient,
+                fit: BoxFit.cover,
+              ),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 18 * coefficient,
+                    height: 18 * coefficient,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          SatorioColor.razzle_dazzle_rose,
+                          SatorioColor.dodger_blue
+                        ],
+                      ),
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'images/sator_logo.svg',
+                        width: 9 * coefficient,
+                        height: 9 * coefficient,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 6 * coefficient,
+                  ),
+                  Expanded(
+                    child: Text(
+                      '3,284 SAO',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: Colors.black,
+                        fontSize: 12.0 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
