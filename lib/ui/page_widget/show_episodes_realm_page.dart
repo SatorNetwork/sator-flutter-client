@@ -523,19 +523,26 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             ),
                             child: Row(
                               children: [
-                                SvgPicture.asset(
-                                  'images/smile/smile_10.svg',
-                                  width: 30 * coefficient,
+                                Obx(
+                                  () => SvgPicture.asset(
+                                    _getRatingAsset(
+                                      controller.showEpisodeRx.value.rating
+                                          .toInt(),
+                                    ),
+                                    width: 30 * coefficient,
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 10 * coefficient,
                                 ),
-                                Text(
-                                  '90%',
-                                  style: textTheme.headline5!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 20 * coefficient,
-                                    fontWeight: FontWeight.w500,
+                                Obx(
+                                  () => Text(
+                                    '${(controller.showEpisodeRx.value.rating * 10).toInt()}%',
+                                    style: textTheme.headline5!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 20 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -1296,6 +1303,33 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         ],
       ),
     );
+  }
+
+  String _getRatingAsset(int rate) {
+    switch (rate) {
+      case 1:
+        return 'images/smile/smile_1.svg';
+      case 2:
+        return 'images/smile/smile_2.svg';
+      case 3:
+        return 'images/smile/smile_3.svg';
+      case 4:
+        return 'images/smile/smile_4.svg';
+      case 5:
+        return 'images/smile/smile_5.svg';
+      case 6:
+        return 'images/smile/smile_8.svg';
+      case 7:
+        return 'images/smile/smile_8.svg';
+      case 8:
+        return 'images/smile/smile_8.svg';
+      case 9:
+        return 'images/smile/smile_9.svg';
+      case 10:
+        return 'images/smile/smile_10.svg';
+      default:
+        return '';
+    }
   }
 
   final Review review = Review(

@@ -74,7 +74,7 @@ class RateBottomSheet extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 32 * coefficient),
             child: Obx(
               () => SvgPicture.asset(
-                _getAsset(rateRx.value),
+                _getRatingAsset(rateRx.value),
                 width: 128 * coefficient,
                 height: 128 * coefficient,
               ),
@@ -123,7 +123,7 @@ class RateBottomSheet extends StatelessWidget {
     );
   }
 
-  String _getAsset(int rate) {
+  String _getRatingAsset(int rate) {
     switch (rate) {
       case 1:
         return 'images/smile/smile_1.svg';
