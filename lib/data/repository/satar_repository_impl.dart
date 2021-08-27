@@ -221,9 +221,17 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .catchError((value) => _handleException(value));
   }
 
+  @override
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
     return _apiDataSource
         .showEpisodeQuizAnswer(questionId, answerId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> rateEpisode(String showId, String episodeId, int rate) {
+    return _apiDataSource
+        .rateEpisode(showId, episodeId, rate)
         .catchError((value) => _handleException(value));
   }
 
