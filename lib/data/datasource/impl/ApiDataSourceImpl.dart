@@ -29,6 +29,7 @@ import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
+import 'package:satorio/data/request/paid_unlock_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
@@ -556,10 +557,11 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> paidUnlockEpisode(String episodeId) {
+  Future<bool> paidUnlockEpisode(String episodeId, String paidOption) {
+    print('${PaidUnlockRequest(paidOption).toJson().toString()}');
     return _requestPost(
       'challenges/unlock/$episodeId',
-      EmptyRequest(),
+      PaidUnlockRequest(paidOption),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

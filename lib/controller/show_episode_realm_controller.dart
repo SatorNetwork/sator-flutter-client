@@ -7,6 +7,7 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -100,8 +101,8 @@ class ShowEpisodeRealmController extends GetxController {
   void toRealmExpiringBottomSheet() {
     Get.bottomSheet(
       RealmExpiringBottomSheet(
-        (extendRealmItem) {
-          _paidUnlock(extendRealmItem.hours);
+        (paidOption) {
+          _paidUnlock(paidOption);
         },
       ),
       isScrollControlled: true,
@@ -111,23 +112,28 @@ class ShowEpisodeRealmController extends GetxController {
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
-        (paidActivationRealmItem) {
-          _paidUnlock(paidActivationRealmItem.hours);
+        (paidOption) {
+          _paidUnlock(paidOption);
         },
       ),
       isScrollControlled: true,
     );
   }
 
-  void _paidUnlock(int hours) {
-    _satorioRepository.paidUnlockEpisode(showEpisodeRx.value.id).then(
+  void _paidUnlock(PaidOption paidOption) {
+    _satorioRepository
+        .paidUnlockEpisode(
+      showEpisodeRx.value.id,
+      paidOption.label,
+    )
+        .then(
       (bool result) {
         isRealmActivatedRx.value = result;
         if (result) {
           Get.bottomSheet(
             DefaultBottomSheet(
               'txt_success'.tr,
-              'txt_realm_extend_success'.tr.format([hours]),
+              'txt_realm_extend_success'.tr.format([paidOption.hours]),
               'txt_awesome'.tr,
               icon: Icons.check_rounded,
               onPressed: () {
