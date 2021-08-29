@@ -38,11 +38,11 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Obx(() =>
-                        (controller.questionRx.value?.questionText ?? '')
-                                .isLink()
-                            ? _imageQuestion()
-                            : _textQuestion()),
+                    child: Obx(
+                      () => controller.questionRx.value.questionText.isLink()
+                          ? _imageQuestion()
+                          : _textQuestion(),
+                    ),
                   ),
                   Container(
                     width: questionsBlockSize,
@@ -55,12 +55,10 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                         crossAxisCount: 2,
                         crossAxisSpacing: _itemSpacing,
                         mainAxisSpacing: _itemSpacing,
-                        children: controller.questionRx.value == null
-                            ? []
-                            : controller.questionRx.value!.answerOptions
-                                .map((e) => _answerWidget(e,
-                                    e.answerId == controller.answerIdRx.value))
-                                .toList(),
+                        children: controller.questionRx.value.answerOptions
+                            .map((e) => _answerWidget(
+                                e, e.answerId == controller.answerIdRx.value))
+                            .toList(),
                       ),
                     ),
                   ),
@@ -119,7 +117,7 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                   borderRadius: BorderRadius.circular(12 * coefficient),
                   child: Obx(
                     () => Image.network(
-                      controller.questionRx.value?.questionText ?? '',
+                      controller.questionRx.value.questionText,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -129,34 +127,28 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                   child: Padding(
                     padding: EdgeInsets.all(16.0 * coefficient),
                     child: Obx(
-                      () => controller.questionRx.value == null
-                          ? Container(
-                              width: 48 * coefficient,
-                              height: 48 * coefficient,
-                            )
-                          : CircularCountDownTimer(
-                              controller: controller.countdownController,
-                              width: 48 * coefficient,
-                              height: 48 * coefficient,
-                              duration:
-                                  controller.questionRx.value!.timeForAnswer,
-                              fillColor: SatorioColor.darkAccent,
-                              ringColor: SatorioColor.brand,
-                              isReverse: true,
-                              backgroundColor: Colors.white,
-                              strokeWidth: 3,
-                              autoStart: true,
-                              strokeCap: StrokeCap.round,
-                              textFormat: CountdownTextFormat.S,
-                              textStyle: textTheme.headline1!.copyWith(
-                                color: Colors.black,
-                                fontSize: 18.0 * coefficient,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              onComplete: () {
-                                controller.timeExpire();
-                              },
-                            ),
+                      () => CircularCountDownTimer(
+                        controller: controller.countdownController,
+                        width: 48 * coefficient,
+                        height: 48 * coefficient,
+                        duration: controller.questionRx.value.timeForAnswer,
+                        fillColor: SatorioColor.darkAccent,
+                        ringColor: SatorioColor.brand,
+                        isReverse: true,
+                        backgroundColor: Colors.white,
+                        strokeWidth: 3,
+                        autoStart: true,
+                        strokeCap: StrokeCap.round,
+                        textFormat: CountdownTextFormat.S,
+                        textStyle: textTheme.headline1!.copyWith(
+                          color: Colors.black,
+                          fontSize: 18.0 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        onComplete: () {
+                          controller.timeExpire();
+                        },
+                      ),
                     ),
                   ),
                 ),
@@ -181,33 +173,28 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
         Container(
           child: Center(
             child: Obx(
-              () => controller.questionRx.value == null
-                  ? Container(
-                      width: 119 * coefficient,
-                      height: 119 * coefficient,
-                    )
-                  : CircularCountDownTimer(
-                      controller: controller.countdownController,
-                      width: 119 * coefficient,
-                      height: 119 * coefficient,
-                      duration: controller.questionRx.value!.timeForAnswer,
-                      fillColor: SatorioColor.darkAccent,
-                      ringColor: SatorioColor.brand,
-                      isReverse: true,
-                      backgroundColor: Colors.white,
-                      strokeWidth: 7,
-                      autoStart: true,
-                      strokeCap: StrokeCap.round,
-                      textFormat: CountdownTextFormat.S,
-                      textStyle: textTheme.headline1!.copyWith(
-                        color: Colors.black,
-                        fontSize: 45.0 * coefficient,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      onComplete: () {
-                        controller.timeExpire();
-                      },
-                    ),
+              () => CircularCountDownTimer(
+                controller: controller.countdownController,
+                width: 119 * coefficient,
+                height: 119 * coefficient,
+                duration: controller.questionRx.value.timeForAnswer,
+                fillColor: SatorioColor.darkAccent,
+                ringColor: SatorioColor.brand,
+                isReverse: true,
+                backgroundColor: Colors.white,
+                strokeWidth: 7,
+                autoStart: true,
+                strokeCap: StrokeCap.round,
+                textFormat: CountdownTextFormat.S,
+                textStyle: textTheme.headline1!.copyWith(
+                  color: Colors.black,
+                  fontSize: 45.0 * coefficient,
+                  fontWeight: FontWeight.w600,
+                ),
+                onComplete: () {
+                  controller.timeExpire();
+                },
+              ),
             ),
           ),
         ),
@@ -220,7 +207,7 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
             child: Center(
               child: Obx(
                 () => Text(
-                  controller.questionRx.value?.questionText ?? '',
+                  controller.questionRx.value.questionText,
                   textAlign: TextAlign.center,
                   style: textTheme.headline2!.copyWith(
                     color: SatorioColor.darkAccent,

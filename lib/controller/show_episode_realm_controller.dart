@@ -8,6 +8,7 @@ import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -70,19 +71,8 @@ class ShowEpisodeRealmController extends GetxController {
   void toEpisodeRealmDialog() {
     Get.dialog(
       EpisodeRealmDialog(
-        onQuizPressed: () async {
-          final result = await Get.to(
-            () => ShowEpisodeQuizPage(),
-            binding: ShowEpisodeQuizBinding(),
-            arguments: ShowEpisodeQuizArgument(
-              showSeasonRx.value,
-              showEpisodeRx.value,
-            ),
-          );
-
-          if (result != null && result is bool) {
-            isRealmActivatedRx.value = result;
-          }
+        onQuizPressed: () {
+          _loadQuizQuestion();
         },
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
@@ -108,6 +98,40 @@ class ShowEpisodeRealmController extends GetxController {
       ),
       isScrollControlled: true,
     );
+  }
+
+  void toRateBottomSheet() {
+    Get.bottomSheet(
+      RateBottomSheet(
+        (int rate) {
+          _rateEpisode(rate);
+        },
+      ),
+    );
+  }
+
+  void _loadQuizQuestion() {
+    _satorioRepository
+        .showEpisodeQuizQuestion(showEpisodeRx.value.id)
+        .then((PayloadQuestion payloadQuestion) {
+      _toEpisodeQuiz(payloadQuestion);
+    });
+  }
+
+  void _toEpisodeQuiz(PayloadQuestion payloadQuestion) async {
+    final result = await Get.to(
+      () => ShowEpisodeQuizPage(),
+      binding: ShowEpisodeQuizBinding(),
+      arguments: ShowEpisodeQuizArgument(
+        showSeasonRx.value,
+        showEpisodeRx.value,
+        payloadQuestion,
+      ),
+    );
+
+    if (result != null && result is bool) {
+      isRealmActivatedRx.value = result;
+    }
   }
 
   void _toRealmPaidActivationBottomSheet() {
@@ -144,16 +168,6 @@ class ShowEpisodeRealmController extends GetxController {
           );
         }
       },
-    );
-  }
-
-  void toRateBottomSheet() {
-    Get.bottomSheet(
-      RateBottomSheet(
-        (int rate) {
-          _rateEpisode(rate);
-        },
-      ),
     );
   }
 

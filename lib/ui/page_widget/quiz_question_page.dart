@@ -38,11 +38,12 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Obx(() =>
-                        (controller.questionRx.value?.questionText ?? '')
-                                .isLink()
-                            ? _imageQuestion()
-                            : _textQuestion()),
+                    child: Obx(
+                      () => (controller.questionRx.value?.questionText ?? '')
+                              .isLink()
+                          ? _imageQuestion()
+                          : _textQuestion(),
+                    ),
                   ),
                   Container(
                     width: questionsBlockSize,
