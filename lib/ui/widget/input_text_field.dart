@@ -12,7 +12,8 @@ class InputTextField extends StatelessWidget {
       this.obscureText = false,
       this.errorText,
       this.icon,
-      this.onPressedIcon});
+      this.onPressedIcon,
+      this.enableSuggestions = true});
 
   final TextEditingController? controller;
   final String inputTitle;
@@ -22,6 +23,7 @@ class InputTextField extends StatelessWidget {
   final String? errorText;
   final Widget? icon;
   final VoidCallback? onPressedIcon;
+  final bool enableSuggestions;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class InputTextField extends StatelessWidget {
             obscureText: obscureText,
             keyboardType: keyboardType,
             textInputAction: TextInputAction.next,
+            enableSuggestions: enableSuggestions,
             style: textTheme.bodyText1!.copyWith(
               color: Colors.black,
               fontWeight: FontWeight.w400,
