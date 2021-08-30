@@ -11,6 +11,7 @@ import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
+import 'package:satorio/data/model/episode_activation_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
@@ -169,7 +170,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<bool> isTokenExist() async {
     String? token = _authDataSource.getAuthToken();
-    print('token |${token ?? 'NULL'}|');
     return token != null && token.isNotEmpty;
   }
 
@@ -550,21 +550,24 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> isChallengeActivated(String episodeId) {
+  Future<EpisodeActivationModel> isEpisodeActivated(String episodeId) {
     return _requestGet(
       'challenges/$episodeId/is-activated',
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
     });
   }
 
   @override
-  Future<bool> paidUnlockEpisode(String episodeId, String paidOption) {
+  Future<EpisodeActivationModel> paidUnlockEpisode(
+    String episodeId,
+    String paidOption,
+  ) {
     return _requestPost(
       'challenges/unlock/$episodeId',
       PaidUnlockRequest(paidOption),
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
     });
   }
 
