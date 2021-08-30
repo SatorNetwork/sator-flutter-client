@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
+import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/message_model.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
@@ -23,11 +24,18 @@ class ChatController extends GetxController with BackToMainMixin {
 
   late ValueListenable<Box<Profile>> profileListenable;
   late final DatabaseReference _messagesRef;
+  late Rx<bool> isMessagesRx = Rx(false);
 
   bool canSendMessage() => messageController.text.length > 0;
 
   void _saveMessage(MessageModel message) {
     _messagesRef.push().set(message.toJson());
+    //TODO: refactor
+    _messagesRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        isMessagesRx.value = true;
+      }
+    });
   }
 
   ChatController() {
@@ -36,6 +44,11 @@ class ChatController extends GetxController with BackToMainMixin {
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
     _messagesRef = argument.messagesRef;
+
+    //TODO: refactor
+    _messagesRef.once().then((DataSnapshot snapshot) {
+      isMessagesRx.value = snapshot.value != null;
+    });
 
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
@@ -46,7 +59,14 @@ class ChatController extends GetxController with BackToMainMixin {
   }
 
   void back() {
-    Get.back();
+    //TODO: refactor
+    ShowEpisodeRealmController showEpisodeRealmController = Get.find();
+    _messagesRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value != null) {
+        showEpisodeRealmController.isMessagesRx.value = true;
+      }
+      Get.back();
+    });
   }
 
   void sendMessage() {
