@@ -79,6 +79,7 @@ class ChallengePage extends GetView<ChallengeController> {
                   Obx(
                     () => Text(
                       controller.challengeRx.value?.title ?? '',
+                      textAlign: TextAlign.center,
                       style: textTheme.headline1!.copyWith(
                         color: SatorioColor.darkAccent,
                         fontSize: 32.0 * coefficient,

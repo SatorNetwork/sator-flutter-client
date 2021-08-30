@@ -11,12 +11,14 @@ import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
+import 'package:satorio/data/model/episode_activation_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
+import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
@@ -24,16 +26,20 @@ import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
+import 'package:satorio/data/model/wallet_stake_model.dart';
 import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
+import 'package:satorio/data/request/paid_unlock_request.dart';
+import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
+import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
@@ -46,7 +52,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.stage.sator.io/';
+    _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -385,6 +391,36 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  @override
+  Future<bool> stake(String walletId, double amount) {
+    return _requestPost(
+      'wallets/$walletId/stake',
+      WalletStakeRequest(amount),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> unstake(String walletId, double amount) {
+    return _requestPost(
+      'wallets/$walletId/unstake',
+      WalletStakeRequest(amount),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<WalletStakeModel> getStake(String walletId) {
+    return _requestGet(
+      'wallets/$walletId/stake',
+    ).then((Response response) {
+      return WalletStakeModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
   // endregion
 
   // region Shows
@@ -457,6 +493,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<ShowEpisodeModel> showEpisode(String showId, String episodeId) {
+    return _requestGet(
+      'shows/$showId/episodes/$episodeId',
+    ).then((Response response) {
+      return ShowEpisodeModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
   Future<List<ChallengeSimpleModel>> showChallenges(String showId,
       {int? page}) {
     Map<String, String>? query;
@@ -515,11 +561,24 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> isChallengeActivated(String episodeId) {
+  Future<EpisodeActivationModel> isEpisodeActivated(String episodeId) {
     return _requestGet(
       'challenges/$episodeId/is-activated',
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
+    });
+  }
+
+  @override
+  Future<EpisodeActivationModel> paidUnlockEpisode(
+    String episodeId,
+    String paidOption,
+  ) {
+    return _requestPost(
+      'challenges/unlock/$episodeId',
+      PaidUnlockRequest(paidOption),
+    ).then((Response response) {
+      return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
     });
   }
 
@@ -537,6 +596,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
     return _requestGet(
       'challenges/$questionId/check-answer/$answerId',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> rateEpisode(String showId, String episodeId, int rate) {
+    return _requestPost(
+      'shows/$showId/episodes/$episodeId/rate',
+      RateRequest(rate),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

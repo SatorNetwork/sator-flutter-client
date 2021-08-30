@@ -102,7 +102,7 @@ class ChatPage extends GetView<ChatController> {
   }
 
   Widget _chatContent() {
-    final double minSize = (Get.height - 120 * coefficient) / Get.height;
+    final double minSize = (Get.height - 180 * coefficient) / Get.height;
     final double maxSize =
         (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
 
@@ -155,14 +155,17 @@ class ChatPage extends GetView<ChatController> {
                     child: ConstrainedBox(
                         constraints: BoxConstraints(
                             minWidth: constraints.maxWidth,
-                            minHeight: constraints.maxHeight),
+                            minHeight: constraints.maxHeight - 180),
                         child: Column(
                           children: [
-                            SizedBox(height: 160,),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 20),
-                              child: _getMessageList(),
+                            Obx(
+                              () => Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 20),
+                                child: controller.isMessagesRx.value
+                                    ? _getMessageList()
+                                    : _emptyState(),
+                              ),
                             ),
                           ],
                         ))),
@@ -179,7 +182,7 @@ class ChatPage extends GetView<ChatController> {
                       children: [
                         Flexible(
                           child: TextField(
-                            autofocus: true,
+                            autofocus: false,
                             style: textTheme.bodyText1!.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
@@ -191,7 +194,7 @@ class ChatPage extends GetView<ChatController> {
                               controller.sendMessage();
                             },
                             decoration: const InputDecoration(
-                              border: InputBorder.none,
+                                border: InputBorder.none,
                                 hintText: 'Join in the conversation',
                                 hintStyle: TextStyle(
                                     color: Colors.white,
@@ -216,7 +219,9 @@ class ChatPage extends GetView<ChatController> {
                   ),
                 ),
               ),
-              SizedBox(height: 40,)
+              SizedBox(
+                height: 40,
+              )
             ],
           ),
         ),
@@ -236,7 +241,6 @@ class ChatPage extends GetView<ChatController> {
         final message = MessageModel.fromJson(json);
         Color color = _colors[index % _colors.length];
         return _showMessage(message, color);
-
       },
     );
   }
@@ -246,6 +250,38 @@ class ChatPage extends GetView<ChatController> {
     SatorioColor.mona_lisa,
     SatorioColor.light_sky_blue
   ];
+
+  Widget _emptyState() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset('images/hand_shake.png'),
+        SizedBox(
+          height: 20,
+        ),
+        Text(
+          'txt_no_messages'.tr,
+          style: textTheme.bodyText2!.copyWith(
+            color: Colors.white,
+            fontSize: 18 * coefficient,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'txt_say_hello'.tr,
+          style: textTheme.bodyText2!.copyWith(
+            color: Colors.white,
+            fontSize: 15 * coefficient,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _showMessage(Message message, Color color) {
     return Container(

@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
 extension Format on String {
@@ -26,5 +30,28 @@ extension EmailValidation on String {
     return RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     ).hasMatch(this);
+  }
+}
+
+extension LinkValidation on String {
+  static final Random _random = Random();
+
+  bool isLink() {
+    // return Uri.tryParse(this)?.isAbsolute ?? false;
+    return RegExp(
+      r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
+      caseSensitive: false,
+    ).hasMatch(this);
+  }
+}
+
+extension DoubleParse on String {
+  double? tryParse() {
+    String locale = Get.deviceLocale.toString();
+    try {
+      return NumberFormat.decimalPattern(locale).parse(this).toDouble();
+    } catch (FormatException) {
+      return null;
+    }
   }
 }

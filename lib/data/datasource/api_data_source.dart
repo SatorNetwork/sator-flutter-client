@@ -3,16 +3,19 @@ import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
+import 'package:satorio/data/model/episode_activation_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
+import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
+import 'package:satorio/data/model/wallet_stake_model.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -72,6 +75,12 @@ abstract class ApiDataSource {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<bool> stake(String walletId, double amount);
+
+  Future<bool> unstake(String walletId, double amount);
+
+  Future<WalletStakeModel> getStake(String walletId);
+
   // endregion
 
   // region Shows
@@ -83,6 +92,8 @@ abstract class ApiDataSource {
   Future<ShowDetailModel> showDetail(String showId);
 
   Future<List<ShowSeasonModel>> showSeasons(String showId);
+
+  Future<ShowEpisodeModel> showEpisode(String showId, String episodeId);
 
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
@@ -96,11 +107,18 @@ abstract class ApiDataSource {
 
   Future<ChallengeModel> challenge(String challengeId);
 
-  Future<bool> isChallengeActivated(String episodeId);
+  Future<EpisodeActivationModel> isEpisodeActivated(String episodeId);
+
+  Future<EpisodeActivationModel> paidUnlockEpisode(
+    String episodeId,
+    String paidOption,
+  );
 
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId);
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
+
+  Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
   // endregion
 

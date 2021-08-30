@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
@@ -32,7 +33,19 @@ class QrResultShowController extends GetxController with BackToMainMixin {
           (ClaimReward claimReward) {
             isRequested.value = false;
             Get.bottomSheet(
-              ClaimRewardsBottomSheet(claimReward),
+              ClaimRewardsBottomSheet(
+                claimReward,
+                () {
+                  if (Get.isRegistered<MainController>()) {
+                    if (Get.currentRoute != '/() => MainPage') {
+                      MainController mainController = Get.find();
+                      mainController.selectedBottomTabIndex.value =
+                          MainController.TabWallet;
+                    }
+                    backToMain();
+                  }
+                },
+              ),
             );
           },
         )

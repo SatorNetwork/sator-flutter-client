@@ -225,7 +225,10 @@ class WalletPage extends GetView<WalletController> {
             controller.toReceive(walletDetail);
             break;
           case Type.claim_rewards:
-            controller.claimRewards(walletAction.url);
+            controller.toClaimRewards(walletAction.url);
+            break;
+          case Type.stake_tokens:
+            controller.toStake(walletDetail);
             break;
           default:
             break;
@@ -342,8 +345,10 @@ class WalletPage extends GetView<WalletController> {
         return Icons.arrow_downward_rounded;
       case Type.claim_rewards:
         return Icons.arrow_downward_rounded;
+      case Type.stake_tokens:
+        return Icons.arrow_forward_rounded;
       default:
-        return Icons.error_outline_rounded;
+        return Icons.arrow_forward_rounded;
     }
   }
 }

@@ -3,13 +3,16 @@ import 'package:get/get.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
+import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
   Future<bool> isTokenValid();
@@ -49,6 +52,12 @@ abstract class SatorioRepository {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<bool> stake(String walletId, double amount);
+
+  Future<bool> unstake(String walletId, double amount);
+
+  Future<WalletStake> getStake(String walletId);
+
   Future<List<Show>> shows({int? page, int? itemsPerPage});
 
   Future<List<Show>> showsFromCategory(String category);
@@ -56,6 +65,8 @@ abstract class SatorioRepository {
   Future<ShowDetail> showDetail(String showId);
 
   Future<List<ShowSeason>> showSeasons(String showId);
+
+  Future<ShowEpisode> showEpisode(String showId, String episodeId);
 
   Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
 
@@ -65,11 +76,18 @@ abstract class SatorioRepository {
 
   Future<Challenge> challenge(String challengeId);
 
-  Future<bool> isChallengeActivated(String episodeId);
+  Future<EpisodeActivation> isEpisodeActivated(String episodeId);
+
+  Future<EpisodeActivation> paidUnlockEpisode(
+    String episodeId,
+    String paidOption,
+  );
 
   Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId);
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
+
+  Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
   Future<void> logout();
 

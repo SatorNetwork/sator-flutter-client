@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/wallet_receive_binding.dart';
 import 'package:satorio/binding/wallet_send_binding.dart';
+import 'package:satorio/binding/wallet_stake_binding.dart';
 import 'package:satorio/controller/wallet_receive_controller.dart';
 import 'package:satorio/controller/wallet_send_controller.dart';
+import 'package:satorio/controller/wallet_stake_controller.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
@@ -14,6 +16,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/wallet_receive_page.dart';
 import 'package:satorio/ui/page_widget/wallet_send_page.dart';
+import 'package:satorio/ui/page_widget/wallet_stake_page.dart';
 
 class WalletController extends GetxController {
   static const _initPage = 0;
@@ -79,6 +82,7 @@ class WalletController extends GetxController {
       if (page < walletDetailsRx.value.length) {
         String walletId = walletDetailsRx.value[page].id;
         Wallet? wallet = wallets[walletId];
+        _updateWalletDetail(wallet);
         _updateTransaction(wallet);
       }
 
@@ -134,8 +138,10 @@ class WalletController extends GetxController {
     });
   }
 
-  void _updateWalletDetail(Wallet wallet) {
-    _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+  void _updateWalletDetail(Wallet? wallet) {
+    if (wallet != null) {
+      _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+    }
   }
 
   void _updateTransaction(Wallet? wallet) {
@@ -171,11 +177,24 @@ class WalletController extends GetxController {
     );
   }
 
-  void claimRewards(String claimRewardsPath) {
+  void toStake(WalletDetail walletDetail) {
+    Get.to(
+      () => WalletStakePage(),
+      binding: WalletStakeBinding(),
+      arguments: WalletStakeArgument(walletDetail),
+    );
+  }
+
+  void toClaimRewards(String claimRewardsPath) {
     _satorioRepository.claimReward(claimRewardsPath).then(
       (ClaimReward claimReward) {
         Get.bottomSheet(
-          ClaimRewardsBottomSheet(claimReward),
+          ClaimRewardsBottomSheet(
+            claimReward,
+            () {
+              refreshAllWallets();
+            },
+          ),
         );
       },
     );

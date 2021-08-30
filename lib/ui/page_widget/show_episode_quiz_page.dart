@@ -27,11 +27,49 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
               height: Get.height,
               fit: BoxFit.cover,
             ),
+            Container(
+              margin: EdgeInsets.only(
+                top: Get.mediaQuery.padding.top,
+                left: _margin,
+                right: _margin,
+                bottom: 20,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Obx(
+                      () => controller.questionRx.value.questionText.isLink()
+                          ? _imageQuestion()
+                          : _textQuestion(),
+                    ),
+                  ),
+                  Container(
+                    width: questionsBlockSize,
+                    height: questionsBlockSize,
+                    color: Colors.transparent,
+                    child: Obx(
+                      () => GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: _itemSpacing,
+                        mainAxisSpacing: _itemSpacing,
+                        children: controller.questionRx.value.answerOptions
+                            .map((e) => _answerWidget(
+                                e, e.answerId == controller.answerIdRx.value))
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Align(
               alignment: Alignment.topRight,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: Get.mediaQuery.padding.top + 22, right: 16),
+                    top: Get.mediaQuery.padding.top + 6, right: 16),
                 child: TextButton(
                   onPressed: () {
                     controller.back();
@@ -53,110 +91,135 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.only(
-                top: Get.mediaQuery.padding.top + 40,
-                left: _margin,
-                right: _margin,
-                bottom: 20,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    child: Center(
-                      child: Obx(
-                        () => controller.questionRx.value == null
-                            ? Container(
-                                width: 119 * coefficient,
-                                height: 119 * coefficient,
-                              )
-                            : CircularCountDownTimer(
-                                controller: controller.countdownController,
-                                width: 119 * coefficient,
-                                height: 119 * coefficient,
-                                duration:
-                                    controller.questionRx.value!.timeForAnswer,
-                                fillColor: SatorioColor.darkAccent,
-                                ringColor: SatorioColor.brand,
-                                isReverse: true,
-                                backgroundColor: Colors.white,
-                                strokeWidth: 7,
-                                autoStart: true,
-                                strokeCap: StrokeCap.round,
-                                textFormat: CountdownTextFormat.S,
-                                textStyle: textTheme.headline1!.copyWith(
-                                  color: Colors.black,
-                                  fontSize: 45.0 * coefficient,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                onComplete: () {
-                                  controller.timeExpire();
-                                },
-                              ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Obx(
-                    () => Text(
-                      'txt_episode_entrance_quiz'.tr.format([
-                        controller.showSeasonRx.value.seasonNumber,
-                        controller.showEpisodeRx.value.episodeNumber,
-                      ]),
-                      style: TextStyle(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      maxLines: 2,
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      child: Center(
-                        child: Obx(
-                          () => Text(
-                            controller.questionRx.value?.questionText ?? '',
-                            textAlign: TextAlign.center,
-                            style: textTheme.headline2!.copyWith(
-                              color: SatorioColor.darkAccent,
-                              fontSize: 24.0 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: questionsBlockSize,
-                    height: questionsBlockSize,
-                    color: Colors.transparent,
-                    child: Obx(
-                      () => GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: _itemSpacing,
-                        mainAxisSpacing: _itemSpacing,
-                        children: controller.questionRx.value == null
-                            ? []
-                            : controller.questionRx.value!.answerOptions
-                                .map((e) => _answerWidget(e,
-                                    e.answerId == controller.answerIdRx.value))
-                                .toList(),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _imageQuestion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 16,
+        ),
+        _episodeName(),
+        SizedBox(
+          height: 12 * coefficient,
+        ),
+        Expanded(
+          child: Container(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12 * coefficient),
+                  child: Obx(
+                    () => Image.network(
+                      controller.questionRx.value.questionText,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: EdgeInsets.all(16.0 * coefficient),
+                    child: Obx(
+                      () => CircularCountDownTimer(
+                        controller: controller.countdownController,
+                        width: 48 * coefficient,
+                        height: 48 * coefficient,
+                        duration: controller.questionRx.value.timeForAnswer,
+                        fillColor: SatorioColor.darkAccent,
+                        ringColor: SatorioColor.brand,
+                        isReverse: true,
+                        backgroundColor: Colors.white,
+                        strokeWidth: 3,
+                        autoStart: true,
+                        strokeCap: StrokeCap.round,
+                        textFormat: CountdownTextFormat.S,
+                        textStyle: textTheme.headline1!.copyWith(
+                          color: Colors.black,
+                          fontSize: 18.0 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        onComplete: () {
+                          controller.timeExpire();
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 24 * coefficient,
+        ),
+      ],
+    );
+  }
+
+  Widget _textQuestion() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 24,
+        ),
+        Container(
+          child: Center(
+            child: Obx(
+              () => CircularCountDownTimer(
+                controller: controller.countdownController,
+                width: 119 * coefficient,
+                height: 119 * coefficient,
+                duration: controller.questionRx.value.timeForAnswer,
+                fillColor: SatorioColor.darkAccent,
+                ringColor: SatorioColor.brand,
+                isReverse: true,
+                backgroundColor: Colors.white,
+                strokeWidth: 7,
+                autoStart: true,
+                strokeCap: StrokeCap.round,
+                textFormat: CountdownTextFormat.S,
+                textStyle: textTheme.headline1!.copyWith(
+                  color: Colors.black,
+                  fontSize: 45.0 * coefficient,
+                  fontWeight: FontWeight.w600,
+                ),
+                onComplete: () {
+                  controller.timeExpire();
+                },
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 12,
+        ),
+        _episodeName(),
+        Expanded(
+          child: Container(
+            child: Center(
+              child: Obx(
+                () => Text(
+                  controller.questionRx.value.questionText,
+                  textAlign: TextAlign.center,
+                  style: textTheme.headline2!.copyWith(
+                    color: SatorioColor.darkAccent,
+                    fontSize: 24.0 * coefficient,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -171,16 +234,50 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
           borderRadius: BorderRadius.circular(8),
           color: isSelected ? SatorioColor.interactive : Colors.white,
         ),
-        child: Center(
-          child: Text(
-            answerOption.answerText,
-            textAlign: TextAlign.center,
-            style: textTheme.headline4!.copyWith(
-              color: isSelected ? Colors.white : Colors.black,
-              fontSize: 20.0 * coefficient,
-              fontWeight: FontWeight.w600,
-            ),
+        child: answerOption.answerText.isLink()
+            ? Image.network(
+                answerOption.answerText,
+                fit: BoxFit.cover,
+              )
+            : Center(
+                child: Text(
+                  answerOption.answerText,
+                  textAlign: TextAlign.center,
+                  style: textTheme.headline4!.copyWith(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontSize: 20.0 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+      ),
+    );
+  }
+
+  //
+  Widget _episodeName() {
+    return Container(
+      constraints: BoxConstraints(minHeight: 30 * coefficient),
+      padding: EdgeInsets.symmetric(
+        vertical: 4 * coefficient,
+        horizontal: 12 * coefficient,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15 * coefficient),
+        color: Colors.white,
+      ),
+      child: Obx(
+        () => Text(
+          'txt_episode_entrance_quiz'.tr.format([
+            controller.showSeasonRx.value.seasonNumber,
+            controller.showEpisodeRx.value.episodeNumber,
+          ]),
+          style: TextStyle(
+            color: SatorioColor.darkAccent,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w400,
           ),
+          maxLines: 2,
         ),
       ),
     );
