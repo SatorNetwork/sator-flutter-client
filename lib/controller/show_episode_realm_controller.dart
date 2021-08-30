@@ -7,11 +7,14 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/domain/entities/paid_option.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
@@ -77,19 +80,8 @@ class ShowEpisodeRealmController extends GetxController {
   void toEpisodeRealmDialog() {
     Get.dialog(
       EpisodeRealmDialog(
-        onQuizPressed: () async {
-          final result = await Get.to(
-            () => ShowEpisodeQuizPage(),
-            binding: ShowEpisodeQuizBinding(),
-            arguments: ShowEpisodeQuizArgument(
-              showSeasonRx.value,
-              showEpisodeRx.value,
-            ),
-          );
-
-          if (result != null && result is bool) {
-            isRealmActivatedRx.value = result;
-          }
+        onQuizPressed: () {
+          _loadQuizQuestion();
         },
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
@@ -109,34 +101,95 @@ class ShowEpisodeRealmController extends GetxController {
   void toRealmExpiringBottomSheet() {
     Get.bottomSheet(
       RealmExpiringBottomSheet(
-        (extendRealmItem) {
-          _paidUnlock(extendRealmItem.hours);
+        (paidOption) {
+          _paidUnlock(paidOption);
         },
       ),
       isScrollControlled: true,
     );
+  }
+
+  void toRateBottomSheet() {
+    Get.bottomSheet(
+      RateBottomSheet(
+        (int rate) {
+          _rateEpisode(rate);
+        },
+      ),
+    );
+  }
+
+  void _loadQuizQuestion() {
+    _satorioRepository
+        .showEpisodeQuizQuestion(showEpisodeRx.value.id)
+        .then((PayloadQuestion payloadQuestion) {
+      _toEpisodeQuiz(payloadQuestion);
+    });
+  }
+
+  void _toEpisodeQuiz(PayloadQuestion payloadQuestion) async {
+    final result = await Get.to(
+      () => ShowEpisodeQuizPage(),
+      binding: ShowEpisodeQuizBinding(),
+      arguments: ShowEpisodeQuizArgument(
+        showSeasonRx.value,
+        showEpisodeRx.value,
+        payloadQuestion,
+      ),
+    );
+
+    if (result != null && result is bool) {
+      isRealmActivatedRx.value = result;
+    }
   }
 
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
-        (paidActivationRealmItem) {
-          _paidUnlock(paidActivationRealmItem.hours);
+        (paidOption) {
+          _paidUnlock(paidOption);
         },
       ),
       isScrollControlled: true,
     );
   }
 
-  void _paidUnlock(int hours) {
-    _satorioRepository.paidUnlockEpisode(showEpisodeRx.value.id).then(
+  void _paidUnlock(PaidOption paidOption) {
+    _satorioRepository
+        .paidUnlockEpisode(
+      showEpisodeRx.value.id,
+      paidOption.label,
+    )
+        .then(
       (bool result) {
         isRealmActivatedRx.value = result;
         if (result) {
           Get.bottomSheet(
             DefaultBottomSheet(
               'txt_success'.tr,
-              'txt_realm_extend_success'.tr.format([hours]),
+              'txt_realm_extend_success'.tr.format([paidOption.hours]),
+              'txt_awesome'.tr,
+              icon: Icons.check_rounded,
+              onPressed: () {
+                Get.back();
+              },
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  void _rateEpisode(int rate) {
+    _satorioRepository
+        .rateEpisode(showDetailRx.value.id, showEpisodeRx.value.id, rate)
+        .then(
+      (result) {
+        if (result) {
+          Get.bottomSheet(
+            DefaultBottomSheet(
+              'txt_success'.tr,
+              'txt_rate_success'.tr.format([rate]),
               'txt_awesome'.tr,
               icon: Icons.check_rounded,
               onPressed: () {

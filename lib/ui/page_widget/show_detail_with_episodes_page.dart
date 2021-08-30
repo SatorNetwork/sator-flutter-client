@@ -336,14 +336,14 @@ class ShowDetailWithEpisodesPage
                           ),
                         ),
                       ),
-                      Text(
-                        'WATCHED',
-                        style: textTheme.headline6!.copyWith(
-                          color: Colors.white,
-                          fontSize: 12 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      // Text(
+                      //   'WATCHED',
+                      //   style: textTheme.headline6!.copyWith(
+                      //     color: Colors.white,
+                      //     fontSize: 12 * coefficient,
+                      //     fontWeight: FontWeight.w700,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

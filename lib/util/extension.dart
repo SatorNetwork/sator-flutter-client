@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
@@ -27,6 +29,18 @@ extension EmailValidation on String {
   bool isEmail() {
     return RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+    ).hasMatch(this);
+  }
+}
+
+extension LinkValidation on String {
+  static final Random _random = Random();
+
+  bool isLink() {
+    // return Uri.tryParse(this)?.isAbsolute ?? false;
+    return RegExp(
+      r"(https?|http)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
+      caseSensitive: false,
     ).hasMatch(this);
   }
 }

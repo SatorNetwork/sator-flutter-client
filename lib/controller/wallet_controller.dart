@@ -82,6 +82,7 @@ class WalletController extends GetxController {
       if (page < walletDetailsRx.value.length) {
         String walletId = walletDetailsRx.value[page].id;
         Wallet? wallet = wallets[walletId];
+        _updateWalletDetail(wallet);
         _updateTransaction(wallet);
       }
 
@@ -137,8 +138,10 @@ class WalletController extends GetxController {
     });
   }
 
-  void _updateWalletDetail(Wallet wallet) {
-    _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+  void _updateWalletDetail(Wallet? wallet) {
+    if (wallet != null) {
+      _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+    }
   }
 
   void _updateTransaction(Wallet? wallet) {
@@ -182,11 +185,16 @@ class WalletController extends GetxController {
     );
   }
 
-  void claimRewards(String claimRewardsPath) {
+  void toClaimRewards(String claimRewardsPath) {
     _satorioRepository.claimReward(claimRewardsPath).then(
       (ClaimReward claimReward) {
         Get.bottomSheet(
-          ClaimRewardsBottomSheet(claimReward),
+          ClaimRewardsBottomSheet(
+            claimReward,
+            () {
+              refreshAllWallets();
+            },
+          ),
         );
       },
     );

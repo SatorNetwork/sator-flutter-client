@@ -14,6 +14,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/smile_list.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   final double bodyHeight = 220;
@@ -505,6 +506,115 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 32,
                           ),
                           Text(
+                            'txt_overall_rating'.tr,
+                            style: textTheme.headline4!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 24 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(13),
+                              ),
+                              color: SatorioColor.alice_blue,
+                            ),
+                            child: Row(
+                              children: [
+                                Obx(
+                                  () =>
+                                      controller.showEpisodeRx.value.rating > 1
+                                          ? SvgPicture.asset(
+                                              smile[controller.showEpisodeRx
+                                                      .value.rating
+                                                      .toInt()] ??
+                                                  '',
+                                              width: 30 * coefficient,
+                                            )
+                                          : SizedBox(
+                                              width: 0,
+                                            ),
+                                ),
+                                Obx(
+                                  () => SizedBox(
+                                    width:
+                                        controller.showEpisodeRx.value.rating >
+                                                1
+                                            ? 10 * coefficient
+                                            : 0,
+                                  ),
+                                ),
+                                Obx(
+                                  () => Text(
+                                    '${(controller.showEpisodeRx.value.rating * 10).toInt()}%',
+                                    style: textTheme.headline5!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 20 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(),
+                                ),
+                                Obx(
+                                  () => Text(
+                                    'txt_ratings'.tr.format(
+                                      [
+                                        controller
+                                            .showEpisodeRx.value.ratingsCount
+                                      ],
+                                    ),
+                                    style: textTheme.bodyText2!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 15 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              controller.toRateBottomSheet();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(13),
+                                ),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    SatorioColor.alice_blue2,
+                                    SatorioColor.alice_blue,
+                                  ],
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'txt_rate_episode'.tr,
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 14 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Text(
                             'txt_challenges'.tr,
                             style: textTheme.headline4!.copyWith(
                               color: SatorioColor.textBlack,
@@ -724,56 +834,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 }
                                 return _nftsItem(img, name);
                               },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          Text(
-                            'txt_overall_rating'.tr,
-                            style: textTheme.headline4!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 24 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(17),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(13),
-                              ),
-                              color: SatorioColor.alice_blue,
-                            ),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset('images/smile_love.svg'),
-                                SizedBox(
-                                  width: 10 * coefficient,
-                                ),
-                                Text(
-                                  '90%',
-                                  style: textTheme.headline5!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 20 * coefficient,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Text(
-                                  '5,120 ratings',
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 15 * coefficient,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                           SizedBox(
@@ -1131,7 +1191,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                SvgPicture.asset('images/smile_puke.svg'),
+                SvgPicture.asset(
+                  'images/smile/smile_1.svg',
+                  width: 24 * coefficient,
+                ),
                 SizedBox(
                   width: 12,
                 ),

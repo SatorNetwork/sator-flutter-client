@@ -105,11 +105,13 @@ abstract class ApiDataSource {
 
   Future<bool> isChallengeActivated(String episodeId);
 
-  Future<bool> paidUnlockEpisode(String episodeId);
+  Future<bool> paidUnlockEpisode(String episodeId, String paidOption);
 
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId);
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
+
+  Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
   // endregion
 
