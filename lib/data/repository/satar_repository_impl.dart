@@ -15,6 +15,7 @@ import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
@@ -155,6 +156,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<List<ShowSeason>> showSeasons(String showId) {
     return _apiDataSource
         .showSeasons(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<ShowEpisode> showEpisode(String showId, String episodeId) {
+    return _apiDataSource
+        .showEpisode(showId, episodeId)
         .catchError((value) => _handleException(value));
   }
 

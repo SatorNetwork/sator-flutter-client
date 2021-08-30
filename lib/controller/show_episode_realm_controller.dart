@@ -193,6 +193,7 @@ class ShowEpisodeRealmController extends GetxController {
         .then(
       (result) {
         if (result) {
+          _updateShowEpisode();
           Get.bottomSheet(
             DefaultBottomSheet(
               'txt_success'.tr,
@@ -205,6 +206,16 @@ class ShowEpisodeRealmController extends GetxController {
             ),
           );
         }
+      },
+    );
+  }
+
+  void _updateShowEpisode() {
+    _satorioRepository
+        .showEpisode(showDetailRx.value.id, showEpisodeRx.value.id)
+        .then(
+      (ShowEpisode showEpisode) {
+        showEpisodeRx.value = showEpisode;
       },
     );
   }

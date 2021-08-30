@@ -18,6 +18,7 @@ import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
+import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
@@ -488,6 +489,16 @@ class ApiDataSourceImpl implements ApiDataSource {
         result = [];
       result.sort((a, b) => a.seasonNumber.compareTo(b.seasonNumber));
       return result;
+    });
+  }
+
+  @override
+  Future<ShowEpisodeModel> showEpisode(String showId, String episodeId) {
+    return _requestGet(
+      'shows/$showId/episodes/$episodeId',
+    ).then((Response response) {
+      return ShowEpisodeModel.fromJson(
+          json.decode(response.bodyString!)['data']);
     });
   }
 

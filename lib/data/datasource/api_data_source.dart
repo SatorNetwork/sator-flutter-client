@@ -8,6 +8,7 @@ import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
+import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
@@ -91,6 +92,8 @@ abstract class ApiDataSource {
   Future<ShowDetailModel> showDetail(String showId);
 
   Future<List<ShowSeasonModel>> showSeasons(String showId);
+
+  Future<ShowEpisodeModel> showEpisode(String showId, String episodeId);
 
   Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
 
