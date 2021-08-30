@@ -7,6 +7,7 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
@@ -49,9 +50,9 @@ class ShowEpisodeRealmController extends GetxController {
         FirebaseDatabase.instance.reference().child(argument.showEpisode.id);
 
     _satorioRepository
-        .isChallengeActivated(argument.showEpisode.id)
-        .then((bool result) {
-      isRealmActivatedRx.value = result;
+        .isEpisodeActivated(argument.showEpisode.id)
+        .then((EpisodeActivation episodeActivation) {
+      isRealmActivatedRx.value = episodeActivation.isActive;
     });
   }
 
