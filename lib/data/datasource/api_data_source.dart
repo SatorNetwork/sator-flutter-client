@@ -3,6 +3,7 @@ import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
+import 'package:satorio/data/model/episode_activation_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
@@ -103,9 +104,12 @@ abstract class ApiDataSource {
 
   Future<ChallengeModel> challenge(String challengeId);
 
-  Future<bool> isChallengeActivated(String episodeId);
+  Future<EpisodeActivationModel> isEpisodeActivated(String episodeId);
 
-  Future<bool> paidUnlockEpisode(String episodeId, String paidOption);
+  Future<EpisodeActivationModel> paidUnlockEpisode(
+    String episodeId,
+    String paidOption,
+  );
 
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId);
 

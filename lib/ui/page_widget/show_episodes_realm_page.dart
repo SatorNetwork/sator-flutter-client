@@ -78,7 +78,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                 Center(
                   child: Obx(
                     () => IconButton(
-                      onPressed: controller.isRealmActivatedRx.value
+                      onPressed: controller.activationRx.value.isActive
                           ? () => controller.toChatPage()
                           : null,
                       icon: Icon(
@@ -163,7 +163,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   children: [
                     Obx(
                       () => InkWell(
-                        onTap: controller.isRealmActivatedRx.value
+                        onTap: controller.activationRx.value.isActive
                             ? () {
                                 controller.toRealmExpiringBottomSheet();
                               }
@@ -181,7 +181,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             child: Row(
                               children: [
                                 SvgPicture.asset(
-                                  controller.isRealmActivatedRx.value
+                                  controller.activationRx.value.isActive
                                       ? 'images/unlocked_icon.svg'
                                       : 'images/locked_icon.svg',
                                 ),
@@ -194,8 +194,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     Text(
-                                      controller.isRealmActivatedRx.value
-                                          ? 'txt_2h_left'.tr
+                                      controller.activationRx.value.isActive
+                                          ? 'txt_x_h_left'.tr.format(
+                                              [
+                                                _calculateTime(controller
+                                                    .activationRx
+                                                    .value
+                                                    .activatedBefore)
+                                              ],
+                                            )
                                           : 'txt_locked'.tr,
                                       style: textTheme.bodyText2!.copyWith(
                                         color: SatorioColor.textBlack,
@@ -434,7 +441,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                 ),
                 child: SingleChildScrollView(
                   controller: scrollController,
-                  physics: controller.isRealmActivatedRx.value
+                  physics: controller.activationRx.value.isActive
                       ? ScrollPhysics()
                       : NeverScrollableScrollPhysics(),
                   child: ConstrainedBox(
@@ -485,22 +492,28 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(13),
                                 ),
-                                child: controller.isMessagesRx.value == true ? FirebaseAnimatedList(
-                                  padding: EdgeInsets.all(17),
-                                  physics: AlwaysScrollableScrollPhysics(),
-                                  controller: controller.scrollController,
-                                  defaultChild: _emptyState(),
-                                  query: controller.getMessageQuery(),
-                                  itemBuilder: (context, DataSnapshot snapshot,
-                                      animation, index) {
-                                    final json =
-                                        snapshot.value as Map<dynamic, dynamic>;
-                                    final message = MessageModel.fromJson(json);
-                                    Color color =
-                                        _colors[index % _colors.length];
-                                    return _showMessage(message, color);
-                                  },
-                                ) : _emptyState()),
+                                child: controller.isMessagesRx.value == true
+                                    ? FirebaseAnimatedList(
+                                        padding: EdgeInsets.all(17),
+                                        physics:
+                                            AlwaysScrollableScrollPhysics(),
+                                        controller: controller.scrollController,
+                                        defaultChild: _emptyState(),
+                                        query: controller.getMessageQuery(),
+                                        itemBuilder: (context,
+                                            DataSnapshot snapshot,
+                                            animation,
+                                            index) {
+                                          final json = snapshot.value
+                                              as Map<dynamic, dynamic>;
+                                          final message =
+                                              MessageModel.fromJson(json);
+                                          Color color =
+                                              _colors[index % _colors.length];
+                                          return _showMessage(message, color);
+                                        },
+                                      )
+                                    : _emptyState()),
                           ),
                           SizedBox(
                             height: 32,
@@ -906,7 +919,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   ),
                 ),
               ),
-              if (!controller.isRealmActivatedRx.value)
+              if (!controller.activationRx.value.isActive)
                 Container(
                   width: constraints.maxWidth,
                   height: constraints.maxHeight,
@@ -1355,6 +1368,18 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         ),
       ],
     );
+  }
+
+  int _calculateTime(DateTime? activatedBefore) {
+    if (activatedBefore == null) {
+      return 0;
+    } else {
+      return activatedBefore
+          .difference(
+            DateTime.now(),
+          )
+          .inHours;
+    }
   }
 
   final Review review = Review(

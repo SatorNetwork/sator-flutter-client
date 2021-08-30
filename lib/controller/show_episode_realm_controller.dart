@@ -7,6 +7,7 @@ import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
@@ -30,7 +31,9 @@ class ShowEpisodeRealmController extends GetxController {
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
 
-  final RxBool isRealmActivatedRx = false.obs;
+  final Rx<EpisodeActivation> activationRx = Rx(
+    EpisodeActivation(false, null, null),
+  );
 
   ScrollController scrollController = ScrollController();
 
@@ -57,11 +60,7 @@ class ShowEpisodeRealmController extends GetxController {
       print(isMessagesRx.value);
     });
 
-    _satorioRepository
-        .isChallengeActivated(argument.showEpisode.id)
-        .then((bool result) {
-      isRealmActivatedRx.value = result;
-    });
+    _checkActivation();
   }
 
   void back() {
@@ -119,6 +118,14 @@ class ShowEpisodeRealmController extends GetxController {
     );
   }
 
+  void _checkActivation() {
+    _satorioRepository
+        .isEpisodeActivated(showEpisodeRx.value.id)
+        .then((EpisodeActivation episodeActivation) {
+      activationRx.value = episodeActivation;
+    });
+  }
+
   void _loadQuizQuestion() {
     _satorioRepository
         .showEpisodeQuizQuestion(showEpisodeRx.value.id)
@@ -139,7 +146,7 @@ class ShowEpisodeRealmController extends GetxController {
     );
 
     if (result != null && result is bool) {
-      isRealmActivatedRx.value = result;
+      _checkActivation();
     }
   }
 
@@ -161,9 +168,9 @@ class ShowEpisodeRealmController extends GetxController {
       paidOption.label,
     )
         .then(
-      (bool result) {
-        isRealmActivatedRx.value = result;
-        if (result) {
+      (EpisodeActivation episodeActivation) {
+        activationRx.value = episodeActivation;
+        if (episodeActivation.isActive) {
           Get.bottomSheet(
             DefaultBottomSheet(
               'txt_success'.tr,
@@ -209,5 +216,8 @@ class ShowEpisodeRealmArgument {
   final ShowEpisode showEpisode;
 
   const ShowEpisodeRealmArgument(
-      this.showDetail, this.showSeason, this.showEpisode);
+    this.showDetail,
+    this.showSeason,
+    this.showEpisode,
+  );
 }
