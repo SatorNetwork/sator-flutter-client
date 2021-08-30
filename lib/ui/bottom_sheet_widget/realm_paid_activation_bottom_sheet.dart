@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
-typedef SelectPaidActivationRealmItemCallback = void Function(
-    PaidActivationRealmItem paidActivationRealmItem);
+typedef SelectPaidOptionCallback = void Function(PaidOption paidOption);
 
 class RealmPaidActivationBottomSheet extends StatelessWidget {
   RealmPaidActivationBottomSheet(
@@ -19,9 +19,9 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Rx<PaidActivationRealmItem?> _selectedItemRx = Rx(null);
+  final Rx<PaidOption?> _selectedPaidOptionRx = Rx(null);
 
-  final SelectPaidActivationRealmItemCallback onExtend;
+  final SelectPaidOptionCallback onExtend;
 
   @override
   Widget build(BuildContext context) {
@@ -116,8 +116,9 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children:
-                        _itemsTmp.map((item) => _itemWidget(item)).toList(),
+                    children: PaidOption.available
+                        .map((item) => _itemWidget(item))
+                        .toList(),
                   ),
                   SizedBox(
                     height: 24 * coefficient,
@@ -125,11 +126,11 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                   Obx(
                     () => ElevatedGradientButton(
                       text: 'txt_unlock_with_sao'.tr,
-                      isEnabled: _selectedItemRx.value != null,
+                      isEnabled: _selectedPaidOptionRx.value != null,
                       onPressed: () {
                         Get.back();
-                        if (_selectedItemRx.value != null) {
-                          onExtend(_selectedItemRx.value!);
+                        if (_selectedPaidOptionRx.value != null) {
+                          onExtend(_selectedPaidOptionRx.value!);
                         }
                       },
                     ),
@@ -155,11 +156,12 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _itemWidget(PaidActivationRealmItem item) {
+  Widget _itemWidget(PaidOption paidOption) {
     return Obx(
       () => InkWell(
         onTap: () {
-          _selectedItemRx.value = _selectedItemRx.value == item ? null : item;
+          _selectedPaidOptionRx.value =
+              _selectedPaidOptionRx.value == paidOption ? null : paidOption;
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
@@ -167,7 +169,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(8),
             ),
-            color: _selectedItemRx.value == item
+            color: _selectedPaidOptionRx.value == paidOption
                 ? SatorioColor.interactive.withOpacity(0.5)
                 : SatorioColor.lavender,
           ),
@@ -206,7 +208,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.text,
+                    paidOption.text,
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 15 * coefficient,
@@ -214,7 +216,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    item.amount.toStringAsFixed(2),
+                    paidOption.amount.toStringAsFixed(2),
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 15 * coefficient,
@@ -229,18 +231,4 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
       ),
     );
   }
-
-  final List<PaidActivationRealmItem> _itemsTmp = [
-    PaidActivationRealmItem('2h for', 10.0, 2),
-    PaidActivationRealmItem('24h for', 100.0, 24),
-    PaidActivationRealmItem('week for', 500.0, 7 * 24),
-  ];
-}
-
-class PaidActivationRealmItem {
-  final String text;
-  final double amount;
-  final int hours;
-
-  const PaidActivationRealmItem(this.text, this.amount, this.hours);
 }

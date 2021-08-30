@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,6 +14,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/smile_list.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   final double bodyHeight = 220;
@@ -472,7 +474,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 16,
                           ),
                           Container(
-                            height: 148,
+                            height: controller.isMessagesRx.value ? 148 : 60,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.all(
                                 Radius.circular(13),
@@ -480,22 +482,132 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               color: SatorioColor.alice_blue,
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(13),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(13),
+                                ),
+                                child: controller.isMessagesRx.value == true ? FirebaseAnimatedList(
+                                  padding: EdgeInsets.all(17),
+                                  physics: AlwaysScrollableScrollPhysics(),
+                                  controller: controller.scrollController,
+                                  defaultChild: _emptyState(),
+                                  query: controller.getMessageQuery(),
+                                  itemBuilder: (context, DataSnapshot snapshot,
+                                      animation, index) {
+                                    final json =
+                                        snapshot.value as Map<dynamic, dynamic>;
+                                    final message = MessageModel.fromJson(json);
+                                    Color color =
+                                        _colors[index % _colors.length];
+                                    return _showMessage(message, color);
+                                  },
+                                ) : _emptyState()),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Text(
+                            'txt_overall_rating'.tr,
+                            style: textTheme.headline4!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 24 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(13),
                               ),
-                              child: FirebaseAnimatedList(
-                                padding: EdgeInsets.all(17),
-                                physics: AlwaysScrollableScrollPhysics(),
-                                controller: controller.scrollController,
-                                query: controller.getMessageQuery(),
-                                itemBuilder:
-                                    (context, snapshot, animation, index) {
-                                  final json =
-                                      snapshot.value as Map<dynamic, dynamic>;
-                                  final message = MessageModel.fromJson(json);
-                                  Color color = _colors[index % _colors.length];
-                                  return _showMessage(message, color);
-                                },
+                              color: SatorioColor.alice_blue,
+                            ),
+                            child: Row(
+                              children: [
+                                Obx(
+                                  () =>
+                                      controller.showEpisodeRx.value.rating > 1
+                                          ? SvgPicture.asset(
+                                              smile[controller.showEpisodeRx
+                                                      .value.rating
+                                                      .toInt()] ??
+                                                  '',
+                                              width: 30 * coefficient,
+                                            )
+                                          : SizedBox(
+                                              width: 0,
+                                            ),
+                                ),
+                                Obx(
+                                  () => SizedBox(
+                                    width:
+                                        controller.showEpisodeRx.value.rating >
+                                                1
+                                            ? 10 * coefficient
+                                            : 0,
+                                  ),
+                                ),
+                                Obx(
+                                  () => Text(
+                                    '${(controller.showEpisodeRx.value.rating * 10).toInt()}%',
+                                    style: textTheme.headline5!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 20 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Container(),
+                                ),
+                                Obx(
+                                  () => Text(
+                                    'txt_ratings'.tr.format(
+                                      [
+                                        controller
+                                            .showEpisodeRx.value.ratingsCount
+                                      ],
+                                    ),
+                                    style: textTheme.bodyText2!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 15 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              controller.toRateBottomSheet();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.vertical(
+                                  bottom: Radius.circular(13),
+                                ),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    SatorioColor.alice_blue2,
+                                    SatorioColor.alice_blue,
+                                  ],
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'txt_rate_episode'.tr,
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 14 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -722,56 +834,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 }
                                 return _nftsItem(img, name);
                               },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          Text(
-                            'txt_overall_rating'.tr,
-                            style: textTheme.headline4!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 24 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(17),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(13),
-                              ),
-                              color: SatorioColor.alice_blue,
-                            ),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset('images/smile_love.svg'),
-                                SizedBox(
-                                  width: 10 * coefficient,
-                                ),
-                                Text(
-                                  '90%',
-                                  style: textTheme.headline5!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 20 * coefficient,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Text(
-                                  '5,120 ratings',
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 15 * coefficient,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
                           SizedBox(
@@ -1102,6 +1164,16 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     );
   }
 
+  Widget test() {
+    controller.getMessageQuery().once().then((value) {
+      return Text('dadas');
+    }).catchError((error) {
+      return Text('wdswdwdww');
+    });
+
+    return Container();
+  }
+
   Widget _reviewItem(Review review) {
     return Container(
       padding: EdgeInsets.only(bottom: 16, top: 30),
@@ -1119,7 +1191,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                SvgPicture.asset('images/smile_puke.svg'),
+                SvgPicture.asset(
+                  'images/smile/smile_1.svg',
+                  width: 24 * coefficient,
+                ),
                 SizedBox(
                   width: 12,
                 ),
@@ -1258,6 +1333,27 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _emptyState() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset('images/ico_no_message.svg'),
+        SizedBox(
+          width: 10,
+        ),
+        Text(
+          'txt_no_messages'.tr,
+          style: textTheme.bodyText2!.copyWith(
+            color: SatorioColor.interactive,
+            fontSize: 14 * coefficient,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 

@@ -29,6 +29,8 @@ import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
+import 'package:satorio/data/request/paid_unlock_request.dart';
+import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
@@ -167,6 +169,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<bool> isTokenExist() async {
     String? token = _authDataSource.getAuthToken();
+    print('token |${token ?? 'NULL'}|');
     return token != null && token.isNotEmpty;
   }
 
@@ -556,10 +559,10 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> paidUnlockEpisode(String episodeId) {
+  Future<bool> paidUnlockEpisode(String episodeId, String paidOption) {
     return _requestPost(
       'challenges/unlock/$episodeId',
-      EmptyRequest(),
+      PaidUnlockRequest(paidOption),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -579,6 +582,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
     return _requestGet(
       'challenges/$questionId/check-answer/$answerId',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> rateEpisode(String showId, String episodeId, int rate) {
+    return _requestPost(
+      'shows/$showId/episodes/$episodeId/rate',
+      RateRequest(rate),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

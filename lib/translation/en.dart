@@ -169,4 +169,10 @@ const Map<String, String> en = {
   'txt_unlock_the_realm': 'Unlock the realm',
   'txt_where_can_watch': 'Where can I watch?',
   'txt_is_live_on': 'is currently live on',
+  'txt_rate_episode': 'Rate episode',
+  'txt_rate': 'Rate',
+  'txt_rate_success': 'You have rated the episode with “%d”',
+  'txt_ratings': '%d ratings',
+  'txt_no_messages': 'Welcome to the chat room!',
+  'txt_say_hello': 'Say hello to everyone',
 };

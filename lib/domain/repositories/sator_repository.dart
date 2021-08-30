@@ -74,11 +74,13 @@ abstract class SatorioRepository {
 
   Future<bool> isChallengeActivated(String episodeId);
 
-  Future<bool> paidUnlockEpisode(String episodeId);
+  Future<bool> paidUnlockEpisode(String episodeId, String paidOption);
 
   Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId);
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
+
+  Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
   Future<void> logout();
 

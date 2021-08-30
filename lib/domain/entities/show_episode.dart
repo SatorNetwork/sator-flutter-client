@@ -7,7 +7,19 @@ class ShowEpisode {
   final String description;
   final String cover;
   final DateTime? releaseDate;
+  final double rating;
+  final int ratingsCount;
 
-  const ShowEpisode(this.id, this.showId, this.challengeId, this.episodeNumber,
-      this.title, this.description, this.cover, this.releaseDate);
+  const ShowEpisode(
+    this.id,
+    this.showId,
+    this.challengeId,
+    this.episodeNumber,
+    this.title,
+    this.description,
+    this.cover,
+    this.releaseDate,
+    this.rating,
+    this.ratingsCount,
+  );
 }

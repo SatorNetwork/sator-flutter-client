@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -12,9 +11,10 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
-  const ClaimRewardsBottomSheet(this.data);
+  const ClaimRewardsBottomSheet(this.data, this.onAwesomePressed);
 
   final ClaimReward data;
+  final VoidCallback? onAwesomePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +75,9 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
               ElevatedGradientButton(
                 text: 'txt_awesome'.tr,
                 onPressed: () {
-                  if (Get.isRegistered<MainController>()) {
-                    if (Get.currentRoute != '/() => MainPage') {
-                      MainController mainController = Get.find();
-                      mainController.selectedBottomTabIndex.value =
-                          MainController.TabWallet;
-                    }
-                    backToMain();
-                  } else {
-                    Get.back();
+                  Get.back();
+                  if (onAwesomePressed != null) {
+                    onAwesomePressed!();
                   }
                 },
               ),
@@ -98,6 +92,7 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
                   color: SatorioColor.darkAccent,
                 ),
                 onPressed: () {
+                  Get.back();
                   _launchURL(data.transactionUrl);
                 },
               ),
