@@ -47,6 +47,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                           controller: controller.emailController,
                           obscureText: false,
                           enableSuggestions: false,
+                          autocorrect: false,
                           errorText: controller.validationRx.value['email'],
                           keyboardType: TextInputType.emailAddress,
                         ),
@@ -71,6 +72,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                           controller: controller.passwordController,
                           hintText: 'txt_password_hint'.tr,
                           enableSuggestions: false,
+                          autocorrect: false,
                           obscureText: controller.passwordObscured.value,
                           errorText: controller.validationRx.value['password'],
                           icon: Icon(

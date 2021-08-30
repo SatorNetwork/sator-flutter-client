@@ -47,6 +47,7 @@ class LoginPage extends GetView<LoginController> {
                             obscureText: false,
                             keyboardType: TextInputType.emailAddress,
                             enableSuggestions: false,
+                            autocorrect: false,
                             errorText: controller.validationRx.value['email']),
                       ),
                       SizedBox(
@@ -64,6 +65,7 @@ class LoginPage extends GetView<LoginController> {
                                 obscureText: controller.passwordObscured.value,
                                 keyboardType: TextInputType.emailAddress,
                                 enableSuggestions: false,
+                                autocorrect: false,
                                 errorText:
                                     controller.validationRx.value['password'],
                                 icon: Icon(
