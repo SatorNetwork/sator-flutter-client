@@ -170,7 +170,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<bool> isTokenExist() async {
     String? token = _authDataSource.getAuthToken();
-    print('token |${token ?? 'NULL'}|');
     return token != null && token.isNotEmpty;
   }
 

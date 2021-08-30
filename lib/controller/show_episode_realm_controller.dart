@@ -39,6 +39,8 @@ class ShowEpisodeRealmController extends GetxController {
 
   late final DatabaseReference _messagesRef;
 
+  late Rx<bool> isMessagesRx = Rx(false);
+
   Query getMessageQuery() {
     return _messagesRef;
   }
@@ -48,8 +50,15 @@ class ShowEpisodeRealmController extends GetxController {
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
-    _messagesRef =
-        FirebaseDatabase.instance.reference().child(argument.showEpisode.id);
+    _messagesRef = FirebaseDatabase.instance
+        .reference()
+        .child('prod')
+        .child(argument.showEpisode.id);
+
+    _messagesRef.once().then((DataSnapshot snapshot) {
+      isMessagesRx.value = snapshot.value != null;
+      print(isMessagesRx.value);
+    });
 
     _checkActivation();
   }
