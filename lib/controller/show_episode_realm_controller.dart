@@ -146,7 +146,6 @@ class ShowEpisodeRealmController extends GetxController {
     );
 
     if (result != null && result is bool) {
-      // isRealmActivatedRx.value = result;
       _checkActivation();
     }
   }
