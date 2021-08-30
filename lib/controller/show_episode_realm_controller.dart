@@ -31,7 +31,9 @@ class ShowEpisodeRealmController extends GetxController {
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
 
-  final RxBool isRealmActivatedRx = false.obs;
+  final Rx<EpisodeActivation> activationRx = Rx(
+    EpisodeActivation(false, null, null),
+  );
 
   ScrollController scrollController = ScrollController();
 
@@ -49,11 +51,7 @@ class ShowEpisodeRealmController extends GetxController {
     _messagesRef =
         FirebaseDatabase.instance.reference().child(argument.showEpisode.id);
 
-    _satorioRepository
-        .isEpisodeActivated(argument.showEpisode.id)
-        .then((EpisodeActivation episodeActivation) {
-      isRealmActivatedRx.value = episodeActivation.isActive;
-    });
+    _checkActivation();
   }
 
   void back() {
@@ -111,6 +109,14 @@ class ShowEpisodeRealmController extends GetxController {
     );
   }
 
+  void _checkActivation() {
+    _satorioRepository
+        .isEpisodeActivated(showEpisodeRx.value.id)
+        .then((EpisodeActivation episodeActivation) {
+      activationRx.value = episodeActivation;
+    });
+  }
+
   void _loadQuizQuestion() {
     _satorioRepository
         .showEpisodeQuizQuestion(showEpisodeRx.value.id)
@@ -131,7 +137,8 @@ class ShowEpisodeRealmController extends GetxController {
     );
 
     if (result != null && result is bool) {
-      isRealmActivatedRx.value = result;
+      // isRealmActivatedRx.value = result;
+      _checkActivation();
     }
   }
 
@@ -153,9 +160,9 @@ class ShowEpisodeRealmController extends GetxController {
       paidOption.label,
     )
         .then(
-      (bool result) {
-        isRealmActivatedRx.value = result;
-        if (result) {
+      (EpisodeActivation episodeActivation) {
+        activationRx.value = episodeActivation;
+        if (episodeActivation.isActive) {
           Get.bottomSheet(
             DefaultBottomSheet(
               'txt_success'.tr,

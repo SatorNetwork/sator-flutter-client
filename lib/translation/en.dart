@@ -144,7 +144,7 @@ const Map<String, String> en = {
   'txt_cool': 'Cool',
   'txt_tip': 'Tip',
   'txt_write_review': 'Write a review',
-  'txt_2h_left': '2hrs left',
+  'txt_x_h_left': '%dhrs left',
   'txt_locked': 'Locked',
   'txt_status': 'Status',
   'txt_you': 'You',
