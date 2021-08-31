@@ -16,6 +16,7 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/domain/entities/referral_code.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -137,6 +138,10 @@ abstract class ApiDataSource {
   // region Invitations
 
   Future<bool> sendInvite(String email);
+
+  Future<ReferralCode> getReferralCode();
+
+  Future<bool> confirmReferralCode(String referralCode);
 
   // endregion
 

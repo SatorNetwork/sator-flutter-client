@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
+import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
@@ -22,10 +23,12 @@ class CreateAccountController extends GetxController with ValidationMixin {
   }
 
   void toSignIn() {
-    Get.off(() => LoginPage(), binding: LoginBinding());
+    Get.off(() => LoginPage(), binding: LoginBinding(), arguments: LoginArgument(null));
   }
 
   void createAccount() {
+    CreateAccountArgument argument = Get.arguments as CreateAccountArgument;
+
     _satorioRepository
         .signUp(
       emailController.text,
@@ -34,6 +37,13 @@ class CreateAccountController extends GetxController with ValidationMixin {
     )
         .then((isSuccess) {
       if (isSuccess) {
+        bool _isValid = argument.deepLink != null &&
+            argument.deepLink!.queryParameters['code'] != null &&
+            argument.deepLink!.queryParameters['code']!.isNotEmpty;
+        if (_isValid) {
+          _satorioRepository
+              .confirmReferralCode(argument.deepLink!.queryParameters['code']!);
+        }
         Get.to(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
@@ -41,4 +51,10 @@ class CreateAccountController extends GetxController with ValidationMixin {
       }
     }).catchError((value) => handleValidationException(value));
   }
+}
+
+class CreateAccountArgument {
+  final Uri? deepLink;
+
+  const CreateAccountArgument(this.deepLink);
 }
