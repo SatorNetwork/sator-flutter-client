@@ -1196,16 +1196,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     );
   }
 
-  Widget test() {
-    controller.getMessageQuery().once().then((value) {
-      return Text('dadas');
-    }).catchError((error) {
-      return Text('wdswdwdww');
-    });
-
-    return Container();
-  }
-
   Widget _reviewItem(Review review) {
     return Container(
       padding: EdgeInsets.only(bottom: 16, top: 30),

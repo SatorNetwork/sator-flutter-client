@@ -7,7 +7,6 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/dialog_widget/netflix_dialog.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 
 class ShowDetailWithEpisodesController extends GetxController
@@ -35,12 +34,14 @@ class ShowDetailWithEpisodesController extends GetxController
 
   @override
   void onInit() {
+    super.onInit();
     scrollController.addListener(_scrollListener);
   }
 
   @override
   void onClose() {
     scrollController.removeListener(_scrollListener);
+    super.onClose();
   }
 
   void refreshShowData() {

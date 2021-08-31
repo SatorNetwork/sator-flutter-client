@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -11,8 +9,7 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:share/share.dart';
 
 class SendInviteDialog extends StatelessWidget {
-  final TextEditingController _amountController = TextEditingController();
-  final String referralLink;
+    final String referralLink;
 
   SendInviteDialog(this.referralLink);
 
