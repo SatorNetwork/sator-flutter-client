@@ -873,7 +873,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () => controller.back(),
+                                onTap: () {
+                                  controller.toNonWorkingFeatureDialog();
+                                },
                                 child: Icon(
                                   Icons.chevron_right_rounded,
                                   size: 32 * coefficient,
@@ -905,6 +907,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             borderColor: SatorioColor.interactive,
                             textColor: SatorioColor.interactive,
                             borderWidth: 3,
+                            onPressed: () {
+                              controller.toNonWorkingFeatureDialog();
+                            },
                           ),
                           SizedBox(
                             height: 8,
@@ -982,160 +987,165 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   Widget _nftsItem(String assetName, String name) {
     double width = Get.width - 80;
     double height = 192.0 * coefficient;
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        width: width,
-        child: Stack(
-          children: [
-            Image.asset(
-              "images/new/$assetName.png",
-              height: height,
-              width: width,
-              fit: BoxFit.cover,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 85 * coefficient),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 20,
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          width: width,
+          child: Stack(
+            children: [
+              Image.asset(
+                "images/new/$assetName.png",
+                height: height,
+                width: width,
+                fit: BoxFit.cover,
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 85 * coefficient),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          name,
+                          style: textTheme.headline4!.copyWith(
+                            color: Colors.white,
+                            fontSize: 20.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 7,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: SatorioColor.lavender_rose,
+                        ),
+                        child: Text(
+                          'NFT',
+                          style: textTheme.bodyText2!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 12.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+              ),
+              Container(
+                color: SatorioColor.alice_blue,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                margin: EdgeInsets.only(top: 140 * coefficient),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        name,
-                        style: textTheme.headline4!.copyWith(
-                          color: Colors.white,
-                          fontSize: 20.0 * coefficient,
+                        'An Electric Storm (1/1 NFT + AR physical, 2021)',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 18 * coefficient,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: 7 * coefficient,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          ClipOval(
+                            child: Container(
+                              height: 20,
+                              width: 20,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    SatorioColor.yellow_orange,
+                                    SatorioColor.tomato,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(
+                            review.userName,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 15 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 7,
-                      ),
+                      width: Get.mediaQuery.size.width,
+                      padding: EdgeInsets.only(top: 16, left: 16, right: 16),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: SatorioColor.lavender_rose,
-                      ),
-                      child: Text(
-                        'NFT',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 12.0 * coefficient,
-                          fontWeight: FontWeight.w700,
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            SatorioColor.alice_blue2,
+                            SatorioColor.alice_blue
+                          ],
                         ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'txt_reserve_price'.tr,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.comet,
+                              fontSize: 15 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            '15.00 SAO',
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 15 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
                       ),
                     )
                   ],
                 ),
               ),
-            ),
-            Container(
-              color: SatorioColor.alice_blue,
-              padding: EdgeInsets.symmetric(vertical: 16),
-              margin: EdgeInsets.only(top: 140 * coefficient),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'An Electric Storm (1/1 NFT + AR physical, 2021)',
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 18 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 7 * coefficient,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        ClipOval(
-                          child: Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                  SatorioColor.yellow_orange,
-                                  SatorioColor.tomato,
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 6,
-                        ),
-                        Text(
-                          review.userName,
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 15 * coefficient,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Container(
-                    width: Get.mediaQuery.size.width,
-                    padding: EdgeInsets.only(top: 16, left: 16, right: 16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          SatorioColor.alice_blue2,
-                          SatorioColor.alice_blue
-                        ],
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'txt_reserve_price'.tr,
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.comet,
-                            fontSize: 15 * coefficient,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Text(
-                          '15.00 SAO',
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 15 * coefficient,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

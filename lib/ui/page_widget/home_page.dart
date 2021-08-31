@@ -370,7 +370,9 @@ class HomePage extends GetView<HomeController> {
     final width = (Get.width - 12 - 2 * 20 - 8) / 2;
     final height = 225 * coefficient;
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
       child: Container(
         height: height,
         width: width,
