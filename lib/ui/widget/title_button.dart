@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
-import 'package:get/get.dart';
 
 class TitleWithButton extends StatelessWidget {
   final String textCode;
