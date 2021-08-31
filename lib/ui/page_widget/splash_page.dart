@@ -32,7 +32,7 @@ class SplashPage extends GetView<SplashController> {
                     height: 22,
                   ),
                   Text(
-                    'Curabitur posuere, dolor quis commodo vulputate, odio nunc maximus ex, sed faucibus elit ex',
+                    'Blockchain enabled content engagement',
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.79),
                       fontSize: 18.0,
