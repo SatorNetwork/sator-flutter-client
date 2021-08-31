@@ -42,6 +42,7 @@ dependencies:
   firebase_database: ^7.1.2
   firebase_dynamic_links: ^2.0.7
   grouped_list: ^4.1.0
+  webview_flutter: ^2.0.12
 
 dev_dependencies:
   flutter_test:
