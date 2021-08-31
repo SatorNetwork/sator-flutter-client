@@ -87,7 +87,8 @@ class ProfilePage extends GetView<ProfileController> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          controller.toInviteDialog();
+                          //TODO: uncomment
+                          // controller.getReferralCode();
                         },
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(24, 24),

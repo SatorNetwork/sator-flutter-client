@@ -4,6 +4,7 @@ import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/binding/password_recovery_binding.dart';
+import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
@@ -20,7 +21,10 @@ class LoginController extends GetxController with ValidationMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   void toCreateAccount() {
-    Get.off(() => CreateAccountPage(), binding: CreateAccountBinding());
+    LoginArgument argument = Get.arguments as LoginArgument;
+    print(argument.deepLink);
+
+    Get.off(() => CreateAccountPage(), binding: CreateAccountBinding(), arguments: CreateAccountArgument(argument.deepLink));
   }
 
   void toForgotPassword() {
@@ -48,4 +52,10 @@ class LoginController extends GetxController with ValidationMixin {
         );
     });
   }
+}
+
+class LoginArgument {
+  final Uri? deepLink;
+
+  const LoginArgument(this.deepLink);
 }
