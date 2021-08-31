@@ -141,126 +141,137 @@ class ProfilePage extends GetView<ProfileController> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 28, bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_nfts'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
+                      InkWell(
+                        onTap: () {
+                          controller.toNonWorkingFeatureDialog();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 28, bottom: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'txt_nfts'.tr,
+                                style: textTheme.headline3!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 24.0 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                size: 32 * coefficient,
+                                color: SatorioColor.textBlack,
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                      Container(
-                        height: nftsLargestImageSize + 21 * coefficient,
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(17 * coefficient),
-                                      ),
-                                      child: Image.asset(
-                                        'images/tmp_nft_1.png',
-                                        width: nftsLargestImageSize,
-                                        height: nftsLargestImageSize,
-                                        fit: BoxFit.cover,
+                      InkWell(
+                        onTap: () {
+                          controller.toNonWorkingFeatureDialog();
+                        },
+                        child: Container(
+                          height: nftsLargestImageSize + 21 * coefficient,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(17 * coefficient),
+                                        ),
+                                        child: Image.asset(
+                                          'images/tmp_nft_1.png',
+                                          width: nftsLargestImageSize,
+                                          height: nftsLargestImageSize,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: 16 * coefficient,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Expanded(
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(17 * coefficient),
-                                            ),
-                                            child: Image.asset(
-                                              'images/tmp_nft_2.png',
-                                              width: nftsLargestImageSize,
-                                              height: nftsLargestImageSize,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Container(
-                                            margin: EdgeInsets.only(
-                                              top: 16 * coefficient,
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(
-                                                          17 * coefficient),
-                                                    ),
-                                                    child: Image.asset(
-                                                      'images/tmp_nft_3.png',
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 15 * coefficient,
-                                                ),
-                                                Expanded(
-                                                  child: ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(
-                                                          17 * coefficient),
-                                                    ),
-                                                    child: Image.asset(
-                                                      'images/tmp_nft_4.png',
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                    SizedBox(
+                                      width: 16 * coefficient,
                                     ),
-                                  ),
-                                ],
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(
+                                                    17 * coefficient),
+                                              ),
+                                              child: Image.asset(
+                                                'images/tmp_nft_2.png',
+                                                width: nftsLargestImageSize,
+                                                height: nftsLargestImageSize,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                top: 16 * coefficient,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(
+                                                            17 * coefficient),
+                                                      ),
+                                                      child: Image.asset(
+                                                        'images/tmp_nft_3.png',
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 15 * coefficient,
+                                                  ),
+                                                  Expanded(
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(
+                                                            17 * coefficient),
+                                                      ),
+                                                      child: Image.asset(
+                                                        'images/tmp_nft_4.png',
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Breaking Bad',
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.interactive,
-                                fontSize: 15.0 * coefficient,
-                                fontWeight: FontWeight.w400,
+                              Text(
+                                'Breaking Bad',
+                                style: textTheme.headline3!.copyWith(
+                                  color: SatorioColor.interactive,
+                                  fontSize: 15.0 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       Padding(
@@ -427,104 +438,115 @@ class ProfilePage extends GetView<ProfileController> {
   }
 
   Widget _badgeItem(BadgeTmp badge) {
-    return Container(
-      height: 121 * coefficient,
-      width: 100 * coefficient,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 100 * coefficient,
-            height: 100 * coefficient,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
-              color: SatorioColor.alice_blue,
-            ),
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    badge.asset,
-                    width: 60 * coefficient,
-                    height: 60 * coefficient,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                if (badge.count > 0)
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        height: 121 * coefficient,
+        width: 100 * coefficient,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 100 * coefficient,
+              height: 100 * coefficient,
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.all(Radius.circular(17 * coefficient)),
+                color: SatorioColor.alice_blue,
+              ),
+              child: Stack(
+                children: [
                   Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 6 * coefficient,
-                          horizontal: 8 * coefficient),
-                      child: Text(
-                        badge.count.toString(),
-                        style: textTheme.headline6!.copyWith(
-                          color: SatorioColor.interactive,
-                          fontSize: 18.0 * coefficient,
-                          fontWeight: FontWeight.w700,
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      badge.asset,
+                      width: 60 * coefficient,
+                      height: 60 * coefficient,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  if (badge.count > 0)
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 6 * coefficient,
+                            horizontal: 8 * coefficient),
+                        child: Text(
+                          badge.count.toString(),
+                          style: textTheme.headline6!.copyWith(
+                            color: SatorioColor.interactive,
+                            fontSize: 18.0 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Text(
-            badge.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: textTheme.bodyText2!.copyWith(
-              color: SatorioColor.interactive,
-              fontSize: 14.0 * coefficient,
-              fontWeight: FontWeight.w400,
+            Text(
+              badge.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.bodyText2!.copyWith(
+                color: SatorioColor.interactive,
+                fontSize: 14.0 * coefficient,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _activityItem(ActivitySimpleTmp activity) {
-    return Container(
-      height: 74 * coefficient,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 110 * coefficient,
-            padding: EdgeInsets.symmetric(horizontal: 13 * coefficient),
-            child: Center(
-              child: Image.asset(
-                activity.asset,
-              ),
-            ),
-          ),
-          VerticalDivider(
-            width: 1,
-            color: Colors.black.withOpacity(0.08),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16 * coefficient),
-              child: Text(
-                activity.text,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: textTheme.bodyText2!.copyWith(
-                  color: SatorioColor.darkAccent,
-                  fontSize: 15.0 * coefficient,
-                  fontWeight: FontWeight.w400,
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        height: 74 * coefficient,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
+          color: SatorioColor.alice_blue,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: 110 * coefficient,
+              padding: EdgeInsets.symmetric(horizontal: 13 * coefficient),
+              child: Center(
+                child: Image.asset(
+                  activity.asset,
                 ),
               ),
             ),
-          ),
-        ],
+            VerticalDivider(
+              width: 1,
+              color: Colors.black.withOpacity(0.08),
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16 * coefficient),
+                child: Text(
+                  activity.text,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: SatorioColor.darkAccent,
+                    fontSize: 15.0 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -533,74 +555,79 @@ class ProfilePage extends GetView<ProfileController> {
     final double itemWidth = Get.width - 2 * 20 - 16 * coefficient;
     final double borderWidth = 5 * coefficient;
 
-    return Container(
-      width: itemWidth,
-      height: 180 * coefficient,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: SatorioColor.interactive,
-          width: borderWidth,
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        width: itemWidth,
+        height: 180 * coefficient,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: SatorioColor.interactive,
+            width: borderWidth,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(16 * coefficient)),
         ),
-        borderRadius: BorderRadius.all(Radius.circular(16 * coefficient)),
-      ),
-      child: ClipRRect(
-        borderRadius:
-            BorderRadius.all(Radius.circular(16 * coefficient - borderWidth)),
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            Image.network(
-              realm.imageUrl,
-              height: 180 * coefficient,
-              fit: BoxFit.cover,
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: itemWidth,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.black.withOpacity(0),
-                      Colors.black.withOpacity(0.5),
+        child: ClipRRect(
+          borderRadius:
+              BorderRadius.all(Radius.circular(16 * coefficient - borderWidth)),
+          child: Stack(
+            fit: StackFit.passthrough,
+            children: [
+              Image.network(
+                realm.imageUrl,
+                height: 180 * coefficient,
+                fit: BoxFit.cover,
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: itemWidth,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0),
+                        Colors.black.withOpacity(0.5),
+                      ],
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16 * coefficient - borderWidth,
+                    vertical: 20 * coefficient - borderWidth,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        realm.showTitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: Colors.white,
+                          fontSize: 18.0 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        realm.episodeTitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.headline6!.copyWith(
+                          color: Colors.white,
+                          fontSize: 18.0 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ],
                   ),
                 ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16 * coefficient - borderWidth,
-                  vertical: 20 * coefficient - borderWidth,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      realm.showTitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.white,
-                        fontSize: 18.0 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      realm.episodeTitle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.headline6!.copyWith(
-                        color: Colors.white,
-                        fontSize: 18.0 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -610,177 +637,182 @@ class ProfilePage extends GetView<ProfileController> {
     final double itemWidth = Get.width - 20 - 2 * 16 * coefficient;
     final EdgeInsets padding =
         EdgeInsets.only(left: 16 * coefficient, right: 16 * coefficient);
-    return Container(
-      height: 230 * coefficient,
-      width: itemWidth,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 44 * coefficient,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: Colors.black.withOpacity(0.08),
-                  width: 1 * coefficient,
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        height: 230 * coefficient,
+        width: itemWidth,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
+          color: SatorioColor.alice_blue,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              height: 44 * coefficient,
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Colors.black.withOpacity(0.08),
+                    width: 1 * coefficient,
+                  ),
+                ),
+              ),
+              child: Padding(
+                padding: padding,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Icon(
+                      Icons.star_rounded,
+                      size: 22 * coefficient,
+                      color: SatorioColor.interactive,
+                    ),
+                    SizedBox(
+                      width: 4 * coefficient,
+                    ),
+                    Text(
+                      '9 / 10',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 12.0 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        '06 June 2021',
+                        textAlign: TextAlign.end,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 12.0 * coefficient,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            child: Padding(
+            Padding(
               padding: padding,
+              child: Text(
+                'Something nice to watch',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.headline6!.copyWith(
+                  color: SatorioColor.textBlack,
+                  fontSize: 18.0 * coefficient,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            Padding(
+              padding: padding,
+              child: Text(
+                'A high school chemistry teacher dying of cancer teams with a former student to secure his family\'s future...',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.bodyText2!.copyWith(
+                  color: SatorioColor.textBlack,
+                  fontSize: 15.0 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+            Container(
+              height: 60 * coefficient,
+              width: itemWidth,
+              padding: padding,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(17 * coefficient),
+                ),
+                // color: Colors.red
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+                ),
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Icon(
-                    Icons.star_rounded,
-                    size: 22 * coefficient,
-                    color: SatorioColor.interactive,
+                  Container(
+                    width: 20 * coefficient,
+                    height: 20 * coefficient,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          SatorioColor.yellow_orange,
+                          SatorioColor.tomato,
+                        ],
+                      ),
+                    ),
                   ),
                   SizedBox(
-                    width: 4 * coefficient,
-                  ),
-                  Text(
-                    '9 / 10',
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 12.0 * coefficient,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    width: 6 * coefficient,
                   ),
                   Expanded(
                     child: Text(
-                      '06 June 2021',
-                      textAlign: TextAlign.end,
+                      'username',
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.textBlack,
-                        fontSize: 12.0 * coefficient,
-                        fontWeight: FontWeight.w500,
+                        fontSize: 15.0 * coefficient,
+                        fontWeight: FontWeight.w600,
                       ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.thumb_up_rounded,
+                    size: 20 * coefficient,
+                    color: SatorioColor.interactive,
+                  ),
+                  SizedBox(
+                    width: 8 * coefficient,
+                  ),
+                  Text(
+                    '2.5k',
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.interactive,
+                      fontSize: 14.0 * coefficient,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 24 * coefficient,
+                  ),
+                  Icon(
+                    Icons.thumb_down_rounded,
+                    size: 20 * coefficient,
+                    color: SatorioColor.textBlack,
+                  ),
+                  SizedBox(
+                    width: 8 * coefficient,
+                  ),
+                  Text(
+                    '234',
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 14.0 * coefficient,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: padding,
-            child: Text(
-              'Something nice to watch',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: textTheme.headline6!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 18.0 * coefficient,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          Padding(
-            padding: padding,
-            child: Text(
-              'A high school chemistry teacher dying of cancer teams with a former student to secure his family\'s future...',
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-              style: textTheme.bodyText2!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 15.0 * coefficient,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ),
-          Container(
-            height: 60 * coefficient,
-            width: itemWidth,
-            padding: padding,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(17 * coefficient),
-              ),
-              // color: Colors.red
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
-              ),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  width: 20 * coefficient,
-                  height: 20 * coefficient,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        SatorioColor.yellow_orange,
-                        SatorioColor.tomato,
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 6 * coefficient,
-                ),
-                Expanded(
-                  child: Text(
-                    'username',
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                Icon(
-                  Icons.thumb_up_rounded,
-                  size: 20 * coefficient,
-                  color: SatorioColor.interactive,
-                ),
-                SizedBox(
-                  width: 8 * coefficient,
-                ),
-                Text(
-                  '2.5k',
-                  style: textTheme.bodyText2!.copyWith(
-                    color: SatorioColor.interactive,
-                    fontSize: 14.0 * coefficient,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(
-                  width: 24 * coefficient,
-                ),
-                Icon(
-                  Icons.thumb_down_rounded,
-                  size: 20 * coefficient,
-                  color: SatorioColor.textBlack,
-                ),
-                SizedBox(
-                  width: 8 * coefficient,
-                ),
-                Text(
-                  '234',
-                  style: textTheme.bodyText2!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 14.0 * coefficient,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

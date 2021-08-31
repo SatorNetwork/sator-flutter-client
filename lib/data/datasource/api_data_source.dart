@@ -7,6 +7,7 @@ import 'package:satorio/data/model/episode_activation_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
+import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -16,7 +17,6 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
-import 'package:satorio/domain/entities/referral_code.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -139,7 +139,7 @@ abstract class ApiDataSource {
 
   Future<bool> sendInvite(String email);
 
-  Future<ReferralCode> getReferralCode();
+  Future<ReferralCodeModel> getReferralCode();
 
   Future<bool> confirmReferralCode(String referralCode);
 

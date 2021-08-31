@@ -1197,163 +1197,168 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviewItem(Review review) {
-    return Container(
-      padding: EdgeInsets.only(bottom: 16, top: 30),
-      width: Get.mediaQuery.size.width - 70,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(13),
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        padding: EdgeInsets.only(bottom: 16, top: 30),
+        width: Get.mediaQuery.size.width - 70,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(13),
+          ),
+          color: SatorioColor.alice_blue,
         ),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Row(
-              children: [
-                SvgPicture.asset(
-                  'images/smile/smile_1.svg',
-                  width: 24 * coefficient,
-                ),
-                SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: Text(
-                    review.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 18 * coefficient,
-                      fontWeight: FontWeight.w700,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  SvgPicture.asset(
+                    'images/smile/smile_1.svg',
+                    width: 24 * coefficient,
+                  ),
+                  SizedBox(
+                    width: 12,
+                  ),
+                  Expanded(
+                    child: Text(
+                      review.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 18 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                review.text,
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-                style: textTheme.bodyText2!.copyWith(
-                  color: SatorioColor.textBlack,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 16, left: 20, right: 20),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  SatorioColor.alice_blue2,
-                  SatorioColor.alice_blue,
                 ],
               ),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            SatorioColor.yellow_orange,
-                            SatorioColor.tomato,
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Text(
-                      review.userName,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+            SizedBox(
+              height: 8,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  review.text,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: SatorioColor.textBlack,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 16, left: 20, right: 20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    SatorioColor.alice_blue2,
+                    SatorioColor.alice_blue,
                   ],
                 ),
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      'images/like_icon.svg',
-                      color: SatorioColor.textBlack,
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Text(
-                      review.likes,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 14 * coefficient,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Container(
-                      height: 24,
-                      width: 24,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SatorioColor.interactive,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'images/sator_logo.svg',
-                          width: 12,
-                          height: 12,
-                          color: Colors.white,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        height: 20,
+                        width: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              SatorioColor.yellow_orange,
+                              SatorioColor.tomato,
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      'txt_tip'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.interactive,
-                        fontSize: 14 * coefficient,
-                        fontWeight: FontWeight.w500,
+                      SizedBox(
+                        width: 6,
                       ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
+                      Text(
+                        review.userName,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'images/like_icon.svg',
+                        color: SatorioColor.textBlack,
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        review.likes,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 14 * coefficient,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Container(
+                        height: 24,
+                        width: 24,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: SatorioColor.interactive,
+                        ),
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'images/sator_logo.svg',
+                            width: 12,
+                            height: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        'txt_tip'.tr,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.interactive,
+                          fontSize: 14 * coefficient,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
