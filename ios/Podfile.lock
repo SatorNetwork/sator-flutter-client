@@ -9,11 +9,18 @@ PODS:
   - Firebase/Database (8.3.0):
     - Firebase/CoreOnly
     - FirebaseDatabase (~> 8.3.0)
+  - Firebase/DynamicLinks (8.3.0):
+    - Firebase/CoreOnly
+    - FirebaseDynamicLinks (~> 8.3.0)
   - firebase_core (1.4.0):
     - Firebase/CoreOnly (= 8.3.0)
     - Flutter
   - firebase_database (7.1.2):
     - Firebase/Database (= 8.3.0)
+    - firebase_core
+    - Flutter
+  - firebase_dynamic_links (2.0.7):
+    - Firebase/DynamicLinks (= 8.3.0)
     - firebase_core
     - Flutter
   - FirebaseAnalytics (8.3.0):
@@ -46,6 +53,8 @@ PODS:
   - FirebaseDatabase (8.3.0):
     - FirebaseCore (~> 8.0)
     - leveldb-library (~> 1.22)
+  - FirebaseDynamicLinks (8.3.0):
+    - FirebaseCore (~> 8.0)
   - FirebaseInstallations (8.5.0):
     - FirebaseCore (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
@@ -110,6 +119,7 @@ DEPENDENCIES:
   - Firebase/Analytics
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
+  - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
@@ -123,6 +133,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseDatabase
+    - FirebaseDynamicLinks
     - FirebaseInstallations
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -137,6 +148,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_database:
     :path: ".symlinks/plugins/firebase_database/ios"
+  firebase_dynamic_links:
+    :path: ".symlinks/plugins/firebase_dynamic_links/ios"
   Flutter:
     :path: Flutter
   path_provider:
@@ -152,10 +165,12 @@ SPEC CHECKSUMS:
   Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
   firebase_database: 27de7affa8b73e25afe25ee7ec18e3216d8d279c
+  firebase_dynamic_links: 63d25b8afb1257210012a703b2029b425f0b62c7
   FirebaseAnalytics: 456f2c51599870a15ded4548d1f1f7b2cabf65a7
   FirebaseCore: a6dba751680d7033b9d3831e1cfc95ead0605118
   FirebaseCoreDiagnostics: 7bf55d386f9fc690d971b70a582142321a390eb8
   FirebaseDatabase: 3cb36bbf667be87d72cebc8dbe72e2e8cac1d615
+  FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
   FirebaseInstallations: f2bc590b291d25fb40a9a05b8281c02a881b5117
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   GoogleAppMeasurement: de70802583dedceb0bca18172b345307e8f410b8
