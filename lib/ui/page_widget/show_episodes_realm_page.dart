@@ -456,64 +456,75 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           SizedBox(
                             height: 48 * coefficient,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'txt_realm_chat'.tr,
-                                style: textTheme.headline4!.copyWith(
-                                  color: SatorioColor.textBlack,
-                                  fontSize: 24 * coefficient,
-                                  fontWeight: FontWeight.w700,
+                          InkWell(
+                            onTap: () => controller.toChatPage(),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'txt_realm_chat'.tr,
+                                      style: textTheme.headline4!.copyWith(
+                                        color: SatorioColor.textBlack,
+                                        fontSize: 24 * coefficient,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.chevron_right_rounded,
+                                      size: 32 * coefficient,
+                                      color: SatorioColor.textBlack,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              InkWell(
-                                onTap: () => controller.toChatPage(),
-                                child: Icon(
-                                  Icons.chevron_right_rounded,
-                                  size: 32 * coefficient,
-                                  color: SatorioColor.textBlack,
+                                SizedBox(
+                                  height: 16,
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            height: controller.isMessagesRx.value ? 148 : 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(13),
-                              ),
-                              color: SatorioColor.alice_blue,
+                                Container(
+                                  height:
+                                      controller.isMessagesRx.value ? 148 : 60,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(13),
+                                    ),
+                                    color: SatorioColor.alice_blue,
+                                  ),
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(13),
+                                      ),
+                                      child: controller.isMessagesRx.value ==
+                                              true
+                                          ? FirebaseAnimatedList(
+                                              padding: EdgeInsets.all(17),
+                                              physics:
+                                                  AlwaysScrollableScrollPhysics(),
+                                              controller:
+                                                  controller.scrollController,
+                                              defaultChild: _emptyState(),
+                                              query:
+                                                  controller.getMessageQuery(),
+                                              itemBuilder: (context,
+                                                  DataSnapshot snapshot,
+                                                  animation,
+                                                  index) {
+                                                final json = snapshot.value
+                                                    as Map<dynamic, dynamic>;
+                                                final message =
+                                                    MessageModel.fromJson(json);
+                                                Color color = _colors[
+                                                    index % _colors.length];
+                                                return _showMessage(
+                                                    message, color);
+                                              },
+                                            )
+                                          : _emptyState()),
+                                ),
+                              ],
                             ),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(13),
-                                ),
-                                child: controller.isMessagesRx.value == true
-                                    ? FirebaseAnimatedList(
-                                        padding: EdgeInsets.all(17),
-                                        physics:
-                                            AlwaysScrollableScrollPhysics(),
-                                        controller: controller.scrollController,
-                                        defaultChild: _emptyState(),
-                                        query: controller.getMessageQuery(),
-                                        itemBuilder: (context,
-                                            DataSnapshot snapshot,
-                                            animation,
-                                            index) {
-                                          final json = snapshot.value
-                                              as Map<dynamic, dynamic>;
-                                          final message =
-                                              MessageModel.fromJson(json);
-                                          Color color =
-                                              _colors[index % _colors.length];
-                                          return _showMessage(message, color);
-                                        },
-                                      )
-                                    : _emptyState()),
                           ),
                           SizedBox(
                             height: 32,
@@ -1175,16 +1186,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         ],
       ),
     );
-  }
-
-  Widget test() {
-    controller.getMessageQuery().once().then((value) {
-      return Text('dadas');
-    }).catchError((error) {
-      return Text('wdswdwdww');
-    });
-
-    return Container();
   }
 
   Widget _reviewItem(Review review) {

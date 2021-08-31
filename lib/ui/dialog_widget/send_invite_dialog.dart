@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:share/share.dart';
 
 class SendInviteDialog extends StatelessWidget {
-  final TextEditingController _amountController = TextEditingController();
+    final String referralLink;
+
+  SendInviteDialog(this.referralLink);
 
   @override
   Widget build(BuildContext context) {
@@ -24,31 +26,56 @@ class SendInviteDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'txt_enter_invite_email'.tr,
+              'Referral link',
               textAlign: TextAlign.center,
-              style: textTheme.headline1!.copyWith(
-                  color: SatorioColor.textBlack,
-                  fontSize: 21.0 * coefficient,
-                  fontWeight: FontWeight.w700),
+              style: textTheme.headline6!.copyWith(
+                color: SatorioColor.bright_grey,
+                fontSize: 15 * coefficient,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             SizedBox(
-              height: 24 * coefficient,
+              height: 8 * coefficient,
             ),
-            TextFormField(
-              controller: _amountController,
-              textAlign: TextAlign.start,
-              keyboardType: TextInputType.emailAddress,
-              style: textTheme.bodyText1!.copyWith(
-                fontSize: 17 * coefficient,
-                color: Colors.black,
-                fontWeight: FontWeight.w400,
+            Text(
+              referralLink,
+              textAlign: TextAlign.center,
+              style: textTheme.headline6!.copyWith(
+                color: SatorioColor.textBlack,
+                fontSize: 15 * coefficient,
+                fontWeight: FontWeight.w600,
               ),
-              decoration: InputDecoration(
-                enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: SatorioColor.textBlack),
-                ),
-                focusedBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: SatorioColor.textBlack),
+            ),
+            SizedBox(
+              height: 8 * coefficient,
+            ),
+            InkWell(
+              onTap: () {
+                _copyLink();
+              },
+              child: Padding(
+                padding: EdgeInsets.all(8 * coefficient),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.file_copy_rounded,
+                      size: 16 * coefficient,
+                      color: SatorioColor.interactive,
+                    ),
+                    SizedBox(
+                      width: 9 * coefficient,
+                    ),
+                    Text(
+                      'Copy link',
+                      textAlign: TextAlign.center,
+                      style: textTheme.headline6!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -56,34 +83,32 @@ class SendInviteDialog extends StatelessWidget {
               height: 32 * coefficient,
             ),
             ElevatedGradientButton(
-              text: 'txt_send_invite'.tr,
+              text: 'Share link',
               onPressed: () {
-                String text = _amountController.text;
-                if (text.isEmail) {
-                  SatorioRepository satorioRepository = Get.find();
-                  satorioRepository.sendInvite(text).then(
-                    (bool result) {
-                      if (result) {
-                        Get.back();
-                        Get.dialog(
-                          DefaultDialog(
-                            'txt_success'.tr,
-                            'txt_invitation_sent'.tr,
-                            'txt_ok'.tr,
-                            icon: Icons.check_rounded,
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        );
-                      }
-                    },
-                  );
-                }
+                _shareLink();
               },
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _shareLink() async {
+    if (referralLink == '') return;
+
+    Share.share(referralLink);
+  }
+
+  void _copyLink() {
+    Clipboard.setData(
+      ClipboardData(
+        text: referralLink,
+      ),
+    );
+    ScaffoldMessenger.of(Get.context!).showSnackBar(
+      SnackBar(
+        content: Text('Copied to clipboard'),
       ),
     );
   }

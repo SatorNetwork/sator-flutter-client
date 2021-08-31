@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,8 @@ class ProfileController extends GetxController {
   final Rx<Profile?> profileRx = Rx(null);
 
   late final ValueListenable<Box<Profile>> profileListenable;
+
+  final Rx<Uri?> referralLinkRx = Rx(null);
 
   ProfileController() {
     this.profileListenable =
@@ -33,10 +36,38 @@ class ProfileController extends GetxController {
     super.onClose();
   }
 
-  void toInviteDialog() {
-    Get.dialog(
-      SendInviteDialog(),
+  Future<void> getReferralCode() async {
+    _satorioRepository.getReferralCode().then((value) {
+      _createDynamicLink(value.referralCode);
+      print(value.referralCode);
+    });
+  }
+
+  Future<void> _createDynamicLink(String referralCode) async {
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://satorio.page.link',
+      link: Uri.parse('https://satorio.page.link/referal?code=$referralCode'),
+      androidParameters: AndroidParameters(
+        packageName: 'com.satorio.app',
+        minimumVersion: 0,
+      ),
+      // iosParameters: IosParameters(
+      //   bundleId: 'com.google.FirebaseCppDynamicLinksTestApp.dev',
+      //   minimumVersion: '0',
+      // ),
     );
+
+    parameters.buildShortLink().then((value) {
+      referralLinkRx.update((val) {
+        referralLinkRx.value = value.shortUrl;
+        print(referralLinkRx.value);
+
+        Get.dialog(
+          SendInviteDialog(referralLinkRx.value.toString()),
+        );
+      });
+    });
+
   }
 
   void toLogoutDialog() {

@@ -6,6 +6,7 @@ import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
+import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -99,6 +100,10 @@ abstract class SatorioRepository {
   Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
   Future<bool> sendInvite(String email);
+
+  Future<ReferralCode> getReferralCode();
+
+  Future<bool> confirmReferralCode(String referralCode);
 
   //
 
