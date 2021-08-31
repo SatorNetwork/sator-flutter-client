@@ -29,8 +29,10 @@ class SplashController extends GetxController {
         await FirebaseDynamicLinks.instance.getInitialLink();
 
     void _handleDeepLink(PendingDynamicLinkData? data) {
-      deepLink = data!.link;
-      print('_handleDeepLink | deeplink: $deepLink');
+      if (data != null) {
+        deepLink = data.link;
+        print('_handleDeepLink | deeplink: $deepLink');
+      }
     }
 
     _handleDeepLink(data);

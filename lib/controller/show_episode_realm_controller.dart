@@ -100,6 +100,7 @@ class ShowEpisodeRealmController extends GetxController {
   void toRealmExpiringBottomSheet() {
     Get.bottomSheet(
       RealmExpiringBottomSheet(
+        activationRx.value,
         (paidOption) {
           _paidUnlock(paidOption);
         },

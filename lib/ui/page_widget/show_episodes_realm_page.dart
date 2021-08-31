@@ -197,10 +197,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                       controller.activationRx.value.isActive
                                           ? 'txt_x_h_left'.tr.format(
                                               [
-                                                _calculateTime(controller
-                                                    .activationRx
-                                                    .value
-                                                    .activatedBefore)
+                                                controller.activationRx.value
+                                                    .leftHours(),
                                               ],
                                             )
                                           : 'txt_locked'.tr,
@@ -1368,18 +1366,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         ),
       ],
     );
-  }
-
-  int _calculateTime(DateTime? activatedBefore) {
-    if (activatedBefore == null) {
-      return 0;
-    } else {
-      return activatedBefore
-          .difference(
-            DateTime.now(),
-          )
-          .inHours;
-    }
   }
 
   final Review review = Review(
