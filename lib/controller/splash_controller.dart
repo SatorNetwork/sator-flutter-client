@@ -6,6 +6,7 @@ import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/binding/onboarding_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
