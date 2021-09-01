@@ -35,13 +35,16 @@ class ProfilePage extends GetView<ProfileController> {
                   children: [
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16 * coefficient),
-                        child: SvgPicture.asset(
-                          avatars[avatarIndex],
-                          width: 72 * coefficient,
-                          height: 72 * coefficient,
-                          fit: BoxFit.fitWidth,
+                      child: InkWell(
+                        onTap: () => controller.toSelectAvatarPage(),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16 * coefficient),
+                          child: SvgPicture.asset(
+                            avatars[avatarIndex],
+                            width: 72 * coefficient,
+                            height: 72 * coefficient,
+                            fit: BoxFit.fitWidth,
+                          ),
                         ),
                       ),
                     ),

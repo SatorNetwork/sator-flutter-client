@@ -3,10 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/binding/select_avatar_binding.dart';
+import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/dialog_widget/send_invite_dialog.dart';
+import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 
 class ProfileController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -67,7 +70,14 @@ class ProfileController extends GetxController {
         );
       });
     });
+  }
 
+  void toSelectAvatarPage() {
+    Get.to(
+      () => SelectAvatarPage(),
+      binding: SelectAvatarBinding(),
+      arguments: SelectAvatarArguments(profileRx.value!.username),
+    );
   }
 
   void toLogoutDialog() {
