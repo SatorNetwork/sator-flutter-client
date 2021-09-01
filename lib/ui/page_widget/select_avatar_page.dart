@@ -50,7 +50,9 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: InkWell(
-          onTap: () => {},
+          onTap: () {
+            controller.setAvatar(index);
+          },
           child: Container(
               height: 51,
               width: 51,
@@ -82,15 +84,17 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
           ),
           Row(
             children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      avatars[0],
-                      height: 64 * coefficient,
-                      width: 64 * coefficient,
-                    ),
-                  )),
+              Obx(
+              () => ClipRRect(
+                    borderRadius: BorderRadius.circular(12.0),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        controller.avatarRx.value!,
+                        height: 64 * coefficient,
+                        width: 64 * coefficient,
+                      ),
+                    )),
+              ),
               SizedBox(
                 width: 24 * coefficient,
               ),
