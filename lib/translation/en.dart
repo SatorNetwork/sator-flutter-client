@@ -175,4 +175,5 @@ const Map<String, String> en = {
   'txt_ratings': '%d ratings',
   'txt_no_messages': 'Welcome to the chat room!',
   'txt_say_hello': 'Say hello to everyone',
+  "txt_select_avatar": "Select avatar",
 };
