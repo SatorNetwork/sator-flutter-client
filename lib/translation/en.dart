@@ -151,7 +151,7 @@ const Map<String, String> en = {
   'txt_realmers': 'Realmers',
   'txt_active': 'Active',
   'txt_ranking': 'Ranking',
-  'txt_realm_chat': 'Realm chat',
+  'txt_chat': 'Chat',
   'txt_remains': 'Remains',
   'txt_earn_sao_upvoted': 'Earn SAO if upvoted!',
   'txt_start_watching_earn_sao': 'Start watching this episode to earn SAO.',
