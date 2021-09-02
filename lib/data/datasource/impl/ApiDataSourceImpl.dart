@@ -46,7 +46,6 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
-import 'package:satorio/domain/entities/referral_code.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -54,7 +53,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.sator.io/';
+    _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -661,7 +660,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<ReferralCode> getReferralCode() {
+  Future<ReferralCodeModel> getReferralCode() {
     return _requestGet(
       'ref/my',
     ).then((Response response) {
