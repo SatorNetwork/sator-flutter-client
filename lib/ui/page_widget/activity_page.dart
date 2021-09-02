@@ -77,112 +77,118 @@ class ActivityPage extends GetView<ActivityController> {
     final EdgeInsets padding =
         EdgeInsets.only(left: 16 * coefficient, right: 16 * coefficient);
 
-    return Container(
-      height: 131 * coefficient,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Expanded(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 110 * coefficient,
-                  padding: EdgeInsets.symmetric(horizontal: 13 * coefficient),
-                  child: Center(
-                    child: Image.asset(
-                      activity.asset,
-                    ),
-                  ),
-                ),
-                VerticalDivider(
-                  width: 1,
-                  color: Colors.black.withOpacity(0.08),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16 * coefficient),
-                    child: Text(
-                      activity.text,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 15.0 * coefficient,
-                        fontWeight: FontWeight.w400,
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        height: 131 * coefficient,
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
+          color: SatorioColor.alice_blue,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 110 * coefficient,
+                    padding: EdgeInsets.symmetric(horizontal: 13 * coefficient),
+                    child: Center(
+                      child: Image.asset(
+                        activity.asset,
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 56 * coefficient,
-            padding: padding,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(17 * coefficient),
-              ),
-              // color: Colors.red
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
-              ),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                ClipOval(
-                  child: SvgPicture.asset(
-                    activity.avatarAsset,
-                    width: 22 * coefficient,
-                    height: 22 * coefficient,
+                  VerticalDivider(
+                    width: 1,
+                    color: Colors.black.withOpacity(0.08),
                   ),
-                ),
-                SizedBox(
-                  width: 8 * coefficient,
-                ),
-                Expanded(
-                  child: Text(
-                    activity.username,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w600,
+                  Expanded(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16 * coefficient),
+                      child: Text(
+                        activity.text,
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.darkAccent,
+                          fontSize: 15.0 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 8 * coefficient,
-                ),
-                Text(
-                  activity.amount,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: SatorioColor.interactive,
-                    fontSize: 14.0 * coefficient,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Text(
-                  ' ${activity.currency}',
-                  style: textTheme.bodyText2!.copyWith(
-                    color: SatorioColor.interactive,
-                    fontSize: 14.0 * coefficient,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+            Container(
+              height: 56 * coefficient,
+              padding: padding,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(17 * coefficient),
+                ),
+                // color: Colors.red
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  ClipOval(
+                    child: SvgPicture.asset(
+                      activity.avatarAsset,
+                      width: 22 * coefficient,
+                      height: 22 * coefficient,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8 * coefficient,
+                  ),
+                  Expanded(
+                    child: Text(
+                      activity.username,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 15.0 * coefficient,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8 * coefficient,
+                  ),
+                  Text(
+                    activity.amount,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.interactive,
+                      fontSize: 14.0 * coefficient,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    ' ${activity.currency}',
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.interactive,
+                      fontSize: 14.0 * coefficient,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
