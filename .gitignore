@@ -44,7 +44,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# Build
-/android/app/gradle.properties
-/android/app/sator-release.jks
