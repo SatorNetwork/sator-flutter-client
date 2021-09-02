@@ -22,11 +22,13 @@ class CreateAccountController extends GetxController with ValidationMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   void toTermsOfService() {
-    // TODO: move to Terms?
     Get.to(
       () => WebPage(),
       binding: WebBinding(),
-      arguments: WebArgument('https://wikipedia.org', "Wiki"),
+      arguments: WebArgument(
+        'https://backoffice.dev.sator.io/legal/terms-of-use',
+        'txt_terms_of_service'.tr,
+      ),
     );
   }
 
