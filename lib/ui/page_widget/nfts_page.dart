@@ -75,196 +75,201 @@ class NFTsPage extends GetView<NFTsController> {
 
   Widget _content() {
     final double topMargin = 140 * coefficient;
-    return Container(
-      margin: EdgeInsets.only(top: topMargin),
-      child: Column(
-        children: [
-          TitleWithButton(
-            onTap: () {},
-            textCode: 'Popular',
-            fontSize: 34.0 * coefficient,
-            fontWeight: FontWeight.w700,
-            buttonText: 'View',
-            color: Colors.black,
-            iconColor: SatorioColor.darkAccent,
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(17 * coefficient),
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: topMargin),
+        child: Column(
+          children: [
+            TitleWithButton(
+              onTap: () {},
+              textCode: 'Popular',
+              fontSize: 34.0 * coefficient,
+              fontWeight: FontWeight.w700,
+              buttonText: 'View',
+              color: Colors.black,
+              iconColor: SatorioColor.darkAccent,
+            ),
+            SizedBox(
+              height: 20 * coefficient,
+            ),
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(17 * coefficient),
+                            ),
+                            child: Image.asset(
+                              'images/tmp_nft_5.png',
+                              width: Get.width,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                          child: Image.asset(
-                            'images/tmp_nft_5.png',
-                            width: Get.width,
-                            height: 200,
-                            fit: BoxFit.cover,
+                          SizedBox(
+                            height: 8 * coefficient,
                           ),
-                        ),
-                        SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        Row(
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                text: '1,784',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(text: ' '),
-                                  TextSpan(
-                                    text: 'sao',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.0 * coefficient,
-                                      fontWeight: FontWeight.w500,
-                                      backgroundColor: Colors.transparent,
-                                    ),
+                          Row(
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: '1,784',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                    backgroundColor: Colors.transparent,
                                   ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15 * coefficient,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(17 * coefficient),
-                          ),
-                          child: Image.asset(
-                            'images/tmp_nft_6.png',
-                            height: 200,
-                            width: Get.width,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: '32,284',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0 * coefficient,
-                              fontWeight: FontWeight.w500,
-                              backgroundColor: Colors.transparent,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(text: ' '),
-                              TextSpan(
-                                text: 'sao',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
+                                  children: <TextSpan>[
+                                    TextSpan(text: ' '),
+                                    TextSpan(
+                                      text: 'sao',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.0 * coefficient,
+                                        fontWeight: FontWeight.w500,
+                                        backgroundColor: Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15 * coefficient,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(17 * coefficient),
-                          ),
-                          child: Image.asset(
-                            'images/tmp_nft_7.png',
-                            height: 200,
-                            width: Get.width,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: '3,284',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0 * coefficient,
-                              fontWeight: FontWeight.w500,
-                              backgroundColor: Colors.transparent,
+                    SizedBox(
+                      width: 15 * coefficient,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(17 * coefficient),
                             ),
-                            children: <TextSpan>[
-                              TextSpan(text: ' '),
-                              TextSpan(
-                                text: 'sao',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                            ],
+                            child: Image.asset(
+                              'images/tmp_nft_6.png',
+                              height: 200,
+                              width: Get.width,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: 8 * coefficient,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: '32,284',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0 * coefficient,
+                                fontWeight: FontWeight.w500,
+                                backgroundColor: Colors.transparent,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(text: ' '),
+                                TextSpan(
+                                  text: 'sao',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 34 * coefficient,
-          ),
-          TitleWithButton(
-            onTap: () {},
-            textCode: 'All Shows',
-            fontSize: 34.0 * coefficient,
-            fontWeight: FontWeight.w700,
-            buttonText: 'View',
-            color: Colors.black,
-            iconColor: SatorioColor.darkAccent,
-          ),
-          SizedBox(
-            height: 10 * coefficient,
-          ),
-          _allShows(),
-          SizedBox(
-            height: 15 * coefficient,
-          ),
-        ],
+                  ],
+                ),
+                SizedBox(
+                  height: 15 * coefficient,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(17 * coefficient),
+                            ),
+                            child: Image.asset(
+                              'images/tmp_nft_7.png',
+                              height: 200,
+                              width: Get.width,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8 * coefficient,
+                          ),
+                          RichText(
+                            text: TextSpan(
+                              text: '3,284',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14.0 * coefficient,
+                                fontWeight: FontWeight.w500,
+                                backgroundColor: Colors.transparent,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(text: ' '),
+                                TextSpan(
+                                  text: 'sao',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 34 * coefficient,
+            ),
+            TitleWithButton(
+              onTap: () {},
+              textCode: 'All Shows',
+              fontSize: 34.0 * coefficient,
+              fontWeight: FontWeight.w700,
+              buttonText: 'View',
+              color: Colors.black,
+              iconColor: SatorioColor.darkAccent,
+            ),
+            SizedBox(
+              height: 10 * coefficient,
+            ),
+            _allShows(),
+            SizedBox(
+              height: 15 * coefficient,
+            ),
+          ],
+        ),
       ),
     );
   }
