@@ -58,6 +58,7 @@ class WebPage extends GetView<WebController> {
             child: ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               child: WebView(
+                javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   controller.loadUrl(webViewController);
                 },
