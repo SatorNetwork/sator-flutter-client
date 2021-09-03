@@ -9,7 +9,7 @@ class EpisodeActivation {
   final DateTime? activatedAt;
   final DateTime? activatedBefore;
 
-  int leftHours() {
+  int leftTimeInHours() {
     if (activatedBefore == null) {
       return 0;
     } else {
