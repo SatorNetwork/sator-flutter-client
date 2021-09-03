@@ -80,9 +80,9 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                       height: 12 * coefficient,
                     ),
                     Text(
-                      'txt_x_hours_left'.tr.format(
+                      'txt_x_left'.tr.format(
                         [
-                          episodeActivation.leftHours(),
+                          episodeActivation.leftTimeAsString(),
                         ],
                       ),
                       textAlign: TextAlign.center,

@@ -20,4 +20,18 @@ class EpisodeActivation {
           .inHours;
     }
   }
+
+  String leftTimeAsString() {
+    int hours = 0;
+    int minutes = 0;
+    if (activatedBefore != null) {
+      Duration diff = activatedBefore!.difference(
+        DateTime.now(),
+      );
+      hours = diff.inHours;
+      minutes = diff.inMinutes.remainder(60);
+    }
+
+    return '$hours:${minutes.toString().padLeft(2, "0")}';
+  }
 }

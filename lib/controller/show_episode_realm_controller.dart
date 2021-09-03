@@ -126,6 +126,9 @@ class ShowEpisodeRealmController extends GetxController
         .isEpisodeActivated(showEpisodeRx.value.id)
         .then((EpisodeActivation episodeActivation) {
       activationRx.value = episodeActivation;
+      if (episodeActivation.isActive && episodeActivation.leftHours() < 2) {
+        toRealmExpiringBottomSheet();
+      }
     });
   }
 

@@ -195,10 +195,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                   children: [
                                     Text(
                                       controller.activationRx.value.isActive
-                                          ? 'txt_x_h_left'.tr.format(
+                                          ? 'txt_x_left'.tr.format(
                                               [
                                                 controller.activationRx.value
-                                                    .leftHours(),
+                                                    .leftTimeAsString(),
                                               ],
                                             )
                                           : 'txt_locked'.tr,
