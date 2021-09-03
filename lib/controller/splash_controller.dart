@@ -46,18 +46,19 @@ class SplashController extends GetxController {
 
   void _checkToken() {
     Future.delayed(Duration(milliseconds: 1000), () {
-      _satorioRepository.isTokenValid().then((isTokenValid) {
-        if (isTokenValid) {
-          _checkIsVerified();
-        } else {
-            Get.off(() => LoginPage(),
-                binding: LoginBinding(), arguments: LoginArgument(deepLink));
-        }
-      }).catchError((value) {
-        if (!(value is ApiUnauthorizedException))
-          Get.off(() => LoginPage(),
-              binding: LoginBinding(), arguments: LoginArgument(deepLink));
-      });
+      _satorioRepository.isTokenValid().then(
+        (bool isTokenValid) {
+          if (isTokenValid) {
+            _checkIsVerified();
+          } else {
+            _toLogin();
+          }
+        },
+      ).catchError(
+        (value) {
+          if (!(value is ApiUnauthorizedException)) _toLogin();
+        },
+      );
     });
   }
 
@@ -66,10 +67,22 @@ class SplashController extends GetxController {
       if (isVerified)
         Get.offAll(() => MainPage(), binding: MainBinding());
       else
-        Get.off(
+        Get.offAll(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
         );
-    });
+    }).catchError(
+      (value) {
+        if (!(value is ApiUnauthorizedException)) _toLogin();
+      },
+    );
+  }
+
+  void _toLogin() {
+    Get.offAll(
+      () => LoginPage(),
+      binding: LoginBinding(),
+      arguments: LoginArgument(deepLink),
+    );
   }
 }
