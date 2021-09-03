@@ -89,7 +89,7 @@ class NFTsPage extends GetView<NFTsController> {
               child: TitleWithButton(
                 onTap: () {},
                 textCode: 'Popular NFTs',
-                fontSize: 34.0 * coefficient,
+                fontSize: 24.0 * coefficient,
                 fontWeight: FontWeight.w700,
                 buttonText: 'View',
                 color: Colors.black,
@@ -264,7 +264,7 @@ class NFTsPage extends GetView<NFTsController> {
               child: TitleWithButton(
                 onTap: () {},
                 textCode: 'All Shows',
-                fontSize: 34.0 * coefficient,
+                fontSize: 24.0 * coefficient,
                 fontWeight: FontWeight.w700,
                 buttonText: 'View',
                 color: Colors.black,
