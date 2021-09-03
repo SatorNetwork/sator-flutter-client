@@ -213,7 +213,7 @@ class ShowDetailWithEpisodesPage
                                         height: 6.0 * coefficient,
                                       ),
                                       Text(
-                                        'Netflix',
+                                        'Watch',
                                         style: textTheme.subtitle2!.copyWith(
                                           color: Colors.white,
                                           fontSize: 15.0 * coefficient,
