@@ -6,7 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
-import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -44,15 +43,15 @@ class HomePage extends GetView<HomeController> {
                           const EdgeInsets.only(left: 20, top: 76, right: 20),
                       child: Align(
                         alignment: Alignment.topLeft,
-                        child: InkWell(
-                          onTap: () {
-                            controller.toLogoutDialog();
-                          },
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  controller.toProfile();
+                                },
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -95,7 +94,12 @@ class HomePage extends GetView<HomeController> {
                                   ],
                                 ),
                               ),
-                              Obx(
+                            ),
+                            InkWell(
+                              onTap: () {
+                                controller.toWallet();
+                              },
+                              child: Obx(
                                 () => Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
@@ -113,8 +117,8 @@ class HomePage extends GetView<HomeController> {
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -140,7 +144,6 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _contentWithCategories() {
-    final MainController mainController = Get.find();
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,24 +151,24 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Featured NFT’s',
+            textCode: 'Featured NFTs',
             onTap: () {
-              mainController.selectedBottomTabIndex.value = 2;
+              controller.toNfts();
             },
           ),
         ),
         Container(
           margin: const EdgeInsets.only(top: 16),
-          height: 225 * coefficient,
+          height: 125 * coefficient,
           child: ListView.separated(
             separatorBuilder: (context, index) => SizedBox(
               width: 12,
             ),
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: 5,
+            itemCount: _nfts.length,
             itemBuilder: (context, index) {
-              return _nftItem();
+              return _nftItem(_nfts[index]);
             },
           ),
         ),
@@ -253,7 +256,7 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'All shows',
+            textCode: 'All realms',
             onTap: () {
               controller.toShowsCategory('all');
             },
@@ -366,9 +369,9 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _nftItem() {
+  Widget _nftItem(String nftAsset) {
     final width = (Get.width - 12 - 2 * 20 - 8) / 2;
-    final height = 225 * coefficient;
+    final height = 125 * coefficient;
     return InkWell(
       onTap: () {
         controller.toNonWorkingFeatureDialog();
@@ -382,9 +385,9 @@ class HomePage extends GetView<HomeController> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
-                'images/tmp_nft.png',
+                nftAsset,
                 width: width,
-                height: 200 * coefficient,
+                height: height - 25 * coefficient,
                 fit: BoxFit.cover,
               ),
             ),
@@ -437,4 +440,18 @@ class HomePage extends GetView<HomeController> {
       ),
     );
   }
+
+  List<String> _nfts = [
+    'images/tmp_nft_home_1.jpg',
+    'images/tmp_nft_home_2.jpg',
+    'images/tmp_nft_home_3.jpg',
+    'images/tmp_nft_home_4.jpg',
+    'images/tmp_nft_home_5.jpg',
+    'images/tmp_nft_home_6.jpg',
+    'images/tmp_nft_home_7.jpg',
+    'images/tmp_nft_home_8.jpg',
+    'images/tmp_nft_home_9.jpg',
+    'images/tmp_nft_home_10.jpg',
+    'images/tmp_nft_home_11.jpg',
+  ];
 }
