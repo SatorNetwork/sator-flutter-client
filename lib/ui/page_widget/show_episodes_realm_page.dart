@@ -464,7 +464,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'txt_realm_chat'.tr,
+                                      'txt_chat'.tr,
                                       style: textTheme.headline4!.copyWith(
                                         color: SatorioColor.textBlack,
                                         fontSize: 24 * coefficient,
@@ -528,7 +528,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 32,
                           ),
                           Text(
-                            'txt_overall_rating'.tr,
+                            'txt_rate'.tr,
                             style: textTheme.headline4!.copyWith(
                               color: SatorioColor.textBlack,
                               fontSize: 24 * coefficient,
@@ -637,7 +637,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 32,
                           ),
                           Text(
-                            'txt_challenges'.tr,
+                            'txt_play'.tr,
                             style: textTheme.headline4!.copyWith(
                               color: SatorioColor.textBlack,
                               fontSize: 24 * coefficient,

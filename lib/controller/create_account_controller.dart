@@ -33,8 +33,11 @@ class CreateAccountController extends GetxController with ValidationMixin {
   }
 
   void toSignIn() {
-    Get.off(() => LoginPage(),
-        binding: LoginBinding(), arguments: LoginArgument(null));
+    Get.off(
+      () => LoginPage(),
+      binding: LoginBinding(),
+      arguments: LoginArgument(null),
+    );
   }
 
   void createAccount() {
