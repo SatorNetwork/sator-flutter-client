@@ -184,7 +184,7 @@ class EpisodeRealmDialog extends StatelessWidget {
                   height: 30 * coefficient,
                 ),
                 ElevatedGradientButton(
-                  text: 'txt_verify_via_quiz'.tr,
+                  text: 'txt_unlock_by_quiz'.tr,
                   onPressed: () {
                     Get.back();
                     if (onQuizPressed != null) {
@@ -206,7 +206,7 @@ class EpisodeRealmDialog extends StatelessWidget {
                   height: 8 * coefficient,
                 ),
                 BorderedButton(
-                  text: 'txt_unlock_with_sao'.tr,
+                  text: 'txt_unlock_by_sao'.tr,
                   textColor: SatorioColor.interactive,
                   borderColor: SatorioColor.interactive,
                   borderWidth: 2,
