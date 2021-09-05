@@ -15,6 +15,7 @@ import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/smile_list.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   final double bodyHeight = 220;
@@ -193,20 +194,48 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    Text(
-                                      controller.activationRx.value.isActive
-                                          ? 'txt_x_left'.tr.format(
-                                              [
-                                                controller.activationRx.value
-                                                    .leftTimeAsString(),
-                                              ],
+                                    Obx(
+                                      () => controller
+                                              .activationRx.value.isActive
+                                          ? Countdown(
+                                              seconds: controller
+                                                  .activationRx.value
+                                                  .leftTimeInSeconds(),
+                                              interval: Duration(seconds: 5),
+                                              onFinished: () {
+                                                controller.checkActivation();
+                                              },
+                                              build: (
+                                                BuildContext context,
+                                                double time,
+                                              ) {
+                                                return Text(
+                                                  'txt_x_left'.tr.format(
+                                                    [
+                                                      controller
+                                                          .activationRx.value
+                                                          .leftTimeAsString(),
+                                                    ],
+                                                  ),
+                                                  style: textTheme.bodyText2!
+                                                      .copyWith(
+                                                    color:
+                                                        SatorioColor.textBlack,
+                                                    fontSize: 15 * coefficient,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                );
+                                              },
                                             )
-                                          : 'txt_locked'.tr,
-                                      style: textTheme.bodyText2!.copyWith(
-                                        color: SatorioColor.textBlack,
-                                        fontSize: 15 * coefficient,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                          : Text(
+                                              'txt_locked'.tr,
+                                              style:
+                                                  textTheme.bodyText2!.copyWith(
+                                                color: SatorioColor.textBlack,
+                                                fontSize: 15 * coefficient,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
                                     ),
                                     Expanded(
                                       child: Container(),

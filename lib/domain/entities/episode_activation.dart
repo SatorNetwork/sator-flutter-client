@@ -9,16 +9,18 @@ class EpisodeActivation {
   final DateTime? activatedAt;
   final DateTime? activatedBefore;
 
+  Duration get _leftTime => activatedBefore == null
+      ? Duration.zero
+      : activatedBefore!.difference(
+          DateTime.now(),
+        );
+
   int leftTimeInHours() {
-    if (activatedBefore == null) {
-      return 0;
-    } else {
-      return activatedBefore!
-          .difference(
-            DateTime.now(),
-          )
-          .inHours;
-    }
+    return _leftTime.inHours;
+  }
+
+  int leftTimeInSeconds() {
+    return _leftTime.inSeconds;
   }
 
   String leftTimeAsString() {

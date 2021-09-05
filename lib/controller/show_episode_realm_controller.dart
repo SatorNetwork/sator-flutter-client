@@ -62,7 +62,7 @@ class ShowEpisodeRealmController extends GetxController
       print(isMessagesRx.value);
     });
 
-    _checkActivation();
+    checkActivation();
   }
 
   void back() {
@@ -121,7 +121,7 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
-  void _checkActivation() {
+  void checkActivation() {
     _satorioRepository
         .isEpisodeActivated(showEpisodeRx.value.id)
         .then((EpisodeActivation episodeActivation) {
@@ -153,7 +153,7 @@ class ShowEpisodeRealmController extends GetxController
     );
 
     if (result != null && result is bool) {
-      _checkActivation();
+      checkActivation();
     }
   }
 

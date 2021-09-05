@@ -12,6 +12,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 typedef SelectPaidOptionCallback = void Function(PaidOption paidOption);
 
@@ -79,18 +80,30 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                     SizedBox(
                       height: 12 * coefficient,
                     ),
-                    Text(
-                      'txt_x_left'.tr.format(
-                        [
-                          episodeActivation.leftTimeAsString(),
-                        ],
-                      ),
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.white,
-                        fontSize: 18 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    Countdown(
+                      seconds: episodeActivation.leftTimeInSeconds(),
+                      interval: Duration(seconds: 5),
+                      onFinished: () {
+                        Get.back();
+                      },
+                      build: (
+                        BuildContext context,
+                        double time,
+                      ) {
+                        return Text(
+                          'txt_x_left'.tr.format(
+                            [
+                              episodeActivation.leftTimeAsString(),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 18 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
