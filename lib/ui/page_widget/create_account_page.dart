@@ -129,7 +129,8 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       Obx(
                         () => ElevatedGradientButton(
                           text: 'txt_create_account'.tr,
-                          isEnabled: controller.termsOfServiceCheck.value,
+                          isEnabled: controller.termsOfServiceCheck.value &&
+                              !controller.isRequested.value,
                           onPressed: () {
                             controller.createAccount();
                           },
