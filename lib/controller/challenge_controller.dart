@@ -25,10 +25,17 @@ class ChallengeController extends GetxController {
 
   void playChallenge() {
     if (challengeRx.value != null) {
-      Get.to(
-        () => QuizPage(),
-        binding: QuizBinding(),
-        arguments: QuizArgument(challengeRx.value!),
+      _satorioRepository.quizSocketUrl(challengeRx.value!.id).then(
+        (socketUrl) {
+          Get.to(
+            () => QuizPage(),
+            binding: QuizBinding(),
+            arguments: QuizArgument(
+              challengeRx.value!,
+              socketUrl,
+            ),
+          );
+        },
       );
     }
   }
