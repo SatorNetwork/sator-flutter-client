@@ -4,7 +4,8 @@ const Map<String, String> en = {
   'txt_skip': 'Skip',
   'txt_email_address': 'Email address',
   'txt_password': 'Password',
-  'txt_password_hint': '6+ characters',
+  'txt_username_hint': '5+ characters',
+  'txt_password_hint': '8+ characters',
   'txt_username': 'Username',
   'txt_create_account': 'Create Account',
   'txt_terms_of_service_description':

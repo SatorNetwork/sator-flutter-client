@@ -59,6 +59,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         () => InputTextField(
                           inputTitle: 'txt_username'.tr,
                           controller: controller.usernameController,
+                          hintText: 'txt_username_hint'.tr,
                           obscureText: false,
                           errorText: controller.validationRx.value['username'],
                         ),
