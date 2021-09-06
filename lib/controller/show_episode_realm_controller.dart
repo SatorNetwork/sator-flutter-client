@@ -117,6 +117,7 @@ class ShowEpisodeRealmController extends GetxController
         (int rate) {
           _rateEpisode(rate);
         },
+        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
     );
   }

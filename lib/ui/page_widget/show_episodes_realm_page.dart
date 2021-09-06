@@ -47,11 +47,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             ),
             Obx(
               () => Text(
-                'txt_episode_naming'.tr.format([
-                  controller.showSeasonRx.value.seasonNumber,
-                  controller.showEpisodeRx.value.episodeNumber,
-                  controller.showEpisodeRx.value.title,
-                ]),
+                controller.showSeasonRx.value.seasonNumber == 0
+                    ? controller.showEpisodeRx.value.title
+                    : 'txt_episode_naming'.tr.format(
+                        [
+                          controller.showSeasonRx.value.seasonNumber,
+                          controller.showEpisodeRx.value.episodeNumber,
+                          controller.showEpisodeRx.value.title,
+                        ],
+                      ),
                 style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -623,7 +627,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               ),
                               child: Center(
                                 child: Text(
-                                  'txt_rate_episode'.tr,
+                                  controller.showSeasonRx.value.seasonNumber ==
+                                          0
+                                      ? 'txt_rate_content'.tr
+                                      : 'txt_rate_episode'.tr,
                                   style: textTheme.bodyText2!.copyWith(
                                     color: SatorioColor.interactive,
                                     fontSize: 14 * coefficient,
@@ -807,7 +814,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 32,
                           ),
                           Text(
-                            'txt_nfts'.tr,
+                            'txt_collect'.tr,
                             style: textTheme.headline4!.copyWith(
                               color: SatorioColor.textBlack,
                               fontSize: 24 * coefficient,
@@ -865,7 +872,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'txt_reviews'.tr,
+                                'txt_review'.tr,
                                 style: textTheme.headline4!.copyWith(
                                   color: SatorioColor.textBlack,
                                   fontSize: 24 * coefficient,

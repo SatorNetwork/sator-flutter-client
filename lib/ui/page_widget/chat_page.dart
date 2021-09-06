@@ -39,11 +39,15 @@ class ChatPage extends GetView<ChatController> {
             ),
             Obx(
               () => Text(
-                'txt_episode_naming'.tr.format([
-                  controller.showSeasonRx.value.seasonNumber,
-                  controller.showEpisodeRx.value.episodeNumber,
-                  controller.showEpisodeRx.value.title,
-                ]),
+                controller.showSeasonRx.value.seasonNumber == 0
+                    ? controller.showEpisodeRx.value.title
+                    : 'txt_episode_naming'.tr.format(
+                        [
+                          controller.showSeasonRx.value.seasonNumber,
+                          controller.showEpisodeRx.value.episodeNumber,
+                          controller.showEpisodeRx.value.title,
+                        ],
+                      ),
                 style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
