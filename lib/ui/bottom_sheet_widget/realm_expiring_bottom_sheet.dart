@@ -4,23 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/extension.dart';
 
 typedef SelectPaidOptionCallback = void Function(PaidOption paidOption);
 
 class RealmExpiringBottomSheet extends StatelessWidget {
   RealmExpiringBottomSheet(
+    this.episodeActivation,
     this.onExtend, {
     Key? key,
   }) : super(key: key);
 
   final Rx<PaidOption?> _selectedPaidOptionRx = Rx(null);
 
+  final EpisodeActivation episodeActivation;
   final SelectPaidOptionCallback onExtend;
 
   @override
@@ -76,7 +80,11 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                       height: 12 * coefficient,
                     ),
                     Text(
-                      'txt_2_hours_left'.tr,
+                      'txt_x_hours_left'.tr.format(
+                        [
+                          episodeActivation.leftHours(),
+                        ],
+                      ),
                       textAlign: TextAlign.center,
                       style: textTheme.bodyText1!.copyWith(
                         color: Colors.white,

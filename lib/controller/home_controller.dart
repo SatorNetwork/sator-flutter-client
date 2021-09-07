@@ -1,20 +1,21 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
+import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
-class HomeController extends GetxController with SingleGetTickerProviderMixin {
+class HomeController extends GetxController
+    with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
@@ -107,18 +108,23 @@ class HomeController extends GetxController with SingleGetTickerProviderMixin {
     );
   }
 
-  void toLogoutDialog() {
-    Get.dialog(
-      DefaultDialog(
-        'txt_log_out'.tr,
-        'txt_log_out_message'.tr,
-        'txt_yes'.tr,
-        icon: Icons.logout,
-        onPressed: () {
-          _satorioRepository.logout();
-        },
-      ),
-    );
+  void toNfts() {
+    _toTab(MainController.TabNfts);
+  }
+
+  void toWallet() {
+    _toTab(MainController.TabWallet);
+  }
+
+  void toProfile() {
+    _toTab(MainController.TabProfile);
+  }
+
+  void _toTab(int mainPageTab) {
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.selectedBottomTabIndex.value = mainPageTab;
+    }
   }
 
   void _profileListener() {

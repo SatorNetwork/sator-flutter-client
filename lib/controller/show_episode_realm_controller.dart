@@ -6,6 +6,7 @@ import 'package:satorio/binding/chat_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
+import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
@@ -24,7 +25,8 @@ import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/util/extension.dart';
 
-class ShowEpisodeRealmController extends GetxController {
+class ShowEpisodeRealmController extends GetxController
+    with NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<ShowDetail> showDetailRx;
@@ -100,6 +102,7 @@ class ShowEpisodeRealmController extends GetxController {
   void toRealmExpiringBottomSheet() {
     Get.bottomSheet(
       RealmExpiringBottomSheet(
+        activationRx.value,
         (paidOption) {
           _paidUnlock(paidOption);
         },
