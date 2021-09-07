@@ -157,9 +157,6 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                                 fontSize: 18.0 * coefficient,
                                 fontWeight: FontWeight.w600,
                               ),
-                              onComplete: () {
-                                controller.quizController.timeExpire();
-                              },
                             ),
                     ),
                   ),
@@ -202,9 +199,6 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                 fontSize: 45.0 * coefficient,
                 fontWeight: FontWeight.w600,
               ),
-              onComplete: () {
-                controller.quizController.timeExpire();
-              },
             ),
           ),
         ),

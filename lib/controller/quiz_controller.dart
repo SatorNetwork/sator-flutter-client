@@ -55,10 +55,6 @@ class QuizController extends GetxController {
     Get.back();
   }
 
-  void timeExpire() {
-    // _socket?.close();
-  }
-
   Future<void> sendAnswer(String questionId, String answerId) {
     return _satorioRepository.sendAnswer(_socket, questionId, answerId);
   }
