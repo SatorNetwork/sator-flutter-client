@@ -490,36 +490,18 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     ),
                                     color: SatorioColor.alice_blue,
                                   ),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(13),
-                                      ),
-                                      child: controller.isMessagesRx.value ==
-                                              true
-                                          ? FirebaseAnimatedList(
-                                              padding: EdgeInsets.all(17),
-                                              physics:
-                                                  AlwaysScrollableScrollPhysics(),
-                                              controller:
-                                                  controller.scrollController,
-                                              defaultChild: _emptyState(),
-                                              query:
-                                                  controller.getMessageQuery(),
-                                              itemBuilder: (context,
-                                                  DataSnapshot snapshot,
-                                                  animation,
-                                                  index) {
-                                                final json = snapshot.value
-                                                    as Map<dynamic, dynamic>;
-                                                final message =
-                                                    MessageModel.fromJson(json);
-                                                Color color = _colors[
-                                                    index % _colors.length];
-                                                return _showMessage(
-                                                    message, color);
-                                              },
-                                            )
-                                          : _emptyState()),
+                                  child: SingleChildScrollView(
+                                    controller: controller.scrollController,
+                                    reverse: true,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(13),
+                                        ),
+                                        child: controller.isMessagesRx.value ==
+                                                true
+                                            ? _getMessageList()
+                                            : _emptyState()),
+                                  ),
                                 ),
                               ],
                             ),
@@ -1196,6 +1178,22 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     );
   }
 
+  Widget _getMessageList() {
+    ScrollController _controller = ScrollController();
+    return FirebaseAnimatedList(
+      padding: EdgeInsets.all(17),
+      controller: _controller,
+      shrinkWrap: true,
+      query: controller.getMessageQuery(),
+      itemBuilder: (context, snapshot, animation, index) {
+        final json = snapshot.value as Map<dynamic, dynamic>;
+        final message = MessageModel.fromJson(json);
+        Color color = _colors[index % _colors.length];
+        return _showMessage(message, color);
+      },
+    );
+  }
+
   Widget _reviewItem(Review review) {
     return InkWell(
       onTap: () {
@@ -1364,23 +1362,26 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _emptyState() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset('images/ico_no_message.svg'),
-        SizedBox(
-          width: 10,
-        ),
-        Text(
-          'txt_no_messages'.tr,
-          style: textTheme.bodyText2!.copyWith(
-            color: SatorioColor.interactive,
-            fontSize: 14 * coefficient,
-            fontWeight: FontWeight.w400,
+    return Container(
+      height: 60,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset('images/ico_no_message.svg'),
+          SizedBox(
+            width: 10,
           ),
-        ),
-      ],
+          Text(
+            'txt_no_messages'.tr,
+            style: textTheme.bodyText2!.copyWith(
+              color: SatorioColor.interactive,
+              fontSize: 14 * coefficient,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
