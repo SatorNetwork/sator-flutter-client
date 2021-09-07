@@ -19,7 +19,7 @@ class LoginController extends GetxController with ValidationMixin {
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
 
-  final SatorioRepository _satorioRepository = Get.find()
+  final SatorioRepository _satorioRepository = Get.find();
 
   late final Uri? deepLink;
 
