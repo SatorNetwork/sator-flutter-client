@@ -1349,23 +1349,26 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _emptyState() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset('images/ico_no_message.svg'),
-        SizedBox(
-          width: 10,
-        ),
-        Text(
-          'txt_no_messages'.tr,
-          style: textTheme.bodyText2!.copyWith(
-            color: SatorioColor.interactive,
-            fontSize: 14 * coefficient,
-            fontWeight: FontWeight.w400,
+    return Container(
+      height: 60,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset('images/ico_no_message.svg'),
+          SizedBox(
+            width: 10,
           ),
-        ),
-      ],
+          Text(
+            'txt_no_messages'.tr,
+            style: textTheme.bodyText2!.copyWith(
+              color: SatorioColor.interactive,
+              fontSize: 14 * coefficient,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
