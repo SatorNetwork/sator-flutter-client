@@ -88,8 +88,9 @@ class LoginPage extends GetView<LoginController> {
                               child: Text(
                                 'txt_forgot_password'.tr,
                                 style: textTheme.bodyText2!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: SatorioColor.textBlack),
+                                  fontWeight: FontWeight.w600,
+                                  color: SatorioColor.interactive,
+                                ),
                               ),
                             ),
                           ),
