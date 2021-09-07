@@ -19,16 +19,21 @@ class LoginController extends GetxController with ValidationMixin {
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
 
-  final SatorioRepository _satorioRepository = Get.find();
+  final SatorioRepository _satorioRepository = Get.find()
 
-  void toCreateAccount() {
+  late final Uri? deepLink;
+
+  LoginController() {
     LoginArgument argument = Get.arguments as LoginArgument;
     print(argument.deepLink);
+    deepLink = argument.deepLink;
+  }
 
+  void toCreateAccount() {
     Get.off(
-      () => CreateAccountPage(),
+          () => CreateAccountPage(),
       binding: CreateAccountBinding(),
-      arguments: CreateAccountArgument(argument.deepLink),
+      arguments: CreateAccountArgument(deepLink),
     );
   }
 
@@ -40,29 +45,30 @@ class LoginController extends GetxController with ValidationMixin {
     Future.value(true)
         .then(
           (value) {
-            isRequested.value = true;
-            return value;
-          },
-        )
+        isRequested.value = true;
+        return value;
+      },
+    )
         .then(
-          (value) => _satorioRepository.signIn(
+          (value) =>
+          _satorioRepository.signIn(
               emailController.text, passwordController.text),
-        )
+    )
         .then(
           (isSuccess) {
-            if (isSuccess) {
-              _checkIsVerified();
-            } else {
-              isRequested.value = false;
-            }
-          },
-        )
+        if (isSuccess) {
+          _checkIsVerified();
+        } else {
+          isRequested.value = false;
+        }
+      },
+    )
         .catchError(
           (value) {
-            handleValidationException(value);
-            isRequested.value = false;
-          },
-        );
+        handleValidationException(value);
+        isRequested.value = false;
+      },
+    );
   }
 
   void _checkIsVerified() {
@@ -71,7 +77,7 @@ class LoginController extends GetxController with ValidationMixin {
         Get.offAll(() => MainPage(), binding: MainBinding());
       else
         Get.to(
-          () => EmailVerificationPage(),
+              () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
         );
       isRequested.value = false;

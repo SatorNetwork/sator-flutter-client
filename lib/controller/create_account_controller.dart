@@ -22,6 +22,13 @@ class CreateAccountController extends GetxController with ValidationMixin {
 
   final SatorioRepository _satorioRepository = Get.find();
 
+  late final Uri? deepLink;
+
+  CreateAccountController() {
+    CreateAccountArgument argument = Get.arguments as CreateAccountArgument;
+    deepLink = argument.deepLink;
+  }
+
   void toTermsOfService() {
     Get.to(
       () => WebPage(),
@@ -42,8 +49,6 @@ class CreateAccountController extends GetxController with ValidationMixin {
   }
 
   void createAccount() {
-    CreateAccountArgument argument = Get.arguments as CreateAccountArgument;
-
     Future.value(true)
         .then((value) {
           isRequested.value = true;
@@ -59,12 +64,12 @@ class CreateAccountController extends GetxController with ValidationMixin {
         .then(
           (isSuccess) {
             if (isSuccess) {
-              bool _isValid = argument.deepLink != null &&
-                  argument.deepLink!.queryParameters['code'] != null &&
-                  argument.deepLink!.queryParameters['code']!.isNotEmpty;
+              bool _isValid = deepLink != null &&
+                  deepLink!.queryParameters['code'] != null &&
+                  deepLink!.queryParameters['code']!.isNotEmpty;
               if (_isValid) {
                 _satorioRepository.confirmReferralCode(
-                    argument.deepLink!.queryParameters['code']!);
+                    deepLink!.queryParameters['code']!);
               }
               Get.to(
                 () => EmailVerificationPage(),
