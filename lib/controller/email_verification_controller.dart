@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/main_binding.dart';
@@ -34,6 +35,11 @@ class EmailVerificationController extends GetxController with ValidationMixin {
       (isSuccess) {
         if (isSuccess) {
           codeController.clear();
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
+            SnackBar(
+              content: Text('txt_code_resend_success'.tr),
+            ),
+          );
         }
       },
     );

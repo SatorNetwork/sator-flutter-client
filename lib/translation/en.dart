@@ -180,4 +180,7 @@ const Map<String, String> en = {
   'txt_no_messages': 'Welcome to the chat room!',
   'txt_say_hello': 'Say hello to everyone',
   'txt_collect': 'Collect',
+  'txt_password_change_success': 'Password successfully changed',
+  'txt_copied_clipboard': 'Copied to clipboard',
+  'txt_code_resend_success': 'Code was resent',
 };
