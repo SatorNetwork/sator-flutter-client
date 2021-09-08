@@ -394,20 +394,26 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 32,
-              bottom: 16,
-            ),
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: textTheme.headline3!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 28 * coefficient,
-                fontWeight: FontWeight.w700,
+          InkWell(
+            onTap: () {
+              controller.toggleBottomSheet();
+            },
+            child: Container(
+              width: Get.width,
+              padding: const EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 32,
+                bottom: 16,
+              ),
+              child: Text(
+                title,
+                textAlign: TextAlign.start,
+                style: textTheme.headline3!.copyWith(
+                  color: SatorioColor.textBlack,
+                  fontSize: 28 * coefficient,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
