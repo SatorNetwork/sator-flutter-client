@@ -158,7 +158,7 @@ const Map<String, String> en = {
   'txt_chat': 'Chat',
   'txt_remains': 'Remains',
   'txt_earn_sao_upvoted': 'Earn SAO if upvoted!',
-  'txt_start_watching_earn_sao': 'Start watching this episode to earn SAO.',
+  'txt_start_watching_earn_sao': 'Start watching to earn SAO.',
   'txt_reserve_price': 'Reserve price',
   'txt_available': 'Available',
   'txt_stake_success': '%s %s was added to a staking pool',

@@ -43,10 +43,7 @@ class QuizController extends GetxController {
   }
 
   void backToEpisode() {
-    if (Get.isRegistered<SatorioRepository>()) {
-      SatorioRepository satorioRepository = Get.find();
-      satorioRepository.updateWalletBalance();
-    }
+    _satorioRepository.updateWalletBalance();
     Get.until((route) => !Get.isOverlaysOpen);
     Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
   }
