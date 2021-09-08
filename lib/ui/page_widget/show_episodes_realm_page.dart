@@ -581,7 +581,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 Obx(
                                   () => SizedBox(
                                     width:
-                                        controller.showEpisodeRx.value.rating >= 1
+                                        controller.showEpisodeRx.value.rating >=
+                                                1
                                             ? 10 * coefficient
                                             : 0,
                                   ),
@@ -926,7 +927,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             textColor: SatorioColor.interactive,
                             borderWidth: 3,
                             onPressed: () {
-                              controller.toNonWorkingFeatureDialog();
+                              controller.toCreateReview();
                             },
                           ),
                           SizedBox(

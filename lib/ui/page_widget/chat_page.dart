@@ -17,6 +17,7 @@ class ChatPage extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -58,7 +59,7 @@ class ChatPage extends GetView<ChatController> {
             ),
           ],
         ),
-        leading: Container(),
+        leading: null,
         actions: [
           Container(
             height: kToolbarHeight,
