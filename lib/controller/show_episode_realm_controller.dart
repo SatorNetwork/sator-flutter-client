@@ -87,6 +87,7 @@ class ShowEpisodeRealmController extends GetxController
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
         },
+        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
     );
   }
@@ -117,6 +118,7 @@ class ShowEpisodeRealmController extends GetxController
         (int rate) {
           _rateEpisode(rate);
         },
+        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
     );
   }

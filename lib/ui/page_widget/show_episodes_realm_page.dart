@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/smile_list.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
-  final double bodyHeight = 220;
+  final double bodyHeight = max(0.3 * Get.height, 220);
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +49,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             ),
             Obx(
               () => Text(
-                'txt_episode_naming'.tr.format([
-                  controller.showSeasonRx.value.seasonNumber,
-                  controller.showEpisodeRx.value.episodeNumber,
-                  controller.showEpisodeRx.value.title,
-                ]),
+                controller.showSeasonRx.value.seasonNumber == 0
+                    ? controller.showEpisodeRx.value.title
+                    : 'txt_episode_naming'.tr.format(
+                        [
+                          controller.showSeasonRx.value.seasonNumber,
+                          controller.showEpisodeRx.value.episodeNumber,
+                          controller.showEpisodeRx.value.title,
+                        ],
+                      ),
                 style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -490,36 +496,18 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     ),
                                     color: SatorioColor.alice_blue,
                                   ),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(13),
-                                      ),
-                                      child: controller.isMessagesRx.value ==
-                                              true
-                                          ? FirebaseAnimatedList(
-                                              padding: EdgeInsets.all(17),
-                                              physics:
-                                                  AlwaysScrollableScrollPhysics(),
-                                              controller:
-                                                  controller.scrollController,
-                                              defaultChild: _emptyState(),
-                                              query:
-                                                  controller.getMessageQuery(),
-                                              itemBuilder: (context,
-                                                  DataSnapshot snapshot,
-                                                  animation,
-                                                  index) {
-                                                final json = snapshot.value
-                                                    as Map<dynamic, dynamic>;
-                                                final message =
-                                                    MessageModel.fromJson(json);
-                                                Color color = _colors[
-                                                    index % _colors.length];
-                                                return _showMessage(
-                                                    message, color);
-                                              },
-                                            )
-                                          : _emptyState()),
+                                  child: SingleChildScrollView(
+                                    controller: controller.scrollController,
+                                    reverse: true,
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(13),
+                                        ),
+                                        child: controller.isMessagesRx.value ==
+                                                true
+                                            ? _getMessageList()
+                                            : _emptyState()),
+                                  ),
                                 ),
                               ],
                             ),
@@ -623,7 +611,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               ),
                               child: Center(
                                 child: Text(
-                                  'txt_rate_episode'.tr,
+                                  controller.showSeasonRx.value.seasonNumber ==
+                                          0
+                                      ? 'txt_rate_content'.tr
+                                      : 'txt_rate_episode'.tr,
                                   style: textTheme.bodyText2!.copyWith(
                                     color: SatorioColor.interactive,
                                     fontSize: 14 * coefficient,
@@ -807,7 +798,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 32,
                           ),
                           Text(
-                            'txt_nfts'.tr,
+                            'txt_collect'.tr,
                             style: textTheme.headline4!.copyWith(
                               color: SatorioColor.textBlack,
                               fontSize: 24 * coefficient,
@@ -865,7 +856,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'txt_reviews'.tr,
+                                'txt_review'.tr,
                                 style: textTheme.headline4!.copyWith(
                                   color: SatorioColor.textBlack,
                                   fontSize: 24 * coefficient,
@@ -1196,6 +1187,22 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     );
   }
 
+  Widget _getMessageList() {
+    ScrollController _controller = ScrollController();
+    return FirebaseAnimatedList(
+      padding: EdgeInsets.all(17),
+      controller: _controller,
+      shrinkWrap: true,
+      query: controller.getMessageQuery(),
+      itemBuilder: (context, snapshot, animation, index) {
+        final json = snapshot.value as Map<dynamic, dynamic>;
+        final message = MessageModel.fromJson(json);
+        Color color = _colors[index % _colors.length];
+        return _showMessage(message, color);
+      },
+    );
+  }
+
   Widget _reviewItem(Review review) {
     return InkWell(
       onTap: () {
@@ -1364,23 +1371,26 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _emptyState() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset('images/ico_no_message.svg'),
-        SizedBox(
-          width: 10,
-        ),
-        Text(
-          'txt_no_messages'.tr,
-          style: textTheme.bodyText2!.copyWith(
-            color: SatorioColor.interactive,
-            fontSize: 14 * coefficient,
-            fontWeight: FontWeight.w400,
+    return Container(
+      height: 60,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset('images/ico_no_message.svg'),
+          SizedBox(
+            width: 10,
           ),
-        ),
-      ],
+          Text(
+            'txt_no_messages'.tr,
+            style: textTheme.bodyText2!.copyWith(
+              color: SatorioColor.interactive,
+              fontSize: 14 * coefficient,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

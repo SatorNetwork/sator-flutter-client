@@ -22,83 +22,83 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
       body: Container(
         child: Stack(
           children: [
-          SvgPicture.asset(
-          'images/bg/gradient_challenge_timer.svg',
-          height: Get.height,
-          fit: BoxFit.cover,
-        ),
-        Container(
-            margin: EdgeInsets.only(
-              top: Get.mediaQuery.padding.top,
-              left: _margin,
-              right: _margin,
-              bottom: 20,
+            SvgPicture.asset(
+              'images/bg/gradient_challenge_timer.svg',
+              height: Get.height,
+              fit: BoxFit.cover,
             ),
-            child: Column(
+            Container(
+              margin: EdgeInsets.only(
+                top: Get.mediaQuery.padding.top,
+                left: _margin,
+                right: _margin,
+                bottom: 20,
+              ),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                Expanded(
-                child: Obx(
-                () => (controller.questionRx.value?.questionText ?? '')
-            .isLink()
-            ? _imageQuestion()
-            : _textQuestion(),
+                  Expanded(
+                    child: Obx(
+                      () => (controller.questionRx.value?.questionText ?? '')
+                              .isLink()
+                          ? _imageQuestion()
+                          : _textQuestion(),
+                    ),
+                  ),
+                  Container(
+                    width: questionsBlockSize,
+                    height: questionsBlockSize,
+                    color: Colors.transparent,
+                    child: Obx(
+                      () => GridView.count(
+                        physics: NeverScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: _itemSpacing,
+                        mainAxisSpacing: _itemSpacing,
+                        children: controller.questionRx.value == null
+                            ? []
+                            : controller.questionRx.value!.answerOptions
+                                .map((answerOption) => _answerWidget(
+                                    answerOption,
+                                    answerOption.answerId ==
+                                        controller.answerIdRx.value))
+                                .toList(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: Get.mediaQuery.padding.top + 6, right: 16),
+                child: TextButton(
+                  onPressed: () {
+                    controller.quizController.back();
+                  },
+                  style: TextButton.styleFrom(
+                    backgroundColor: SatorioColor.alice_blue.withOpacity(0.6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    'txt_quit'.tr,
+                    style: textTheme.bodyText1!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 18.0 * coefficient,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
-    ),
-    Container(
-    width: questionsBlockSize,
-    height: questionsBlockSize,
-    color: Colors.transparent,
-    child: Obx(
-    () => GridView.count(
-    physics: NeverScrollableScrollPhysics(),
-    padding: EdgeInsets.zero,
-    crossAxisCount: 2,
-    crossAxisSpacing: _itemSpacing,
-    mainAxisSpacing: _itemSpacing,
-    children: controller.questionRx.value == null
-    ? []
-        : controller.questionRx.value!.answerOptions
-        .map((answerOption) => _answerWidget(
-    answerOption,
-    answerOption.answerId ==
-    controller.answerIdRx.value))
-        .toList(),
-    ),
-    ),
-    ),
-    ],
-    ),
-    ),
-    Align(
-    alignment: Alignment.topRight,
-    child: Padding(
-    padding: EdgeInsets.only(
-    top: Get.mediaQuery.padding.top + 6, right: 16),
-    child: TextButton(
-    onPressed: () {
-    controller.quizController.back();
-    },
-    style: TextButton.styleFrom(
-    backgroundColor: SatorioColor.alice_blue.withOpacity(0.6),
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(10),
-    ),
-    ),
-    child: Text(
-    'txt_quit'.tr,
-    style: textTheme.bodyText1!.copyWith(
-    color: SatorioColor.textBlack,
-    fontSize: 18.0 * coefficient,
-    fontWeight: FontWeight.w400,
-    ),
-    ),
-    ),
-    ),
-    ),
-    ],
-    ),
-    ),
     );
   }
 
@@ -121,7 +121,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12 * coefficient),
                   child: Obx(
-                        () => Image.network(
+                    () => Image.network(
                       controller.questionRx.value?.questionText ?? '',
                       fit: BoxFit.cover,
                     ),
@@ -132,32 +132,32 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                   child: Padding(
                     padding: EdgeInsets.all(16.0 * coefficient),
                     child: Obx(
-                          () => controller.questionRx.value == null
+                      () => controller.questionRx.value == null
                           ? Container(
-                        width: 48 * coefficient,
-                        height: 48 * coefficient,
-                      )
+                              width: 48 * coefficient,
+                              height: 48 * coefficient,
+                            )
                           : CircularCountDownTimer(
-                        controller: controller.countdownController,
-                        width: 48 * coefficient,
-                        height: 48 * coefficient,
-                        duration:
-                        controller.questionRx.value?.timeForAnswer ??
-                            0,
-                        fillColor: SatorioColor.darkAccent,
-                        ringColor: SatorioColor.brand,
-                        isReverse: true,
-                        backgroundColor: Colors.white,
-                        strokeWidth: 3,
-                        autoStart: true,
-                        strokeCap: StrokeCap.round,
-                        textFormat: CountdownTextFormat.S,
-                        textStyle: textTheme.headline1!.copyWith(
-                          color: Colors.black,
-                          fontSize: 18.0 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                              controller: controller.countdownController,
+                              width: 48 * coefficient,
+                              height: 48 * coefficient,
+                              duration:
+                                  controller.questionRx.value?.timeForAnswer ??
+                                      0,
+                              fillColor: SatorioColor.darkAccent,
+                              ringColor: SatorioColor.brand,
+                              isReverse: true,
+                              backgroundColor: Colors.white,
+                              strokeWidth: 3,
+                              autoStart: true,
+                              strokeCap: StrokeCap.round,
+                              textFormat: CountdownTextFormat.S,
+                              textStyle: textTheme.headline1!.copyWith(
+                                color: Colors.black,
+                                fontSize: 18.0 * coefficient,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                     ),
                   ),
                 ),
@@ -210,7 +210,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
           child: Container(
             child: Center(
               child: Obx(
-                    () => Text(
+                () => Text(
                   controller.questionRx.value?.questionText ?? '',
                   textAlign: TextAlign.center,
                   style: textTheme.headline2!.copyWith(
@@ -240,20 +240,20 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
         ),
         child: answerOption.answerText.isLink()
             ? Image.network(
-          answerOption.answerText,
-          fit: BoxFit.cover,
-        )
+                answerOption.answerText,
+                fit: BoxFit.cover,
+              )
             : Center(
-          child: Text(
-            answerOption.answerText,
-            textAlign: TextAlign.center,
-            style: textTheme.headline4!.copyWith(
-              color: isSelected ? Colors.white : Colors.black,
-              fontSize: 20.0 * coefficient,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
+                child: Text(
+                  answerOption.answerText,
+                  textAlign: TextAlign.center,
+                  style: textTheme.headline4!.copyWith(
+                    color: isSelected ? Colors.white : Colors.black,
+                    fontSize: 20.0 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
       ),
     );
   }
@@ -270,7 +270,7 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
         color: Colors.white,
       ),
       child: Obx(
-            () => Text(
+        () => Text(
           controller.questionRx.value == null
               ? ''
               : '${controller.questionRx.value!.questionNumber} / ${controller.questionRx.value!.totalQuestions}',

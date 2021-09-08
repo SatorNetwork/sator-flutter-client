@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,11 +41,15 @@ class ChatPage extends GetView<ChatController> {
             ),
             Obx(
               () => Text(
-                'txt_episode_naming'.tr.format([
-                  controller.showSeasonRx.value.seasonNumber,
-                  controller.showEpisodeRx.value.episodeNumber,
-                  controller.showEpisodeRx.value.title,
-                ]),
+                controller.showSeasonRx.value.seasonNumber == 0
+                    ? controller.showEpisodeRx.value.title
+                    : 'txt_episode_naming'.tr.format(
+                        [
+                          controller.showSeasonRx.value.seasonNumber,
+                          controller.showEpisodeRx.value.episodeNumber,
+                          controller.showEpisodeRx.value.title,
+                        ],
+                      ),
                 style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -74,7 +80,7 @@ class ChatPage extends GetView<ChatController> {
             Obx(
               () => Image.network(
                 controller.showEpisodeRx.value.cover,
-                height: 300,
+                height: max(0.3 * Get.height, 220) + 24,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Container(
                   color: SatorioColor.darkAccent,

@@ -59,6 +59,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         () => InputTextField(
                           inputTitle: 'txt_username'.tr,
                           controller: controller.usernameController,
+                          hintText: 'txt_username_hint'.tr,
                           obscureText: false,
                           errorText: controller.validationRx.value['username'],
                         ),
@@ -128,7 +129,8 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       Obx(
                         () => ElevatedGradientButton(
                           text: 'txt_create_account'.tr,
-                          isEnabled: controller.termsOfServiceCheck.value,
+                          isEnabled: controller.termsOfServiceCheck.value &&
+                              !controller.isRequested.value,
                           onPressed: () {
                             controller.createAccount();
                           },

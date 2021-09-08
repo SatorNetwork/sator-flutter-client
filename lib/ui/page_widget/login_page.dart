@@ -88,8 +88,9 @@ class LoginPage extends GetView<LoginController> {
                               child: Text(
                                 'txt_forgot_password'.tr,
                                 style: textTheme.bodyText2!.copyWith(
-                                    fontWeight: FontWeight.w600,
-                                    color: SatorioColor.textBlack),
+                                  fontWeight: FontWeight.w600,
+                                  color: SatorioColor.interactive,
+                                ),
                               ),
                             ),
                           ),
@@ -98,11 +99,14 @@ class LoginPage extends GetView<LoginController> {
                       SizedBox(
                         height: 32,
                       ),
-                      ElevatedGradientButton(
-                        text: 'txt_login'.tr,
-                        onPressed: () {
-                          controller.signIn();
-                        },
+                      Obx(
+                        () => ElevatedGradientButton(
+                          text: 'txt_login'.tr,
+                          isEnabled: !controller.isRequested.value,
+                          onPressed: () {
+                            controller.signIn();
+                          },
+                        ),
                       ),
                     ],
                   ),
