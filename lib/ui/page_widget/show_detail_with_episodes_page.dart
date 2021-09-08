@@ -235,9 +235,11 @@ class ShowDetailWithEpisodesPage
                   () => SliverPersistentHeader(
                     pinned: true,
                     delegate: _SliverAppBarDelegate(
-                      controller,
-                      _tabBarHeight(),
-                    ),
+                        controller,
+                        _tabBarHeight(),
+                        _isSingleZeroSeason()
+                            ? 'txt_realms'.tr
+                            : 'txt_episodes'.tr),
                   ),
                 ),
                 SliverFillRemaining(
@@ -356,20 +358,21 @@ class ShowDetailWithEpisodesPage
   }
 
   double _tabBarHeight() {
-    return _isTabBarVisible() ? kTextTabBarHeight : 0.0;
+    return _isSingleZeroSeason() ? 0.0 : kTextTabBarHeight;
   }
 
-  bool _isTabBarVisible() {
-    return !(controller.seasonsRx.value.length == 1 &&
-        controller.seasonsRx.value[0].seasonNumber == 0);
+  bool _isSingleZeroSeason() {
+    return controller.seasonsRx.value.length == 1 &&
+        controller.seasonsRx.value[0].seasonNumber == 0;
   }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this.controller, this.tabBarHeight);
+  _SliverAppBarDelegate(this.controller, this.tabBarHeight, this.title);
 
   final ShowDetailWithEpisodesController controller;
   final double tabBarHeight;
+  final String title;
 
   @override
   double get minExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
@@ -399,7 +402,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
               bottom: 16,
             ),
             child: Text(
-              'txt_episodes'.tr,
+              title,
               textAlign: TextAlign.center,
               style: textTheme.headline3!.copyWith(
                 color: SatorioColor.textBlack,

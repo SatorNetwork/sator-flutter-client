@@ -24,8 +24,6 @@ class QrScannerController extends GetxController with BackToMainMixin {
 
   final Rx<QrScannerStatus> statusRx = Rx(QrScannerStatus.readyForScan);
 
-  // Barcode? result;
-
   QrScannerController() {
     QrScannerArgument argument = Get.arguments as QrScannerArgument;
     _isNeedReturnResult = argument.isNeedReturnResult;

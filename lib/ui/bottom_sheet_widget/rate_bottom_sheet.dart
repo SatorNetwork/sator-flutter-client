@@ -14,12 +14,14 @@ class RateBottomSheet extends StatelessWidget {
   RateBottomSheet(
     this.onRate, {
     Key? key,
+    this.isZeroSeason = false,
   }) : super(key: key);
 
   static const int minValue = 1;
   static const int maxValue = 10;
   static const int initValue = 7;
 
+  final bool isZeroSeason;
   final RateCallback onRate;
   final RxInt rateRx = initValue.obs;
 
@@ -54,7 +56,9 @@ class RateBottomSheet extends StatelessWidget {
                     width: 12 * coefficient,
                   ),
                   Text(
-                    'txt_rate_episode'.tr,
+                    isZeroSeason
+                        ? 'txt_rate_content'.tr
+                        : 'txt_rate_episode'.tr,
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 13 * coefficient,

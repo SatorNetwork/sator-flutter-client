@@ -54,7 +54,7 @@ class ShowEpisodeRealmController extends GetxController
     showEpisodeRx = Rx(argument.showEpisode);
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child('prod')
+        .child('test')
         .child(argument.showEpisode.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {
@@ -62,7 +62,7 @@ class ShowEpisodeRealmController extends GetxController
       print(isMessagesRx.value);
     });
 
-    _checkActivation();
+    checkActivation();
   }
 
   void back() {
@@ -87,6 +87,7 @@ class ShowEpisodeRealmController extends GetxController
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
         },
+        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
     );
   }
@@ -117,15 +118,20 @@ class ShowEpisodeRealmController extends GetxController
         (int rate) {
           _rateEpisode(rate);
         },
+        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
     );
   }
 
-  void _checkActivation() {
+  void checkActivation() {
     _satorioRepository
         .isEpisodeActivated(showEpisodeRx.value.id)
         .then((EpisodeActivation episodeActivation) {
       activationRx.value = episodeActivation;
+      if (episodeActivation.isActive &&
+          episodeActivation.leftTimeInHours() < 2) {
+        toRealmExpiringBottomSheet();
+      }
     });
   }
 
@@ -149,7 +155,7 @@ class ShowEpisodeRealmController extends GetxController
     );
 
     if (result != null && result is bool) {
-      _checkActivation();
+      checkActivation();
     }
   }
 

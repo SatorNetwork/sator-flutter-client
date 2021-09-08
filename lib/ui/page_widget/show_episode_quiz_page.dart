@@ -268,10 +268,14 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
       ),
       child: Obx(
         () => Text(
-          'txt_episode_entrance_quiz'.tr.format([
-            controller.showSeasonRx.value.seasonNumber,
-            controller.showEpisodeRx.value.episodeNumber,
-          ]),
+          controller.showSeasonRx.value.seasonNumber == 0
+              ? ''
+              : 'txt_episode_entrance_quiz'.tr.format(
+                  [
+                    controller.showSeasonRx.value.seasonNumber,
+                    controller.showEpisodeRx.value.episodeNumber,
+                  ],
+                ),
           style: TextStyle(
             color: SatorioColor.darkAccent,
             fontSize: 16.0,
