@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/web_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
-import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebPage extends GetView<WebController> {
@@ -17,14 +15,7 @@ class WebPage extends GetView<WebController> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: Text(
-          controller.title,
-          style: textTheme.bodyText1!.copyWith(
-            color: SatorioColor.darkAccent,
-            fontSize: 17,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        title: null,
         leading: Material(
           color: Colors.transparent,
           shadowColor: Colors.transparent,
