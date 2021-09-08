@@ -8,12 +8,16 @@ import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class EpisodeRealmDialog extends StatelessWidget {
+  const EpisodeRealmDialog({
+    Key? key,
+    this.onQuizPressed,
+    this.onPaidUnlockPressed,
+    this.isZeroSeason = false,
+  }) : super(key: key);
+
   final VoidCallback? onQuizPressed;
   final VoidCallback? onPaidUnlockPressed;
-
-  const EpisodeRealmDialog(
-      {Key? key, this.onQuizPressed, this.onPaidUnlockPressed})
-      : super(key: key);
+  final bool isZeroSeason;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,9 @@ class EpisodeRealmDialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'txt_enter_episode_realm'.tr,
+                  isZeroSeason
+                      ? 'txt_enter_realm'.tr
+                      : 'txt_enter_episode_realm'.tr,
                   style: textTheme.headline4!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 24.0 * coefficient,

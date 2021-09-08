@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/password_recovery_binding.dart';
@@ -65,6 +66,12 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
       (bool isSuccess) {
         if (isSuccess) {
           Get.until((route) => Get.currentRoute == '/() => LoginPage');
+
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
+            SnackBar(
+              content: Text('Password successfully changed'),
+            ),
+          );
         }
       },
     ).catchError((value) => handleValidationException(value));
