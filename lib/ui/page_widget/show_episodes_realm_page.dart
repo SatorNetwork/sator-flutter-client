@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +19,7 @@ import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/smile_list.dart';
 
 class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
-  final double bodyHeight = 220;
+  final double bodyHeight = max(0.3 * Get.height, 220);
 
   @override
   Widget build(BuildContext context) {
