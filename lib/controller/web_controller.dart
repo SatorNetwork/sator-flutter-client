@@ -2,14 +2,12 @@ import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebController extends GetxController {
-  late final String title;
   late final String url;
 
   WebController() {
     WebArgument argument = Get.arguments as WebArgument;
 
     url = argument.url;
-    title = argument.title ?? '';
   }
 
   void back() {
@@ -22,8 +20,7 @@ class WebController extends GetxController {
 }
 
 class WebArgument {
-  const WebArgument(this.url, this.title);
+  const WebArgument(this.url);
 
   final String url;
-  final String? title;
 }
