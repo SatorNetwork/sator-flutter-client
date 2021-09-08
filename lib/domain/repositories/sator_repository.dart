@@ -92,7 +92,9 @@ abstract class SatorioRepository {
 
   Future<void> logout();
 
-  Future<GetSocket> createQuizSocket(String challengeId);
+  Future<String> quizSocketUrl(String challengeId);
+
+  Future<GetSocket> createQuizSocket(String socketUrl);
 
   Future<void> sendAnswer(
       GetSocket? socket, String questionId, String answerId);

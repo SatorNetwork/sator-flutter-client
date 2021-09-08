@@ -30,7 +30,7 @@ class QuizController extends GetxController {
   QuizController() {
     QuizArgument argument = Get.arguments as QuizArgument;
     challengeRx = Rx(argument.challenge);
-    _initSocket(argument.challenge.id);
+    _initSocket(argument.socketUrl);
   }
 
   @override
@@ -59,8 +59,8 @@ class QuizController extends GetxController {
     return _satorioRepository.sendAnswer(_socket, questionId, answerId);
   }
 
-  void _initSocket(String challengeId) async {
-    _socket = await _satorioRepository.createQuizSocket(challengeId);
+  void _initSocket(String socketUrl) async {
+    _socket = await _satorioRepository.createQuizSocket(socketUrl);
 
     _socket?.onOpen(() {
       print('Socket onOpen ${_socket?.url}');
@@ -183,6 +183,7 @@ class QuizController extends GetxController {
 
 class QuizArgument {
   final Challenge challenge;
+  final String socketUrl;
 
-  const QuizArgument(this.challenge);
+  const QuizArgument(this.challenge, this.socketUrl);
 }

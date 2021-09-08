@@ -18,8 +18,16 @@ class CreateAccountController extends GetxController with ValidationMixin {
 
   final RxBool termsOfServiceCheck = false.obs;
   final RxBool passwordObscured = true.obs;
+  final RxBool isRequested = false.obs;
 
   final SatorioRepository _satorioRepository = Get.find();
+
+  late final Uri? deepLink;
+
+  CreateAccountController() {
+    CreateAccountArgument argument = Get.arguments as CreateAccountArgument;
+    deepLink = argument.deepLink;
+  }
 
   void toTermsOfService() {
     Get.to(
@@ -41,29 +49,42 @@ class CreateAccountController extends GetxController with ValidationMixin {
   }
 
   void createAccount() {
-    CreateAccountArgument argument = Get.arguments as CreateAccountArgument;
-
-    _satorioRepository
-        .signUp(
-      emailController.text,
-      passwordController.text,
-      usernameController.text,
-    )
-        .then((isSuccess) {
-      if (isSuccess) {
-        bool _isValid = argument.deepLink != null &&
-            argument.deepLink!.queryParameters['code'] != null &&
-            argument.deepLink!.queryParameters['code']!.isNotEmpty;
-        if (_isValid) {
-          _satorioRepository
-              .confirmReferralCode(argument.deepLink!.queryParameters['code']!);
-        }
-        Get.to(
-          () => EmailVerificationPage(),
-          binding: EmailVerificationBinding(),
+    Future.value(true)
+        .then((value) {
+          isRequested.value = true;
+          return value;
+        })
+        .then(
+          (value) => _satorioRepository.signUp(
+            emailController.text,
+            passwordController.text,
+            usernameController.text,
+          ),
+        )
+        .then(
+          (isSuccess) {
+            if (isSuccess) {
+              bool _isValid = deepLink != null &&
+                  deepLink!.queryParameters['code'] != null &&
+                  deepLink!.queryParameters['code']!.isNotEmpty;
+              if (_isValid) {
+                _satorioRepository.confirmReferralCode(
+                    deepLink!.queryParameters['code']!);
+              }
+              Get.to(
+                () => EmailVerificationPage(),
+                binding: EmailVerificationBinding(),
+              );
+            }
+            isRequested.value = false;
+          },
+        )
+        .catchError(
+          (value) {
+            handleValidationException(value);
+            isRequested.value = false;
+          },
         );
-      }
-    }).catchError((value) => handleValidationException(value));
   }
 }
 
