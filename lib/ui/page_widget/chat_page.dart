@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +80,7 @@ class ChatPage extends GetView<ChatController> {
             Obx(
               () => Image.network(
                 controller.showEpisodeRx.value.cover,
-                height: 300,
+                height: max(0.3 * Get.height, 220) + 24,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Container(
                   color: SatorioColor.darkAccent,
