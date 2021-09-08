@@ -62,6 +62,7 @@ class ShowEpisodeRealmController extends GetxController
       print(isMessagesRx.value);
     });
 
+    _updateShowEpisode();
     checkActivation();
   }
 

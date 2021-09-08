@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -567,7 +566,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               children: [
                                 Obx(
                                   () =>
-                                      controller.showEpisodeRx.value.rating > 1
+                                      controller.showEpisodeRx.value.rating >= 1
                                           ? SvgPicture.asset(
                                               smile[controller.showEpisodeRx
                                                       .value.rating
@@ -582,8 +581,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 Obx(
                                   () => SizedBox(
                                     width:
-                                        controller.showEpisodeRx.value.rating >
-                                                1
+                                        controller.showEpisodeRx.value.rating >= 1
                                             ? 10 * coefficient
                                             : 0,
                                   ),
