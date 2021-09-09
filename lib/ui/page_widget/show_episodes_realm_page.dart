@@ -1227,7 +1227,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviews() {
-    const double reviewContainerHeight = 196.0;
+    final double reviewContainerHeight = 184.0 * coefficient;
     return Container(
       height: reviewContainerHeight,
       child: ListView.separated(
