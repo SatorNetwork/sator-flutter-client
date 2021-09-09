@@ -92,7 +92,8 @@ class QuizResultPage extends GetView<QuizResultController> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 6),
                                   child: Divider(
-                                    color: Colors.black.withOpacity(0.11),
+                                    color: Colors.black.withOpacity(0.1),
+                                    height: 1,
                                   ),
                                 ),
                             itemCount:

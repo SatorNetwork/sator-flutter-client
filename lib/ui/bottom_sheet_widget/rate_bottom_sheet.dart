@@ -74,6 +74,7 @@ class RateBottomSheet extends StatelessWidget {
           ),
           Divider(
             color: Colors.black.withOpacity(0.1),
+            height: 1,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 32 * coefficient),

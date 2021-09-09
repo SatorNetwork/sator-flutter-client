@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
+import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
-class CreateReviewController extends GetxController {
+class WriteReviewController extends GetxController {
   static const int minValue = 1;
   static const int maxValue = 10;
   static const int initValue = 7;
@@ -16,20 +19,28 @@ class CreateReviewController extends GetxController {
   final TextEditingController titleController = TextEditingController();
   final TextEditingController reviewController = TextEditingController();
 
+  late ValueListenable<Box<Profile>> profileListenable;
+
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
+
+  final Rx<WriteReviewState> stateRx = Rx(WriteReviewState.creating);
+  final Rx<Profile?> profileRx = Rx(null);
 
   final RxInt rateRx = initValue.obs;
   final RxString titleRx = ''.obs;
   final RxString reviewRx = ''.obs;
 
-  CreateReviewController() {
-    CreateReviewArgument argument = Get.arguments as CreateReviewArgument;
+  WriteReviewController() {
+    WriteReviewArgument argument = Get.arguments as WriteReviewArgument;
 
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
+
+    this.profileListenable =
+        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
   }
 
   @override
@@ -37,6 +48,9 @@ class CreateReviewController extends GetxController {
     super.onInit();
     titleController.addListener(_titleListener);
     reviewController.addListener(_reviewListener);
+
+    _profileListener();
+    profileListenable.addListener(_profileListener);
   }
 
   @override
@@ -50,7 +64,15 @@ class CreateReviewController extends GetxController {
     Get.back();
   }
 
-  void review() {
+  void toPreview() {
+    stateRx.value = WriteReviewState.preview;
+  }
+
+  void editReview() {
+    stateRx.value = WriteReviewState.creating;
+  }
+
+  void submitReview() {
     _satorioRepository
         .writeReview(
       showDetailRx.value.id,
@@ -71,6 +93,11 @@ class CreateReviewController extends GetxController {
     });
   }
 
+  void _profileListener() {
+    if (profileListenable.value.length > 0)
+      profileRx.value = profileListenable.value.getAt(0);
+  }
+
   void _titleListener() {
     titleRx.value = titleController.text;
   }
@@ -80,11 +107,12 @@ class CreateReviewController extends GetxController {
   }
 }
 
-class CreateReviewArgument {
+class WriteReviewArgument {
   final ShowDetail showDetail;
   final ShowSeason showSeason;
   final ShowEpisode showEpisode;
 
-  const CreateReviewArgument(
-      this.showDetail, this.showSeason, this.showEpisode);
+  const WriteReviewArgument(this.showDetail, this.showSeason, this.showEpisode);
 }
+
+enum WriteReviewState { creating, preview }

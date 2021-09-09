@@ -46,7 +46,10 @@ class HomeController extends GetxController
     _loadAllShows();
     _loadShowByCategoryName();
 
+    _profileListener();
     profileListenable.addListener(_profileListener);
+
+    _walletBalanceListener();
     walletBalanceListenable.addListener(_walletBalanceListener);
   }
 

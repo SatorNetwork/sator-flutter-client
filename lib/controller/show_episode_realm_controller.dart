@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
-import 'package:satorio/binding/create_review_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
@@ -24,11 +24,11 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_shee
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
-import 'package:satorio/ui/page_widget/create_review_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
+import 'package:satorio/ui/page_widget/write_review_page.dart';
 import 'package:satorio/util/extension.dart';
 
-import 'create_review_controller.dart';
+import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
     with NonWorkingFeatureMixin {
@@ -78,11 +78,11 @@ class ShowEpisodeRealmController extends GetxController
     Get.back();
   }
 
-  void toCreateReview() {
+  void toWriteReview() {
     Get.to(
-      () => CreateReviewPage(),
-      binding: CreateReviewBinding(),
-      arguments: CreateReviewArgument(
+      () => WriteReviewPage(),
+      binding: WriteReviewBinding(),
+      arguments: WriteReviewArgument(
         showDetailRx.value,
         showSeasonRx.value,
         showEpisodeRx.value,
