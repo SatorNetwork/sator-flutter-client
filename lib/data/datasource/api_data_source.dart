@@ -8,6 +8,7 @@ import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
+import 'package:satorio/data/model/review_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -101,6 +102,8 @@ abstract class ApiDataSource {
   Future<ShowModel> loadShow(String showId);
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
+
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId);
 
   // endregion
 
