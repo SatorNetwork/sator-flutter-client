@@ -1381,7 +1381,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         width: 8,
                       ),
                       Text(
-                        review.likes,
+                        review.likes.toString(),
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 14 * coefficient,

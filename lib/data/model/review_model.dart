@@ -3,7 +3,7 @@ import 'package:satorio/domain/entities/review.dart';
 
 class ReviewModel extends Review implements ToJsonInterface {
   const ReviewModel(String id, String userId, String userName, int rating,
-      String title, String text, String createdAt, String likes, String unlikes)
+      String title, String text, DateTime? createdAt, int likes, int unlikes)
       : super(id, userId, userName, rating, title, text, createdAt, likes,
             unlikes);
 
@@ -14,7 +14,7 @@ class ReviewModel extends Review implements ToJsonInterface {
         json['rating'] == null ? '' : json['rating'],
         json['title'] == null ? '' : json['title'],
         json['review'] == null ? '' : json['review'],
-        json['created_at'] == null ? '' : json['created_at'],
+        DateTime.tryParse(json['createdAt'] == null ? '' : json['createdAt']),
         json['likes'] == null ? '' : json['likes'],
         json['unlikes'] == null ? '' : json['unlikes'],
       );
@@ -27,7 +27,7 @@ class ReviewModel extends Review implements ToJsonInterface {
         'rating': rating,
         'title': title,
         'review': text,
-        'created_at': createdAt,
+        'created_at': createdAt!.toIso8601String(),
         'likes': likes,
         'unlikes': unlikes,
       };
