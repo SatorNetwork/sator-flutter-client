@@ -104,6 +104,8 @@ abstract class ApiDataSource {
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
   Future<List<ReviewModel>> getReviews(String showId, String episodeId);
+  
+  Future<bool> clapShow(String showId);
 
   // endregion
 
@@ -125,7 +127,12 @@ abstract class ApiDataSource {
   Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
   Future<bool> writeReview(
-      String showId, String episodeId, int rating, String title, String review);
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  );
 
   // endregion
 

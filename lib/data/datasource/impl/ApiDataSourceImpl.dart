@@ -570,6 +570,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<bool> clapShow(String showId) {
+    return _requestPost(
+      'shows/$showId/claps',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
   Future<ChallengeModel> challenge(String challengeId) {
     return _requestGet(
       'challenges/$challengeId',
