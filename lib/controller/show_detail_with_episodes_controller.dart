@@ -22,6 +22,8 @@ class ShowDetailWithEpisodesController extends GetxController
   final ScrollController scrollController = ScrollController();
   final RxDouble titleAlphaRx = 0.0.obs;
 
+  final RxBool isClapsInProgress = false.obs;
+
   ShowDetailWithEpisodesController() {
     tabController = TabController(length: 0, vsync: this);
 
@@ -45,16 +47,8 @@ class ShowDetailWithEpisodesController extends GetxController
   }
 
   void refreshShowData() {
-    _satorioRepository.showDetail(showRx.value.id).then((showDetail) {
-      showDetailRx.value = showDetail;
-    });
-
-    _satorioRepository
-        .showSeasons(showRx.value.id)
-        .then((List<ShowSeason> seasons) {
-      tabController = TabController(length: seasons.length, vsync: this);
-      seasonsRx.value = seasons;
-    });
+    _loadShowDetail();
+    _loadEpisodes();
   }
 
   void back() {
@@ -85,20 +79,6 @@ class ShowDetailWithEpisodesController extends GetxController
     }
   }
 
-  void _scrollListener() {
-    double half = (scrollController.position.maxScrollExtent -
-            scrollController.position.minScrollExtent) /
-        2;
-    double alpha = scrollController.position.pixels < half
-        ? 0
-        : (scrollController.position.pixels - half) / half;
-
-    if (alpha < 0) alpha = 0;
-    if (alpha > 1) alpha = 1;
-
-    titleAlphaRx.value = alpha;
-  }
-
   void toggleBottomSheet() {
     final double maxExtent = scrollController.position.maxScrollExtent;
     final double minExtent = scrollController.position.minScrollExtent;
@@ -117,6 +97,53 @@ class ShowDetailWithEpisodesController extends GetxController
       duration: Duration(milliseconds: 200),
       curve: Curves.easeInOut,
     );
+  }
+
+  void clap() {
+    if (isClapsInProgress.value) return;
+    Future.value(true)
+        .then((value) {
+          isClapsInProgress.value = true;
+          return value;
+        })
+        .then((value) => _satorioRepository.clapShow(showRx.value.id))
+        .then((bool result) {
+          if (result) {
+            _loadShowDetail();
+          }
+          isClapsInProgress.value = false;
+        })
+        .catchError((value) {
+          isClapsInProgress.value = false;
+        });
+  }
+
+  void _loadShowDetail() {
+    _satorioRepository.showDetail(showRx.value.id).then((showDetail) {
+      showDetailRx.value = showDetail;
+    });
+  }
+
+  void _loadEpisodes() {
+    _satorioRepository
+        .showSeasons(showRx.value.id)
+        .then((List<ShowSeason> seasons) {
+      tabController = TabController(length: seasons.length, vsync: this);
+      seasonsRx.value = seasons;
+    });
+  }
+
+  void _scrollListener() {
+    double half = (scrollController.position.maxScrollExtent -
+            scrollController.position.minScrollExtent) /
+        2;
+    double pixels = scrollController.position.pixels;
+    double alpha = pixels < half ? 0 : (pixels - half) / half;
+
+    if (alpha < 0) alpha = 0;
+    if (alpha > 1) alpha = 1;
+
+    titleAlphaRx.value = alpha;
   }
 }
 

@@ -75,6 +75,8 @@ abstract class SatorioRepository {
 
   Future<QrShow> getShowEpisodeByQR(String qrCodeId);
 
+  Future<bool> clapShow(String showId);
+
   Future<Challenge> challenge(String challengeId);
 
   Future<EpisodeActivation> isEpisodeActivated(String episodeId);
