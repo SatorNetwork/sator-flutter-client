@@ -181,4 +181,13 @@ const Map<String, String> en = {
   'txt_no_messages': 'Welcome to the chat room!',
   'txt_say_hello': 'Say hello to everyone',
   'txt_collect': 'Collect',
+  'txt_password_change_success': 'Password successfully changed',
+  'txt_copied_clipboard': 'Copied to clipboard',
+  'txt_code_resend_success': 'Code was resent',
+  'txt_rating': 'Rating',
+  'txt_title': 'Title',
+  'txt_enter_title': 'Enter title',
+  'txt_enter_review': 'Enter review',
+  'txt_review_write_success': 'Review was sent',
+  'txt_submit': 'Submit',
 };

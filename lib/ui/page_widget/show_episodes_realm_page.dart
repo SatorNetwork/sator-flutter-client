@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -582,7 +581,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                               Radius.circular(8),
                                             ),
                                             color:
-                                            SatorioColor.free_speech_blue,
+                                                SatorioColor.free_speech_blue,
                                           ),
                                           child: Center(
                                             child: SvgPicture.asset(
@@ -598,7 +597,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                         ),
                                         Column(
                                           crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'txt_head'.tr,
@@ -864,7 +863,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             textColor: SatorioColor.interactive,
                             borderWidth: 3,
                             onPressed: () {
-                              controller.toNonWorkingFeatureDialog();
+                              controller.toCreateReview();
                             },
                           ),
                           SizedBox(

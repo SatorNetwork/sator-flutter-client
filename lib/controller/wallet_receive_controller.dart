@@ -67,7 +67,7 @@ class WalletReceiveController extends GetxController {
     );
     ScaffoldMessenger.of(Get.context!).showSnackBar(
       SnackBar(
-        content: Text('Copied to clipboard'),
+        content: Text('txt_copied_clipboard'.tr),
       ),
     );
   }

@@ -8,6 +8,8 @@ class InputTextField extends StatelessWidget {
       {this.controller,
       this.inputTitle = '',
       this.keyboardType = TextInputType.text,
+      this.minLines = 1,
+      this.maxLines = 1,
       this.hintText,
       this.obscureText = false,
       this.errorText,
@@ -19,6 +21,8 @@ class InputTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String inputTitle;
   final TextInputType keyboardType;
+  final int? minLines;
+  final int? maxLines;
   final String? hintText;
   final bool obscureText;
   final String? errorText;
@@ -36,7 +40,9 @@ class InputTextField extends StatelessWidget {
         Text(
           inputTitle,
           style: textTheme.bodyText2!.copyWith(
-              fontWeight: FontWeight.w600, color: SatorioColor.textBlack),
+            fontWeight: FontWeight.w600,
+            color: SatorioColor.textBlack,
+          ),
         ),
         SizedBox(
           height: 3,
@@ -44,18 +50,20 @@ class InputTextField extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
           decoration: BoxDecoration(
-            color: SatorioColor.inputGrey,
+            color: SatorioColor.alice_blue,
             borderRadius: BorderRadius.circular(6),
           ),
           child: TextFormField(
             controller: controller,
             obscureText: obscureText,
             keyboardType: keyboardType,
+            minLines: minLines,
+            maxLines: maxLines,
             textInputAction: TextInputAction.next,
             enableSuggestions: enableSuggestions,
             autocorrect: autocorrect,
             style: textTheme.bodyText1!.copyWith(
-              color: Colors.black,
+              color: SatorioColor.textBlack,
               fontWeight: FontWeight.w400,
             ),
             decoration: InputDecoration(
@@ -68,7 +76,7 @@ class InputTextField extends StatelessWidget {
                       icon: icon!,
                     ),
               hintStyle: textTheme.bodyText1!.copyWith(
-                color: Colors.black.withOpacity(0.5),
+                color: SatorioColor.textBlack.withOpacity(0.5),
                 fontWeight: FontWeight.w400,
               ),
               enabledBorder: InputBorder.none,

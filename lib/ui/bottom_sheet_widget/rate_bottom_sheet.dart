@@ -99,7 +99,7 @@ class RateBottomSheet extends StatelessWidget {
             height: 32 * coefficient,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: paddingH),
+            padding: EdgeInsets.symmetric(horizontal: 6),
             child: Obx(
               () => Slider(
                 onChanged: (value) {

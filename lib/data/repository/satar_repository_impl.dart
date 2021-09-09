@@ -247,6 +247,19 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> writeReview(
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  ) {
+    return _apiDataSource
+        .writeReview(showId, episodeId, rating, title, review)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<String> quizSocketUrl(String challengeId) {
     return _apiDataSource
         .quizSocketUrl(challengeId)
