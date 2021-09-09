@@ -9,7 +9,7 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:share/share.dart';
 
 class SendInviteDialog extends StatelessWidget {
-    final String referralLink;
+  final String referralLink;
 
   SendInviteDialog(this.referralLink);
 
@@ -108,7 +108,7 @@ class SendInviteDialog extends StatelessWidget {
     );
     ScaffoldMessenger.of(Get.context!).showSnackBar(
       SnackBar(
-        content: Text('Copied to clipboard'),
+        content: Text('txt_copied_clipboard'.tr),
       ),
     );
   }

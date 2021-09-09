@@ -98,6 +98,26 @@ class ShowDetailWithEpisodesController extends GetxController
 
     titleAlphaRx.value = alpha;
   }
+
+  void toggleBottomSheet() {
+    final double maxExtent = scrollController.position.maxScrollExtent;
+    final double minExtent = scrollController.position.minScrollExtent;
+
+    double half = (maxExtent - minExtent) / 2;
+    double offset;
+    if (scrollController.position.pixels < half) {
+      // expand
+      offset = maxExtent;
+    } else {
+      //collapse
+      offset = minExtent;
+    }
+    scrollController.animateTo(
+      offset,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+    );
+  }
 }
 
 class ShowDetailWithEpisodesArgument {

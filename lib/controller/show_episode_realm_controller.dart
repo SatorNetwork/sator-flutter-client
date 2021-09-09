@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
+import 'package:satorio/binding/create_review_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
@@ -22,8 +23,11 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_shee
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
+import 'package:satorio/ui/page_widget/create_review_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/util/extension.dart';
+
+import 'create_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
     with NonWorkingFeatureMixin {
@@ -62,6 +66,7 @@ class ShowEpisodeRealmController extends GetxController
       print(isMessagesRx.value);
     });
 
+    _updateShowEpisode();
     checkActivation();
   }
 
@@ -69,12 +74,28 @@ class ShowEpisodeRealmController extends GetxController
     Get.back();
   }
 
+  void toCreateReview() {
+    Get.to(
+      () => CreateReviewPage(),
+      binding: CreateReviewBinding(),
+      arguments: CreateReviewArgument(
+        showDetailRx.value,
+        showSeasonRx.value,
+        showEpisodeRx.value,
+      ),
+    );
+  }
+
   void toChatPage() {
     Get.to(
       () => ChatPage(),
       binding: ChatBinding(),
-      arguments: ChatArgument(_messagesRef, showDetailRx.value,
-          showSeasonRx.value, showEpisodeRx.value),
+      arguments: ChatArgument(
+        _messagesRef,
+        showDetailRx.value,
+        showSeasonRx.value,
+        showEpisodeRx.value,
+      ),
     );
   }
 
