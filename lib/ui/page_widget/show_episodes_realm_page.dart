@@ -1227,8 +1227,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviews() {
+    const double reviewContainerHeight = 196.0;
     return Container(
-      height: 226 * coefficient,
+      height: reviewContainerHeight,
       child: ListView.separated(
           scrollDirection: Axis.horizontal,
           itemCount: controller.reviewsRx.value.length,
@@ -1268,7 +1269,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         controller.toNonWorkingFeatureDialog();
       },
       child: Container(
-        padding: EdgeInsets.only(bottom: 16, top: 30),
+        padding: EdgeInsets.only(bottom: 16, top: 16),
         width: Get.mediaQuery.size.width - 70,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -1284,8 +1285,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               child: Row(
                 children: [
                   SvgPicture.asset(
-                    'images/smile/smile_1.svg',
+                    smile[review.rating] ?? '',
                     width: 24 * coefficient,
+                    height: 24 * coefficient,
                   ),
                   SizedBox(
                     width: 12,
@@ -1322,9 +1324,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 16,
             ),
             Container(
               padding: EdgeInsets.only(top: 16, left: 20, right: 20),
