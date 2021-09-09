@@ -90,6 +90,14 @@ abstract class SatorioRepository {
 
   Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
+  Future<bool> writeReview(
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  );
+
   Future<void> logout();
 
   Future<String> quizSocketUrl(String challengeId);

@@ -249,6 +249,7 @@ class CreateReviewPage extends GetView<CreateReviewController> {
               inputTitle: 'txt_review'.tr,
               hintText: 'txt_enter_review'.tr,
               keyboardType: TextInputType.multiline,
+              minLines: 4,
               maxLines: null,
               // maxLines: 8,
             ),
@@ -260,9 +261,13 @@ class CreateReviewPage extends GetView<CreateReviewController> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Obx(
               () => ElevatedGradientButton(
-                  text: 'txt_preview'.tr,
-                  isEnabled: controller.titleRx.value.isNotEmpty &&
-                      controller.reviewRx.value.isNotEmpty),
+                text: 'txt_preview'.tr,
+                isEnabled: controller.titleRx.value.isNotEmpty &&
+                    controller.reviewRx.value.isNotEmpty,
+                onPressed: () {
+                  controller.review();
+                },
+              ),
             ),
           ),
           SizedBox(

@@ -8,6 +8,7 @@ class InputTextField extends StatelessWidget {
       {this.controller,
       this.inputTitle = '',
       this.keyboardType = TextInputType.text,
+      this.minLines = 1,
       this.maxLines = 1,
       this.hintText,
       this.obscureText = false,
@@ -20,6 +21,7 @@ class InputTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String inputTitle;
   final TextInputType keyboardType;
+  final int? minLines;
   final int? maxLines;
   final String? hintText;
   final bool obscureText;
@@ -55,6 +57,7 @@ class InputTextField extends StatelessWidget {
             controller: controller,
             obscureText: obscureText,
             keyboardType: keyboardType,
+            minLines: minLines,
             maxLines: maxLines,
             textInputAction: TextInputAction.next,
             enableSuggestions: enableSuggestions,

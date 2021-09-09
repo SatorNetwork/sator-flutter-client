@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/repositories/sator_repository.dart';
 
 class CreateReviewController extends GetxController {
   static const int minValue = 1;
   static const int maxValue = 10;
   static const int initValue = 7;
+
+  final SatorioRepository _satorioRepository = Get.find();
 
   final TextEditingController titleController = TextEditingController();
   final TextEditingController reviewController = TextEditingController();
@@ -44,6 +48,27 @@ class CreateReviewController extends GetxController {
 
   void back() {
     Get.back();
+  }
+
+  void review() {
+    _satorioRepository
+        .writeReview(
+      showDetailRx.value.id,
+      showEpisodeRx.value.id,
+      rateRx.value,
+      titleRx.value,
+      reviewRx.value,
+    )
+        .then((bool result) {
+      if (result) {
+        Get.back();
+        ScaffoldMessenger.of(Get.context!).showSnackBar(
+          SnackBar(
+            content: Text('txt_review_write_success'.tr),
+          ),
+        );
+      }
+    });
   }
 
   void _titleListener() {
