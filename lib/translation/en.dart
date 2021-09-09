@@ -188,4 +188,5 @@ const Map<String, String> en = {
   'txt_enter_title': 'Enter title',
   'txt_enter_review': 'Enter review',
   'txt_review_write_success': 'Review was sent',
+  'txt_submit': 'Submit',
 };

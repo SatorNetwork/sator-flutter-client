@@ -261,7 +261,7 @@ class CreateReviewPage extends GetView<CreateReviewController> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Obx(
               () => ElevatedGradientButton(
-                text: 'txt_preview'.tr,
+                text: 'txt_submit'.tr,
                 isEnabled: controller.titleRx.value.isNotEmpty &&
                     controller.reviewRx.value.isNotEmpty,
                 onPressed: () {
