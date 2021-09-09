@@ -117,7 +117,9 @@ class ShowDetailWithEpisodesPage
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    controller.clap();
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,
                                     primary: Colors.transparent,
@@ -138,12 +140,16 @@ class ShowDetailWithEpisodesPage
                                       SizedBox(
                                         height: 6.0 * coefficient,
                                       ),
-                                      Text(
-                                        '32',
-                                        style: textTheme.subtitle2!.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 15.0 * coefficient,
-                                          fontWeight: FontWeight.w500,
+                                      Obx(
+                                        () => Text(
+                                          controller.showDetailRx.value?.claps
+                                                  .toString() ??
+                                              '',
+                                          style: textTheme.subtitle2!.copyWith(
+                                            color: Colors.white,
+                                            fontSize: 15.0 * coefficient,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                     ],

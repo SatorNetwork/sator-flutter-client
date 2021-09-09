@@ -194,6 +194,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> clapShow(String showId) {
+    return _apiDataSource
+        .clapShow(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> logout() {
     return _apiDataSource.apiLogout().then(
           (value) => _localLogoutGoToLogin(),
