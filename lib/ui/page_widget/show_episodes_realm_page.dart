@@ -544,6 +544,176 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             height: 32,
                           ),
                           Text(
+                            'txt_play'.tr,
+                            style: textTheme.headline4!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 24 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              controller.toChallenge();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(13),
+                                ),
+                                color: SatorioColor.interactive,
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 16, right: 16, bottom: 16),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: 52,
+                                          width: 52,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(8),
+                                            ),
+                                            color:
+                                                SatorioColor.free_speech_blue,
+                                          ),
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'images/sator_logo.svg',
+                                              color: Colors.white,
+                                              height: 23,
+                                              width: 23,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 16,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'txt_head'.tr,
+                                              style:
+                                              textTheme.bodyText1!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 18 * coefficient,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 6,
+                                            ),
+                                            Text(
+                                              'txt_head_text'.tr,
+                                              style:
+                                              textTheme.bodyText2!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 14 * coefficient,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        Icon(
+                                          Icons.chevron_right_rounded,
+                                          size: 32,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: 45,
+                                        right: 45,
+                                        top: 21,
+                                        bottom: 5),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          SatorioColor.medium_slate_blue,
+                                          SatorioColor.medium_slate_blue_2
+                                        ],
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '291',
+                                              style:
+                                              textTheme.bodyText2!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 14 * coefficient,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              'txt_players'.tr.toLowerCase(),
+                                              style:
+                                              textTheme.bodyText2!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 14 * coefficient,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '2,130.00 SAO',
+                                              style:
+                                              textTheme.bodyText2!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 14 * coefficient,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 4,
+                                            ),
+                                            Text(
+                                              'txt_remains'.tr.toLowerCase(),
+                                              style:
+                                              textTheme.bodyText2!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 14 * coefficient,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Text(
                             'txt_rate'.tr,
                             style: textTheme.headline4!.copyWith(
                               color: SatorioColor.textBlack,
@@ -566,7 +736,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               children: [
                                 Obx(
                                   () =>
-                                      controller.showEpisodeRx.value.rating >= 1
+                                      controller.showEpisodeRx.value.rating > 1
                                           ? SvgPicture.asset(
                                               smile[controller.showEpisodeRx
                                                       .value.rating
@@ -581,7 +751,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 Obx(
                                   () => SizedBox(
                                     width:
-                                        controller.showEpisodeRx.value.rating >=
+                                        controller.showEpisodeRx.value.rating >
                                                 1
                                             ? 10 * coefficient
                                             : 0,
@@ -655,170 +825,57 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           SizedBox(
                             height: 32,
                           ),
-                          Text(
-                            'txt_play'.tr,
-                            style: textTheme.headline4!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 24 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'txt_review'.tr,
+                                style: textTheme.headline4!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 24 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  controller.toNonWorkingFeatureDialog();
+                                },
+                                child: Icon(
+                                  Icons.chevron_right_rounded,
+                                  size: 32 * coefficient,
+                                  color: SatorioColor.textBlack,
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: 16,
                           ),
-                          InkWell(
-                            onTap: () {
-                              controller.toChallenge();
+                          Obx(() => controller.reviewsRx.value.length != 0
+                              ? _reviews()
+                              : _emptyReviews()),
+                          SizedBox(
+                            height: 26,
+                          ),
+                          BorderedButton(
+                            text: 'txt_write_review'.tr,
+                            borderColor: SatorioColor.interactive,
+                            textColor: SatorioColor.interactive,
+                            borderWidth: 3,
+                            onPressed: () {
+                              controller.toCreateReview();
                             },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(13),
-                                ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Center(
+                            child: Text(
+                              'txt_earn_sao_upvoted'.tr,
+                              style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.interactive,
-                              ),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 16, right: 16, bottom: 16),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          height: 52,
-                                          width: 52,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(8),
-                                            ),
-                                            color:
-                                                SatorioColor.free_speech_blue,
-                                          ),
-                                          child: Center(
-                                            child: SvgPicture.asset(
-                                              'images/sator_logo.svg',
-                                              color: Colors.white,
-                                              height: 23,
-                                              width: 23,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 16,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'txt_head'.tr,
-                                              style:
-                                                  textTheme.bodyText1!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 18 * coefficient,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 6,
-                                            ),
-                                            Text(
-                                              'txt_head_text'.tr,
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Expanded(
-                                          child: Container(),
-                                        ),
-                                        Icon(
-                                          Icons.chevron_right_rounded,
-                                          size: 32,
-                                          color: Colors.white,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        left: 45,
-                                        right: 45,
-                                        top: 21,
-                                        bottom: 5),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          SatorioColor.medium_slate_blue,
-                                          SatorioColor.medium_slate_blue_2
-                                        ],
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '291',
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              'txt_players'.tr.toLowerCase(),
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '2,130.00 SAO',
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              'txt_remains'.tr.toLowerCase(),
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                fontSize: 14 * coefficient,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ),
@@ -875,72 +932,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 }
                                 return _nftsItem(img, name);
                               },
-                            ),
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'txt_review'.tr,
-                                style: textTheme.headline4!.copyWith(
-                                  color: SatorioColor.textBlack,
-                                  fontSize: 24 * coefficient,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  controller.toNonWorkingFeatureDialog();
-                                },
-                                child: Icon(
-                                  Icons.chevron_right_rounded,
-                                  size: 32 * coefficient,
-                                  color: SatorioColor.textBlack,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            height: 226 * coefficient,
-                            child: ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: 4,
-                                separatorBuilder: (context, index) => SizedBox(
-                                      width: 16,
-                                    ),
-                                itemBuilder: (context, index) {
-                                  return _reviewItem(review);
-                                }),
-                          ),
-                          SizedBox(
-                            height: 32,
-                          ),
-                          BorderedButton(
-                            text: 'txt_write_review'.tr,
-                            borderColor: SatorioColor.interactive,
-                            textColor: SatorioColor.interactive,
-                            borderWidth: 3,
-                            onPressed: () {
-                              controller.toCreateReview();
-                            },
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Center(
-                            child: Text(
-                              'txt_earn_sao_upvoted'.tr,
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.interactive,
-                                fontSize: 14 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
                             ),
                           ),
                           SizedBox(
@@ -1108,12 +1099,16 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           SizedBox(
                             width: 6,
                           ),
-                          Text(
-                            review.userName,
-                            style: textTheme.bodyText2!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 15 * coefficient,
-                              fontWeight: FontWeight.w600,
+                          Obx(
+                            () => Text(
+                              controller.reviewsRx.value.length != 0
+                                  ? controller.reviewsRx.value[0].userName
+                                  : 'Joe',
+                              style: textTheme.bodyText2!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 15 * coefficient,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ],
@@ -1231,13 +1226,50 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     );
   }
 
+  Widget _reviews() {
+    final double reviewContainerHeight = 184.0 * coefficient;
+    return Container(
+      height: reviewContainerHeight,
+      child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          itemCount: controller.reviewsRx.value.length,
+          separatorBuilder: (context, index) => SizedBox(
+                width: 16,
+              ),
+          itemBuilder: (context, index) {
+            return _reviewItem(controller.reviewsRx.value[index]);
+          }),
+    );
+  }
+
+  Widget _emptyReviews() {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(13),
+          ),
+          color: SatorioColor.alice_blue,
+        ),
+        height: 60 * coefficient,
+        child: Center(
+          child: Text(
+            'txt_null_reviews'.tr,
+            style: textTheme.bodyText2!.copyWith(
+                color: SatorioColor.interactive,
+                fontSize: 14 * coefficient,
+                fontWeight: FontWeight.w400,
+            ),
+          ),
+        ));
+  }
+
   Widget _reviewItem(Review review) {
     return InkWell(
       onTap: () {
         controller.toNonWorkingFeatureDialog();
       },
       child: Container(
-        padding: EdgeInsets.only(bottom: 16, top: 30),
+        padding: EdgeInsets.only(bottom: 16, top: 16),
         width: Get.mediaQuery.size.width - 70,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
@@ -1253,8 +1285,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               child: Row(
                 children: [
                   SvgPicture.asset(
-                    'images/smile/smile_1.svg',
+                    smile[review.rating] ?? '',
                     width: 24 * coefficient,
+                    height: 24 * coefficient,
                   ),
                   SizedBox(
                     width: 12,
@@ -1291,9 +1324,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 16,
             ),
             Container(
               padding: EdgeInsets.only(top: 16, left: 20, right: 20),
@@ -1350,7 +1380,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         width: 8,
                       ),
                       Text(
-                        review.likes,
+                        review.likes.toString(),
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 14 * coefficient,
@@ -1421,14 +1451,4 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
       ),
     );
   }
-
-  final Review review = Review(
-      'id',
-      '7 / 10',
-      '06 June 2021',
-      'Something nice to watch',
-      'A high school chemistry teacher dying of cancer teams with a former student to secure his family\'s future by manufacturing and selling crystal ...',
-      'roberto21',
-      '2.5M',
-      '234');
 }

@@ -15,6 +15,7 @@ import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -398,6 +399,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<WalletStake> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<Review>> getReviews(String showId, String episodeId) {
+    return _apiDataSource
+        .getReviews(showId, episodeId)
         .catchError((value) => _handleException(value));
   }
 

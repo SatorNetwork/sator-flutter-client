@@ -12,6 +12,7 @@ import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -36,6 +37,7 @@ class ShowEpisodeRealmController extends GetxController
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
+  final Rx<List<Review>> reviewsRx = Rx([]);
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
@@ -67,6 +69,8 @@ class ShowEpisodeRealmController extends GetxController
     });
 
     _updateShowEpisode();
+    _loadReviews(showDetailRx.value.id, showEpisodeRx.value.id);
+
     checkActivation();
   }
 
@@ -161,6 +165,16 @@ class ShowEpisodeRealmController extends GetxController
         .showEpisodeQuizQuestion(showEpisodeRx.value.id)
         .then((PayloadQuestion payloadQuestion) {
       _toEpisodeQuiz(payloadQuestion);
+    });
+  }
+
+  void _loadReviews(String showId, String episodeId) {
+    _satorioRepository
+        .getReviews(showId, episodeId)
+        .then((List<Review> reviews) {
+      reviewsRx.update((value) {
+        if (value != null) value.addAll(reviews);
+      });
     });
   }
 
