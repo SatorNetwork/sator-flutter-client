@@ -69,7 +69,7 @@ class ShowEpisodeRealmController extends GetxController
     });
 
     _updateShowEpisode();
-    _loadReviews(showDetailRx.value.id, showEpisodeRx.value.id);
+    _loadReviews();
 
     checkActivation();
   }
@@ -78,8 +78,8 @@ class ShowEpisodeRealmController extends GetxController
     Get.back();
   }
 
-  void toWriteReview() {
-    Get.to(
+  void toWriteReview() async {
+    final result = await Get.to(
       () => WriteReviewPage(),
       binding: WriteReviewBinding(),
       arguments: WriteReviewArgument(
@@ -88,6 +88,10 @@ class ShowEpisodeRealmController extends GetxController
         showEpisodeRx.value,
       ),
     );
+
+    if (result != null && result is bool && result) {
+      _loadReviews();
+    }
   }
 
   void toChatPage() {
@@ -168,13 +172,11 @@ class ShowEpisodeRealmController extends GetxController
     });
   }
 
-  void _loadReviews(String showId, String episodeId) {
+  void _loadReviews() {
     _satorioRepository
-        .getReviews(showId, episodeId)
+        .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
         .then((List<Review> reviews) {
-      reviewsRx.update((value) {
-        if (value != null) value.addAll(reviews);
-      });
+      reviewsRx.value = reviews;
     });
   }
 

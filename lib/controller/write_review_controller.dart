@@ -61,7 +61,7 @@ class WriteReviewController extends GetxController {
   }
 
   void back() {
-    Get.back();
+    Get.back(result: false);
   }
 
   void toPreview() {
@@ -83,7 +83,7 @@ class WriteReviewController extends GetxController {
     )
         .then((bool result) {
       if (result) {
-        Get.back();
+        Get.back(result: true);
         ScaffoldMessenger.of(Get.context!).showSnackBar(
           SnackBar(
             content: Text('txt_review_write_success'.tr),
@@ -99,11 +99,11 @@ class WriteReviewController extends GetxController {
   }
 
   void _titleListener() {
-    titleRx.value = titleController.text;
+    titleRx.value = titleController.text.trim();
   }
 
   void _reviewListener() {
-    reviewRx.value = reviewController.text;
+    reviewRx.value = reviewController.text.trim();
   }
 }
 
