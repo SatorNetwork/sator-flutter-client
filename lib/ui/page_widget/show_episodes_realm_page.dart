@@ -535,11 +535,13 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                                 true
                                             ? _getMessageList()
                                             : _emptyState()),
+
                                   ),
                                 ),
                               ],
                             ),
                           ),
+
                           SizedBox(
                             height: 32,
                           ),
