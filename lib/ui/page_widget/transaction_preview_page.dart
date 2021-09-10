@@ -126,6 +126,7 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(0.1),
+                                  height: 1,
                                 ),
                                 SizedBox(
                                   height: 18 * coefficient,
@@ -164,6 +165,7 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(0.1),
+                                  height: 1,
                                 ),
                                 SizedBox(
                                   height: 18 * coefficient,
@@ -202,6 +204,7 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                                 ),
                                 Divider(
                                   color: Colors.black.withOpacity(0.1),
+                                  height: 1,
                                 ),
                                 SizedBox(
                                   height: 18 * coefficient,

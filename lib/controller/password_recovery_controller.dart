@@ -69,7 +69,7 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
 
           ScaffoldMessenger.of(Get.context!).showSnackBar(
             SnackBar(
-              content: Text('Password successfully changed'),
+              content: Text('txt_password_change_success'.tr),
             ),
           );
         }
@@ -82,6 +82,11 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
       (bool isSuccess) {
         if (isSuccess) {
           codeController.clear();
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
+            SnackBar(
+              content: Text('txt_code_resend_success'.tr),
+            ),
+          );
         }
       },
     ).catchError((value) => handleValidationException(value));

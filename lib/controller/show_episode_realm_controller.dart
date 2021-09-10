@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
@@ -11,6 +12,7 @@ import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -23,7 +25,10 @@ import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
+import 'package:satorio/ui/page_widget/write_review_page.dart';
 import 'package:satorio/util/extension.dart';
+
+import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
     with NonWorkingFeatureMixin {
@@ -32,6 +37,7 @@ class ShowEpisodeRealmController extends GetxController
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
+  final Rx<List<Review>> reviewsRx = Rx([]);
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
@@ -54,13 +60,16 @@ class ShowEpisodeRealmController extends GetxController
     showEpisodeRx = Rx(argument.showEpisode);
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child('prod')
+        .child('test')
         .child(argument.showEpisode.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
       print(isMessagesRx.value);
     });
+
+    _updateShowEpisode();
+    _loadReviews();
 
     checkActivation();
   }
@@ -69,12 +78,32 @@ class ShowEpisodeRealmController extends GetxController
     Get.back();
   }
 
+  void toWriteReview() async {
+    final result = await Get.to(
+      () => WriteReviewPage(),
+      binding: WriteReviewBinding(),
+      arguments: WriteReviewArgument(
+        showDetailRx.value,
+        showSeasonRx.value,
+        showEpisodeRx.value,
+      ),
+    );
+
+    if (result != null && result is bool && result) {
+      _loadReviews();
+    }
+  }
+
   void toChatPage() {
     Get.to(
       () => ChatPage(),
       binding: ChatBinding(),
-      arguments: ChatArgument(_messagesRef, showDetailRx.value,
-          showSeasonRx.value, showEpisodeRx.value),
+      arguments: ChatArgument(
+        _messagesRef,
+        showDetailRx.value,
+        showSeasonRx.value,
+        showEpisodeRx.value,
+      ),
     );
   }
 
@@ -140,6 +169,14 @@ class ShowEpisodeRealmController extends GetxController
         .showEpisodeQuizQuestion(showEpisodeRx.value.id)
         .then((PayloadQuestion payloadQuestion) {
       _toEpisodeQuiz(payloadQuestion);
+    });
+  }
+
+  void _loadReviews() {
+    _satorioRepository
+        .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
+        .then((List<Review> reviews) {
+      reviewsRx.value = reviews;
     });
   }
 

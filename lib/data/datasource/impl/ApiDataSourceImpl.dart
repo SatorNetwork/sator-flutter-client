@@ -18,6 +18,7 @@ import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
+import 'package:satorio/data/model/review_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -41,6 +42,7 @@ import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
 import 'package:satorio/data/request/wallet_stake_request.dart';
+import 'package:satorio/data/request/write_review_request.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
@@ -53,7 +55,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.sator.io/';
+    _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -526,6 +528,21 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  @override
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId) {
+    return _requestGet(
+      'shows/$showId/episodes/$episodeId/reviews',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ReviewModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
   // endregion
 
   // region Challenges
@@ -549,6 +566,16 @@ class ApiDataSourceImpl implements ApiDataSource {
       Map jsonData = json.decode(response.bodyString!);
 
       return QrShowModel.fromJson(jsonData['data']);
+    });
+  }
+
+  @override
+  Future<bool> clapShow(String showId) {
+    return _requestPost(
+      'shows/$showId/claps',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
@@ -607,6 +634,22 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'shows/$showId/episodes/$episodeId/rate',
       RateRequest(rate),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> writeReview(
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  ) {
+    return _requestPost(
+      'shows/$showId/episodes/$episodeId/reviews',
+      WriteReviewRequest(rating, title, review),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

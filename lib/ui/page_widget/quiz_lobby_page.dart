@@ -72,7 +72,8 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
                             vertical: 28,
                           ),
                           separatorBuilder: (context, index) => Divider(
-                            color: Colors.black.withOpacity(0.11),
+                            color: Colors.black.withOpacity(0.10),
+                            height: 1,
                           ),
                           itemCount: controller.usersRx.value.length,
                           itemBuilder: (context, index) {

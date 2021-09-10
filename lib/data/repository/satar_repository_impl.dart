@@ -15,6 +15,7 @@ import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -194,6 +195,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> clapShow(String showId) {
+    return _apiDataSource
+        .clapShow(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> logout() {
     return _apiDataSource.apiLogout().then(
           (value) => _localLogoutGoToLogin(),
@@ -242,6 +250,19 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> rateEpisode(String showId, String episodeId, int rate) {
     return _apiDataSource
         .rateEpisode(showId, episodeId, rate)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> writeReview(
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  ) {
+    return _apiDataSource
+        .writeReview(showId, episodeId, rating, title, review)
         .catchError((value) => _handleException(value));
   }
 
@@ -378,6 +399,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<WalletStake> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<Review>> getReviews(String showId, String episodeId) {
+    return _apiDataSource
+        .getReviews(showId, episodeId)
         .catchError((value) => _handleException(value));
   }
 
