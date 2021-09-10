@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
-import 'package:satorio/binding/create_review_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
@@ -24,11 +24,11 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_shee
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
-import 'package:satorio/ui/page_widget/create_review_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
+import 'package:satorio/ui/page_widget/write_review_page.dart';
 import 'package:satorio/util/extension.dart';
 
-import 'create_review_controller.dart';
+import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
     with NonWorkingFeatureMixin {
@@ -69,7 +69,7 @@ class ShowEpisodeRealmController extends GetxController
     });
 
     _updateShowEpisode();
-    _loadReviews(showDetailRx.value.id, showEpisodeRx.value.id);
+    _loadReviews();
 
     checkActivation();
   }
@@ -78,16 +78,20 @@ class ShowEpisodeRealmController extends GetxController
     Get.back();
   }
 
-  void toCreateReview() {
-    Get.to(
-      () => CreateReviewPage(),
-      binding: CreateReviewBinding(),
-      arguments: CreateReviewArgument(
+  void toWriteReview() async {
+    final result = await Get.to(
+      () => WriteReviewPage(),
+      binding: WriteReviewBinding(),
+      arguments: WriteReviewArgument(
         showDetailRx.value,
         showSeasonRx.value,
         showEpisodeRx.value,
       ),
     );
+
+    if (result != null && result is bool && result) {
+      _loadReviews();
+    }
   }
 
   void toChatPage() {
@@ -168,13 +172,11 @@ class ShowEpisodeRealmController extends GetxController
     });
   }
 
-  void _loadReviews(String showId, String episodeId) {
+  void _loadReviews() {
     _satorioRepository
-        .getReviews(showId, episodeId)
+        .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
         .then((List<Review> reviews) {
-      reviewsRx.update((value) {
-        if (value != null) value.addAll(reviews);
-      });
+      reviewsRx.value = reviews;
     });
   }
 

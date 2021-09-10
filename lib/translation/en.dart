@@ -190,4 +190,6 @@ const Map<String, String> en = {
   'txt_enter_review': 'Enter review',
   'txt_review_write_success': 'Review was sent',
   'txt_submit': 'Submit',
+  'txt_looks_bad': 'So-so - Need to edit',
+  'txt_looks_good': 'Looks good - Send it',
 };

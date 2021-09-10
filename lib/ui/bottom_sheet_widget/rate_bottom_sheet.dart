@@ -32,9 +32,7 @@ class RateBottomSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(32),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         color: Colors.white,
       ),
       child: Column(
@@ -74,6 +72,7 @@ class RateBottomSheet extends StatelessWidget {
           ),
           Divider(
             color: Colors.black.withOpacity(0.1),
+            height: 1,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 32 * coefficient),

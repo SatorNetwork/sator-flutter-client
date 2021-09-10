@@ -602,7 +602,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                             Text(
                                               'txt_head'.tr,
                                               style:
-                                              textTheme.bodyText1!.copyWith(
+                                                  textTheme.bodyText1!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 18 * coefficient,
                                                 fontWeight: FontWeight.w700,
@@ -614,7 +614,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                             Text(
                                               'txt_head_text'.tr,
                                               style:
-                                              textTheme.bodyText2!.copyWith(
+                                                  textTheme.bodyText2!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 14 * coefficient,
                                                 fontWeight: FontWeight.w400,
@@ -651,14 +651,14 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     ),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
                                             Text(
                                               '291',
                                               style:
-                                              textTheme.bodyText2!.copyWith(
+                                                  textTheme.bodyText2!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 14 * coefficient,
                                                 fontWeight: FontWeight.w700,
@@ -670,7 +670,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                             Text(
                                               'txt_players'.tr.toLowerCase(),
                                               style:
-                                              textTheme.bodyText2!.copyWith(
+                                                  textTheme.bodyText2!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 14 * coefficient,
                                                 fontWeight: FontWeight.w400,
@@ -683,7 +683,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                             Text(
                                               '2,130.00 SAO',
                                               style:
-                                              textTheme.bodyText2!.copyWith(
+                                                  textTheme.bodyText2!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 14 * coefficient,
                                                 fontWeight: FontWeight.w700,
@@ -695,7 +695,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                             Text(
                                               'txt_remains'.tr.toLowerCase(),
                                               style:
-                                              textTheme.bodyText2!.copyWith(
+                                                  textTheme.bodyText2!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 14 * coefficient,
                                                 fontWeight: FontWeight.w400,
@@ -851,9 +851,11 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           SizedBox(
                             height: 16,
                           ),
-                          Obx(() => controller.reviewsRx.value.length != 0
-                              ? _reviews()
-                              : _emptyReviews()),
+                          Obx(
+                            () => controller.reviewsRx.value.length != 0
+                                ? _reviews()
+                                : _emptyReviews(),
+                          ),
                           SizedBox(
                             height: 26,
                           ),
@@ -863,7 +865,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             textColor: SatorioColor.interactive,
                             borderWidth: 3,
                             onPressed: () {
-                              controller.toCreateReview();
+                              controller.toWriteReview();
                             },
                           ),
                           SizedBox(
@@ -1255,9 +1257,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           child: Text(
             'txt_null_reviews'.tr,
             style: textTheme.bodyText2!.copyWith(
-                color: SatorioColor.interactive,
-                fontSize: 14 * coefficient,
-                fontWeight: FontWeight.w400,
+              color: SatorioColor.interactive,
+              fontSize: 14 * coefficient,
+              fontWeight: FontWeight.w400,
             ),
           ),
         ));
