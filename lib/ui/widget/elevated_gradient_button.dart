@@ -11,6 +11,7 @@ class ElevatedGradientButton extends StatelessWidget {
     this.leftColor = SatorioColor.interactive,
     this.rightColor = SatorioColor.darkAccent,
     this.isEnabled = true,
+    this.isInProgress = false,
   });
 
   final String text;
@@ -18,6 +19,7 @@ class ElevatedGradientButton extends StatelessWidget {
   final Color leftColor;
   final Color rightColor;
   final bool isEnabled;
+  final bool isInProgress;
 
   static const double minHeight = 48.0;
 
@@ -29,7 +31,7 @@ class ElevatedGradientButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: ElevatedButton(
-        onPressed: isEnabled ? onPressed : null,
+        onPressed: onClick(),
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
@@ -46,16 +48,35 @@ class ElevatedGradientButton extends StatelessWidget {
               minHeight: minHeight,
             ),
             alignment: Alignment.center,
-            child: Text(
-              text,
-              style: textTheme.bodyText1!.copyWith(
-                  color: Colors.white,
-                  fontSize: 16.0 * coefficient,
-                  fontWeight: FontWeight.w700),
-            ),
+            child: isInProgress
+                ? SizedBox(
+                    height: minHeight * 0.6,
+                    width: minHeight * 0.6,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.transparent,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Colors.white.withOpacity(0.5),
+                      ),
+                    ),
+                  )
+                : Text(
+                    text,
+                    style: textTheme.bodyText1!.copyWith(
+                        color: Colors.white,
+                        fontSize: 16.0 * coefficient,
+                        fontWeight: FontWeight.w700),
+                  ),
           ),
         ),
       ),
     );
+  }
+
+  VoidCallback? onClick() {
+    if (isInProgress)
+      return null;
+    else {
+      return isEnabled ? onPressed : null;
+    }
   }
 }

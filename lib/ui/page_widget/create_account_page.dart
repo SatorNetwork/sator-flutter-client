@@ -93,9 +93,9 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         children: [
                           Obx(
                             () => Checkbox(
-                              value: controller.termsOfServiceCheck.value,
+                              value: controller.termsOfUseCheck.value,
                               onChanged: (value) {
-                                controller.termsOfServiceCheck.toggle();
+                                controller.termsOfUseCheck.toggle();
                               },
                             ),
                           ),
@@ -114,7 +114,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                                         color: SatorioColor.interactive),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        controller.toTermsOfService();
+                                        controller.toTermsOfUse();
                                       },
                                   ),
                                 ],
@@ -129,8 +129,11 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       Obx(
                         () => ElevatedGradientButton(
                           text: 'txt_create_account'.tr,
-                          isEnabled: controller.termsOfServiceCheck.value &&
-                              !controller.isRequested.value,
+                          isEnabled: controller.termsOfUseCheck.value &&
+                              controller.emailRx.value.isNotEmpty &&
+                              controller.passwordRx.value.isNotEmpty &&
+                              controller.usernameRx.value.isNotEmpty,
+                          isInProgress: controller.isRequested.value,
                           onPressed: () {
                             controller.createAccount();
                           },
