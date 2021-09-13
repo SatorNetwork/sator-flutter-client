@@ -429,7 +429,6 @@ class WriteReviewPage extends GetView<WriteReviewController> {
                       child: Text(
                         controller.reviewRx.value,
                         maxLines: null,
-                        // overflow: TextOverflow.ellipsis,
                         style: textTheme.bodyText1!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 15 * coefficient,
