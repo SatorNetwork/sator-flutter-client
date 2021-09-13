@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/web_binding.dart';
+import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/web_controller.dart';
@@ -73,6 +74,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
               Get.to(
                 () => EmailVerificationPage(),
                 binding: EmailVerificationBinding(),
+                arguments: EmailVerificationArgument(emailController.text)
               );
             }
             isRequested.value = false;

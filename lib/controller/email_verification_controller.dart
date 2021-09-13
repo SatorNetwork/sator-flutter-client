@@ -11,8 +11,16 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
   final SatorioRepository _satorioRepository = Get.find();
 
+  late String email = '';
+
   void back() {
     Get.back();
+  }
+
+  EmailVerificationController() {
+    EmailVerificationArgument argument = Get.arguments;
+
+    email = argument.email!;
   }
 
   void verifyAccount() {
@@ -44,4 +52,10 @@ class EmailVerificationController extends GetxController with ValidationMixin {
       },
     );
   }
+}
+
+class EmailVerificationArgument {
+  final String? email;
+
+  const EmailVerificationArgument(this.email);
 }

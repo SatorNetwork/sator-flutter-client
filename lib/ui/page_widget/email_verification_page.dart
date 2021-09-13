@@ -34,12 +34,36 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                   SizedBox(
                     height: 6,
                   ),
-                  Text(
-                    "txt_verification_text".tr,
-                    style: TextStyle(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w400),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: RichText(
+                          text: TextSpan(
+                            text: 'txt_verification_text_1'.tr,
+                            style: TextStyle(
+                                color: SatorioColor.textBlack,
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: controller.email,
+                                style: TextStyle(
+                                    color: SatorioColor.textBlack,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              TextSpan(
+                                text: "txt_verification_text_2".tr,
+                                style: TextStyle(
+                                    color: SatorioColor.textBlack,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 36,
