@@ -537,6 +537,7 @@ class WriteReviewPage extends GetView<WriteReviewController> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedGradientButton(
               text: 'txt_looks_good'.tr,
+              isInProgress: controller.isRequested.value,
               onPressed: () {
                 controller.submitReview();
               },
@@ -553,7 +554,7 @@ class WriteReviewPage extends GetView<WriteReviewController> {
               textColor: SatorioColor.interactive,
               borderWidth: 3,
               onPressed: () {
-                controller.editReview();
+                controller.toEditReview();
               },
             ),
           ),
