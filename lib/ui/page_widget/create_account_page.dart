@@ -102,13 +102,13 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                           Flexible(
                             child: RichText(
                               text: TextSpan(
-                                text: 'txt_terms_of_service_description'.tr,
+                                text: 'txt_terms_description'.tr,
                                 style: textTheme.bodyText1!.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: SatorioColor.textBlack),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: 'txt_terms_of_service'.tr,
+                                    text: 'txt_terms'.tr,
                                     style: textTheme.bodyText1!.copyWith(
                                         fontWeight: FontWeight.w500,
                                         color: SatorioColor.interactive),
