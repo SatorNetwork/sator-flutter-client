@@ -25,23 +25,24 @@ class LoginPage extends GetView<LoginController> {
           color: Colors.white,
           child: Stack(
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 20, right: 20, top: 124 * coefficient),
-                  child: Column(
-                    children: [
-                      SvgPicture.asset(
-                        'images/sator_logo_colored.svg',
-                        height: 90 * coefficient,
-                        fit: BoxFit.fitHeight,
-                      ),
-                      SizedBox(
-                        height: 68,
-                      ),
-                      Obx(
-                        () => InputTextField(
+            Align(
+            alignment: Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: 20, right: 20, top: 124 * coefficient),
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    'images/sator_logo_colored.svg',
+                    height: 90 * coefficient,
+                    fit: BoxFit.fitHeight,
+                  ),
+                  SizedBox(
+                    height: 68,
+                  ),
+                  Obx(
+                        () =>
+                        InputTextField(
                             inputTitle: 'txt_email_address'.tr,
                             controller: controller.emailController,
                             obscureText: false,
@@ -49,16 +50,17 @@ class LoginPage extends GetView<LoginController> {
                             enableSuggestions: false,
                             autocorrect: false,
                             errorText: controller.validationRx.value['email']),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Obx(
-                              () => InputTextField(
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Obx(
+                              () =>
+                              InputTextField(
                                 inputTitle: 'txt_password'.tr,
                                 controller: controller.passwordController,
                                 hintText: 'txt_password_hint'.tr,
@@ -67,7 +69,7 @@ class LoginPage extends GetView<LoginController> {
                                 enableSuggestions: false,
                                 autocorrect: false,
                                 errorText:
-                                    controller.validationRx.value['password'],
+                                controller.validationRx.value['password'],
                                 icon: Icon(
                                     controller.passwordObscured.value
                                         ? Icons.visibility_off_outlined
@@ -77,71 +79,75 @@ class LoginPage extends GetView<LoginController> {
                                   controller.passwordObscured.toggle();
                                 },
                               ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: InkWell(
+                          onTap: () {
+                            controller.toForgotPassword();
+                          },
+                          child: Text(
+                            'txt_forgot_password'.tr,
+                            style: textTheme.bodyText2!.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: SatorioColor.interactive,
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: InkWell(
-                              onTap: () {
-                                controller.toForgotPassword();
-                              },
-                              child: Text(
-                                'txt_forgot_password'.tr,
-                                style: textTheme.bodyText2!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: SatorioColor.interactive,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      Obx(
-                        () => ElevatedGradientButton(
+                    ],
+                  ),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  Obx(
+                        () =>
+                        ElevatedGradientButton(
                           text: 'txt_login'.tr,
                           isEnabled: !controller.isRequested.value,
                           onPressed: () {
                             controller.signIn();
                           },
                         ),
-                      ),
-                    ],
                   ),
-                ),
+                ],
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'txt_not_member'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                          fontWeight: FontWeight.w400,
-                          color: SatorioColor.textBlack),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'txt_create_account'.tr,
-                          style: textTheme.bodyText1!.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: SatorioColor.interactive),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              controller.toCreateAccount();
-                            },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+                padding: EdgeInsets.only(right: 24.0,
+                    left: 24.0,
+                    bottom: controller.bottomPadding,
+                    top: 24.0),
+                child: RichText(
+                text: TextSpan(
+                text: 'txt_not_member'.tr,
+            style: textTheme.bodyText1!.copyWith(
+            fontWeight: FontWeight.w400,
+                color: SatorioColor.textBlack),
+            children: <TextSpan>[
+              TextSpan(
+                text: 'txt_create_account'.tr,
+                style: textTheme.bodyText1!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: SatorioColor.interactive),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    controller.toCreateAccount();
+                  },
               ),
             ],
           ),
         ),
       ),
+    ),
+    ],
+    ),
+    ),
+    ),
     );
   }
 }

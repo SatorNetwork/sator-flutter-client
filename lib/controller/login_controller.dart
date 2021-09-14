@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'dart:io' show Platform;
+
 import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
@@ -22,11 +24,14 @@ class LoginController extends GetxController with ValidationMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Uri? deepLink;
+  late final double bottomPadding;
 
   LoginController() {
     LoginArgument argument = Get.arguments as LoginArgument;
     print(argument.deepLink);
     deepLink = argument.deepLink;
+
+    bottomPadding = Platform.isAndroid ? 24.0 : 50.0;
   }
 
   void toCreateAccount() {
