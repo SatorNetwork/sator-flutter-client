@@ -18,6 +18,7 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _controller = ScrollController();
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -26,23 +27,37 @@ class HomePage extends GetView<HomeController> {
         onRefresh: () async {
           controller.refreshHomePage();
         },
-        child: SingleChildScrollView(
-          child: Stack(
-            children: [
-              Container(
-                color: SatorioColor.darkAccent,
-                child: Stack(
-                  children: [
-                    SvgPicture.asset(
-                      'images/bg/gradient.svg',
-                      height: Get.height,
-                      fit: BoxFit.cover,
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, top: 76, right: 20),
-                      child: Align(
-                        alignment: Alignment.topLeft,
+        child: Stack(
+          children: [
+            Container(
+              color: SatorioColor.darkAccent,
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    'images/bg/gradient.svg',
+                    height: Get.height,
+                    fit: BoxFit.cover,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 160),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(32),
+                  topRight: Radius.circular(32),
+                ),
+                color: Colors.white,
+              ),
+              child: ClipRRect(
+                  borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(32)),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding:
+                        const EdgeInsets.only(left: 20, top: 76, right: 20),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +76,7 @@ class HomePage extends GetView<HomeController> {
                                         height: 50,
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(12.0),
+                                          BorderRadius.circular(12.0),
                                           child: Center(
                                             child: SvgPicture.asset(
                                               avatars[avatarIndex],
@@ -78,9 +93,9 @@ class HomePage extends GetView<HomeController> {
                                     ),
                                     Expanded(
                                       child: Obx(
-                                        () => Text(
+                                            () => Text(
                                           controller.profileRx.value
-                                                  ?.displayedName ??
+                                              ?.displayedName ??
                                               '',
                                           maxLines: 3,
                                           overflow: TextOverflow.ellipsis,
@@ -100,13 +115,13 @@ class HomePage extends GetView<HomeController> {
                                 controller.toWallet();
                               },
                               child: Obx(
-                                () => Column(
+                                    () => Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
                                       controller.walletRx.value.length > 0
                                           ? controller
-                                              .walletRx.value[0].displayedValue
+                                          .walletRx.value[0].displayedValue
                                           : '',
                                       style: textTheme.bodyText1!.copyWith(
                                         color: SatorioColor.darkAccent,
@@ -121,169 +136,161 @@ class HomePage extends GetView<HomeController> {
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 160),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32),
-                    topRight: Radius.circular(32),
-                  ),
-                  color: Colors.white,
-                ),
-                child: _contentWithCategories(),
-              )
-            ],
-          ),
+                      _contentWithCategories(),
+                    ],
+                  )),
+            )
+          ],
         ),
       ),
     );
   }
 
   Widget _contentWithCategories() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'Featured NFTs',
-            onTap: () {
-              controller.toNfts();
-            },
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 125 * coefficient,
-          child: ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(
-              width: 12,
-            ),
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: _nfts.length,
-            itemBuilder: (context, index) {
-              return _nftItem(_nfts[index]);
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'Highest Rewards',
-            onTap: () {
-              controller.toShowsCategory('highest_rewarding');
-            },
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.showsHighestRewardingRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.showsHighestRewardingRx.value[index];
-                return _showItem(show);
+    ScrollController _controller = ScrollController();
+    return SingleChildScrollView(
+      physics: AlwaysScrollableScrollPhysics(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+            child: TitleWithButton(
+              textCode: 'Featured NFTs',
+              onTap: () {
+                controller.toNfts();
               },
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'Most Social',
-            onTap: () {
-              controller.toShowsCategory('most_socializing');
-            },
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            height: 125 * coefficient,
+            child: ListView.separated(
               separatorBuilder: (context, index) => SizedBox(
-                width: 16,
+                width: 12,
               ),
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.showsMostSocializingRx.value.length,
+              itemCount: _nfts.length,
               itemBuilder: (context, index) {
-                Show show = controller.showsMostSocializingRx.value[index];
-                return _showItem(show);
+                return _nftItem(_nfts[index]);
               },
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'Newest Added',
-            onTap: () {
-              controller.toShowsCategory('newest_added');
-            },
+          Padding(
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+            child: TitleWithButton(
+              textCode: 'Highest Rewards',
+              onTap: () {
+                controller.toShowsCategory('highest_rewarding');
+              },
+            ),
           ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            height: 168 * coefficient,
+            child: Obx(
+                  () => ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 16,
+                ),
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemCount: controller.showsHighestRewardingRx.value.length,
+                itemBuilder: (context, index) {
+                  Show show = controller.showsHighestRewardingRx.value[index];
+                  return _showItem(show);
+                },
               ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.showsNewestAddedRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.showsNewestAddedRx.value[index];
-                return _showItem(show);
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+            child: TitleWithButton(
+              textCode: 'Most Social',
+              onTap: () {
+                controller.toShowsCategory('most_socializing');
               },
             ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'All realms',
-            onTap: () {
-              controller.toShowsCategory('all');
-            },
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            height: 168 * coefficient,
+            child: Obx(
+                  () => ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 16,
+                ),
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemCount: controller.showsMostSocializingRx.value.length,
+                itemBuilder: (context, index) {
+                  Show show = controller.showsMostSocializingRx.value[index];
+                  return _showItem(show);
+                },
               ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.allShowsRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.allShowsRx.value[index];
-                return _showItem(show);
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+            child: TitleWithButton(
+              textCode: 'Newest Added',
+              onTap: () {
+                controller.toShowsCategory('newest_added');
               },
             ),
           ),
-        ),
-        SizedBox(
-          height: 24,
-        )
-      ],
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            height: 168 * coefficient,
+            child: Obx(
+                  () => ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 16,
+                ),
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemCount: controller.showsNewestAddedRx.value.length,
+                itemBuilder: (context, index) {
+                  Show show = controller.showsNewestAddedRx.value[index];
+                  return _showItem(show);
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+            child: TitleWithButton(
+              textCode: 'All realms',
+              onTap: () {
+                controller.toShowsCategory('all');
+              },
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 16),
+            height: 168 * coefficient,
+            child: Obx(
+                  () => ListView.separated(
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 16,
+                ),
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                itemCount: controller.allShowsRx.value.length,
+                itemBuilder: (context, index) {
+                  Show show = controller.allShowsRx.value[index];
+                  return _showItem(show);
+                },
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 24,
+          )
+        ],
+      ),
     );
   }
 
