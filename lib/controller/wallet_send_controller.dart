@@ -28,6 +28,8 @@ class WalletSendController extends GetxController with NonWorkingFeatureMixin {
   late final RxString toAddressRx;
   late final RxDouble amountRx = 0.0.obs;
 
+  final RxBool isRequested = false.obs;
+
   late final RxBool toAddressVisibility;
 
   WalletSendController() {
@@ -76,21 +78,33 @@ class WalletSendController extends GetxController with NonWorkingFeatureMixin {
 
   void createTransfer() {
     if (fromWalletDetailRx.value != null) {
-      _satorioRepository
-          .createTransfer(
-        fromWalletDetailRx.value!.id,
-        toAddressRx.value,
-        amountRx.value,
-      )
+      Future.value(true)
+          .then((value) {
+            isRequested.value = true;
+            return value;
+          })
           .then(
-        (Transfer transfer) {
-          Get.to(
-            () => TransactionPreviewPage(),
-            binding: TransactionPreviewBinding(),
-            arguments: TransactionPreviewArgument(transfer),
+            (value) => _satorioRepository.createTransfer(
+              fromWalletDetailRx.value!.id,
+              toAddressRx.value,
+              amountRx.value,
+            ),
+          )
+          .then(
+            (Transfer transfer) {
+              Get.to(
+                () => TransactionPreviewPage(),
+                binding: TransactionPreviewBinding(),
+                arguments: TransactionPreviewArgument(transfer),
+              );
+              isRequested.value = false;
+            },
+          )
+          .catchError(
+            (value) {
+              isRequested.value = false;
+            },
           );
-        },
-      );
     }
   }
 

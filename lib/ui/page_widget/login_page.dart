@@ -102,7 +102,9 @@ class LoginPage extends GetView<LoginController> {
                       Obx(
                         () => ElevatedGradientButton(
                           text: 'txt_login'.tr,
-                          isEnabled: !controller.isRequested.value,
+                          isEnabled: controller.emailRx.value.isNotEmpty &&
+                              controller.passwordRx.value.isNotEmpty,
+                          isInProgress: controller.isRequested.value,
                           onPressed: () {
                             controller.signIn();
                           },
