@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/challenge_controller.dart';
+import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -182,13 +183,54 @@ class ChallengePage extends GetView<ChallengeController> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 25),
+                  Row(
+                    children: [
+                      Text(
+                        'txt_attempts_left'.tr,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15.0 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Expanded(
+                        child: Obx(
+                          () => Text(
+                            controller.challengeRx.value == null
+                                ? ''
+                                : '${controller.challengeRx.value!.attemptsLeft} / ${controller.challengeRx.value!.userMaxAttempts}',
+                            textAlign: TextAlign.end,
+                            style: textTheme.bodyText1!.copyWith(
+                              color:
+                                  (controller.challengeRx.value?.attemptsLeft ??
+                                              0) ==
+                                          0
+                                      ? SatorioColor.error
+                                      : SatorioColor.textBlack,
+                              fontSize: 15.0 * coefficient,
+                              fontWeight:
+                                  (controller.challengeRx.value?.attemptsLeft ??
+                                              0) ==
+                                          0
+                                      ? FontWeight.w700
+                                      : FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 45),
-                  ElevatedGradientButton(
-                    text: 'txt_play'.tr,
-                    onPressed: () {
-                      controller.playChallenge();
-                    },
-                  )
+                  Obx(
+                    () => ElevatedGradientButton(
+                      text: _buttonText(controller.challengeRx.value),
+                      onPressed: () {
+                        _buttonClick(controller.challengeRx.value);
+                        // controller.playChallenge();
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -196,5 +238,24 @@ class ChallengePage extends GetView<ChallengeController> {
         ),
       ),
     );
+  }
+
+  String _buttonText(Challenge? challenge) {
+    if (challenge == null)
+      return '';
+    else if (challenge.attemptsLeft == 0)
+      return 'txt_back_realm'.tr;
+    else
+      return 'txt_play'.tr;
+  }
+
+  void _buttonClick(Challenge? challenge) {
+    if (challenge == null) {
+      // nothing...
+    } else if (challenge.attemptsLeft == 0) {
+      controller.back();
+    } else {
+      controller.playChallenge();
+    }
   }
 }

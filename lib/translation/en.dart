@@ -192,4 +192,5 @@ const Map<String, String> en = {
   'txt_submit': 'Submit',
   'txt_looks_bad': 'So-so - Need to edit',
   'txt_looks_good': 'Looks good - Send it',
+  'txt_attempts_left': 'Attempts left',
 };
