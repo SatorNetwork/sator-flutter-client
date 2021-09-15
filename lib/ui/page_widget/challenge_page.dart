@@ -225,6 +225,7 @@ class ChallengePage extends GetView<ChallengeController> {
                   Obx(
                     () => ElevatedGradientButton(
                       text: _buttonText(controller.challengeRx.value),
+                      isInProgress: controller.isRequested.value,
                       onPressed: () {
                         _buttonClick(controller.challengeRx.value);
                         // controller.playChallenge();

@@ -13,11 +13,7 @@ class ChallengeController extends GetxController {
 
   ChallengeController() {
     ChallengeArgument argument = Get.arguments as ChallengeArgument;
-    _satorioRepository
-        .challenge(argument.challengeId)
-        .then((Challenge challenge) {
-      challengeRx.value = challenge;
-    });
+    _reloadChallenge(argument.challengeId);
   }
 
   void back() {
@@ -37,20 +33,33 @@ class ChallengeController extends GetxController {
         )
         .then(
           (socketUrl) {
-            Get.to(
-              () => QuizPage(),
-              binding: QuizBinding(),
-              arguments: QuizArgument(
-                challengeRx.value!,
-                socketUrl,
-              ),
-            );
             isRequested.value = false;
+            _toQuiz(socketUrl);
           },
         )
         .catchError((value) {
           isRequested.value = false;
         });
+  }
+
+  void _reloadChallenge(String challengeId) {
+    _satorioRepository.challenge(challengeId).then((Challenge challenge) {
+      challengeRx.value = challenge;
+    });
+  }
+
+  void _toQuiz(String socketUrl) async {
+    final result = await Get.to(
+      () => QuizPage(),
+      binding: QuizBinding(),
+      arguments: QuizArgument(
+        challengeRx.value!,
+        socketUrl,
+      ),
+    );
+    if (challengeRx.value != null) {
+      _reloadChallenge(challengeRx.value!.id);
+    }
   }
 }
 
