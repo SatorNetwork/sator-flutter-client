@@ -80,8 +80,8 @@ class LoginController extends GetxController with ValidationMixin {
         )
         .catchError(
           (value) {
-            handleValidationException(value);
             isRequested.value = false;
+            handleValidationException(value);
           },
         );
   }

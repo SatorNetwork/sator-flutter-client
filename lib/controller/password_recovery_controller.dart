@@ -31,7 +31,11 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
           );
         }
       },
-    ).catchError((value) => handleValidationException(value));
+    ).catchError(
+      (value) {
+        handleValidationException(value);
+      },
+    );
   }
 
   void validateCode() {
@@ -49,10 +53,12 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
           codeController.clear();
         }
       },
-    ).catchError((value) {
-      codeController.clear();
-      handleValidationException(value);
-    });
+    ).catchError(
+      (value) {
+        codeController.clear();
+        handleValidationException(value);
+      },
+    );
   }
 
   void resetPassword() {
@@ -74,7 +80,11 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
           );
         }
       },
-    ).catchError((value) => handleValidationException(value));
+    ).catchError(
+      (value) {
+        handleValidationException(value);
+      },
+    );
   }
 
   void resendCode() {
@@ -89,6 +99,10 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
           );
         }
       },
-    ).catchError((value) => handleValidationException(value));
+    ).catchError(
+      (value) {
+        handleValidationException(value);
+      },
+    );
   }
 }
