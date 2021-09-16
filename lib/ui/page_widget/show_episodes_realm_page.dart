@@ -1101,15 +1101,19 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           SizedBox(
                             width: 6,
                           ),
-                          Obx(
-                            () => Text(
-                              controller.reviewsRx.value.length != 0
-                                  ? controller.reviewsRx.value[0].userName
-                                  : 'Joe',
-                              style: textTheme.bodyText2!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 15 * coefficient,
-                                fontWeight: FontWeight.w600,
+                          Expanded(
+                            child: Obx(
+                              () => Text(
+                                controller.reviewsRx.value.length != 0
+                                    ? controller.reviewsRx.value[0].userName
+                                    : 'Joe',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: textTheme.bodyText2!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 15 * coefficient,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
