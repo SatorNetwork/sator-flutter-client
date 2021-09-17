@@ -8,9 +8,8 @@ const Map<String, String> en = {
   'txt_password_hint': '8+ characters',
   'txt_username': 'Username',
   'txt_create_account': 'Create Account',
-  'txt_terms_of_service_description':
-      'Creating an account means you’re okay with our ',
-  'txt_terms_of_service': 'Terms of Service',
+  'txt_terms_description': 'Creating an account means you’re okay with our ',
+  'txt_terms': 'Terms of Use',
   'txt_already_member': 'Already a member? ',
   'txt_sign_in': 'Sign In',
   'txt_login': 'Login',
@@ -63,7 +62,7 @@ const Map<String, String> en = {
   'txt_congrats': 'Congratulations',
   'txt_congrats_msg': 'You have successfully claimed your rewards.',
   'txt_verification_text':
-      'Please enter the verification code we’ve sent to your email address or use the link from your inbox',
+      'Please enter the verification code we’ve sent to %s or use the link from your inbox',
   'txt_resend_code': 'Resend code',
   'txt_send': 'Send',
   'txt_receive': 'Receive',
@@ -98,6 +97,7 @@ const Map<String, String> en = {
   'txt_episode_naming': 'S%d.E%d %s',
   'txt_episode_entrance_quiz': 'S%d.E%d Entrance Quiz',
   'txt_watch': 'Watch',
+  'txt_engage': 'Engage',
   'txt_scan': 'Scan',
   'txt_profile': 'Profile',
   'txt_amount': 'Amount',
@@ -192,4 +192,6 @@ const Map<String, String> en = {
   'txt_submit': 'Submit',
   'txt_looks_bad': 'So-so - Need to edit',
   'txt_looks_good': 'Looks good - Send it',
+  'txt_attempts_left': 'Attempts left',
+  'txt_you_earned': 'You earned',
 };

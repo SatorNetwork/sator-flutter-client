@@ -32,6 +32,8 @@ class WriteReviewController extends GetxController {
   final RxString titleRx = ''.obs;
   final RxString reviewRx = ''.obs;
 
+  final RxBool isRequested = false.obs;
+
   WriteReviewController() {
     WriteReviewArgument argument = Get.arguments as WriteReviewArgument;
 
@@ -68,29 +70,43 @@ class WriteReviewController extends GetxController {
     stateRx.value = WriteReviewState.preview;
   }
 
-  void editReview() {
+  void toEditReview() {
     stateRx.value = WriteReviewState.creating;
   }
 
   void submitReview() {
-    _satorioRepository
-        .writeReview(
-      showDetailRx.value.id,
-      showEpisodeRx.value.id,
-      rateRx.value,
-      titleRx.value,
-      reviewRx.value,
-    )
-        .then((bool result) {
-      if (result) {
-        Get.back(result: true);
-        ScaffoldMessenger.of(Get.context!).showSnackBar(
-          SnackBar(
-            content: Text('txt_review_write_success'.tr),
+    Future.value(true)
+        .then((value) {
+          isRequested.value = true;
+          return value;
+        })
+        .then(
+          (value) => _satorioRepository.writeReview(
+            showDetailRx.value.id,
+            showEpisodeRx.value.id,
+            rateRx.value,
+            titleRx.value,
+            reviewRx.value,
           ),
+        )
+        .then(
+          (bool result) {
+            if (result) {
+              Get.back(result: true);
+              ScaffoldMessenger.of(Get.context!).showSnackBar(
+                SnackBar(
+                  content: Text('txt_review_write_success'.tr),
+                ),
+              );
+            }
+            isRequested.value = false;
+          },
+        )
+        .catchError(
+          (value) {
+            isRequested.value = false;
+          },
         );
-      }
-    });
   }
 
   void _profileListener() {

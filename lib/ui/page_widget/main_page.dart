@@ -51,7 +51,7 @@ class MainPage extends GetView<MainController> {
                 size: 20,
               ),
               title: Text(
-                'txt_watch'.tr,
+                'txt_engage'.tr,
                 style: textTheme.headline6!.copyWith(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,

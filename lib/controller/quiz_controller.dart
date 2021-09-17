@@ -6,6 +6,7 @@ import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
 import 'package:satorio/controller/quiz_result_controller.dart';
+import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
@@ -45,7 +46,9 @@ class QuizController extends GetxController {
   void backToEpisode() {
     _satorioRepository.updateWalletBalance();
     Get.until((route) => !Get.isOverlaysOpen);
-    Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+    if (Get.isRegistered<ShowEpisodeRealmController>()) {
+      Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+    }
   }
 
   void back() {

@@ -188,6 +188,7 @@ class WalletSendPage extends GetView<WalletSendController> {
                               controller.fromWalletDetailRx.value != null &&
                                   controller.toAddressRx.value.isNotEmpty &&
                                   controller.amountRx.value > 0,
+                          isInProgress: controller.isRequested.value,
                           onPressed: () {
                             controller.createTransfer();
                           },

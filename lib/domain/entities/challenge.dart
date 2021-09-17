@@ -7,7 +7,23 @@ class Challenge {
   final String winners;
   final String timePerQuestion;
   final String play;
+  final int userMaxAttempts;
+  final int attemptsLeft;
+  final double receivedReward;
+  final String receivedRewardAsString;
 
-  const Challenge(this.id, this.title, this.description, this.prizePool,
-      this.players, this.winners, this.timePerQuestion, this.play);
+  const Challenge(
+    this.id,
+    this.title,
+    this.description,
+    this.prizePool,
+    this.players,
+    this.winners,
+    this.timePerQuestion,
+    this.play,
+    this.userMaxAttempts,
+    this.attemptsLeft,
+    this.receivedReward,
+    this.receivedRewardAsString,
+  );
 }
