@@ -126,13 +126,11 @@ class QuizResultPage extends GetView<QuizResultController> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Obx(
-                      () => ElevatedGradientButton(
-                        text: 'txt_back_realm'.tr,
-                        onPressed: () {
-                          controller.quizController.backToEpisode();
-                        },
-                      ),
+                    child: ElevatedGradientButton(
+                      text: 'txt_back_realm'.tr,
+                      onPressed: () {
+                        controller.quizController.backToEpisode();
+                      },
                     ),
                   )
                 ],
