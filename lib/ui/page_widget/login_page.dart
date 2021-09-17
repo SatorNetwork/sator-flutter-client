@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'dart:io' show Platform;
+
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -120,7 +122,7 @@ class LoginPage extends GetView<LoginController> {
             child: Padding(
                 padding: EdgeInsets.only(right: 24.0,
                     left: 24.0,
-                    bottom: controller.bottomPadding,
+                    bottom: Platform.isAndroid ? 24.0 : 50.0,
                     top: 24.0),
                 child: RichText(
                 text: TextSpan(
