@@ -11,6 +11,8 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
     String winners,
     String timePerQuestion,
     String play,
+    int userMaxAttempts,
+    int attemptsLeft,
   ) : super(
           id,
           title,
@@ -20,6 +22,8 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
           winners,
           timePerQuestion,
           play,
+          userMaxAttempts,
+          attemptsLeft,
         );
 
   factory ChallengeModel.fromJson(Map json) => ChallengeModel(
@@ -31,6 +35,8 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
         json['winners'] == null ? '' : json['winners'],
         json['time_per_question'] == null ? '' : json['time_per_question'],
         json['play'] == null ? '' : json['play'],
+        json['user_max_attempts'] == null ? 0 : json['user_max_attempts'],
+        json['attempts_left'] == null ? 0 : json['attempts_left'],
       );
 
   @override
@@ -43,5 +49,7 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
         'winners': winners,
         'time_per_question': timePerQuestion,
         'play': play,
+        'user_max_attempts': userMaxAttempts,
+        'attempts_left': attemptsLeft,
       };
 }

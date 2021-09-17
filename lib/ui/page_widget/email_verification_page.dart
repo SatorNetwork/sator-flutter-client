@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/extension.dart';
 
 class EmailVerificationPage extends GetView<EmailVerificationController> {
   @override
@@ -34,12 +35,22 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                   SizedBox(
                     height: 6,
                   ),
-                  Text(
-                    "txt_verification_text".tr,
-                    style: TextStyle(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.w400),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          'txt_verification_text'.tr.format([
+                            controller.email,
+                          ]),
+                          style: TextStyle(
+                            color: SatorioColor.darkAccent,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          maxLines: 2,
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 36,
@@ -78,17 +89,27 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: InkWell(
-                  onTap: () => controller.resendCode(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Text(
-                      "txt_resend_code".tr,
-                      style: TextStyle(
-                          color: SatorioColor.interactive,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w600),
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Obx(
+                    () => controller.delayRx.value != 0
+                        ? Text(
+                            '${controller.delayRx.value ~/ 60}:${controller.delayRx.value.remainder(60).toInt().toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                                color: SatorioColor.textBlack,
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w600),
+                          )
+                        : InkWell(
+                            onTap: () => controller.resendCode(),
+                            child: Text(
+                              'txt_resend_code'.tr,
+                              style: TextStyle(
+                                  color: SatorioColor.interactive,
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
                   ),
                 ),
               ),
