@@ -114,7 +114,7 @@ class QuizResultPage extends GetView<QuizResultController> {
                     child: Obx(
                       () => ElevatedGradientButton(
                         text: 'txt_claim_rewards'.tr,
-                        isEnabled: !controller.isRequested.value,
+                        isInProgress: controller.isRequested.value,
                         onPressed: () {
                           controller.claimRewards();
                         },
@@ -126,14 +126,11 @@ class QuizResultPage extends GetView<QuizResultController> {
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Obx(
-                      () => ElevatedGradientButton(
-                        text: 'txt_back_realm'.tr,
-                        isEnabled: !controller.isRequested.value,
-                        onPressed: () {
-                          controller.quizController.backToEpisode();
-                        },
-                      ),
+                    child: ElevatedGradientButton(
+                      text: 'txt_back_realm'.tr,
+                      onPressed: () {
+                        controller.quizController.backToEpisode();
+                      },
                     ),
                   )
                 ],

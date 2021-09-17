@@ -23,6 +23,7 @@ class ShowDetailWithEpisodesController extends GetxController
   final RxDouble titleAlphaRx = 0.0.obs;
 
   final RxBool isClapsInProgress = false.obs;
+  bool _isClapsActive = true;
 
   ShowDetailWithEpisodesController() {
     tabController = TabController(length: 0, vsync: this);
@@ -100,7 +101,9 @@ class ShowDetailWithEpisodesController extends GetxController
   }
 
   void clap() {
+    if (!_isClapsActive) return;
     if (isClapsInProgress.value) return;
+
     Future.value(true)
         .then((value) {
           isClapsInProgress.value = true;
@@ -111,6 +114,7 @@ class ShowDetailWithEpisodesController extends GetxController
           if (result) {
             _loadShowDetail();
           }
+          _isClapsActive = result;
           isClapsInProgress.value = false;
         })
         .catchError((value) {

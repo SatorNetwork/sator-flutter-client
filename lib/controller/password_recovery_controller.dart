@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -8,13 +10,24 @@ import 'package:satorio/ui/page_widget/forgot_password_reset.dart';
 import 'package:satorio/ui/page_widget/forgot_password_verification_page.dart';
 
 class PasswordRecoveryController extends GetxController with ValidationMixin {
+  static const Duration _defaultDelay = Duration(minutes: 1);
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController codeController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
 
   final RxBool passwordObscured = true.obs;
+  final RxInt delayRx = 0.obs;
+  Timer? _delayTimer;
 
   final SatorioRepository _satorioRepository = Get.find();
+
+  @override
+  void onClose() {
+    _delayTimer?.cancel();
+    _delayTimer = null;
+    super.onClose();
+  }
 
   void back() {
     Get.back();
@@ -29,9 +42,14 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
             () => ForgotPasswordVerificationPage(),
             binding: PasswordRecoveryBinding(),
           );
+          _startTimer();
         }
       },
-    ).catchError((value) => handleValidationException(value));
+    ).catchError(
+      (value) {
+        handleValidationException(value);
+      },
+    );
   }
 
   void validateCode() {
@@ -49,10 +67,12 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
           codeController.clear();
         }
       },
-    ).catchError((value) {
-      codeController.clear();
-      handleValidationException(value);
-    });
+    ).catchError(
+      (value) {
+        codeController.clear();
+        handleValidationException(value);
+      },
+    );
   }
 
   void resetPassword() {
@@ -74,7 +94,11 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
           );
         }
       },
-    ).catchError((value) => handleValidationException(value));
+    ).catchError(
+      (value) {
+        handleValidationException(value);
+      },
+    );
   }
 
   void resendCode() {
@@ -87,8 +111,21 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
               content: Text('txt_code_resend_success'.tr),
             ),
           );
+          _startTimer();
         }
       },
-    ).catchError((value) => handleValidationException(value));
+    ).catchError(
+      (value) {
+        handleValidationException(value);
+      },
+    );
+  }
+
+  void _startTimer() {
+    _delayTimer?.cancel();
+    _delayTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (timer.tick >= _defaultDelay.inSeconds) _delayTimer?.cancel();
+      delayRx.value = _defaultDelay.inSeconds - timer.tick;
+    });
   }
 }

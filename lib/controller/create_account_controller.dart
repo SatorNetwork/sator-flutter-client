@@ -17,7 +17,11 @@ class CreateAccountController extends GetxController with ValidationMixin {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
 
-  final RxBool termsOfServiceCheck = false.obs;
+  final RxString emailRx = ''.obs;
+  final RxString passwordRx = ''.obs;
+  final RxString usernameRx = ''.obs;
+
+  final RxBool termsOfUseCheck = false.obs;
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
 
@@ -30,7 +34,23 @@ class CreateAccountController extends GetxController with ValidationMixin {
     deepLink = argument.deepLink;
   }
 
-  void toTermsOfService() {
+  @override
+  void onInit() {
+    super.onInit();
+    emailController.addListener(_emailListener);
+    passwordController.addListener(_passwordListener);
+    usernameController.addListener(_usernameListener);
+  }
+
+  @override
+  void onClose() {
+    emailController.removeListener(_emailListener);
+    passwordController.removeListener(_passwordListener);
+    usernameController.removeListener(_usernameListener);
+    super.onClose();
+  }
+
+  void toTermsOfUse() {
     Get.to(
       () => WebPage(),
       binding: WebBinding(),
@@ -68,8 +88,8 @@ class CreateAccountController extends GetxController with ValidationMixin {
                   deepLink!.queryParameters['code'] != null &&
                   deepLink!.queryParameters['code']!.isNotEmpty;
               if (_isValid) {
-                _satorioRepository.confirmReferralCode(
-                    deepLink!.queryParameters['code']!);
+                _satorioRepository
+                    .confirmReferralCode(deepLink!.queryParameters['code']!);
               }
               Get.to(
                 () => EmailVerificationPage(),
@@ -82,10 +102,22 @@ class CreateAccountController extends GetxController with ValidationMixin {
         )
         .catchError(
           (value) {
-            handleValidationException(value);
             isRequested.value = false;
+            handleValidationException(value);
           },
         );
+  }
+
+  void _emailListener() {
+    emailRx.value = emailController.text;
+  }
+
+  void _passwordListener() {
+    passwordRx.value = passwordController.text;
+  }
+
+  void _usernameListener() {
+    usernameRx.value = usernameController.text;
   }
 }
 

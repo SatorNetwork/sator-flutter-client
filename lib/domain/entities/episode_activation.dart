@@ -34,6 +34,6 @@ class EpisodeActivation {
       minutes = diff.inMinutes.remainder(60);
     }
 
-    return '$hours:${minutes.toString().padLeft(2, "0")}';
+    return '$hours:${minutes.toString().padLeft(2, '0')}';
   }
 }

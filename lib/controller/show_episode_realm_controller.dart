@@ -91,6 +91,7 @@ class ShowEpisodeRealmController extends GetxController
 
     if (result != null && result is bool && result) {
       _loadReviews();
+      _updateShowEpisode();
     }
   }
 

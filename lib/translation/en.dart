@@ -8,9 +8,9 @@ const Map<String, String> en = {
   'txt_password_hint': '8+ characters',
   'txt_username': 'Username',
   'txt_create_account': 'Create Account',
-  'txt_terms_of_service_description':
+  'txt_terms_description':
       'Creating an account means you’re okay with our ',
-  'txt_terms_of_service': 'Terms of Service',
+  'txt_terms': 'Terms of Use',
   'txt_already_member': 'Already a member? ',
   'txt_sign_in': 'Sign In',
   'txt_login': 'Login',
@@ -192,4 +192,5 @@ const Map<String, String> en = {
   'txt_submit': 'Submit',
   'txt_looks_bad': 'So-so - Need to edit',
   'txt_looks_good': 'Looks good - Send it',
+  'txt_attempts_left': 'Attempts left',
 };

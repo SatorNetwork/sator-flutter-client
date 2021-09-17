@@ -16,6 +16,9 @@ class LoginController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final RxString emailRx = ''.obs;
+  final RxString passwordRx = ''.obs;
+
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
 
@@ -29,9 +32,23 @@ class LoginController extends GetxController with ValidationMixin {
     deepLink = argument.deepLink;
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    emailController.addListener(_emailListener);
+    passwordController.addListener(_passwordListener);
+  }
+
+  @override
+  void onClose() {
+    emailController.removeListener(_emailListener);
+    passwordController.removeListener(_passwordListener);
+    super.onClose();
+  }
+
   void toCreateAccount() {
     Get.off(
-          () => CreateAccountPage(),
+      () => CreateAccountPage(),
       binding: CreateAccountBinding(),
       arguments: CreateAccountArgument(deepLink),
     );
@@ -45,30 +62,28 @@ class LoginController extends GetxController with ValidationMixin {
     Future.value(true)
         .then(
           (value) {
-        isRequested.value = true;
-        return value;
-      },
-    )
+            isRequested.value = true;
+            return value;
+          },
+        )
         .then(
-          (value) =>
-          _satorioRepository.signIn(
-              emailController.text, passwordController.text),
-    )
+          (value) => _satorioRepository.signIn(emailRx.value, passwordRx.value),
+        )
         .then(
           (isSuccess) {
-        if (isSuccess) {
-          _checkIsVerified();
-        } else {
-          isRequested.value = false;
-        }
-      },
-    )
+            if (isSuccess) {
+              _checkIsVerified();
+            } else {
+              isRequested.value = false;
+            }
+          },
+        )
         .catchError(
           (value) {
-        handleValidationException(value);
-        isRequested.value = false;
-      },
-    );
+            isRequested.value = false;
+            handleValidationException(value);
+          },
+        );
   }
 
   void _checkIsVerified() {
@@ -77,11 +92,19 @@ class LoginController extends GetxController with ValidationMixin {
         Get.offAll(() => MainPage(), binding: MainBinding());
       else
         Get.to(
-              () => EmailVerificationPage(),
+          () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
         );
       isRequested.value = false;
     });
+  }
+
+  void _emailListener() {
+    emailRx.value = emailController.text;
+  }
+
+  void _passwordListener() {
+    passwordRx.value = passwordController.text;
   }
 }
 
