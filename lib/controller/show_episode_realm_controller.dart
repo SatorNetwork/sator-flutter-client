@@ -113,11 +113,11 @@ class ShowEpisodeRealmController extends GetxController
 
   void toReviewsPage() {
     Get.to(
-          () => ReviewsPage(),
+      () => ReviewsPage(),
       binding: ReviewsBinding(),
       arguments: ReviewsArgument(
         showDetailRx.value.id,
-        showEpisodeRx.value.id
+        showEpisodeRx.value.id,
       ),
     );
   }

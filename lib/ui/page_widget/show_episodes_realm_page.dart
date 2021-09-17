@@ -535,6 +535,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                                 true
                                             ? _getMessageList()
                                             : _emptyState()),
+
                                   ),
                                 ),
                               ],
