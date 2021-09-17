@@ -78,17 +78,27 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: InkWell(
-                  onTap: () => controller.resendCode(),
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: Text(
-                      "txt_resend_code".tr,
-                      style: TextStyle(
-                          color: SatorioColor.interactive,
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w600),
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Obx(
+                    () => controller.delayRx.value != 0
+                        ? Text(
+                            '${controller.delayRx.value ~/ 60}:${controller.delayRx.value.remainder(60).toInt().toString().padLeft(2, '0')}',
+                            style: TextStyle(
+                                color: SatorioColor.textBlack,
+                                fontSize: 17.0,
+                                fontWeight: FontWeight.w600),
+                          )
+                        : InkWell(
+                            onTap: () => controller.resendCode(),
+                            child: Text(
+                              'txt_resend_code'.tr,
+                              style: TextStyle(
+                                  color: SatorioColor.interactive,
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
                   ),
                 ),
               ),
