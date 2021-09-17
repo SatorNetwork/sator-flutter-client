@@ -838,7 +838,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  controller.toNonWorkingFeatureDialog();
+                                  controller.toReviewsPage();
                                 },
                                 child: Icon(
                                   Icons.chevron_right_rounded,

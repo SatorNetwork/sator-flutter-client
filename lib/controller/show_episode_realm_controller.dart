@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
+import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
@@ -24,6 +26,7 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_shee
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
+import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
 import 'package:satorio/util/extension.dart';
@@ -104,6 +107,17 @@ class ShowEpisodeRealmController extends GetxController
         showDetailRx.value,
         showSeasonRx.value,
         showEpisodeRx.value,
+      ),
+    );
+  }
+
+  void toReviewsPage() {
+    Get.to(
+          () => ReviewsPage(),
+      binding: ReviewsBinding(),
+      arguments: ReviewsArgument(
+        showDetailRx.value.id,
+        showEpisodeRx.value.id
       ),
     );
   }
