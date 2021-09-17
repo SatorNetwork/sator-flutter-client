@@ -81,6 +81,7 @@ class ForgotPasswordVerificationPage
                   backgroundColor: Colors.transparent,
                   enableActiveFill: true,
                   controller: controller.codeController,
+                  autoDisposeControllers: false,
                   onCompleted: (v) {
                     controller.validateCode();
                   },
