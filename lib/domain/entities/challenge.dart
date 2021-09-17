@@ -9,6 +9,8 @@ class Challenge {
   final String play;
   final int userMaxAttempts;
   final int attemptsLeft;
+  final double receivedReward;
+  final String receivedRewardAsString;
 
   const Challenge(
     this.id,
@@ -21,5 +23,7 @@ class Challenge {
     this.play,
     this.userMaxAttempts,
     this.attemptsLeft,
+    this.receivedReward,
+    this.receivedRewardAsString,
   );
 }

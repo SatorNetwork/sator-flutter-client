@@ -13,6 +13,8 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
     String play,
     int userMaxAttempts,
     int attemptsLeft,
+    double receivedReward,
+    String receivedRewardAsString,
   ) : super(
           id,
           title,
@@ -24,6 +26,8 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
           play,
           userMaxAttempts,
           attemptsLeft,
+          receivedReward,
+          receivedRewardAsString,
         );
 
   factory ChallengeModel.fromJson(Map json) => ChallengeModel(
@@ -37,6 +41,12 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
         json['play'] == null ? '' : json['play'],
         json['user_max_attempts'] == null ? 0 : json['user_max_attempts'],
         json['attempts_left'] == null ? 0 : json['attempts_left'],
+        json['received_reward'] == null
+            ? 0.0
+            : (json['received_reward'] is int
+                ? (json['received_reward'] as int).toDouble()
+                : json['amount']),
+        json['received_reward_str'] == null ? '' : json['received_reward_str'],
       );
 
   @override
@@ -51,5 +61,7 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
         'play': play,
         'user_max_attempts': userMaxAttempts,
         'attempts_left': attemptsLeft,
+        'received_reward': receivedReward,
+        'received_reward_str': receivedRewardAsString,
       };
 }
