@@ -1179,32 +1179,33 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
 
   Widget _showMessage(Message message, Color color) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            message.fromUserName,
-            style: textTheme.bodyText2!.copyWith(
-              color: color,
-              fontSize: 12 * coefficient,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  child: Text(
-                    message.text,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 14 * coefficient,
-                      fontWeight: FontWeight.w400,
+                  child: RichText(
+                    text: TextSpan(
+                      text: '${message.fromUserName}: ',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: color,
+                        fontSize: 12 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: message.text,
+                          style: textTheme.bodyText2!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
