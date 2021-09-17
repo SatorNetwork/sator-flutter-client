@@ -194,12 +194,13 @@ class ChatPage extends GetView<ChatController> {
                   children: [
                     Flexible(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        padding: EdgeInsets.symmetric(horizontal: 14),
                         child: TextField(
                           autofocus: false,
                           style: textTheme.bodyText1!.copyWith(
                             color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                              fontSize: 12 * coefficient,
+                              fontWeight: FontWeight.w400,
                           ),
                           keyboardType: TextInputType.text,
                           controller: controller.messageController,
@@ -207,12 +208,13 @@ class ChatPage extends GetView<ChatController> {
                           onSubmitted: (input) {
                             controller.sendMessage();
                           },
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Join in the conversation',
                               hintStyle: TextStyle(
                                   color: Colors.white,
-                                  fontWeight: FontWeight.w400)),
+                                fontSize: 12 * coefficient,
+                                fontWeight: FontWeight.w400,)),
                         ),
                       ),
                     ),
@@ -223,14 +225,13 @@ class ChatPage extends GetView<ChatController> {
                       child: Container(
                         height: 60,
                         width: 80,
-                        color: SatorioColor.interactive,
                         child: Center(
                           child: Text(
                             "Send",
                             style: textTheme.bodyText1!.copyWith(
                               color: Colors.white,
                               fontSize: 17,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
                         ),
@@ -298,41 +299,40 @@ class ChatPage extends GetView<ChatController> {
       ],
     );
   }
-
   Widget _showMessage(Message message, Color color) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Flexible(
-                flex: 1,
-                child: Text(
-                  message.fromUserName,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: color,
-                    fontSize: 12 * coefficient,
-                    fontWeight: FontWeight.w700,
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: RichText(
+                    text: TextSpan(
+                      text: '${message.fromUserName}: ',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: color,
+                        fontSize: 12 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: message.text,
+                          style: textTheme.bodyText2!.copyWith(
+                            color: Colors.white,
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: 20,),
-              Flexible(
-                flex: 2,
-                child: Container(
-                    child: Text(
-                      message.text,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: Colors.white,
-                        fontSize: 14 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    )),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
