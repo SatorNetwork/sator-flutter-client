@@ -184,42 +184,32 @@ class ChallengePage extends GetView<ChallengeController> {
                     ],
                   ),
                   SizedBox(height: 25),
-                  Row(
-                    children: [
-                      Text(
-                        'txt_attempts_left'.tr,
-                        style: textTheme.bodyText1!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15.0 * coefficient,
-                          fontWeight: FontWeight.w400,
+                  Obx(
+                    () => Row(
+                      children: [
+                        Text(
+                          _blockTitle(controller.challengeRx.value),
+                          style: textTheme.bodyText1!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 15.0 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Obx(
-                          () => Text(
-                            controller.challengeRx.value == null
-                                ? ''
-                                : '${controller.challengeRx.value!.attemptsLeft} / ${controller.challengeRx.value!.userMaxAttempts}',
+                        Expanded(
+                          child: Text(
+                            _blockValue(controller.challengeRx.value),
                             textAlign: TextAlign.end,
                             style: textTheme.bodyText1!.copyWith(
-                              color:
-                                  (controller.challengeRx.value?.attemptsLeft ??
-                                              0) ==
-                                          0
-                                      ? SatorioColor.error
-                                      : SatorioColor.textBlack,
+                              color: _blockValueTextColor(
+                                  controller.challengeRx.value),
                               fontSize: 15.0 * coefficient,
-                              fontWeight:
-                                  (controller.challengeRx.value?.attemptsLeft ??
-                                              0) ==
-                                          0
-                                      ? FontWeight.w700
-                                      : FontWeight.w400,
+                              fontWeight: _blockValueTextWeight(
+                                  controller.challengeRx.value),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(height: 45),
                   Obx(
@@ -241,10 +231,46 @@ class ChallengePage extends GetView<ChallengeController> {
     );
   }
 
+  String _blockTitle(Challenge? challenge) {
+    if (challenge == null)
+      return '';
+    else if (challenge.receivedReward != 0)
+      return 'txt_you_earned'.tr;
+    else
+      return 'txt_attempts_left'.tr;
+  }
+
+  String _blockValue(Challenge? challenge) {
+    if (challenge == null)
+      return '';
+    else if (challenge.receivedReward != 0)
+      return challenge.receivedRewardAsString;
+    else
+      return '${controller.challengeRx.value!.attemptsLeft} / ${controller.challengeRx.value!.userMaxAttempts}';
+  }
+
+  Color _blockValueTextColor(Challenge? challenge) {
+    if (challenge == null)
+      return SatorioColor.textBlack;
+    else if (challenge.receivedReward != 0 || challenge.attemptsLeft != 0)
+      return SatorioColor.textBlack;
+    else
+      return SatorioColor.error;
+  }
+
+  FontWeight _blockValueTextWeight(Challenge? challenge) {
+    if (challenge == null)
+      return FontWeight.w400;
+    else if (challenge.receivedReward != 0 || challenge.attemptsLeft != 0)
+      return FontWeight.w400;
+    else
+      return FontWeight.w700;
+  }
+
   String _buttonText(Challenge? challenge) {
     if (challenge == null)
       return '';
-    else if (challenge.attemptsLeft == 0)
+    else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0)
       return 'txt_back_realm'.tr;
     else
       return 'txt_play'.tr;
@@ -253,7 +279,7 @@ class ChallengePage extends GetView<ChallengeController> {
   void _buttonClick(Challenge? challenge) {
     if (challenge == null) {
       // nothing...
-    } else if (challenge.attemptsLeft == 0) {
+    } else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0) {
       controller.back();
     } else {
       controller.playChallenge();
