@@ -194,4 +194,5 @@ const Map<String, String> en = {
   'txt_looks_good': 'Looks good - Send it',
   'txt_attempts_left': 'Attempts left',
   'txt_you_earned': 'You earned',
+  'txt_register_success': 'User %s was successfully registered',
 };

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
@@ -11,6 +12,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
+import 'package:satorio/util/extension.dart';
 
 class CreateAccountController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
@@ -69,6 +71,10 @@ class CreateAccountController extends GetxController with ValidationMixin {
   }
 
   void createAccount() {
+    final String email = emailController.text;
+    final String password = passwordController.text;
+    final String username = usernameController.text;
+
     Future.value(true)
         .then((value) {
           isRequested.value = true;
@@ -76,25 +82,28 @@ class CreateAccountController extends GetxController with ValidationMixin {
         })
         .then(
           (value) => _satorioRepository.signUp(
-            emailController.text,
-            passwordController.text,
-            usernameController.text,
+            email,
+            password,
+            username,
           ),
         )
         .then(
           (isSuccess) {
             if (isSuccess) {
-              bool _isValid = deepLink != null &&
+              bool _isReferralCodeValid = deepLink != null &&
                   deepLink!.queryParameters['code'] != null &&
                   deepLink!.queryParameters['code']!.isNotEmpty;
-              if (_isValid) {
+              if (_isReferralCodeValid) {
                 _satorioRepository
                     .confirmReferralCode(deepLink!.queryParameters['code']!);
               }
-              Get.to(
-                () => EmailVerificationPage(),
-                binding: EmailVerificationBinding(),
-                arguments: EmailVerificationArgument(emailController.text)
+              Get.to(() => EmailVerificationPage(),
+                  binding: EmailVerificationBinding(),
+                  arguments: EmailVerificationArgument(emailController.text));
+              ScaffoldMessenger.of(Get.context!).showSnackBar(
+                SnackBar(
+                  content: Text('txt_register_success'.tr.format([username])),
+                ),
               );
             }
             isRequested.value = false;
