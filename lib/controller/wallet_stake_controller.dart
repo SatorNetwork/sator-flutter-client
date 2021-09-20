@@ -80,11 +80,12 @@ class WalletStakeController extends GetxController {
         Get.dialog(
           DefaultDialog(
             result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result
-                ? 'txt_stake_success'.tr.format([
-                    amount.toStringAsFixed(2),
-                    walletDetailRx.value.balance[0].currency
-                  ])
+            result ? 'txt_stake_success'.tr.format(
+                    [
+                      amount.toStringAsFixed(2),
+                      walletDetailRx.value.balance[0].currency
+                    ],
+                  )
                 : 'txt_something_wrong'.tr,
             result ? 'txt_cool'.tr : 'txt_ok'.tr,
           ),
@@ -104,11 +105,12 @@ class WalletStakeController extends GetxController {
         Get.dialog(
           DefaultDialog(
             result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result
-                ? 'txt_unstake_success'.tr.format([
-                    amount.toStringAsFixed(2),
-                    walletDetailRx.value.balance[0].currency
-                  ])
+            result ? 'txt_unstake_success'.tr.format(
+                    [
+                      amount.toStringAsFixed(2),
+                      walletDetailRx.value.balance[0].currency
+                    ],
+                  )
                 : 'txt_something_wrong'.tr,
             result ? 'txt_cool'.tr : 'txt_ok'.tr,
           ),
