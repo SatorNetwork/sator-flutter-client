@@ -34,7 +34,22 @@ class TransactionPreviewController extends GetxController with BackToMainMixin {
         .then(
           (bool result) {
             isSendRequestInProgress.value = false;
-            _showDialog(result);
+
+            Get.dialog(
+              DefaultDialog(
+                result ? 'txt_success'.tr : 'txt_oops'.tr,
+                result
+                    ? 'txt_transaction_sent'.tr
+                    : 'txt_transaction_not_sent'.tr,
+                result ? 'txt_cool'.tr : 'txt_ok'.tr,
+                icon: result ? Icons.check_rounded : null,
+                onButtonPressed: result
+                    ? () {
+                        backToMain();
+                      }
+                    : null,
+              ),
+            );
           },
         )
         .catchError(
@@ -42,22 +57,6 @@ class TransactionPreviewController extends GetxController with BackToMainMixin {
             isSendRequestInProgress.value = false;
           },
         );
-  }
-
-  _showDialog(bool result) {
-    Get.dialog(
-      DefaultDialog(
-        result ? 'txt_success'.tr : 'txt_oops'.tr,
-        result ? 'txt_transaction_sent'.tr : 'txt_transaction_not_sent'.tr,
-        result ? 'txt_cool'.tr : 'txt_ok'.tr,
-        icon: result ? Icons.check_rounded : null,
-        onButtonPressed: result
-            ? () {
-                backToMain();
-              }
-            : null,
-      ),
-    );
   }
 }
 
