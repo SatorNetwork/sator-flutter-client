@@ -245,11 +245,14 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
                       SizedBox(
                         height: 20,
                       ),
-                      ElevatedGradientButton(
-                        text: 'txt_send'.tr,
-                        onPressed: () {
-                          controller.send();
-                        },
+                      Obx(
+                          () => ElevatedGradientButton(
+                            text: 'txt_send'.tr,
+                            isInProgress: controller.isSendRequestInProgress.value,
+                            onPressed: () {
+                              controller.send();
+                            },
+                          ),
                       ),
                     ],
                   ),

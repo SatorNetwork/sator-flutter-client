@@ -9,6 +9,7 @@ class TransactionPreviewController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<Transfer> transferRx;
+  final RxBool isSendRequestInProgress = false.obs;
 
   TransactionPreviewController() {
     TransactionPreviewArgument argument =
@@ -21,33 +22,41 @@ class TransactionPreviewController extends GetxController with BackToMainMixin {
   }
 
   void send() {
-    _satorioRepository
-        .confirmTransfer(
-            transferRx.value.senderWalletId, transferRx.value.txHash)
+    Future.value(true)
+        .then((value) {
+          isSendRequestInProgress.value = true;
+          return value;
+        })
         .then(
-      (bool result) {
-        if (result) {
-          Get.dialog(
-            DefaultDialog(
-              'txt_success'.tr,
-              'txt_transaction_sent'.tr,
-              'txt_cool'.tr,
-              icon: Icons.check_rounded,
-              onButtonPressed: () {
+          (value) => _satorioRepository.confirmTransfer(
+              transferRx.value.senderWalletId, transferRx.value.txHash),
+        )
+        .then(
+          (bool result) {
+            isSendRequestInProgress.value = false;
+            _showDialog(result);
+          },
+        )
+        .catchError(
+          (value) {
+            isSendRequestInProgress.value = false;
+          },
+        );
+  }
+
+  _showDialog(bool result) {
+    Get.dialog(
+      DefaultDialog(
+        result ? 'txt_success'.tr : 'txt_oops'.tr,
+        result ? 'txt_transaction_sent'.tr : 'txt_transaction_not_sent'.tr,
+        result ? 'txt_cool'.tr : 'txt_ok'.tr,
+        icon: result ? Icons.check_rounded : null,
+        onButtonPressed: result
+            ? () {
                 backToMain();
-              },
-            ),
-          );
-        } else {
-          Get.dialog(
-            DefaultDialog(
-              'txt_oops'.tr,
-              'txt_transaction_not_sent'.tr,
-              'txt_ok'.tr,
-            ),
-          );
-        }
-      },
+              }
+            : null,
+      ),
     );
   }
 }
