@@ -79,9 +79,6 @@ class WalletStakeController extends GetxController {
               walletDetailRx.value.balance[0].currency
             ]),
             'txt_cool'.tr,
-            onPressed: () {
-              Get.back();
-            },
           ),
         );
       } else {
@@ -90,9 +87,6 @@ class WalletStakeController extends GetxController {
             'txt_oops'.tr,
             'txt_something_wrong'.tr,
             'txt_ok'.tr,
-            onPressed: () {
-              Get.back();
-            },
           ),
         );
       }
@@ -100,38 +94,32 @@ class WalletStakeController extends GetxController {
   }
 
   void _unstakeAmount(double amount) {
-    _satorioRepository
-        .unstake(walletDetailRx.value.id, amount)
-        .then((bool result) {
-      if (result) {
-        _updateWalletStake();
-        tmpState.value = false;
-        Get.dialog(
-          DefaultDialog(
-            'txt_success'.tr,
-            'txt_unstake_success'.tr.format([
-              amount.toStringAsFixed(2),
-              walletDetailRx.value.balance[0].currency
-            ]),
-            'txt_cool'.tr,
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        );
-      } else {
-        Get.dialog(
-          DefaultDialog(
-            'txt_oops'.tr,
-            'txt_something_wrong'.tr,
-            'txt_ok'.tr,
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        );
-      }
-    });
+    _satorioRepository.unstake(walletDetailRx.value.id, amount).then(
+      (bool result) {
+        if (result) {
+          _updateWalletStake();
+          tmpState.value = false;
+          Get.dialog(
+            DefaultDialog(
+              'txt_success'.tr,
+              'txt_unstake_success'.tr.format([
+                amount.toStringAsFixed(2),
+                walletDetailRx.value.balance[0].currency
+              ]),
+              'txt_cool'.tr,
+            ),
+          );
+        } else {
+          Get.dialog(
+            DefaultDialog(
+              'txt_oops'.tr,
+              'txt_something_wrong'.tr,
+              'txt_ok'.tr,
+            ),
+          );
+        }
+      },
+    );
   }
 }
 

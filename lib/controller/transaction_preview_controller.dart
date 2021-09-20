@@ -33,7 +33,7 @@ class TransactionPreviewController extends GetxController with BackToMainMixin {
               'txt_transaction_sent'.tr,
               'txt_cool'.tr,
               icon: Icons.check_rounded,
-              onPressed: () {
+              onButtonPressed: () {
                 backToMain();
               },
             ),
@@ -44,9 +44,6 @@ class TransactionPreviewController extends GetxController with BackToMainMixin {
               'txt_oops'.tr,
               'txt_transaction_not_sent'.tr,
               'txt_ok'.tr,
-              onPressed: () {
-                Get.back();
-              },
             ),
           );
         }

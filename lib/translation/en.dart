@@ -35,6 +35,7 @@ const Map<String, String> en = {
   'txt_log_out': 'Log out',
   'txt_log_out_message': 'Are you sure you want to log out?',
   'txt_yes': 'Yes',
+  'txt_no': 'No',
   'txt_ok': 'OK',
   'txt_new': 'New',
   'txt_prize_pool': 'Prize pool',
