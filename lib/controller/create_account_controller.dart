@@ -76,9 +76,9 @@ class CreateAccountController extends GetxController with ValidationMixin {
         })
         .then(
           (value) => _satorioRepository.signUp(
-            emailController.text,
-            passwordController.text,
-            usernameController.text,
+            emailRx.value,
+            passwordRx.value,
+            usernameRx.value,
           ),
         )
         .then(
@@ -94,7 +94,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
               Get.to(
                 () => EmailVerificationPage(),
                 binding: EmailVerificationBinding(),
-                arguments: EmailVerificationArgument(emailController.text)
+                arguments: EmailVerificationArgument(emailRx.value),
               );
             }
             isRequested.value = false;

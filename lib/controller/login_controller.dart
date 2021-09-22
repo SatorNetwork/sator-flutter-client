@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-
 import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/binding/password_recovery_binding.dart';
 import 'package:satorio/controller/create_account_controller.dart';
+import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
@@ -90,11 +90,15 @@ class LoginController extends GetxController with ValidationMixin {
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {
       if (isVerified)
-        Get.offAll(() => MainPage(), binding: MainBinding());
+        Get.offAll(
+          () => MainPage(),
+          binding: MainBinding(),
+        );
       else
         Get.to(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
+          arguments: EmailVerificationArgument(emailRx.value),
         );
       isRequested.value = false;
     });

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
+import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -64,13 +65,18 @@ class SplashController extends GetxController {
 
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {
-      if (isVerified)
-        Get.offAll(() => MainPage(), binding: MainBinding());
-      else
+      if (isVerified) {
+        Get.offAll(
+          () => MainPage(),
+          binding: MainBinding(),
+        );
+      } else {
         Get.offAll(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
+          arguments: EmailVerificationArgument('txt_your_email'.tr),
         );
+      }
     }).catchError(
       (value) {
         if (!(value is ApiUnauthorizedException)) _toLogin();
