@@ -24,7 +24,10 @@ class ChatPage extends GetView<ChatController> {
         backgroundColor: Colors.transparent,
         centerTitle: true,
         title: InkWell(
-          onTap: () => controller.back(),
+          onTap: () {
+            controller.saveTimestamp();
+            controller.back();
+          },
           child: Container(
             width: Get.width,
             child: Column(
@@ -71,7 +74,10 @@ class ChatPage extends GetView<ChatController> {
             height: kToolbarHeight,
             width: kToolbarHeight,
             child: InkWell(
-              onTap: () => controller.back(),
+              onTap: () {
+                controller.saveTimestamp();
+                controller.back();
+              },
               child: Icon(
                 Icons.close,
                 size: 32,
@@ -82,7 +88,10 @@ class ChatPage extends GetView<ChatController> {
         ],
       ),
       body: InkWell(
-        onTap: () => controller.back(),
+        onTap: () {
+          controller.saveTimestamp();
+          controller.back();
+        },
         child: Container(
           child: Stack(
             children: [
@@ -199,8 +208,8 @@ class ChatPage extends GetView<ChatController> {
                           autofocus: false,
                           style: textTheme.bodyText1!.copyWith(
                             color: Colors.white,
-                              fontSize: 12 * coefficient,
-                              fontWeight: FontWeight.w400,
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
                           ),
                           keyboardType: TextInputType.text,
                           controller: controller.messageController,
@@ -212,9 +221,10 @@ class ChatPage extends GetView<ChatController> {
                               border: InputBorder.none,
                               hintText: 'Join in the conversation',
                               hintStyle: TextStyle(
-                                  color: Colors.white,
+                                color: Colors.white,
                                 fontSize: 12 * coefficient,
-                                fontWeight: FontWeight.w400,)),
+                                fontWeight: FontWeight.w400,
+                              )),
                         ),
                       ),
                     ),
@@ -299,6 +309,7 @@ class ChatPage extends GetView<ChatController> {
       ],
     );
   }
+
   Widget _showMessage(Message message, Color color) {
     return Container(
       margin: EdgeInsets.only(bottom: 8),
