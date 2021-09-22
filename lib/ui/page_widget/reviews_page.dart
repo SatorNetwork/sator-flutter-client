@@ -172,7 +172,7 @@ class ReviewsPage extends GetView<ReviewsController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  review.text,
+                  review.review,
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(

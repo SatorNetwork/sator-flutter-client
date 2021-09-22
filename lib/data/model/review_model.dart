@@ -1,22 +1,40 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/review.dart';
+import 'package:satorio/util/extension.dart';
 
 class ReviewModel extends Review implements ToJsonInterface {
-  const ReviewModel(String id, String userId, String userName, int rating,
-      String title, String text, DateTime? createdAt, int likes, int unlikes)
-      : super(id, userId, userName, rating, title, text, createdAt, likes,
-            unlikes);
+  const ReviewModel(
+    String id,
+    String userId,
+    String userName,
+    int rating,
+    String title,
+    String review,
+    DateTime? createdAt,
+    int likes,
+    int unlikes,
+  ) : super(
+          id,
+          userId,
+          userName,
+          rating,
+          title,
+          review,
+          createdAt,
+          likes,
+          unlikes,
+        );
 
   factory ReviewModel.fromJson(Map json) => ReviewModel(
-        json['id'] == null ? '' : json['id'],
-        json['user_id'] == null ? '' : json['user_id'],
-        json['username'] == null ? '' : json['username'],
-        json['rating'] == null ? '' : json['rating'],
-        json['title'] == null ? '' : json['title'],
-        json['review'] == null ? '' : json['review'],
-        DateTime.tryParse(json['createdAt'] == null ? '' : json['createdAt']),
-        json['likes'] == null ? '' : json['likes'],
-        json['unlikes'] == null ? '' : json['unlikes'],
+        json.parseValueAsString('id'),
+        json.parseValueAsString('user_id'),
+        json.parseValueAsString('username'),
+        json.parseValueAsInt('rating'),
+        json.parseValueAsString('title'),
+        json.parseValueAsString('review'),
+        json.tryParseValueAsDateTime('createdAt'),
+        json.parseValueAsInt('likes'),
+        json.parseValueAsInt('unlikes'),
       );
 
   @override
@@ -26,7 +44,7 @@ class ReviewModel extends Review implements ToJsonInterface {
         'username': userName,
         'rating': rating,
         'title': title,
-        'review': text,
+        'review': review,
         'created_at': createdAt!.toIso8601String(),
         'likes': likes,
         'unlikes': unlikes,

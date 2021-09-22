@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
+import 'package:satorio/util/extension.dart';
 
 class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
   const ShowEpisodeModel(
@@ -13,6 +14,9 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
     DateTime? releaseDate,
     double rating,
     int ratingsCount,
+    activeUsers,
+    userRewardsAmount,
+    totalRewardsAmount,
   ) : super(
           id,
           showId,
@@ -24,33 +28,26 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
           releaseDate,
           rating,
           ratingsCount,
+          activeUsers,
+          userRewardsAmount,
+          totalRewardsAmount,
         );
 
-  factory ShowEpisodeModel.fromJson(Map json) {
-    DateTime? releaseDate;
-    if (json['release_date'] != null) {
-      releaseDate = DateTime.tryParse(json['release_date']);
-    }
-
-    double rating = json['rating'] == null
-        ? 0.0
-        : (json['rating'] is int
-            ? (json['rating'] as int).toDouble()
-            : json['rating']);
-
-    return ShowEpisodeModel(
-      json['id'] == null ? '' : json['id'],
-      json['show_id'] == null ? '' : json['show_id'],
-      json['challenge_id'] == null ? '' : json['challenge_id'],
-      json['episode_number'] == null ? 0 : json['episode_number'],
-      json['title'] == null ? '' : json['title'],
-      json['description'] == null ? '' : json['description'],
-      json['cover'] == null ? '' : json['cover'],
-      releaseDate,
-      rating,
-      json['ratings_count'] == null ? 0 : json['ratings_count'],
-    );
-  }
+  factory ShowEpisodeModel.fromJson(Map json) => ShowEpisodeModel(
+        json.parseValueAsString('id'),
+        json.parseValueAsString('show_id'),
+        json.parseValueAsString('challenge_id'),
+        json.parseValueAsInt('episode_number'),
+        json.parseValueAsString('title'),
+        json.parseValueAsString('description'),
+        json.parseValueAsString('cover'),
+        json.tryParseValueAsDateTime('release_date'),
+        json.parseValueAsDouble('rating'),
+        json.parseValueAsInt('ratings_count'),
+        json.parseValueAsInt('active_users'),
+        json.parseValueAsDouble('user_rewards_amount'),
+        json.parseValueAsDouble('total_rewards_amount'),
+      );
 
   @override
   Map toJson() => {
@@ -64,5 +61,8 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         'release_date': releaseDate?.toIso8601String() ?? '',
         'rating': rating,
         'ratings_count': ratingsCount,
+        'active_users': activeUsers,
+        'user_rewards_amount': userRewardsAmount,
+        'total_rewards_amount': totalRewardsAmount,
       };
 }

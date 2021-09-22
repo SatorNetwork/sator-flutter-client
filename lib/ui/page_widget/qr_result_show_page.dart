@@ -101,7 +101,7 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                               color: SatorioColor.interactive.withOpacity(0.2)),
                           child: Obx(
                             () => Text(
-                              "${controller.qrShowRx.value.rewardAmount} SAO",
+                              "${controller.qrShowRx.value.rewardAmount.toStringAsFixed(2)} SAO",
                               style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.interactive,
                                 fontWeight: FontWeight.w700,
