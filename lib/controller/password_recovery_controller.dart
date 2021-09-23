@@ -13,7 +13,7 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
   static const Duration _defaultDelay = Duration(minutes: 1);
 
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController codeController = TextEditingController();
+  late TextEditingController codeController;
   final TextEditingController newPasswordController = TextEditingController();
 
   final RxBool passwordObscured = true.obs;
@@ -37,7 +37,7 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
     _satorioRepository.forgotPassword(emailController.text).then(
       (bool isSuccess) {
         if (isSuccess) {
-          codeController.clear();
+          codeController = TextEditingController();
           Get.to(
             () => ForgotPasswordVerificationPage(),
             binding: PasswordRecoveryBinding(),
@@ -54,7 +54,10 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
 
   void validateCode() {
     _satorioRepository
-        .validateResetPasswordCode(emailController.text, codeController.text)
+        .validateResetPasswordCode(
+      emailController.text,
+      codeController.text,
+    )
         .then(
       (bool isSuccess) {
         if (isSuccess) {
