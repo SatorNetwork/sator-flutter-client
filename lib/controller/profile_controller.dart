@@ -77,9 +77,10 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
         'txt_log_out_message'.tr,
         'txt_yes'.tr,
         icon: Icons.logout,
-        onPressed: () {
+        onButtonPressed: () {
           _satorioRepository.logout();
         },
+        secondaryButtonText: 'txt_no'.tr,
       ),
     );
   }

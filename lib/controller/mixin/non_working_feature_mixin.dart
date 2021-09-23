@@ -8,9 +8,6 @@ mixin NonWorkingFeatureMixin {
         'txt_oops'.tr,
         'txt_non_working_feature'.tr,
         'txt_ok'.tr,
-        onPressed: () {
-          Get.back();
-        },
       ),
     );
   }
