@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
@@ -11,6 +12,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
+import 'package:satorio/util/extension.dart';
 
 class CreateAccountController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
@@ -84,10 +86,10 @@ class CreateAccountController extends GetxController with ValidationMixin {
         .then(
           (isSuccess) {
             if (isSuccess) {
-              bool _isValid = deepLink != null &&
+              bool _isReferralCodeValid = deepLink != null &&
                   deepLink!.queryParameters['code'] != null &&
                   deepLink!.queryParameters['code']!.isNotEmpty;
-              if (_isValid) {
+              if (_isReferralCodeValid) {
                 _satorioRepository
                     .confirmReferralCode(deepLink!.queryParameters['code']!);
               }
@@ -95,6 +97,10 @@ class CreateAccountController extends GetxController with ValidationMixin {
                 () => EmailVerificationPage(),
                 binding: EmailVerificationBinding(),
                 arguments: EmailVerificationArgument(emailRx.value),
+              ScaffoldMessenger.of(Get.context!).showSnackBar(
+                SnackBar(
+                  content: Text('txt_register_success'.tr.format([username])),
+                ),
               );
             }
             isRequested.value = false;

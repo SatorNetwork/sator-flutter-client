@@ -52,7 +52,7 @@ class ShowEpisodeQuizController extends GetxController {
               'txt_wrong_answer'.tr,
               'txt_ok'.tr,
               icon: Icons.sentiment_dissatisfied_rounded,
-              onPressed: () {
+              onButtonPressed: () {
                 Get.until((route) => !Get.isOverlaysOpen);
                 Get.until((route) =>
                     Get.currentRoute == '/() => ShowEpisodesRealmPage');
@@ -74,7 +74,7 @@ class ShowEpisodeQuizController extends GetxController {
         'txt_time_expire'.tr,
         'txt_ok'.tr,
         icon: Icons.sentiment_dissatisfied_rounded,
-        onPressed: () {
+        onButtonPressed: () {
           Get.until((route) => !Get.isOverlaysOpen);
           Get.until(
               (route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');

@@ -155,7 +155,7 @@ class QuizController extends GetxController {
           'txt_wrong_answer'.tr,
           'txt_back_realm'.tr,
           icon: Icons.sentiment_dissatisfied_rounded,
-          onPressed: () {
+          onButtonPressed: () {
             backToEpisode();
           },
         ),
