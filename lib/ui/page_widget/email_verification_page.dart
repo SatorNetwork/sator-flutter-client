@@ -6,6 +6,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/extension.dart';
 
 class EmailVerificationPage extends GetView<EmailVerificationController> {
   @override

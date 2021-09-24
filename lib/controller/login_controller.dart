@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+
 import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
