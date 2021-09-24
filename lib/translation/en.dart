@@ -21,7 +21,7 @@ const Map<String, String> en = {
   'txt_send_code': 'Send code',
   'txt_verification': 'Verification',
   'txt_password_verification_text':
-      'Please enter the verification code we’ve sent to your email address',
+      'Please enter the verification code we’ve sent to %s',
   'txt_reset_password': 'Reset password',
   'txt_reset_password_text':
       'The old password will be reset.\nPlease enter your new password.',
@@ -35,6 +35,7 @@ const Map<String, String> en = {
   'txt_log_out': 'Log out',
   'txt_log_out_message': 'Are you sure you want to log out?',
   'txt_yes': 'Yes',
+  'txt_no': 'No',
   'txt_ok': 'OK',
   'txt_new': 'New',
   'txt_prize_pool': 'Prize pool',
@@ -194,4 +195,6 @@ const Map<String, String> en = {
   'txt_looks_good': 'Looks good - Send it',
   'txt_attempts_left': 'Attempts left',
   'txt_you_earned': 'You earned',
+  'txt_your_email': 'your email',
+  'txt_register_success': 'User %s was successfully registered',
 };

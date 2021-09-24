@@ -2,6 +2,7 @@ import 'package:satorio/data/model/payload/payload_winner_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/payload/payload_winner.dart';
+import 'package:satorio/util/extension.dart';
 
 class PayloadChallengeResultModel extends PayloadChallengeResult
     implements ToJsonInterface {
@@ -10,15 +11,18 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
     String prizePool,
     String showTransactionUrl,
     List<PayloadWinner> winners,
-  ) : super(challengeId, prizePool, showTransactionUrl, winners);
+  ) : super(
+          challengeId,
+          prizePool,
+          showTransactionUrl,
+          winners,
+        );
 
   factory PayloadChallengeResultModel.fromJson(Map json) =>
       PayloadChallengeResultModel(
-        json['challenge_id'] == null ? '' : json['challenge_id'],
-        json['prize_pool'] == null ? '' : json['prize_pool'],
-        json['show_transaction_url'] == null
-            ? ''
-            : json['show_transaction_url'],
+        json.parseValueAsString('challenge_id'),
+        json.parseValueAsString('prize_pool'),
+        json.parseValueAsString('show_transaction_url'),
         (json['winners'] == null || !(json['winners'] is Iterable))
             ? []
             : (json['winners'] as Iterable)

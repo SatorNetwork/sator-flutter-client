@@ -66,72 +66,57 @@ class WalletStakeController extends GetxController {
 
   void _stakeAmount(double amount) {
     _satorioRepository
-        .stake(walletDetailRx.value.id, amount)
-        .then((bool result) {
-      if (result) {
-        _updateWalletStake();
-        tmpState.value = true;
+        .stake(
+      walletDetailRx.value.id,
+      amount,
+    )
+        .then(
+      (bool result) {
+        if (result) {
+          _updateWalletStake();
+          tmpState.value = true;
+        }
+
         Get.dialog(
           DefaultDialog(
-            'txt_success'.tr,
-            'txt_stake_success'.tr.format([
-              amount.toStringAsFixed(2),
-              walletDetailRx.value.balance[0].currency
-            ]),
-            'txt_cool'.tr,
-            onPressed: () {
-              Get.back();
-            },
+            result ? 'txt_success'.tr : 'txt_oops'.tr,
+            result ? 'txt_stake_success'.tr.format(
+                    [
+                      amount.toStringAsFixed(2),
+                      walletDetailRx.value.balance[0].currency
+                    ],
+                  )
+                : 'txt_something_wrong'.tr,
+            result ? 'txt_cool'.tr : 'txt_ok'.tr,
           ),
         );
-      } else {
-        Get.dialog(
-          DefaultDialog(
-            'txt_oops'.tr,
-            'txt_something_wrong'.tr,
-            'txt_ok'.tr,
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        );
-      }
-    });
+      },
+    );
   }
 
   void _unstakeAmount(double amount) {
-    _satorioRepository
-        .unstake(walletDetailRx.value.id, amount)
-        .then((bool result) {
-      if (result) {
-        _updateWalletStake();
-        tmpState.value = false;
+    _satorioRepository.unstake(walletDetailRx.value.id, amount).then(
+      (bool result) {
+        if (result) {
+          _updateWalletStake();
+          tmpState.value = false;
+        }
+
         Get.dialog(
           DefaultDialog(
-            'txt_success'.tr,
-            'txt_unstake_success'.tr.format([
-              amount.toStringAsFixed(2),
-              walletDetailRx.value.balance[0].currency
-            ]),
-            'txt_cool'.tr,
-            onPressed: () {
-              Get.back();
-            },
+            result ? 'txt_success'.tr : 'txt_oops'.tr,
+            result ? 'txt_unstake_success'.tr.format(
+                    [
+                      amount.toStringAsFixed(2),
+                      walletDetailRx.value.balance[0].currency
+                    ],
+                  )
+                : 'txt_something_wrong'.tr,
+            result ? 'txt_cool'.tr : 'txt_ok'.tr,
           ),
         );
-      } else {
-        Get.dialog(
-          DefaultDialog(
-            'txt_oops'.tr,
-            'txt_something_wrong'.tr,
-            'txt_ok'.tr,
-            onPressed: () {
-              Get.back();
-            },
-          ),
-        );
-      }
-    });
+      },
+    );
   }
 }
 

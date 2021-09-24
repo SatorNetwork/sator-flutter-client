@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
 class QuizCounterController extends GetxController {
-  RxInt countdownRx = 100500.obs;
+  static const int _startValue = 3;
+
+  RxInt countdownRx = _startValue.obs;
 }

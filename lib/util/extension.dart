@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
@@ -34,8 +32,6 @@ extension EmailValidation on String {
 }
 
 extension LinkValidation on String {
-  static final Random _random = Random();
-
   bool isLink() {
     // return Uri.tryParse(this)?.isAbsolute ?? false;
     return RegExp(
@@ -45,7 +41,7 @@ extension LinkValidation on String {
   }
 }
 
-extension DoubleParse on String {
+extension StringParseHelper on String {
   double? tryParse() {
     String locale = Get.deviceLocale.toString();
     try {
@@ -53,5 +49,36 @@ extension DoubleParse on String {
     } catch (FormatException) {
       return null;
     }
+  }
+}
+
+extension JsonParseHelper on Map {
+  String parseValueAsString(String key, {String defValue = ''}) {
+    return this[key] == null ? defValue : this[key];
+  }
+
+  bool parseValueAsBool(String key, {bool defValue = false}) {
+    return this[key] == null ? defValue : this[key];
+  }
+
+  int parseValueAsInt(String key, {int defValue = 0}) {
+    return this[key] == null ? defValue : this[key];
+  }
+
+  double parseValueAsDouble(String key, {double defValue = 0.0}) {
+    if (this[key] == null)
+      return defValue;
+    else if (this[key] is int)
+      return (this[key] as int).toDouble();
+    else
+      return this[key];
+  }
+
+  DateTime? tryParseValueAsDateTime(String key) {
+    DateTime? result;
+    if (this[key] != null) {
+      result = DateTime.tryParse(this[key]);
+    }
+    return result;
   }
 }

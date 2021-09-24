@@ -4,6 +4,7 @@ import 'package:satorio/data/model/wallet_action_model.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/wallet_action.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
+import 'package:satorio/util/extension.dart';
 
 class WalletDetailModel extends WalletDetail implements ToJsonInterface {
   const WalletDetailModel(
@@ -12,7 +13,13 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
     int order,
     List<AmountCurrency> balance,
     List<WalletAction> actions,
-  ) : super(id, solanaAccountAddress, order, balance, actions);
+  ) : super(
+          id,
+          solanaAccountAddress,
+          order,
+          balance,
+          actions,
+        );
 
   factory WalletDetailModel.fromJson(Map json) {
     List<AmountCurrency> balance =
@@ -32,11 +39,9 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
                 .toList();
 
     return WalletDetailModel(
-      json['id'] == null ? '' : json['id'],
-      json['solana_account_address'] == null
-          ? ''
-          : json['solana_account_address'],
-      json['order'] == null ? 0 : json['order'],
+      json.parseValueAsString('id'),
+      json.parseValueAsString('solana_account_address'),
+      json.parseValueAsInt('order'),
       balance,
       actions,
     );

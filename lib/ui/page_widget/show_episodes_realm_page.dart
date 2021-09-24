@@ -133,6 +133,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           () => Image.network(
             controller.showEpisodeRx.value.cover,
             height: bodyHeight + 24,
+            width: Get.width,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) => Container(
               color: SatorioColor.darkAccent,
@@ -287,12 +288,16 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text(
-                                  '0',
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 15 * coefficient,
-                                    fontWeight: FontWeight.w600,
+                                Obx(
+                                  () => Text(
+                                    controller
+                                        .showEpisodeRx.value.userRewardsAmount
+                                        .toStringAsFixed(2),
+                                    style: textTheme.bodyText2!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 15 * coefficient,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -316,12 +321,16 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text(
-                                  '3,414.42',
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 15 * coefficient,
-                                    fontWeight: FontWeight.w600,
+                                Obx(
+                                  () => Text(
+                                    controller
+                                        .showEpisodeRx.value.totalRewardsAmount
+                                        .toStringAsFixed(2),
+                                    style: textTheme.bodyText2!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 15 * coefficient,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -367,12 +376,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text(
-                                  '152',
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 15 * coefficient,
-                                    fontWeight: FontWeight.w600,
+                                Obx(
+                                  () => Text(
+                                    controller.showEpisodeRx.value.activeUsers
+                                        .toString(),
+                                    style: textTheme.bodyText2!.copyWith(
+                                      color: SatorioColor.textBlack,
+                                      fontSize: 15 * coefficient,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -528,14 +540,14 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                     controller: controller.scrollController,
                                     reverse: true,
                                     child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(13),
-                                        ),
-                                        child: controller.isMessagesRx.value ==
-                                                true
-                                            ? _getMessageList()
-                                            : _emptyState()),
-
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(13),
+                                      ),
+                                      child:
+                                          controller.isMessagesRx.value == true
+                                              ? _getMessageList()
+                                              : _emptyState(),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1322,7 +1334,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  review.text,
+                  review.review,
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(

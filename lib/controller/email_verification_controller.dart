@@ -17,6 +17,8 @@ class EmailVerificationController extends GetxController with ValidationMixin {
   final RxInt delayRx = 0.obs;
   Timer? _delayTimer;
 
+  late final String email;
+
   @override
   void onInit() {
     super.onInit();
@@ -30,8 +32,6 @@ class EmailVerificationController extends GetxController with ValidationMixin {
     super.onClose();
   }
 
-  late String email = '';
-
   void back() {
     Get.back();
   }
@@ -39,7 +39,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
   EmailVerificationController() {
     EmailVerificationArgument argument = Get.arguments;
 
-    email = argument.email!;
+    email = argument.email;
   }
 
   void verifyAccount() {
@@ -86,7 +86,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 }
 
 class EmailVerificationArgument {
-  final String? email;
+  final String email;
 
   const EmailVerificationArgument(this.email);
 }

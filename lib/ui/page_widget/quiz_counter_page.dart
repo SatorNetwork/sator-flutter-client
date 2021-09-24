@@ -8,52 +8,53 @@ class QuizCounterPage extends GetView<QuizCounterController> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: Container(
-        child: Obx(
-          () => _buildWidgetsTree(context, controller.countdownRx.value),
-        ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Obx(
+                () => SvgPicture.asset(
+              _assetBackground(controller.countdownRx.value),
+              height: Get.height,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Obx(
+                  () => SvgPicture.asset(
+                _assetCounterImage(controller.countdownRx.value),
+                width: controller.countdownRx.value == 0
+                    ? Get.width
+                    : 0.35 * Get.width,
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildWidgetsTree(BuildContext context, int value) {
+  String _assetBackground(int value) {
+    if (value.isEven)
+      return 'images/bg/gradient_challenge_splash_reversed.svg';
+    else
+      return 'images/bg/gradient_challenge_splash.svg';
+  }
+
+  String _assetCounterImage(int value) {
     switch (value) {
       case 3:
-        return _buildCountScreen('gradient_challenge_splash', 'count_3');
+        return 'images/count_3.svg';
       case 2:
-        return _buildCountScreen(
-            'gradient_challenge_splash_reversed', 'count_2');
+        return 'images/count_2.svg';
       case 1:
-        return _buildCountScreen('gradient_challenge_splash', 'count_1');
+        return 'images/count_1.svg';
       case 0:
-        return _buildCountScreen(
-            'gradient_challenge_splash_reversed', 'count_start');
+        return 'images/count_start.svg';
       default:
-        return Container(
-          color: Colors.white,
-        );
+        return '';
     }
   }
 
-  Widget _buildCountScreen(String bgImageName, String countImageName) {
-    return Stack(
-      children: [
-        SvgPicture.asset(
-          'images/bg/$bgImageName.svg',
-          height: Get.height,
-          fit: BoxFit.cover,
-        ),
-        Center(
-          child: SvgPicture.asset(
-            'images/$countImageName.svg',
-            width:
-                countImageName == 'count_start' ? Get.width : 0.35 * Get.width,
-            fit: countImageName == 'count_start'
-                ? BoxFit.fitWidth
-                : BoxFit.contain,
-          ),
-        ),
-      ],
-    );
-  }
 }
