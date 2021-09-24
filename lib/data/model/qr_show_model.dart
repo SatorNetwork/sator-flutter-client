@@ -1,16 +1,25 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
+import 'package:satorio/util/extension.dart';
 
 class QrShowModel extends QrShow implements ToJsonInterface {
   const QrShowModel(
-      String id, String showId, String episodeId, int rewardAmount)
-      : super(id, showId, episodeId, rewardAmount);
+    String id,
+    String showId,
+    String episodeId,
+    double rewardAmount,
+  ) : super(
+          id,
+          showId,
+          episodeId,
+          rewardAmount,
+        );
 
   factory QrShowModel.fromJson(Map json) => QrShowModel(
-        json['id'] == null ? '' : json['id'],
-        json['show_id'] == null ? '' : json['show_id'],
-        json['episode_id'] == null ? '' : json['episode_id'],
-        json['reward_amount'] == null ? '' : json['reward_amount'],
+        json.parseValueAsString('id'),
+        json.parseValueAsString('show_id'),
+        json.parseValueAsString('episode_id'),
+        json.parseValueAsDouble('reward_amount'),
       );
 
   @override

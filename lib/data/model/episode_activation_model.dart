@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/util/extension.dart';
 
 class EpisodeActivationModel extends EpisodeActivation
     implements ToJsonInterface {
@@ -13,21 +14,11 @@ class EpisodeActivationModel extends EpisodeActivation
           activatedBefore,
         );
 
-  factory EpisodeActivationModel.fromJson(Map json) {
-    DateTime? activatedAt;
-    if (json['activated_at'] != null)
-      activatedAt = DateTime.tryParse(json['activated_at']);
-
-    DateTime? activatedBefore;
-    if (json['activated_before'] != null)
-      activatedBefore = DateTime.tryParse(json['activated_before']);
-
-    return EpisodeActivationModel(
-      json['result'] == null ? false : json['result'],
-      activatedAt,
-      activatedBefore,
-    );
-  }
+  factory EpisodeActivationModel.fromJson(Map json) => EpisodeActivationModel(
+        json.parseValueAsBool('result'),
+        json.tryParseValueAsDateTime('activated_at'),
+        json.tryParseValueAsDateTime('activated_before'),
+      );
 
   @override
   Map toJson() => {

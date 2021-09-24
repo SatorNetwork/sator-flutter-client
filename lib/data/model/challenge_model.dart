@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/challenge.dart';
+import 'package:satorio/util/extension.dart';
 
 class ChallengeModel extends Challenge implements ToJsonInterface {
   const ChallengeModel(
@@ -31,22 +32,18 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
         );
 
   factory ChallengeModel.fromJson(Map json) => ChallengeModel(
-        json['id'] == null ? '' : json['id'],
-        json['title'] == null ? '' : json['title'],
-        json['description'] == null ? '' : json['description'],
-        json['prize_pool'] == null ? '' : json['prize_pool'],
-        json['players'] == null ? 0 : json['players'],
-        json['winners'] == null ? '' : json['winners'],
-        json['time_per_question'] == null ? '' : json['time_per_question'],
-        json['play'] == null ? '' : json['play'],
-        json['user_max_attempts'] == null ? 0 : json['user_max_attempts'],
-        json['attempts_left'] == null ? 0 : json['attempts_left'],
-        json['received_reward'] == null
-            ? 0.0
-            : (json['received_reward'] is int
-                ? (json['received_reward'] as int).toDouble()
-                : json['amount']),
-        json['received_reward_str'] == null ? '' : json['received_reward_str'],
+        json.parseValueAsString('id'),
+        json.parseValueAsString('title'),
+        json.parseValueAsString('description'),
+        json.parseValueAsString('prize_pool'),
+        json.parseValueAsInt('players'),
+        json.parseValueAsString('winners'),
+        json.parseValueAsString('time_per_question'),
+        json.parseValueAsString('play'),
+        json.parseValueAsInt('user_max_attempts'),
+        json.parseValueAsInt('attempts_left'),
+        json.parseValueAsDouble('received_reward'),
+        json.parseValueAsString('received_reward_str'),
       );
 
   @override

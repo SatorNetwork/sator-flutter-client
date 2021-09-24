@@ -7,7 +7,8 @@ import 'package:satorio/data/model/payload/payload_user_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/payload/socket_message.dart';
 
-class SocketMessagePlayerConnectedModel extends SocketMessagePlayerConnected
+class SocketMessagePlayerConnectedModel
+    extends SocketMessagePlayerConnected
     implements ToJsonInterface {
   SocketMessagePlayerConnectedModel(PayloadUserModel payload) : super(payload);
 
@@ -19,7 +20,8 @@ class SocketMessagePlayerConnectedModel extends SocketMessagePlayerConnected
 }
 
 class SocketMessagePlayerDisconnectedModel
-    extends SocketMessagePlayerDisconnected implements ToJsonInterface {
+    extends SocketMessagePlayerDisconnected
+    implements ToJsonInterface {
   SocketMessagePlayerDisconnectedModel(PayloadUserModel payload)
       : super(payload);
 
@@ -30,7 +32,8 @@ class SocketMessagePlayerDisconnectedModel
       };
 }
 
-class SocketMessageCountdownModel extends SocketMessageCountdown
+class SocketMessageCountdownModel
+    extends SocketMessageCountdown
     implements ToJsonInterface {
   SocketMessageCountdownModel(PayloadCountdownModel payload) : super(payload);
 
@@ -41,7 +44,8 @@ class SocketMessageCountdownModel extends SocketMessageCountdown
       };
 }
 
-class SocketMessageQuestionModel extends SocketMessageQuestion
+class SocketMessageQuestionModel
+    extends SocketMessageQuestion
     implements ToJsonInterface {
   SocketMessageQuestionModel(PayloadQuestionModel payload) : super(payload);
 
@@ -52,7 +56,8 @@ class SocketMessageQuestionModel extends SocketMessageQuestion
       };
 }
 
-class SocketMessageQuestionResultModel extends SocketMessageQuestionResult
+class SocketMessageQuestionResultModel
+    extends SocketMessageQuestionResult
     implements ToJsonInterface {
   SocketMessageQuestionResultModel(PayloadQuestionResultModel payload)
       : super(payload);
@@ -64,7 +69,8 @@ class SocketMessageQuestionResultModel extends SocketMessageQuestionResult
       };
 }
 
-class SocketMessageChallengeResultModel extends SocketMessageChallengeResult
+class SocketMessageChallengeResultModel
+    extends SocketMessageChallengeResult
     implements ToJsonInterface {
   SocketMessageChallengeResultModel(PayloadChallengeResultModel payload)
       : super(payload);
@@ -76,7 +82,8 @@ class SocketMessageChallengeResultModel extends SocketMessageChallengeResult
       };
 }
 
-class SocketMessageAnswerModel extends SocketMessageAnswer
+class SocketMessageAnswerModel
+    extends SocketMessageAnswer
     implements ToJsonInterface {
   SocketMessageAnswerModel(PayloadAnswerModel payload) : super(payload);
 
@@ -94,25 +101,32 @@ class SocketMessageModelFactory {
     switch (type) {
       case Type.player_connected:
         return SocketMessagePlayerConnectedModel(
-            PayloadUserModel.fromJson(payloadJson));
+          PayloadUserModel.fromJson(payloadJson),
+        );
       case Type.player_disconnected:
         return SocketMessagePlayerDisconnectedModel(
-            PayloadUserModel.fromJson(payloadJson));
+          PayloadUserModel.fromJson(payloadJson),
+        );
       case Type.countdown:
         return SocketMessageCountdownModel(
-            PayloadCountdownModel.fromJson(payloadJson));
+          PayloadCountdownModel.fromJson(payloadJson),
+        );
       case Type.question:
         return SocketMessageQuestionModel(
-            PayloadQuestionModel.fromJson(payloadJson));
+          PayloadQuestionModel.fromJson(payloadJson),
+        );
       case Type.question_result:
         return SocketMessageQuestionResultModel(
-            PayloadQuestionResultModel.fromJson(payloadJson));
+          PayloadQuestionResultModel.fromJson(payloadJson),
+        );
       case Type.challenge_result:
         return SocketMessageChallengeResultModel(
-            PayloadChallengeResultModel.fromJson(payloadJson));
+          PayloadChallengeResultModel.fromJson(payloadJson),
+        );
       case Type.answer:
         return SocketMessageAnswerModel(
-            PayloadAnswerModel.fromJson(payloadJson));
+          PayloadAnswerModel.fromJson(payloadJson),
+        );
       default:
         throw FormatException('unsupported type $type for SocketMessage');
     }

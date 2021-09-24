@@ -9,6 +9,9 @@ class ShowEpisode {
   final DateTime? releaseDate;
   final double rating;
   final int ratingsCount;
+  final int activeUsers;
+  final double userRewardsAmount;
+  final double totalRewardsAmount;
 
   const ShowEpisode(
     this.id,
@@ -21,5 +24,8 @@ class ShowEpisode {
     this.releaseDate,
     this.rating,
     this.ratingsCount,
+    this.activeUsers,
+    this.userRewardsAmount,
+    this.totalRewardsAmount,
   );
 }

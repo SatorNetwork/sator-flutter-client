@@ -4,11 +4,20 @@ class Review {
   final String userName;
   final int rating;
   final String title;
-  final String text;
+  final String review;
   final DateTime? createdAt;
   final int likes;
   final int unlikes;
 
-  const Review(this.id, this.userId, this.userName, this.rating, this.title,
-      this.text, this.createdAt, this.likes, this.unlikes);
+  const Review(
+    this.id,
+    this.userId,
+    this.userName,
+    this.rating,
+    this.title,
+    this.review,
+    this.createdAt,
+    this.likes,
+    this.unlikes,
+  );
 }

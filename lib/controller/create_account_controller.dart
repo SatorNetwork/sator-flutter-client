@@ -71,10 +71,6 @@ class CreateAccountController extends GetxController with ValidationMixin {
   }
 
   void createAccount() {
-    final String email = emailController.text;
-    final String password = passwordController.text;
-    final String username = usernameController.text;
-
     Future.value(true)
         .then((value) {
           isRequested.value = true;
@@ -82,9 +78,9 @@ class CreateAccountController extends GetxController with ValidationMixin {
         })
         .then(
           (value) => _satorioRepository.signUp(
-            email,
-            password,
-            username,
+            emailRx.value,
+            passwordRx.value,
+            usernameRx.value,
           ),
         )
         .then(
@@ -97,12 +93,15 @@ class CreateAccountController extends GetxController with ValidationMixin {
                 _satorioRepository
                     .confirmReferralCode(deepLink!.queryParameters['code']!);
               }
-              Get.to(() => EmailVerificationPage(),
-                  binding: EmailVerificationBinding(),
-                  arguments: EmailVerificationArgument(emailController.text));
+              Get.to(
+                () => EmailVerificationPage(),
+                binding: EmailVerificationBinding(),
+                arguments: EmailVerificationArgument(emailRx.value),
+              );
               ScaffoldMessenger.of(Get.context!).showSnackBar(
                 SnackBar(
-                  content: Text('txt_register_success'.tr.format([username])),
+                  content: Text(
+                      'txt_register_success'.tr.format([usernameRx.value])),
                 ),
               );
             }
