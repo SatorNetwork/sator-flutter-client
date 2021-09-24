@@ -32,10 +32,9 @@ class QuizQuestionController extends GetxController {
       if (answerIdRx.value.isNotEmpty && !isAnswerSentRx.value) {
         quizController
             .sendAnswer(questionRx.value!.questionId, answerIdRx.value)
-        //     .then((value) {
-        //   isAnswerSentRx.value = true;
-        // })
-        ;
+            .then((value) {
+          isAnswerSentRx.value = true;
+        });
       }
     }
   }
