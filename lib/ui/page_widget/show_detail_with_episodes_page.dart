@@ -30,6 +30,7 @@ class ShowDetailWithEpisodesPage
             () => Image.network(
               controller.showDetailRx.value?.cover ?? '',
               height: Get.mediaQuery.padding.top + appBarHeight + 32,
+              width: Get.width,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
                 color: SatorioColor.darkAccent,
