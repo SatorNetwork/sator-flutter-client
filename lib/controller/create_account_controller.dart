@@ -97,9 +97,11 @@ class CreateAccountController extends GetxController with ValidationMixin {
                 () => EmailVerificationPage(),
                 binding: EmailVerificationBinding(),
                 arguments: EmailVerificationArgument(emailRx.value),
+              );
               ScaffoldMessenger.of(Get.context!).showSnackBar(
                 SnackBar(
-                  content: Text('txt_register_success'.tr.format([username])),
+                  content: Text(
+                      'txt_register_success'.tr.format([usernameRx.value])),
                 ),
               );
             }
