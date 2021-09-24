@@ -133,6 +133,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
           () => Image.network(
             controller.showEpisodeRx.value.cover,
             height: bodyHeight + 24,
+            width: Get.width,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) => Container(
               color: SatorioColor.darkAccent,

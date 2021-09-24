@@ -33,7 +33,7 @@ class QuizQuestionController extends GetxController {
         quizController
             .sendAnswer(questionRx.value!.questionId, answerIdRx.value)
             .then((value) {
-          isAnswerSentRx.value = true;
+          // isAnswerSentRx.value = true;
         });
       }
     }
