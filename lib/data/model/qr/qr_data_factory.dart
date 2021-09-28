@@ -32,18 +32,22 @@ class QrDataModelFactory {
       case QrType.show:
         QrPayloadShowModel payload = QrPayloadShowModel.fromJson(payloadJson);
         if (payload.code.isEmpty)
-          throw FormatException('unsupported type $type for QrData');
+          throw FormatException(
+            'QrData is not valid - "code" is empty or null',
+          );
         else
           return QrDataShowModel(payload);
       case QrType.walletSend:
         QrPayloadWalletSendModel payload =
             QrPayloadWalletSendModel.fromJson(payloadJson);
         if (payload.walletAddress.isEmpty)
-          throw FormatException('unsupported type $type for QrData');
+          throw FormatException(
+            'QrData is not valid - "wallet_address" is empty or null',
+          );
         else
           return QrDataWalletModel(payload);
       default:
-        throw FormatException('unsupported type $type for QrData');
+        throw FormatException('Unsupported type $type for QrData');
     }
   }
 }

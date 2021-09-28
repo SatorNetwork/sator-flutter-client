@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/transfer.dart';
+import 'package:satorio/util/extension.dart';
 
 class TransferModel extends Transfer implements ToJsonInterface {
   const TransferModel(
@@ -19,20 +20,12 @@ class TransferModel extends Transfer implements ToJsonInterface {
         );
 
   factory TransferModel.fromJson(Map json) => TransferModel(
-        json['asset_name'] == null ? '' : json['asset_name'],
-        json['amount'] == null
-            ? 0.0
-            : (json['amount'] is int
-                ? (json['amount'] as int).toDouble()
-                : json['amount']),
-        json['fee'] == null
-            ? 0.0
-            : (json['fee'] is int
-                ? (json['fee'] as int).toDouble()
-                : json['fee']),
-        json['recipient_address'] == null ? '' : json['recipient_address'],
-        json['sender_wallet_id'] == null ? '' : json['sender_wallet_id'],
-        json['tx_hash'] == null ? '' : json['tx_hash'],
+        json.parseValueAsString('asset_name'),
+        json.parseValueAsDouble('amount'),
+        json.parseValueAsDouble('fee'),
+        json.parseValueAsString('recipient_address'),
+        json.parseValueAsString('sender_wallet_id'),
+        json.parseValueAsString('tx_hash'),
       );
 
   @override

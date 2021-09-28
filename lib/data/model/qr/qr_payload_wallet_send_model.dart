@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/qr/qr_payload_wallet_send.dart';
+import 'package:satorio/util/extension.dart';
 
 class QrPayloadWalletSendModel extends QrPayloadWalletSend
     implements ToJsonInterface {
@@ -7,7 +8,7 @@ class QrPayloadWalletSendModel extends QrPayloadWalletSend
 
   factory QrPayloadWalletSendModel.fromJson(Map json) =>
       QrPayloadWalletSendModel(
-        json['wallet_address'] == null ? '' : json['wallet_address'],
+        json.parseValueAsString('wallet_address'),
       );
 
   @override

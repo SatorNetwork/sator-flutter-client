@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
+import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
+import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -21,15 +26,21 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_shee
 import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
+import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
+import 'package:satorio/ui/page_widget/write_review_page.dart';
 import 'package:satorio/util/extension.dart';
 
-class ShowEpisodeRealmController extends GetxController {
+import 'write_review_controller.dart';
+
+class ShowEpisodeRealmController extends GetxController
+    with NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
+  final Rx<List<Review>> reviewsRx = Rx([]);
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
@@ -60,19 +71,54 @@ class ShowEpisodeRealmController extends GetxController {
       print(isMessagesRx.value);
     });
 
-    _checkActivation();
+    _updateShowEpisode();
+    _loadReviews();
+
+    checkActivation();
   }
 
   void back() {
     Get.back();
   }
 
+  void toWriteReview() async {
+    final result = await Get.to(
+      () => WriteReviewPage(),
+      binding: WriteReviewBinding(),
+      arguments: WriteReviewArgument(
+        showDetailRx.value,
+        showSeasonRx.value,
+        showEpisodeRx.value,
+      ),
+    );
+
+    if (result != null && result is bool && result) {
+      _loadReviews();
+      _updateShowEpisode();
+    }
+  }
+
   void toChatPage() {
     Get.to(
       () => ChatPage(),
       binding: ChatBinding(),
-      arguments: ChatArgument(_messagesRef, showDetailRx.value,
-          showSeasonRx.value, showEpisodeRx.value),
+      arguments: ChatArgument(
+        _messagesRef,
+        showDetailRx.value,
+        showSeasonRx.value,
+        showEpisodeRx.value,
+      ),
+    );
+  }
+
+  void toReviewsPage() {
+    Get.to(
+      () => ReviewsPage(),
+      binding: ReviewsBinding(),
+      arguments: ReviewsArgument(
+        showDetailRx.value.id,
+        showEpisodeRx.value.id,
+      ),
     );
   }
 
@@ -85,6 +131,7 @@ class ShowEpisodeRealmController extends GetxController {
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
         },
+        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
     );
   }
@@ -100,6 +147,7 @@ class ShowEpisodeRealmController extends GetxController {
   void toRealmExpiringBottomSheet() {
     Get.bottomSheet(
       RealmExpiringBottomSheet(
+        activationRx.value,
         (paidOption) {
           _paidUnlock(paidOption);
         },
@@ -114,15 +162,20 @@ class ShowEpisodeRealmController extends GetxController {
         (int rate) {
           _rateEpisode(rate);
         },
+        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
     );
   }
 
-  void _checkActivation() {
+  void checkActivation() {
     _satorioRepository
         .isEpisodeActivated(showEpisodeRx.value.id)
         .then((EpisodeActivation episodeActivation) {
       activationRx.value = episodeActivation;
+      if (episodeActivation.isActive &&
+          episodeActivation.leftTimeInHours() < 2) {
+        toRealmExpiringBottomSheet();
+      }
     });
   }
 
@@ -131,6 +184,14 @@ class ShowEpisodeRealmController extends GetxController {
         .showEpisodeQuizQuestion(showEpisodeRx.value.id)
         .then((PayloadQuestion payloadQuestion) {
       _toEpisodeQuiz(payloadQuestion);
+    });
+  }
+
+  void _loadReviews() {
+    _satorioRepository
+        .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
+        .then((List<Review> reviews) {
+      reviewsRx.value = reviews;
     });
   }
 
@@ -146,7 +207,7 @@ class ShowEpisodeRealmController extends GetxController {
     );
 
     if (result != null && result is bool) {
-      _checkActivation();
+      checkActivation();
     }
   }
 

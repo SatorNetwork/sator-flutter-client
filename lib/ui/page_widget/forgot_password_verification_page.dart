@@ -5,6 +5,7 @@ import 'package:satorio/controller/password_recovery_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/util/extension.dart';
 
 class ForgotPasswordVerificationPage
     extends GetView<PasswordRecoveryController> {
@@ -39,7 +40,7 @@ class ForgotPasswordVerificationPage
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "txt_verification".tr,
+                  'txt_verification'.tr,
                   style: textTheme.headline1!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 34.0 * coefficient,
@@ -48,12 +49,7 @@ class ForgotPasswordVerificationPage
                 SizedBox(
                   height: 6,
                 ),
-                Text(
-                  "txt_password_verification_text".tr,
-                  style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontWeight: FontWeight.w400),
-                ),
+                _descriptionWidget(),
                 SizedBox(
                   height: 36,
                 ),
@@ -81,7 +77,7 @@ class ForgotPasswordVerificationPage
                   backgroundColor: Colors.transparent,
                   enableActiveFill: true,
                   controller: controller.codeController,
-                  onCompleted: (v) {
+                  onCompleted: (value) {
                     controller.validateCode();
                   },
                   onChanged: (value) {},
@@ -91,21 +87,71 @@ class ForgotPasswordVerificationPage
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: InkWell(
-                onTap: () => controller.resendCode(),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Text(
-                    "txt_resend_code".tr,
-                    style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.interactive,
-                        fontWeight: FontWeight.w600),
-                  ),
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Obx(
+                  () => controller.delayRx.value != 0
+                      ? Text(
+                          '${controller.delayRx.value ~/ 60}:${controller.delayRx.value.remainder(60).toInt().toString().padLeft(2, '0')}',
+                          style: TextStyle(
+                            color: SatorioColor.textBlack,
+                            fontSize: 17.0 * coefficient,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      : InkWell(
+                          onTap: () => controller.resendCode(),
+                          child: Text(
+                            'txt_resend_code'.tr,
+                            style: TextStyle(
+                              color: SatorioColor.interactive,
+                              fontSize: 17.0 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
                 ),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _descriptionWidget() {
+    final String email = controller.emailController.text;
+    final String textFull = 'txt_password_verification_text'.tr.format([email]);
+
+    final int start = textFull.indexOf(email);
+    final int end = start + email.length;
+
+    return Text.rich(
+      TextSpan(
+        text: textFull.substring(0, start),
+        style: textTheme.bodyText2!.copyWith(
+          color: SatorioColor.textBlack,
+          fontSize: 15 * coefficient,
+          fontWeight: FontWeight.w400,
+        ),
+        children: [
+          TextSpan(
+            text: textFull.substring(start, end),
+            style: textTheme.bodyText2!.copyWith(
+              color: SatorioColor.textBlack,
+              fontSize: 15 * coefficient,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          TextSpan(
+            text: textFull.substring(end),
+            style: textTheme.bodyText2!.copyWith(
+              color: SatorioColor.textBlack,
+              fontSize: 15 * coefficient,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
       ),
     );
   }

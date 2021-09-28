@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
+import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -46,30 +47,48 @@ class SplashController extends GetxController {
 
   void _checkToken() {
     Future.delayed(Duration(milliseconds: 1000), () {
-      _satorioRepository.isTokenValid().then((isTokenValid) {
-        if (isTokenValid) {
-          _checkIsVerified();
-        } else {
-            Get.off(() => LoginPage(),
-                binding: LoginBinding(), arguments: LoginArgument(deepLink));
-        }
-      }).catchError((value) {
-        if (!(value is ApiUnauthorizedException))
-          Get.off(() => LoginPage(),
-              binding: LoginBinding(), arguments: LoginArgument(deepLink));
-      });
+      _satorioRepository.isTokenValid().then(
+        (bool isTokenValid) {
+          if (isTokenValid) {
+            _checkIsVerified();
+          } else {
+            _toLogin();
+          }
+        },
+      ).catchError(
+        (value) {
+          if (!(value is ApiUnauthorizedException)) _toLogin();
+        },
+      );
     });
   }
 
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {
-      if (isVerified)
-        Get.offAll(() => MainPage(), binding: MainBinding());
-      else
-        Get.off(
+      if (isVerified) {
+        Get.offAll(
+          () => MainPage(),
+          binding: MainBinding(),
+        );
+      } else {
+        Get.offAll(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
+          arguments: EmailVerificationArgument('txt_your_email'.tr),
         );
-    });
+      }
+    }).catchError(
+      (value) {
+        if (!(value is ApiUnauthorizedException)) _toLogin();
+      },
+    );
+  }
+
+  void _toLogin() {
+    Get.offAll(
+      () => LoginPage(),
+      binding: LoginBinding(),
+      arguments: LoginArgument(deepLink),
+    );
   }
 }

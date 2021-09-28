@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,14 +28,22 @@ class ShowDetailWithEpisodesPage
       body: Stack(
         children: [
           Obx(
-            () => Image.network(
-              controller.showDetailRx.value?.cover ?? '',
-              height: Get.mediaQuery.padding.top + appBarHeight + 32,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: SatorioColor.darkAccent,
-              ),
-            ),
+            () => controller.showDetailRx.value == null
+                ? Container(
+                    width: Get.width,
+                    height: Get.mediaQuery.padding.top + appBarHeight + 32,
+                    color: SatorioColor.darkAccent,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: controller.showDetailRx.value!.cover,
+                    cacheKey: controller.showDetailRx.value!.cover,
+                    width: Get.width,
+                    height: Get.mediaQuery.padding.top + appBarHeight + 32,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(
+                      color: SatorioColor.darkAccent,
+                    ),
+                  ),
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -117,7 +126,9 @@ class ShowDetailWithEpisodesPage
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    controller.clap();
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,
                                     primary: Colors.transparent,
@@ -138,12 +149,16 @@ class ShowDetailWithEpisodesPage
                                       SizedBox(
                                         height: 6.0 * coefficient,
                                       ),
-                                      Text(
-                                        '32',
-                                        style: textTheme.subtitle2!.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 15.0 * coefficient,
-                                          fontWeight: FontWeight.w500,
+                                      Obx(
+                                        () => Text(
+                                          controller.showDetailRx.value?.claps
+                                                  .toString() ??
+                                              '',
+                                          style: textTheme.subtitle2!.copyWith(
+                                            color: Colors.white,
+                                            fontSize: 15.0 * coefficient,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -213,7 +228,7 @@ class ShowDetailWithEpisodesPage
                                         height: 6.0 * coefficient,
                                       ),
                                       Text(
-                                        'Netflix',
+                                        'Watch',
                                         style: textTheme.subtitle2!.copyWith(
                                           color: Colors.white,
                                           fontSize: 15.0 * coefficient,
@@ -235,9 +250,11 @@ class ShowDetailWithEpisodesPage
                   () => SliverPersistentHeader(
                     pinned: true,
                     delegate: _SliverAppBarDelegate(
-                      controller,
-                      _tabBarHeight(),
-                    ),
+                        controller,
+                        _tabBarHeight(),
+                        _isSingleZeroSeason()
+                            ? 'txt_realms'.tr
+                            : 'txt_episodes'.tr),
                   ),
                 ),
                 SliverFillRemaining(
@@ -300,10 +317,11 @@ class ShowDetailWithEpisodesPage
             fit: StackFit.passthrough,
             children: [
               Container(
-                child: Image(
-                  image: NetworkImage(showEpisode.cover),
+                child: CachedNetworkImage(
+                  imageUrl: showEpisode.cover,
+                  cacheKey: showEpisode.cover,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  errorWidget: (context, url, error) => Container(
                     color: SatorioColor.grey,
                   ),
                 ),
@@ -356,20 +374,21 @@ class ShowDetailWithEpisodesPage
   }
 
   double _tabBarHeight() {
-    return _isTabBarVisible() ? kTextTabBarHeight : 0.0;
+    return _isSingleZeroSeason() ? 0.0 : kTextTabBarHeight;
   }
 
-  bool _isTabBarVisible() {
-    return !(controller.seasonsRx.value.length == 1 &&
-        controller.seasonsRx.value[0].seasonNumber == 0);
+  bool _isSingleZeroSeason() {
+    return controller.seasonsRx.value.length == 1 &&
+        controller.seasonsRx.value[0].seasonNumber == 0;
   }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this.controller, this.tabBarHeight);
+  _SliverAppBarDelegate(this.controller, this.tabBarHeight, this.title);
 
   final ShowDetailWithEpisodesController controller;
   final double tabBarHeight;
+  final String title;
 
   @override
   double get minExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
@@ -382,29 +401,32 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32),
-          topRight: Radius.circular(32),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         color: Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 32,
-              bottom: 16,
-            ),
-            child: Text(
-              'txt_episodes'.tr,
-              textAlign: TextAlign.center,
-              style: textTheme.headline3!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 28 * coefficient,
-                fontWeight: FontWeight.w700,
+          InkWell(
+            onTap: () {
+              controller.toggleBottomSheet();
+            },
+            child: Container(
+              width: Get.width,
+              padding: const EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 32,
+                bottom: 16,
+              ),
+              child: Text(
+                title,
+                textAlign: TextAlign.start,
+                style: textTheme.headline3!.copyWith(
+                  color: SatorioColor.textBlack,
+                  fontSize: 28 * coefficient,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),

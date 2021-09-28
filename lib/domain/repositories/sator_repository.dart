@@ -7,6 +7,7 @@ import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -75,6 +76,8 @@ abstract class SatorioRepository {
 
   Future<QrShow> getShowEpisodeByQR(String qrCodeId);
 
+  Future<bool> clapShow(String showId);
+
   Future<Challenge> challenge(String challengeId);
 
   Future<EpisodeActivation> isEpisodeActivated(String episodeId);
@@ -90,9 +93,19 @@ abstract class SatorioRepository {
 
   Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
+  Future<bool> writeReview(
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  );
+
   Future<void> logout();
 
-  Future<GetSocket> createQuizSocket(String challengeId);
+  Future<String> quizSocketUrl(String challengeId);
+
+  Future<GetSocket> createQuizSocket(String socketUrl);
 
   Future<void> sendAnswer(
       GetSocket? socket, String questionId, String answerId);
@@ -104,6 +117,8 @@ abstract class SatorioRepository {
   Future<ReferralCode> getReferralCode();
 
   Future<bool> confirmReferralCode(String referralCode);
+
+  Future<List<Review>> getReviews(String showId, String episodeId);
 
   //
 

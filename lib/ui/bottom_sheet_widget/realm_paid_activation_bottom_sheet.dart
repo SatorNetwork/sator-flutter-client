@@ -79,9 +79,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(32),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 color: Colors.white,
               ),
               child: Column(
@@ -125,7 +123,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                   ),
                   Obx(
                     () => ElevatedGradientButton(
-                      text: 'txt_unlock_with_sao'.tr,
+                      text: 'txt_unlock_by_sao'.tr,
                       isEnabled: _selectedPaidOptionRx.value != null,
                       onPressed: () {
                         Get.back();

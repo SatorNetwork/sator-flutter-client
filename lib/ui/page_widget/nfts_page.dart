@@ -62,10 +62,11 @@ class NFTsPage extends GetView<NFTsController> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: _content(),
-              )
+              _content(),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20, right: 20),
+              //   child: ,
+              // )
             ],
           ),
         ),
@@ -75,49 +76,107 @@ class NFTsPage extends GetView<NFTsController> {
 
   Widget _content() {
     final double topMargin = 140 * coefficient;
-    return Container(
-      margin: EdgeInsets.only(top: topMargin),
-      child: Column(
-        children: [
-          TitleWithButton(
-            onTap: () {},
-            textCode: 'Popular',
-            fontSize: 34.0 * coefficient,
-            fontWeight: FontWeight.w700,
-            buttonText: 'View',
-            color: Colors.black,
-            iconColor: SatorioColor.darkAccent,
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          Column(
-            children: [
-              Row(
+    return InkWell(
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
+      child: Container(
+        margin: EdgeInsets.only(top: topMargin),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TitleWithButton(
+                onTap: () {},
+                textCode: 'Popular NFTs',
+                fontSize: 24.0 * coefficient,
+                fontWeight: FontWeight.w700,
+                buttonText: 'View',
+                color: Colors.black,
+                iconColor: SatorioColor.darkAccent,
+              ),
+            ),
+            SizedBox(
+              height: 20 * coefficient,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(17 * coefficient),
-                          ),
-                          child: Image.asset(
-                            'images/tmp_nft_5.png',
-                            width: Get.width,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        Row(
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(17 * coefficient),
+                              ),
+                              child: Image.asset(
+                                'images/tmp_nft_5.png',
+                                width: Get.width,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8 * coefficient,
+                            ),
+                            Row(
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    text: '1,784',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.0 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                    children: <TextSpan>[
+                                      TextSpan(text: ' '),
+                                      TextSpan(
+                                        text: 'sao',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 14.0 * coefficient,
+                                          fontWeight: FontWeight.w500,
+                                          backgroundColor: Colors.transparent,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15 * coefficient,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(17 * coefficient),
+                              ),
+                              child: Image.asset(
+                                'images/tmp_nft_6.png',
+                                height: 200,
+                                width: Get.width,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 8 * coefficient,
+                            ),
                             RichText(
                               text: TextSpan(
-                                text: '1,784',
+                                text: '32,284',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14.0 * coefficient,
@@ -140,131 +199,87 @@ class NFTsPage extends GetView<NFTsController> {
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   SizedBox(
-                    width: 15 * coefficient,
+                    height: 15 * coefficient,
                   ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(17 * coefficient),
-                          ),
-                          child: Image.asset(
-                            'images/tmp_nft_6.png',
-                            height: 200,
-                            width: Get.width,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: '32,284',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0 * coefficient,
-                              fontWeight: FontWeight.w500,
-                              backgroundColor: Colors.transparent,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(17 * coefficient),
+                              ),
+                              child: Image.asset(
+                                'images/tmp_nft_7.png',
+                                height: 200,
+                                width: Get.width,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            children: <TextSpan>[
-                              TextSpan(text: ' '),
-                              TextSpan(
-                                text: 'sao',
+                            SizedBox(
+                              height: 8 * coefficient,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: '3,284',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14.0 * coefficient,
                                   fontWeight: FontWeight.w500,
                                   backgroundColor: Colors.transparent,
                                 ),
+                                children: <TextSpan>[
+                                  TextSpan(text: ' '),
+                                  TextSpan(
+                                    text: 'sao',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14.0 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 15 * coefficient,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(17 * coefficient),
-                          ),
-                          child: Image.asset(
-                            'images/tmp_nft_7.png',
-                            height: 200,
-                            width: Get.width,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: '3,284',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14.0 * coefficient,
-                              fontWeight: FontWeight.w500,
-                              backgroundColor: Colors.transparent,
                             ),
-                            children: <TextSpan>[
-                              TextSpan(text: ' '),
-                              TextSpan(
-                                text: 'sao',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
-                            ],
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-          SizedBox(
-            height: 34 * coefficient,
-          ),
-          TitleWithButton(
-            onTap: () {},
-            textCode: 'All Shows',
-            fontSize: 34.0 * coefficient,
-            fontWeight: FontWeight.w700,
-            buttonText: 'View',
-            color: Colors.black,
-            iconColor: SatorioColor.darkAccent,
-          ),
-          SizedBox(
-            height: 10 * coefficient,
-          ),
-          _allShows(),
-          SizedBox(
-            height: 15 * coefficient,
-          ),
-        ],
+            ),
+            SizedBox(
+              height: 34 * coefficient,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: TitleWithButton(
+                onTap: () {},
+                textCode: 'All Shows',
+                fontSize: 24.0 * coefficient,
+                fontWeight: FontWeight.w700,
+                buttonText: 'View',
+                color: Colors.black,
+                iconColor: SatorioColor.darkAccent,
+              ),
+            ),
+            SizedBox(
+              height: 10 * coefficient,
+            ),
+            _allShows(),
+            SizedBox(
+              height: 15 * coefficient,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -274,6 +289,7 @@ class NFTsPage extends GetView<NFTsController> {
       margin: const EdgeInsets.only(top: 16),
       height: 168 * coefficient,
       child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         separatorBuilder: (context, index) => SizedBox(
           width: 16,
         ),
@@ -308,12 +324,13 @@ class NFTsPage extends GetView<NFTsController> {
                   )),
             ),
             SizedBox(
-              height: 10 * coefficient,
+              height: 2 * coefficient,
             ),
             Expanded(
               child: Text(
                 nftPreview.title,
                 textAlign: TextAlign.center,
+                maxLines: 2,
                 style: textTheme.headline4!.copyWith(
                   color: Colors.black,
                   fontSize: 15.0 * coefficient,
@@ -328,13 +345,16 @@ class NFTsPage extends GetView<NFTsController> {
   }
 
   final List<NFTPreview> nftsList = [
-    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
-    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
-    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
-    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
-    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
-    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
-    NFTPreview('Breaking Bad', 'images/tmp_nft_preview_1.png'),
-    NFTPreview('Queens Gambit', 'images/tmp_nft_preview_2.png'),
+    NFTPreview('Ballers', 'images/tmp_nft_show_1.jpg'),
+    NFTPreview('Breaking Bad', 'images/tmp_nft_show_2.jpg'),
+    NFTPreview('Entourage', 'images/tmp_nft_show_3.jpg'),
+    NFTPreview('Friends', 'images/tmp_nft_show_4.jpg'),
+    NFTPreview('Grace and Frankie', 'images/tmp_nft_show_5.jpg'),
+    NFTPreview('HODL', 'images/tmp_nft_show_6.jpg'),
+    NFTPreview('How To Make It In America', 'images/tmp_nft_show_7.jpg'),
+    NFTPreview('Loki', 'images/tmp_nft_show_8.jpg'),
+    NFTPreview('Nine Perfect Strangers', 'images/tmp_nft_show_9.jpg'),
+    NFTPreview(
+        'The Falcon and the Winter Soldier', 'images/tmp_nft_show_10.jpg'),
   ];
 }

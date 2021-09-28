@@ -15,6 +15,7 @@ import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -43,27 +44,30 @@ class SatorioRepositoryImpl implements SatorioRepository {
           'txt_oops'.tr,
           exception.errorMessage,
           'txt_ok'.tr,
-          onPressed: () {
-            Get.back();
-          },
         ),
       );
     } else if (exception is ApiUnauthorizedException) {
-      _localLogout();
+      _localLogoutGoToLogin();
       Get.snackbar('txt_oops'.tr, exception.errorMessage);
     } else {
       throw exception;
     }
   }
 
-  Future<void> _localLogout() {
+  Future<void> _localLogoutGoToLogin() {
     return _localDataSource
         .clear()
         .then((value) => _apiDataSource.authLogout())
-        .then((value) {
-      Get.offAll(() => LoginPage(), binding: LoginBinding(), arguments: LoginArgument(null));
-      return;
-    });
+        .then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
+        );
+        return;
+      },
+    );
   }
 
   @override
@@ -190,18 +194,17 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> logout() {
+  Future<bool> clapShow(String showId) {
     return _apiDataSource
-        .apiLogout()
-        .then(
-          (value) => _localLogout(),
-        )
-        .then(
-      (value) {
-        Get.offAll(() => LoginPage(), binding: LoginBinding(), arguments: LoginArgument(null));
-        return;
-      },
-    );
+        .clapShow(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> logout() {
+    return _apiDataSource.apiLogout().then(
+          (value) => _localLogoutGoToLogin(),
+        );
   }
 
   @override
@@ -250,11 +253,28 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<GetSocket> createQuizSocket(String challengeId) {
+  Future<bool> writeReview(
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  ) {
+    return _apiDataSource
+        .writeReview(showId, episodeId, rating, title, review)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> quizSocketUrl(String challengeId) {
     return _apiDataSource
         .quizSocketUrl(challengeId)
-        .then((socketUrl) => _apiDataSource.createSocket(socketUrl))
         .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<GetSocket> createQuizSocket(String socketUrl) {
+    return _apiDataSource.createSocket(socketUrl);
   }
 
   @override
@@ -378,6 +398,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<WalletStake> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<Review>> getReviews(String showId, String episodeId) {
+    return _apiDataSource
+        .getReviews(showId, episodeId)
         .catchError((value) => _handleException(value));
   }
 

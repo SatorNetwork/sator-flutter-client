@@ -4,23 +4,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/extension.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 typedef SelectPaidOptionCallback = void Function(PaidOption paidOption);
 
 class RealmExpiringBottomSheet extends StatelessWidget {
   RealmExpiringBottomSheet(
+    this.episodeActivation,
     this.onExtend, {
     Key? key,
   }) : super(key: key);
 
   final Rx<PaidOption?> _selectedPaidOptionRx = Rx(null);
 
+  final EpisodeActivation episodeActivation;
   final SelectPaidOptionCallback onExtend;
 
   @override
@@ -75,14 +80,30 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                     SizedBox(
                       height: 12 * coefficient,
                     ),
-                    Text(
-                      'txt_2_hours_left'.tr,
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.white,
-                        fontSize: 18 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    Countdown(
+                      seconds: episodeActivation.leftTimeInSeconds(),
+                      interval: Duration(seconds: 5),
+                      onFinished: () {
+                        Get.back();
+                      },
+                      build: (
+                        BuildContext context,
+                        double time,
+                      ) {
+                        return Text(
+                          'txt_x_left'.tr.format(
+                            [
+                              episodeActivation.leftTimeAsString(),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: Colors.white,
+                            fontSize: 18 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -91,9 +112,7 @@ class RealmExpiringBottomSheet extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(32),
-                ),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 color: Colors.white,
               ),
               child: Column(

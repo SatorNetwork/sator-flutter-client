@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/challenge.dart';
+import 'package:satorio/util/extension.dart';
 
 class ChallengeModel extends Challenge implements ToJsonInterface {
   const ChallengeModel(
@@ -11,6 +12,10 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
     String winners,
     String timePerQuestion,
     String play,
+    int userMaxAttempts,
+    int attemptsLeft,
+    double receivedReward,
+    String receivedRewardAsString,
   ) : super(
           id,
           title,
@@ -20,17 +25,25 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
           winners,
           timePerQuestion,
           play,
+          userMaxAttempts,
+          attemptsLeft,
+          receivedReward,
+          receivedRewardAsString,
         );
 
   factory ChallengeModel.fromJson(Map json) => ChallengeModel(
-        json['id'] == null ? '' : json['id'],
-        json['title'] == null ? '' : json['title'],
-        json['description'] == null ? '' : json['description'],
-        json['prize_pool'] == null ? '' : json['prize_pool'],
-        json['players'] == null ? 0 : json['players'],
-        json['winners'] == null ? '' : json['winners'],
-        json['time_per_question'] == null ? '' : json['time_per_question'],
-        json['play'] == null ? '' : json['play'],
+        json.parseValueAsString('id'),
+        json.parseValueAsString('title'),
+        json.parseValueAsString('description'),
+        json.parseValueAsString('prize_pool'),
+        json.parseValueAsInt('players'),
+        json.parseValueAsString('winners'),
+        json.parseValueAsString('time_per_question'),
+        json.parseValueAsString('play'),
+        json.parseValueAsInt('user_max_attempts'),
+        json.parseValueAsInt('attempts_left'),
+        json.parseValueAsDouble('received_reward'),
+        json.parseValueAsString('received_reward_str'),
       );
 
   @override
@@ -43,5 +56,9 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
         'winners': winners,
         'time_per_question': timePerQuestion,
         'play': play,
+        'user_max_attempts': userMaxAttempts,
+        'attempts_left': attemptsLeft,
+        'received_reward': receivedReward,
+        'received_reward_str': receivedRewardAsString,
       };
 }

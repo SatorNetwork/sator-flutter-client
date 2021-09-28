@@ -7,6 +7,8 @@ import 'package:satorio/data/model/episode_activation_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
+import 'package:satorio/data/model/referral_code_model.dart';
+import 'package:satorio/data/model/review_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -16,7 +18,6 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
-import 'package:satorio/domain/entities/referral_code.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -102,6 +103,10 @@ abstract class ApiDataSource {
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId);
+  
+  Future<bool> clapShow(String showId);
+
   // endregion
 
   // region Challenges
@@ -121,6 +126,14 @@ abstract class ApiDataSource {
 
   Future<bool> rateEpisode(String showId, String episodeId, int rate);
 
+  Future<bool> writeReview(
+    String showId,
+    String episodeId,
+    int rating,
+    String title,
+    String review,
+  );
+
   // endregion
 
   // region Quiz
@@ -139,7 +152,7 @@ abstract class ApiDataSource {
 
   Future<bool> sendInvite(String email);
 
-  Future<ReferralCode> getReferralCode();
+  Future<ReferralCodeModel> getReferralCode();
 
   Future<bool> confirmReferralCode(String referralCode);
 

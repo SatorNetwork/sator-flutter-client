@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/util/extension.dart';
 
 class ProfileModel extends Profile implements ToJsonInterface {
   const ProfileModel(
@@ -15,10 +16,10 @@ class ProfileModel extends Profile implements ToJsonInterface {
         );
 
   factory ProfileModel.fromJson(Map json) => ProfileModel(
-        json['id'] == null ? '' : json['id'],
-        json['username'] == null ? '' : json['username'],
-        json['first_name'] == null ? '' : json['first_name'],
-        json['last_name'] == null ? '' : json['last_name'],
+        json.parseValueAsString('id'),
+        json.parseValueAsString('username'),
+        json.parseValueAsString('first_name'),
+        json.parseValueAsString('last_name'),
       );
 
   @override

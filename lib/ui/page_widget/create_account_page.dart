@@ -59,6 +59,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         () => InputTextField(
                           inputTitle: 'txt_username'.tr,
                           controller: controller.usernameController,
+                          hintText: 'txt_username_hint'.tr,
                           obscureText: false,
                           errorText: controller.validationRx.value['username'],
                         ),
@@ -92,28 +93,28 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         children: [
                           Obx(
                             () => Checkbox(
-                              value: controller.termsOfServiceCheck.value,
+                              value: controller.termsOfUseCheck.value,
                               onChanged: (value) {
-                                controller.termsOfServiceCheck.toggle();
+                                controller.termsOfUseCheck.toggle();
                               },
                             ),
                           ),
                           Flexible(
                             child: RichText(
                               text: TextSpan(
-                                text: 'txt_terms_of_service_description'.tr,
+                                text: 'txt_terms_description'.tr,
                                 style: textTheme.bodyText1!.copyWith(
                                     fontWeight: FontWeight.w400,
                                     color: SatorioColor.textBlack),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: 'txt_terms_of_service'.tr,
+                                    text: 'txt_terms'.tr,
                                     style: textTheme.bodyText1!.copyWith(
                                         fontWeight: FontWeight.w500,
                                         color: SatorioColor.interactive),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        controller.toTermsOfService();
+                                        controller.toTermsOfUse();
                                       },
                                   ),
                                 ],
@@ -128,7 +129,11 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                       Obx(
                         () => ElevatedGradientButton(
                           text: 'txt_create_account'.tr,
-                          isEnabled: controller.termsOfServiceCheck.value,
+                          isEnabled: controller.termsOfUseCheck.value &&
+                              controller.emailRx.value.isNotEmpty &&
+                              controller.passwordRx.value.isNotEmpty &&
+                              controller.usernameRx.value.isNotEmpty,
+                          isInProgress: controller.isRequested.value,
                           onPressed: () {
                             controller.createAccount();
                           },

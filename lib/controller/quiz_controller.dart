@@ -6,6 +6,7 @@ import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
 import 'package:satorio/controller/quiz_result_controller.dart';
+import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
@@ -30,7 +31,7 @@ class QuizController extends GetxController {
   QuizController() {
     QuizArgument argument = Get.arguments as QuizArgument;
     challengeRx = Rx(argument.challenge);
-    _initSocket(argument.challenge.id);
+    _initSocket(argument.socketUrl);
   }
 
   @override
@@ -43,12 +44,11 @@ class QuizController extends GetxController {
   }
 
   void backToEpisode() {
-    if (Get.isRegistered<SatorioRepository>()) {
-      SatorioRepository satorioRepository = Get.find();
-      satorioRepository.updateWalletBalance();
-    }
+    _satorioRepository.updateWalletBalance();
     Get.until((route) => !Get.isOverlaysOpen);
-    Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+    if (Get.isRegistered<ShowEpisodeRealmController>()) {
+      Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+    }
   }
 
   void back() {
@@ -59,8 +59,8 @@ class QuizController extends GetxController {
     return _satorioRepository.sendAnswer(_socket, questionId, answerId);
   }
 
-  void _initSocket(String challengeId) async {
-    _socket = await _satorioRepository.createQuizSocket(challengeId);
+  void _initSocket(String socketUrl) async {
+    _socket = await _satorioRepository.createQuizSocket(socketUrl);
 
     _socket?.onOpen(() {
       print('Socket onOpen ${_socket?.url}');
@@ -155,7 +155,7 @@ class QuizController extends GetxController {
           'txt_wrong_answer'.tr,
           'txt_back_realm'.tr,
           icon: Icons.sentiment_dissatisfied_rounded,
-          onPressed: () {
+          onButtonPressed: () {
             backToEpisode();
           },
         ),
@@ -183,6 +183,7 @@ class QuizController extends GetxController {
 
 class QuizArgument {
   final Challenge challenge;
+  final String socketUrl;
 
-  const QuizArgument(this.challenge);
+  const QuizArgument(this.challenge, this.socketUrl);
 }

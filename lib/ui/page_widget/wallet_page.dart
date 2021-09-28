@@ -183,6 +183,7 @@ class WalletPage extends GetView<WalletController> {
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
                     separatorBuilder: (context, index) => Divider(
+                      color: Colors.black.withOpacity(0.1),
                       height: 1,
                     ),
                     itemCount: controller.walletDetailsRx.value.length > 0

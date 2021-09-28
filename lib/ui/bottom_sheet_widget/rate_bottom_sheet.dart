@@ -14,12 +14,14 @@ class RateBottomSheet extends StatelessWidget {
   RateBottomSheet(
     this.onRate, {
     Key? key,
+    this.isZeroSeason = false,
   }) : super(key: key);
 
   static const int minValue = 1;
   static const int maxValue = 10;
   static const int initValue = 7;
 
+  final bool isZeroSeason;
   final RateCallback onRate;
   final RxInt rateRx = initValue.obs;
 
@@ -30,9 +32,7 @@ class RateBottomSheet extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 18),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(32),
-        ),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         color: Colors.white,
       ),
       child: Column(
@@ -54,7 +54,9 @@ class RateBottomSheet extends StatelessWidget {
                     width: 12 * coefficient,
                   ),
                   Text(
-                    'txt_rate_episode'.tr,
+                    isZeroSeason
+                        ? 'txt_rate_content'.tr
+                        : 'txt_rate_episode'.tr,
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 13 * coefficient,
@@ -70,6 +72,7 @@ class RateBottomSheet extends StatelessWidget {
           ),
           Divider(
             color: Colors.black.withOpacity(0.1),
+            height: 1,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 32 * coefficient),
@@ -95,7 +98,7 @@ class RateBottomSheet extends StatelessWidget {
             height: 32 * coefficient,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: paddingH),
+            padding: EdgeInsets.symmetric(horizontal: 6),
             child: Obx(
               () => Slider(
                 onChanged: (value) {

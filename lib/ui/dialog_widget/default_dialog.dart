@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart' show Get, GetNavigation;
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
 
 class DefaultDialog extends StatelessWidget {
-  const DefaultDialog(this.title, this.text, this.buttonText,
-      {this.onPressed, this.icon});
+  const DefaultDialog(
+    this.title,
+    this.text,
+    this.buttonText, {
+    this.onButtonPressed,
+    this.icon,
+    this.secondaryButtonText,
+    this.onSecondaryButtonPressed,
+  });
 
   final String title;
   final String text;
   final String buttonText;
-  final VoidCallback? onPressed;
+
   final IconData? icon;
+  final VoidCallback? onButtonPressed;
+  final String? secondaryButtonText;
+  final VoidCallback? onSecondaryButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +77,24 @@ class DefaultDialog extends StatelessWidget {
             SizedBox(height: 16),
             ElevatedGradientButton(
               text: buttonText,
-              onPressed: onPressed,
+              onPressed: () {
+                Get.back();
+                onButtonPressed?.call();
+              },
             ),
+            if (secondaryButtonText != null && secondaryButtonText!.isNotEmpty)
+              SizedBox(height: 8),
+            if (secondaryButtonText != null && secondaryButtonText!.isNotEmpty)
+              BorderedButton(
+                text: secondaryButtonText!,
+                onPressed: () {
+                  Get.back();
+                  onSecondaryButtonPressed?.call();
+                },
+                textColor: SatorioColor.interactive,
+                borderColor: SatorioColor.interactive,
+                borderWidth: 2,
+              ),
           ],
         ),
       ),
