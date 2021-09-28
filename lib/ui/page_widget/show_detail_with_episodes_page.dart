@@ -28,16 +28,22 @@ class ShowDetailWithEpisodesPage
       body: Stack(
         children: [
           Obx(
-            () => CachedNetworkImage(
-              imageUrl: controller.showDetailRx.value?.cover ?? '',
-              cacheKey: controller.showDetailRx.value?.cover ?? '',
-              width: Get.width,
-              height: Get.mediaQuery.padding.top + appBarHeight + 32,
-              fit: BoxFit.cover,
-              errorWidget: (context, url, error) => Container(
-                color: SatorioColor.darkAccent,
-              ),
-            ),
+            () => controller.showDetailRx.value == null
+                ? Container(
+                    width: Get.width,
+                    height: Get.mediaQuery.padding.top + appBarHeight + 32,
+                    color: SatorioColor.darkAccent,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: controller.showDetailRx.value!.cover,
+                    cacheKey: controller.showDetailRx.value!.cover,
+                    width: Get.width,
+                    height: Get.mediaQuery.padding.top + appBarHeight + 32,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(
+                      color: SatorioColor.darkAccent,
+                    ),
+                  ),
           ),
           Align(
             alignment: Alignment.centerLeft,
