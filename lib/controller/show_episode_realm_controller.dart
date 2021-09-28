@@ -20,10 +20,10 @@ import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
-import 'package:satorio/ui/dialog_widget/episode_realm_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
@@ -123,8 +123,8 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void toEpisodeRealmDialog() {
-    Get.dialog(
-      EpisodeRealmDialog(
+    Get.bottomSheet(
+      EpisodeRealmBottomSheet(
         onQuizPressed: () {
           _loadQuizQuestion();
         },
@@ -133,6 +133,9 @@ class ShowEpisodeRealmController extends GetxController
         },
         isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
+      isScrollControlled: true,
+      enableDrag: false,
+      barrierColor: Colors.transparent,
     );
   }
 
@@ -153,6 +156,7 @@ class ShowEpisodeRealmController extends GetxController
         },
       ),
       isScrollControlled: true,
+      barrierColor: Colors.transparent,
     );
   }
 
@@ -219,6 +223,7 @@ class ShowEpisodeRealmController extends GetxController
         },
       ),
       isScrollControlled: true,
+      barrierColor: Colors.transparent,
     );
   }
 
