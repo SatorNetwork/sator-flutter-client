@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -130,12 +131,13 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     return Stack(
       children: [
         Obx(
-          () => Image.network(
-            controller.showEpisodeRx.value.cover,
-            height: bodyHeight + 24,
+          () => CachedNetworkImage(
+            imageUrl: controller.showEpisodeRx.value.cover,
+            cacheKey: controller.showEpisodeRx.value.cover,
             width: Get.width,
+            height: bodyHeight + 24,
             fit: BoxFit.cover,
-            errorBuilder: (context, error, stackTrace) => Container(
+            errorWidget: (context, url, error) => Container(
               color: SatorioColor.darkAccent,
             ),
           ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,12 +28,13 @@ class ShowDetailWithEpisodesPage
       body: Stack(
         children: [
           Obx(
-            () => Image.network(
-              controller.showDetailRx.value?.cover ?? '',
-              height: Get.mediaQuery.padding.top + appBarHeight + 32,
+            () => CachedNetworkImage(
+              imageUrl: controller.showDetailRx.value?.cover ?? '',
+              cacheKey: controller.showDetailRx.value?.cover ?? '',
               width: Get.width,
+              height: Get.mediaQuery.padding.top + appBarHeight + 32,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
+              errorWidget: (context, url, error) => Container(
                 color: SatorioColor.darkAccent,
               ),
             ),
@@ -309,10 +311,11 @@ class ShowDetailWithEpisodesPage
             fit: StackFit.passthrough,
             children: [
               Container(
-                child: Image(
-                  image: NetworkImage(showEpisode.cover),
+                child: CachedNetworkImage(
+                  imageUrl: showEpisode.cover,
+                  cacheKey: showEpisode.cover,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  errorWidget: (context, url, error) => Container(
                     color: SatorioColor.grey,
                   ),
                 ),

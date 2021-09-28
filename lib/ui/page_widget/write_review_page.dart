@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,6 +17,8 @@ import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/smile_list.dart';
 
 class WriteReviewPage extends GetView<WriteReviewController> {
+  final double bodyHeight = max(0.3 * Get.height, 220);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,11 +85,13 @@ class WriteReviewPage extends GetView<WriteReviewController> {
         child: Stack(
           children: [
             Obx(
-              () => Image.network(
-                controller.showEpisodeRx.value.cover,
-                height: max(0.3 * Get.height, 220) + 24,
+              () => CachedNetworkImage(
+                imageUrl: controller.showEpisodeRx.value.cover,
+                cacheKey: controller.showEpisodeRx.value.cover,
+                width: Get.width,
+                height: bodyHeight + 24,
                 fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
+                errorWidget: (context, url, error) => Container(
                   color: SatorioColor.darkAccent,
                 ),
               ),
