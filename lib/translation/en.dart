@@ -172,6 +172,7 @@ const Map<String, String> en = {
   'txt_realm_expiring': 'Realm is expiring!',
   'txt_realm_extend_success': 'Realm extended %d hours',
   'txt_or': 'or',
+  'txt_realm_unlocked': 'Realm unlocked!',
   'txt_unlock_the_realm': 'Unlock the realm',
   'txt_where_can_watch': 'Where can I watch?',
   'txt_is_live_on': 'is currently live on',

@@ -24,6 +24,7 @@ import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
@@ -238,15 +239,10 @@ class ShowEpisodeRealmController extends GetxController
         activationRx.value = episodeActivation;
         if (episodeActivation.isActive) {
           Get.bottomSheet(
-            DefaultBottomSheet(
-              'txt_success'.tr,
-              'txt_realm_extend_success'.tr.format([paidOption.hours]),
-              'txt_awesome'.tr,
-              icon: Icons.check_rounded,
-              onPressed: () {
-                Get.back();
-              },
-            ),
+            RealmUnlockBottomSheet(),
+            isScrollControlled: true,
+            barrierColor: Colors.transparent,
+            enableDrag: false,
           );
         }
       },
