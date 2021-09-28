@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/avatar_list.dart';
 import '../../util/avatar_list.dart';
 import '../theme/light_theme.dart';
@@ -15,16 +16,46 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
   @override
   Widget build(BuildContext context) {
     const double topPanelHeight = 240.0;
+    const double bottomPanelHeight = 114.0;
     return Scaffold(
       backgroundColor: SatorioColor.alice_blue,
       extendBodyBehindAppBar: true,
-      body: Column(
+      body: Stack(
         children: [
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: _bottomButton(),
+          ),
           _topPanel(),
           Container(
-              height: Get.height - (topPanelHeight * coefficient),
+              padding: EdgeInsets.only(
+                  top: topPanelHeight * coefficient,
+                  bottom: bottomPanelHeight * coefficient),
               child: SingleChildScrollView(child: _avatarsList()))
         ],
+      ),
+    );
+  }
+
+  Widget _bottomButton() {
+    const double bottomPanelHeight = 114.0;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 32),
+      height: bottomPanelHeight * coefficient,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(32)),
+          color: Colors.white),
+      child: Center(
+        child: Obx(
+          () => ElevatedGradientButton(
+            text: 'txt_looks_good_simple'.tr,
+            isEnabled: controller.avatarRx.value != null,
+            onPressed: () {
+              controller.saveAvatar();
+
+            },
+          ),
+        ),
       ),
     );
   }
@@ -38,7 +69,6 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
         scrollDirection: Axis.vertical,
         gridDelegate:
             SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
-        // physics: AlwaysScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: avatars.length,
         itemBuilder: (_, index) => _avatar(index),
@@ -85,11 +115,13 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
           Row(
             children: [
               Obx(
-              () => ClipRRect(
+                () => ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: Center(
                       child: SvgPicture.asset(
-                        controller.avatarRx.value!,
+                        controller.avatarRx.value != null
+                            ? controller.avatarRx.value!
+                            : 'images/null_avatar.svg',
                         height: 64 * coefficient,
                         width: 64 * coefficient,
                       ),
@@ -98,12 +130,14 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
               SizedBox(
                 width: 24 * coefficient,
               ),
-              Text(
-                controller.userName!,
-                style: textTheme.bodyText1!.copyWith(
-                    color: Colors.black,
-                    fontSize: 18.0 * coefficient,
-                    fontWeight: FontWeight.w400),
+              Obx(
+                () => Text(
+                  controller.profileRx.value?.displayedName ?? '',
+                  style: textTheme.bodyText1!.copyWith(
+                      color: Colors.black,
+                      fontSize: 18.0 * coefficient,
+                      fontWeight: FontWeight.w400),
+                ),
               ),
             ],
           ),

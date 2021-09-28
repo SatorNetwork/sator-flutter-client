@@ -27,6 +27,8 @@ abstract class SatorioRepository {
 
   Future<bool> isVerified();
 
+  Future<bool> selectAvatar(String avatarPath);
+
   Future<bool> resendCode();
 
   Future<bool> forgotPassword(String email);
