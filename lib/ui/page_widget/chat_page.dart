@@ -11,6 +11,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class ChatPage extends GetView<ChatController> {
   @override
@@ -259,6 +260,7 @@ class ChatPage extends GetView<ChatController> {
 
   Widget _getMessageList() {
     ScrollController _controller = ScrollController();
+
     return FirebaseAnimatedList(
       controller: _controller,
       shrinkWrap: true,
@@ -267,7 +269,24 @@ class ChatPage extends GetView<ChatController> {
         final json = snapshot.value as Map<dynamic, dynamic>;
         final message = MessageModel.fromJson(json);
         Color color = _colors[index % _colors.length];
-        return _showMessage(message, color);
+
+        if (message.createdAt!.microsecondsSinceEpoch >
+            controller.testStamp!.microsecondsSinceEpoch) {
+          print('error');
+          controller.scrollController.animateTo(2 * index.toDouble(),
+              duration: Duration(milliseconds: 100), curve: Curves.ease);
+        }
+
+        return VisibilityDetector(
+            key: Key('${message.createdAt}'),
+            onVisibilityChanged: (VisibilityInfo info) {
+              if (info.visibleFraction == 1.0 &&
+                  controller.testStamp!.microsecondsSinceEpoch <
+                      message.createdAt!.microsecondsSinceEpoch) {
+                controller.saveMessageSeen(message.createdAt!);
+              }
+            },
+            child: _showMessage(message, color));
       },
     );
   }

@@ -7,6 +7,7 @@ import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/data/model/message_model.dart';
+import 'package:satorio/domain/entities/last_seen.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -28,7 +29,10 @@ class ChatController extends GetxController with BackToMainMixin {
   late final DatabaseReference _timestampsRef;
   late Rx<bool> isMessagesRx = Rx(false);
   late Profile profile;
+  late LastSeen lastSeen;
+  DateTime? testStamp;
 
+  //TODO: refactor
   static const String DATABASE_URL = 'https://sator-f44d6-timestamp.firebaseio.com/';
 
   bool canSendMessage() => messageController.text.length > 0;
@@ -60,6 +64,14 @@ class ChatController extends GetxController with BackToMainMixin {
         .child(profile.id).child(argument.showEpisode.id);
 
     //TODO: refactor
+    _timestampsRef.once().then((DataSnapshot snapshot) {
+      final json = snapshot.value as Map<dynamic, dynamic>;
+      lastSeen = LastSeenModel.fromJson(json);
+      testStamp = lastSeen.timestamp!;
+      print('testStamp - $testStamp');
+    });
+
+    //TODO: refactor
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
     });
@@ -69,9 +81,13 @@ class ChatController extends GetxController with BackToMainMixin {
     return _messagesRef;
   }
 
+  void saveMessageSeen(DateTime time) {
+    testStamp = time;
+    print(testStamp);
+  }
+
   void saveTimestamp() {
-    print('saveTimestamp');
-    _timestampsRef.push().set(LastSeenModel(DateTime.now()).toJson());
+    _timestampsRef.set(LastSeenModel(testStamp).toJson());
   }
 
   void back() {
