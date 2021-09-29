@@ -36,7 +36,9 @@ class ProfilePage extends GetView<ProfileController> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: InkWell(
-                        onTap: () => {},
+                        onTap: () => {
+                          controller.toSelectAvatar()
+                        },
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16 * coefficient),
                           child: Obx(
