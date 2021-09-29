@@ -172,14 +172,20 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
-  void checkActivation() {
+  void checkActivation({bool showUnlock = false}) {
     _satorioRepository
         .isEpisodeActivated(showEpisodeRx.value.id)
         .then((EpisodeActivation episodeActivation) {
       activationRx.value = episodeActivation;
-      if (episodeActivation.isActive &&
-          episodeActivation.leftTimeInHours() < 2) {
-        toRealmExpiringBottomSheet();
+      if (showUnlock) {
+        if (episodeActivation.isActive) {
+          _toUnlockBottomSheet();
+        }
+      } else {
+        if (episodeActivation.isActive &&
+            episodeActivation.leftTimeInHours() < 2) {
+          toRealmExpiringBottomSheet();
+        }
       }
     });
   }
@@ -212,7 +218,7 @@ class ShowEpisodeRealmController extends GetxController
     );
 
     if (result != null && result is bool) {
-      checkActivation();
+      checkActivation(showUnlock: true);
     }
   }
 
@@ -238,14 +244,18 @@ class ShowEpisodeRealmController extends GetxController
       (EpisodeActivation episodeActivation) {
         activationRx.value = episodeActivation;
         if (episodeActivation.isActive) {
-          Get.bottomSheet(
-            RealmUnlockBottomSheet(),
-            isScrollControlled: true,
-            barrierColor: Colors.transparent,
-            enableDrag: false,
-          );
+          _toUnlockBottomSheet();
         }
       },
+    );
+  }
+
+  void _toUnlockBottomSheet() {
+    Get.bottomSheet(
+      RealmUnlockBottomSheet(),
+      isScrollControlled: true,
+      barrierColor: Colors.transparent,
+      enableDrag: false,
     );
   }
 
