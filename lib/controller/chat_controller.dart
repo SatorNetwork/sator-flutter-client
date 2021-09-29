@@ -63,17 +63,21 @@ class ChatController extends GetxController with BackToMainMixin {
         .reference()
         .child(profile.id).child(argument.showEpisode.id);
 
-    //TODO: refactor
-    _timestampsRef.once().then((DataSnapshot snapshot) {
-      final json = snapshot.value as Map<dynamic, dynamic>;
-      lastSeen = LastSeenModel.fromJson(json);
-      testStamp = lastSeen.timestamp!;
-      print('testStamp - $testStamp');
-    });
+    _getTimestamp();
 
     //TODO: refactor
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
+    });
+  }
+
+  Future _getTimestamp() async {
+    //TODO: refactor
+    await _timestampsRef.once().then((DataSnapshot snapshot) {
+      final json = snapshot.value as Map<dynamic, dynamic>;
+      lastSeen = LastSeenModel.fromJson(json);
+      testStamp = lastSeen.timestamp!;
+      print('testStamp - $testStamp');
     });
   }
 
