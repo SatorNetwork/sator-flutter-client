@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/main_binding.dart';
-import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 
@@ -11,7 +11,7 @@ import 'package:satorio/ui/page_widget/main_page.dart';
 
 import '../util/avatar_list.dart';
 
-class SelectAvatarController extends GetxController {
+class SelectAvatarController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<String?> avatarRx = Rx(null);
@@ -45,10 +45,7 @@ class SelectAvatarController extends GetxController {
             break;
           case SelectAvatarType.settings:
             avatarRx.value = null;
-            Get.to(
-                  () => MainPage(),
-              binding: MainBinding(),
-            );
+            backToMain();
             break;
         }
         _satorioRepository.updateProfile();
@@ -58,17 +55,6 @@ class SelectAvatarController extends GetxController {
     }).catchError((value) {
       avatarRx.value = null;
     });
-  }
-
-  void _toProfile() {
-    _toTab(MainController.TabProfile);
-  }
-
-  void _toTab(int mainPageTab) {
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      mainController.selectedBottomTabIndex.value = mainPageTab;
-    }
   }
 
   @override
