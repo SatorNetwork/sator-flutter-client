@@ -64,11 +64,15 @@ class HomePage extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                           child: Center(
-                                            child: SvgPicture.asset(
-                                              controller.profileRx.value?.avatarPath ?? '',
-                                              width: 50,
-                                              height: 50,
-                                              fit: BoxFit.fitWidth,
+                                            child: Obx(
+                                              () => SvgPicture.asset(
+                                                controller.profileRx.value
+                                                        ?.avatarPath ??
+                                                    '',
+                                                width: 50,
+                                                height: 50,
+                                                fit: BoxFit.fitWidth,
+                                              ),
                                             ),
                                           ),
                                         ),

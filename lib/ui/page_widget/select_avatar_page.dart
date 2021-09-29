@@ -52,7 +52,6 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
             isEnabled: controller.avatarRx.value != null,
             onPressed: () {
               controller.saveAvatar();
-
             },
           ),
         ),
@@ -118,13 +117,17 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
                 () => ClipRRect(
                     borderRadius: BorderRadius.circular(12.0),
                     child: Center(
-                      child: SvgPicture.asset(
-                        controller.avatarRx.value != null
-                            ? controller.avatarRx.value!
-                            : 'images/null_avatar.svg',
-                        height: 64 * coefficient,
-                        width: 64 * coefficient,
-                      ),
+                      child: controller.avatarRx.value != null
+                          ? SvgPicture.asset(
+                              controller.avatarRx.value!,
+                              height: 64 * coefficient,
+                              width: 64 * coefficient,
+                            )
+                          : Image.asset(
+                              'images/null_avatar.png',
+                              height: 64 * coefficient,
+                              width: 64 * coefficient,
+                            ),
                     )),
               ),
               SizedBox(

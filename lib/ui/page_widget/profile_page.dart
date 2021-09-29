@@ -39,11 +39,13 @@ class ProfilePage extends GetView<ProfileController> {
                         onTap: () => {},
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16 * coefficient),
-                          child: SvgPicture.asset(
-                            controller.profileRx.value?.avatarPath ?? '',
-                            width: 72 * coefficient,
-                            height: 72 * coefficient,
-                            fit: BoxFit.fitWidth,
+                          child: Obx(
+                            () => SvgPicture.asset(
+                              controller.profileRx.value?.avatarPath ?? '',
+                              width: 72 * coefficient,
+                              height: 72 * coefficient,
+                              fit: BoxFit.fitWidth,
+                            ),
                           ),
                         ),
                       ),
