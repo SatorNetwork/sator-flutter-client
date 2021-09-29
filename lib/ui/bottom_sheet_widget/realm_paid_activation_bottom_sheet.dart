@@ -123,7 +123,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                   ),
                   Obx(
                     () => ElevatedGradientButton(
-                      text: 'txt_unlock_by_sao'.tr,
+                      text: 'txt_unlock_sao'.tr,
                       isEnabled: _selectedPaidOptionRx.value != null,
                       onPressed: () {
                         Get.back();
