@@ -29,6 +29,7 @@ class RealmUnlockBottomSheet extends GetWidget {
                 children: [
                   Lottie.asset(
                     'lottie-anim/realm-unlock.json',
+                    repeat: false,
                     width: Get.width * 0.8,
                     onLoaded: (composition) {
                       Future.delayed(composition.duration, () {
