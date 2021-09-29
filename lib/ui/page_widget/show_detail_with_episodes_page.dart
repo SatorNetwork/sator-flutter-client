@@ -250,11 +250,9 @@ class ShowDetailWithEpisodesPage
                   () => SliverPersistentHeader(
                     pinned: true,
                     delegate: _SliverAppBarDelegate(
-                        controller,
-                        _tabBarHeight(),
-                        _isSingleZeroSeason()
-                            ? 'txt_realms'.tr
-                            : 'txt_episodes'.tr),
+                      controller,
+                      _tabBarHeight(),
+                    ),
                   ),
                 ),
                 SliverFillRemaining(
@@ -384,24 +382,25 @@ class ShowDetailWithEpisodesPage
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this.controller, this.tabBarHeight, this.title);
+  _SliverAppBarDelegate(this.controller, this.tabBarHeight);
 
   final ShowDetailWithEpisodesController controller;
   final double tabBarHeight;
-  final String title;
 
   @override
-  double get minExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
+  double get minExtent => tabBarHeight + 32 + 16 + 60 * coefficient;
 
   @override
-  double get maxExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
+  double get maxExtent => tabBarHeight + 32 + 16 + 60 * coefficient;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(32),
+        ),
         color: Colors.white,
       ),
       child: Column(
@@ -419,14 +418,40 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 top: 32,
                 bottom: 16,
               ),
-              child: Text(
-                title,
-                textAlign: TextAlign.start,
-                style: textTheme.headline3!.copyWith(
-                  color: SatorioColor.textBlack,
-                  fontSize: 28 * coefficient,
-                  fontWeight: FontWeight.w700,
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(
+                    () => Text(
+                      controller.showDetailRx.value?.realmTitle ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: textTheme.headline3!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 28 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 8 * coefficient,
+                  ),
+                  Obx(
+                        () => Text(
+                      controller.showDetailRx.value?.realmSubtitle ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
