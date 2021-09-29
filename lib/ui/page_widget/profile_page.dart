@@ -40,7 +40,7 @@ class ProfilePage extends GetView<ProfileController> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16 * coefficient),
                           child: SvgPicture.asset(
-                            avatars[avatarIndex],
+                            controller.profileRx.value?.avatarPath ?? '',
                             width: 72 * coefficient,
                             height: 72 * coefficient,
                             fit: BoxFit.fitWidth,

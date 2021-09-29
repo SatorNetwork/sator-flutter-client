@@ -65,7 +65,7 @@ class HomePage extends GetView<HomeController> {
                                               BorderRadius.circular(12.0),
                                           child: Center(
                                             child: SvgPicture.asset(
-                                              avatars[avatarIndex],
+                                              controller.profileRx.value?.avatarPath ?? '',
                                               width: 50,
                                               height: 50,
                                               fit: BoxFit.fitWidth,

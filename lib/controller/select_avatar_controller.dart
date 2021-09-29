@@ -24,7 +24,6 @@ class SelectAvatarController extends GetxController {
 
   void setAvatar(int index) {
     avatarRx.value = avatars[index];
-    print(avatarRx.value);
   }
 
   void saveAvatar() {
