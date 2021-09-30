@@ -6,6 +6,9 @@ class ShowDetail {
   final String category;
   final String description;
   final int claps;
+  final String realmTitle;
+  final String realmSubtitle;
+  final String watchUrl;
 
   const ShowDetail(
     this.id,
@@ -15,5 +18,8 @@ class ShowDetail {
     this.category,
     this.description,
     this.claps,
+    this.realmTitle,
+    this.realmSubtitle,
+    this.watchUrl,
   );
 }

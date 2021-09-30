@@ -94,6 +94,7 @@ class ProfilePage extends GetView<ProfileController> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          controller.toNonWorkingFeatureDialog();
                           //TODO: uncomment
                           // controller.getReferralCode();
                         },

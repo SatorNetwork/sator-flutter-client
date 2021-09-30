@@ -11,6 +11,9 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
     category,
     description,
     int claps,
+    String realmTitle,
+    String realmSubtitle,
+    String watchUrl,
   ) : super(
           id,
           title,
@@ -19,6 +22,9 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
           category,
           description,
           claps,
+          realmTitle,
+          realmSubtitle,
+          watchUrl,
         );
 
   factory ShowDetailModel.fromJson(Map json) => ShowDetailModel(
@@ -29,6 +35,9 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
         json.parseValueAsString('category'),
         json.parseValueAsString('description'),
         json.parseValueAsInt('claps'),
+        json.parseValueAsString('realms_title'),
+        json.parseValueAsString('realms_subtitle'),
+        json.parseValueAsString('watch'),
       );
 
   @override
@@ -40,5 +49,8 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
         'category': category,
         'description': description,
         'claps': claps,
+        'realms_title': realmTitle,
+        'realms_subtitle': realmSubtitle,
+        'watch': watchUrl,
       };
 }

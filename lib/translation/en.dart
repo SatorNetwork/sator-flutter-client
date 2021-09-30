@@ -133,7 +133,9 @@ const Map<String, String> en = {
   'txt_dividends': 'Dividends',
   'txt_number': 'Number',
   'txt_current': 'Current',
-  'txt_non_working_feature': 'Will be available in future releases. Stand by!',
+  'txt_coming_soon': 'Coming Soon',
+  'txt_non_working_feature':
+      'This feature will be available in upcoming releases.',
   'txt_choose_your_destination_wallet': 'Choose your destination wallet',
   'txt_choose_your_source_wallet': 'Choose your source wallet',
   'txt_activity': 'Activity',
