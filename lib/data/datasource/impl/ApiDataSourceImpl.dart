@@ -36,6 +36,7 @@ import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/paid_unlock_request.dart';
 import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
+import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
@@ -84,6 +85,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     return await _getConnect.post(path, request.toJson(), query: query).then(
           (Response response) => _processResponse(response),
         );
+  }
+
+  Future<Response> _requestPut(
+      String path,
+      ToJsonInterface request, {
+        Map<String, dynamic>? query,
+      }) async {
+    return await _getConnect.put(path, request.toJson(), query: query).then(
+          (Response response) => _processResponse(response),
+    );
   }
 
   Future<Response> _requestPatch(
@@ -237,6 +248,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<bool> isVerified() {
     return _requestGet(
       'auth/is-verified',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> selectAvatar(String avatarPath) {
+    return _requestPut(
+      'profile/avatar',
+      SelectAvatarRequest(avatarPath),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

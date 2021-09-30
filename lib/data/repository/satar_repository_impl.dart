@@ -110,6 +110,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> selectAvatar(String avatarPath) {
+    return _apiDataSource
+        .selectAvatar(avatarPath)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<bool> resendCode() {
     return _apiDataSource
         .resendCode()

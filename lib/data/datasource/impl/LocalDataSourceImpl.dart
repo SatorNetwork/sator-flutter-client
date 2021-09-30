@@ -34,11 +34,28 @@ class LocalDataSourceImpl implements LocalDataSource {
     Hive.registerAdapter(WalletDetailAdapter());
     Hive.registerAdapter(TransactionAdapter());
 
+    try {
+      await _open();
+    } catch (HiveError) {
+      await _delete();
+      await _open();
+    }
+  }
+
+  Future<void> _open() async {
     await Hive.openBox<Profile>(_profileBox);
     await Hive.openBox<AmountCurrency>(_walletBalanceBox);
     await Hive.openBox<Wallet>(_walletBox);
     await Hive.openBox<WalletDetail>(_walletDetailBox);
     await Hive.openBox<Transaction>(_transactionBox);
+  }
+
+  Future<void> _delete() async {
+    await Hive.deleteBoxFromDisk(_profileBox);
+    await Hive.deleteBoxFromDisk(_walletBalanceBox);
+    await Hive.deleteBoxFromDisk(_walletBox);
+    await Hive.deleteBoxFromDisk(_walletDetailBox);
+    await Hive.deleteBoxFromDisk(_transactionBox);
   }
 
   @override

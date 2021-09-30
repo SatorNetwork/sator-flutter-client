@@ -197,8 +197,10 @@ const Map<String, String> en = {
   'txt_submit': 'Submit',
   'txt_looks_bad': 'So-so - Need to edit',
   'txt_looks_good': 'Looks good - Send it',
+  'txt_looks_good_simple': 'Looks good!',
   'txt_attempts_left': 'Attempts left',
   'txt_you_earned': 'You earned',
   'txt_your_email': 'your email',
   'txt_register_success': 'User %s was successfully registered',
+  'txt_select_avatar': 'Select avatar',
 };
