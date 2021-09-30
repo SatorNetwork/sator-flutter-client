@@ -57,7 +57,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
       () => WebPage(),
       binding: WebBinding(),
       arguments: WebArgument(
-        'https://backoffice.dev.sator.io/legal/terms-of-use',
+        'https://backoffice.sator.io/legal/terms-of-use',
       ),
     );
   }
