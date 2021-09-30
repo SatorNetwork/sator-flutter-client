@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -43,11 +44,13 @@ class QrResultShowPage extends GetView<QrResultShowController> {
                       height: 400 * coefficient,
                       width: Get.width - 40,
                       child: Obx(
-                        () => Image.network(
-                          controller.showRx.value.cover,
+                        () => CachedNetworkImage(
+                          imageUrl: controller.showRx.value.cover,
+                          cacheKey: controller.showRx.value.cover,
+                          width: Get.width - 40,
+                          height: 400 * coefficient,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              Container(
+                          errorWidget: (context, url, error) => Container(
                             color: Colors.white,
                           ),
                         ),

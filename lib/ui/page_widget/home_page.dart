@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -63,11 +64,15 @@ class HomePage extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                           child: Center(
-                                            child: SvgPicture.asset(
-                                              avatars[avatarIndex],
-                                              width: 50,
-                                              height: 50,
-                                              fit: BoxFit.fitWidth,
+                                            child: Obx(
+                                              () => SvgPicture.asset(
+                                                controller.profileRx.value
+                                                        ?.avatarPath ??
+                                                    '',
+                                                width: 50,
+                                                height: 50,
+                                                fit: BoxFit.fitWidth,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -301,12 +306,13 @@ class HomePage extends GetView<HomeController> {
           height: height,
           child: Stack(
             children: [
-              Image(
+              CachedNetworkImage(
+                imageUrl: show.cover,
+                cacheKey: show.cover,
                 width: width,
                 height: height,
                 fit: BoxFit.cover,
-                image: NetworkImage(show.cover),
-                errorBuilder: (context, error, stackTrace) => Container(
+                errorWidget: (context, url, error) => Container(
                   color: SatorioColor.grey,
                 ),
               ),

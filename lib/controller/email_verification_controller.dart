@@ -3,10 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:satorio/binding/main_binding.dart';
+import 'package:satorio/binding/select_avatar_binding.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
+import 'package:satorio/controller/select_avatar_controller.dart';
+import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/page_widget/main_page.dart';
+import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 
 class EmailVerificationController extends GetxController with ValidationMixin {
   static const Duration _defaultDelay = Duration(minutes: 1);
@@ -46,10 +48,9 @@ class EmailVerificationController extends GetxController with ValidationMixin {
     _satorioRepository.verifyAccount(codeController.text).then(
       (isSuccess) {
         if (isSuccess) {
-          Get.offAll(
-            () => MainPage(),
-            binding: MainBinding(),
-          );
+          Get.offAll(() => SelectAvatarPage(),
+              binding: SelectAvatarBinding(),
+              arguments: SelectAvatarArgument(SelectAvatarType.registration));
         } else {
           codeController.clear();
         }

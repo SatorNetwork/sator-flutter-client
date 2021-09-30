@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/util/extension.dart';
 
 class ChatPage extends GetView<ChatController> {
+  final double bodyHeight = max(0.3 * Get.height, 220);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,14 +90,16 @@ class ChatPage extends GetView<ChatController> {
           child: Stack(
             children: [
               Obx(
-                () => Image.network(
-                  controller.showEpisodeRx.value.cover,
-                  height: max(0.3 * Get.height, 220) + 24,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    color: SatorioColor.darkAccent,
+                  () => CachedNetworkImage(
+                    imageUrl: controller.showEpisodeRx.value.cover,
+                    cacheKey: controller.showEpisodeRx.value.cover,
+                    width: Get.width,
+                    height: bodyHeight + 24,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(
+                      color: SatorioColor.darkAccent,
+                    ),
                   ),
-                ),
               ),
               Container(
                 height: Get.mediaQuery.padding.top + kToolbarHeight + 20,

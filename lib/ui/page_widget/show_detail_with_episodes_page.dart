@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +20,8 @@ class ShowDetailWithEpisodesPage
       Get.height -
       Get.mediaQuery.padding.top -
       kToolbarHeight -
-      tabsBlockHeight;
+      tabsBlockHeight -
+      (_isSubtitleEmpty() ? 0 : 24 * coefficient);
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +29,22 @@ class ShowDetailWithEpisodesPage
       body: Stack(
         children: [
           Obx(
-            () => Image.network(
-              controller.showDetailRx.value?.cover ?? '',
-              height: Get.mediaQuery.padding.top + appBarHeight + 32,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: SatorioColor.darkAccent,
-              ),
-            ),
+            () => controller.showDetailRx.value == null
+                ? Container(
+                    width: Get.width,
+                    height: Get.mediaQuery.padding.top + appBarHeight + 32,
+                    color: SatorioColor.darkAccent,
+                  )
+                : CachedNetworkImage(
+                    imageUrl: controller.showDetailRx.value!.cover,
+                    cacheKey: controller.showDetailRx.value!.cover,
+                    width: Get.width,
+                    height: Get.mediaQuery.padding.top + appBarHeight + 32,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => Container(
+                      color: SatorioColor.darkAccent,
+                    ),
+                  ),
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -110,128 +120,7 @@ class ShowDetailWithEpisodesPage
                       children: [
                         Align(
                           alignment: Alignment.topLeft,
-                          child: Container(
-                            margin: EdgeInsets.only(top: 214 * coefficient),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    controller.clap();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    primary: Colors.transparent,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 0,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        'images/show/claps.svg',
-                                        width: 22.0 * coefficient,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        height: 6.0 * coefficient,
-                                      ),
-                                      Obx(
-                                        () => Text(
-                                          controller.showDetailRx.value?.claps
-                                                  .toString() ??
-                                              '',
-                                          style: textTheme.subtitle2!.copyWith(
-                                            color: Colors.white,
-                                            fontSize: 15.0 * coefficient,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 23.0 * coefficient,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    primary: Colors.transparent,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 0,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      ImageIcon(
-                                        AssetImage("images/show/nft.png"),
-                                        size: 22.0 * coefficient,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        height: 6.0 * coefficient,
-                                      ),
-                                      Text(
-                                        '325',
-                                        style: textTheme.subtitle2!.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 15.0 * coefficient,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 23.0 * coefficient,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    controller.toNetflixDialog();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    primary: Colors.transparent,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 0,
-                                    ),
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(
-                                        'images/show/watch.svg',
-                                        width: 22.0 * coefficient,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        height: 6.0 * coefficient,
-                                      ),
-                                      Text(
-                                        'Watch',
-                                        style: textTheme.subtitle2!.copyWith(
-                                          color: Colors.white,
-                                          fontSize: 15.0 * coefficient,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          child: _showProperties(),
                         )
                       ],
                     ),
@@ -241,11 +130,10 @@ class ShowDetailWithEpisodesPage
                   () => SliverPersistentHeader(
                     pinned: true,
                     delegate: _SliverAppBarDelegate(
-                        controller,
-                        _tabBarHeight(),
-                        _isSingleZeroSeason()
-                            ? 'txt_realms'.tr
-                            : 'txt_episodes'.tr),
+                      controller,
+                      _tabBarHeight(),
+                      _isSubtitleEmpty(),
+                    ),
                   ),
                 ),
                 SliverFillRemaining(
@@ -272,6 +160,132 @@ class ShowDetailWithEpisodesPage
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _showProperties() {
+    return Container(
+      margin: EdgeInsets.only(top: 214 * coefficient),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              controller.clap();
+            },
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              primary: Colors.transparent,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 0,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'images/show/claps.svg',
+                  width: 22.0 * coefficient,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: 6.0 * coefficient,
+                ),
+                Obx(
+                  () => Text(
+                    controller.showDetailRx.value?.claps.toString() ?? '',
+                    style: textTheme.subtitle2!.copyWith(
+                      color: Colors.white,
+                      fontSize: 15.0 * coefficient,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 23.0 * coefficient,
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              primary: Colors.transparent,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 0,
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ImageIcon(
+                  AssetImage("images/show/nft.png"),
+                  size: 22.0 * coefficient,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: 6.0 * coefficient,
+                ),
+                Text(
+                  '325',
+                  style: textTheme.subtitle2!.copyWith(
+                    color: Colors.white,
+                    fontSize: 15.0 * coefficient,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 23.0 * coefficient,
+          ),
+          Obx(
+            () => (controller.showDetailRx.value?.watchUrl ?? '').isEmpty
+                ? SizedBox(
+                    width: 0,
+                  )
+                : ElevatedButton(
+                    onPressed: () {
+                      controller.watchShow();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      primary: Colors.transparent,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 0,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'images/show/watch.svg',
+                          width: 22.0 * coefficient,
+                          color: Colors.white,
+                        ),
+                        SizedBox(
+                          height: 6.0 * coefficient,
+                        ),
+                        Text(
+                          'Watch',
+                          style: textTheme.subtitle2!.copyWith(
+                            color: Colors.white,
+                            fontSize: 15.0 * coefficient,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
         ],
       ),
     );
@@ -308,10 +322,11 @@ class ShowDetailWithEpisodesPage
             fit: StackFit.passthrough,
             children: [
               Container(
-                child: Image(
-                  image: NetworkImage(showEpisode.cover),
+                child: CachedNetworkImage(
+                  imageUrl: showEpisode.cover,
+                  cacheKey: showEpisode.cover,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
+                  errorWidget: (context, url, error) => Container(
                     color: SatorioColor.grey,
                   ),
                 ),
@@ -371,27 +386,41 @@ class ShowDetailWithEpisodesPage
     return controller.seasonsRx.value.length == 1 &&
         controller.seasonsRx.value[0].seasonNumber == 0;
   }
+
+  bool _isSubtitleEmpty() {
+    return controller.showDetailRx.value?.realmSubtitle.isEmpty ?? true;
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this.controller, this.tabBarHeight, this.title);
+  _SliverAppBarDelegate(
+    this.controller,
+    this.tabBarHeight,
+    this.isSubtitleEmpty,
+  ) {
+    print('_SliverAppBarDelegate');
+  }
 
   final ShowDetailWithEpisodesController controller;
   final double tabBarHeight;
-  final String title;
+  final bool isSubtitleEmpty;
 
   @override
-  double get minExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
+  double get minExtent =>
+      tabBarHeight + 32 + 16 + (isSubtitleEmpty ? 36 : 60) * coefficient;
 
   @override
-  double get maxExtent => tabBarHeight + 32 + 16 + 36 * coefficient;
+  double get maxExtent =>
+      tabBarHeight + 32 + 16 + (isSubtitleEmpty ? 36 : 60) * coefficient;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(32),
+        ),
         color: Colors.white,
       ),
       child: Column(
@@ -409,14 +438,51 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                 top: 32,
                 bottom: 16,
               ),
-              child: Text(
-                title,
-                textAlign: TextAlign.start,
-                style: textTheme.headline3!.copyWith(
-                  color: SatorioColor.textBlack,
-                  fontSize: 28 * coefficient,
-                  fontWeight: FontWeight.w700,
-                ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Obx(
+                    () => Text(
+                      controller.showDetailRx.value?.realmTitle ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: textTheme.headline3!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 28 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => SizedBox(
+                      height:
+                          (controller.showDetailRx.value?.realmSubtitle ?? '')
+                                  .isEmpty
+                              ? 0
+                              : 8 * coefficient,
+                    ),
+                  ),
+                  Obx(
+                    () => (controller.showDetailRx.value?.realmSubtitle ?? '')
+                            .isEmpty
+                        ? SizedBox(
+                            height: 0,
+                          )
+                        : Text(
+                            controller.showDetailRx.value?.realmSubtitle ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 14 * coefficient,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                  ),
+                ],
               ),
             ),
           ),

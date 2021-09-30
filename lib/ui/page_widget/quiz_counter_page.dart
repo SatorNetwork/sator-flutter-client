@@ -12,7 +12,7 @@ class QuizCounterPage extends GetView<QuizCounterController> {
         fit: StackFit.expand,
         children: [
           Obx(
-                () => SvgPicture.asset(
+            () => SvgPicture.asset(
               _assetBackground(controller.countdownRx.value),
               height: Get.height,
               fit: BoxFit.cover,
@@ -21,13 +21,32 @@ class QuizCounterPage extends GetView<QuizCounterController> {
           Align(
             alignment: Alignment.center,
             child: Obx(
-                  () => SvgPicture.asset(
-                _assetCounterImage(controller.countdownRx.value),
-                width: controller.countdownRx.value == 0
-                    ? Get.width
-                    : 0.35 * Get.width,
-                fit: BoxFit.fitWidth,
-              ),
+
+              () => controller.countdownRx.value != 0
+                  ? SvgPicture.asset(
+                      _assetCounterImage(controller.countdownRx.value),
+                      width: 0.35 * Get.width,
+                      fit: BoxFit.fitWidth,
+                    )
+                  : Container(
+                      width: 0.35 * Get.width,
+                      height: 0,
+                    ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Obx(
+              () => controller.countdownRx.value == 0
+                  ? SvgPicture.asset(
+                      _assetCounterImage(controller.countdownRx.value),
+                      width: Get.width,
+                      fit: BoxFit.fitWidth,
+                    )
+                  : Container(
+                      width: Get.width,
+                      height: 0,
+                    ),
             ),
           ),
         ],
@@ -56,5 +75,4 @@ class QuizCounterPage extends GetView<QuizCounterController> {
         return '';
     }
   }
-
 }

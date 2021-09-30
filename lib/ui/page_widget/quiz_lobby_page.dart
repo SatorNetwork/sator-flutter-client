@@ -137,7 +137,9 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
   }
 
   Widget _payloadUserItem(PayloadUser payloadUser, int index) {
-    int avatarIndex = (index + _randomOffset) % avatars.length;
+    String avatarAsset = payloadUser.avatar.isNotEmpty
+        ? payloadUser.avatar
+        : avatars[(index + _randomOffset) % avatars.length];
     return Container(
       height: 48,
       child: Row(
@@ -148,7 +150,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
           ),
           ClipOval(
             child: SvgPicture.asset(
-              avatars[avatarIndex],
+              avatarAsset,
               width: 34,
               height: 34,
               fit: BoxFit.fitWidth,
