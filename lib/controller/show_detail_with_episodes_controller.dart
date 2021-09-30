@@ -8,6 +8,7 @@ import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowDetailWithEpisodesController extends GetxController
     with SingleGetTickerProviderMixin {
@@ -56,14 +57,16 @@ class ShowDetailWithEpisodesController extends GetxController
     Get.back();
   }
 
-  void toNetflixDialog() {
-    // if (showDetailRx.value != null) {
-    //   Get.dialog(
-    //     NetflixDialog(
-    //       showDetailRx.value!.title,
-    //     ),
-    //   );
-    // }
+  void watchShow() async {
+    if (showDetailRx.value != null) {
+      String url = showDetailRx.value!.watchUrl;
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+      //   Get.dialog(
+      //     NetflixDialog(
+      //       showDetailRx.value!.title,
+      //     ),
+      //   );
+    }
   }
 
   void toEpisodeDetail(ShowSeason showSeason, ShowEpisode showEpisode) {
