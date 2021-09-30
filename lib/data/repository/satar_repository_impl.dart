@@ -44,9 +44,6 @@ class SatorioRepositoryImpl implements SatorioRepository {
           'txt_oops'.tr,
           exception.errorMessage,
           'txt_ok'.tr,
-          onPressed: () {
-            Get.back();
-          },
         ),
       );
     } else if (exception is ApiUnauthorizedException) {
@@ -61,14 +58,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _localDataSource
         .clear()
         .then((value) => _apiDataSource.authLogout())
-        .then((value) {
-      Get.offAll(
-        () => LoginPage(),
-        binding: LoginBinding(),
-        arguments: LoginArgument(null),
-      );
-      return;
-    });
+        .then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
+        );
+        return;
+      },
+    );
   }
 
   @override

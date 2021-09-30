@@ -7,8 +7,12 @@ import 'package:satorio/domain/entities/wallet_staking.dart';
 
 class WalletStakeModel extends WalletStake implements ToJsonInterface {
   const WalletStakeModel(
-      WalletStaking? walletStaking, WalletLoyalty? walletLoyalty)
-      : super(walletStaking, walletLoyalty);
+    WalletStaking? walletStaking,
+    WalletLoyalty? walletLoyalty,
+  ) : super(
+          walletStaking,
+          walletLoyalty,
+        );
 
   factory WalletStakeModel.fromJson(Map json) => WalletStakeModel(
         json['staking'] == null

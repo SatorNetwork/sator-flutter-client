@@ -1,13 +1,19 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/payload/payload_answer.dart';
+import 'package:satorio/util/extension.dart';
 
 class PayloadAnswerModel extends PayloadAnswer implements ToJsonInterface {
-  const PayloadAnswerModel(String questionId, String answerId)
-      : super(questionId, answerId);
+  const PayloadAnswerModel(
+    String questionId,
+    String answerId,
+  ) : super(
+          questionId,
+          answerId,
+        );
 
   factory PayloadAnswerModel.fromJson(Map json) => PayloadAnswerModel(
-        json['question_id'] == null ? '' : json['question_id'],
-        json['answer_id'] == null ? '' : json['answer_id'],
+        json.parseValueAsString('question_id'),
+        json.parseValueAsString('answer_id'),
       );
 
   @override

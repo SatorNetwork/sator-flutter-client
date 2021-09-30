@@ -262,7 +262,9 @@ class NFTsPage extends GetView<NFTsController> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TitleWithButton(
-                onTap: () {},
+                onTap: () {
+                  controller.toNonWorkingFeatureDialog();
+                },
                 textCode: 'All Shows',
                 fontSize: 24.0 * coefficient,
                 fontWeight: FontWeight.w700,
@@ -306,7 +308,9 @@ class NFTsPage extends GetView<NFTsController> {
   Widget _showItem(NFTPreview nftPreview) {
     final double width = 125.0;
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        controller.toNonWorkingFeatureDialog();
+      },
       child: Container(
         width: width,
         child: Column(

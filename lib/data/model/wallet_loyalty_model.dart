@@ -1,13 +1,19 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/wallet_loyalty.dart';
+import 'package:satorio/util/extension.dart';
 
 class WalletLoyaltyModel extends WalletLoyalty implements ToJsonInterface {
-  const WalletLoyaltyModel(String levelTitle, String levelSubtitle)
-      : super(levelTitle, levelSubtitle);
+  const WalletLoyaltyModel(
+    String levelTitle,
+    String levelSubtitle,
+  ) : super(
+          levelTitle,
+          levelSubtitle,
+        );
 
   factory WalletLoyaltyModel.fromJson(Map json) => WalletLoyaltyModel(
-        json['level_title'] == null ? '' : json['level_title'],
-        json['level_subtitle'] == null ? '' : json['level_subtitle'],
+        json.parseValueAsString('level_title'),
+        json.parseValueAsString('level_subtitle'),
       );
 
   @override

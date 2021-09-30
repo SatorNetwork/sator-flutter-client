@@ -1,14 +1,22 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/wallet_action.dart';
+import 'package:satorio/util/extension.dart';
 
 class WalletActionModel extends WalletAction implements ToJsonInterface {
-  const WalletActionModel(String type, String name, String url)
-      : super(type, name, url);
+  const WalletActionModel(
+    String type,
+    String name,
+    String url,
+  ) : super(
+          type,
+          name,
+          url,
+        );
 
   factory WalletActionModel.fromJson(Map json) => WalletActionModel(
-        json['type'] == null ? '' : json['type'],
-        json['name'] == null ? '' : json['name'],
-        json['url'] == null ? '' : json['url'],
+        json.parseValueAsString('type'),
+        json.parseValueAsString('name'),
+        json.parseValueAsString('url'),
       );
 
   @override
