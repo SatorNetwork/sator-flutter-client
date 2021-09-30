@@ -440,21 +440,29 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 8 * coefficient,
+                  Obx(
+                    () => SizedBox(
+                      height: (controller.showDetailRx.value?.realmSubtitle ?? '').isEmpty
+                              ? 0
+                              : 8 * coefficient,
+                    ),
                   ),
                   Obx(
-                    () => Text(
-                      controller.showDetailRx.value?.realmSubtitle ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 14 * coefficient,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    () => (controller.showDetailRx.value?.realmSubtitle ?? '').isEmpty
+                        ? SizedBox(
+                            height: 0,
+                          )
+                        : Text(
+                            controller.showDetailRx.value?.realmSubtitle ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 14 * coefficient,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                   ),
                 ],
               ),
