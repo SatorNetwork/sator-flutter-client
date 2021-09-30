@@ -28,6 +28,7 @@ class ProfileModel extends Profile implements ToJsonInterface {
   @override
   Map toJson() => {
         'id': this.id,
+        'username': username,
         'first_name': firstName,
         'last_name': lastName,
         'avatar': avatarPath,
