@@ -5,36 +5,35 @@ import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
 
 class OnBoardingController extends GetxController {
   final PageController pageController = PageController();
 
   final RxInt pageRx = 0.obs;
+  late final Uri? deepLink;
 
   List<OnBoardingData> data = [
     OnBoardingData(
-      'images/on_boarding1.png',
-      'Challenge your friends',
-      SatorioColor.royal_blue,
-      Colors.white,
-      SatorioColor.carnation_pink,
+      'images/onboarding_1.svg',
+      'Watch',
+      'Check out shows that reward you on Sator. Watch as you normally would, and then...',
     ),
     OnBoardingData(
-      'images/on_boarding2.png',
-      'Challenge your friends',
-      SatorioColor.carnation_pink,
-      Colors.white,
-      Colors.white,
+      'images/onboarding_2.svg',
+      'Play + Earn',
+      'While or after watching, enter the matching Sator realm for chat, trivia, games and NFTs.',
     ),
     OnBoardingData(
-      'images/on_boarding3.png',
-      'Challenge your friends',
-      Colors.white,
-      SatorioColor.textBlack,
-      SatorioColor.carnation_pink,
+      'images/onboarding_3.svg',
+      'Interact',
+      'Utilize SAO to collect NFTs, extend realms, stake, tip, vote and more.',
     ),
   ];
+
+  OnBoardingController() {
+    OnBoardingArgument argument = Get.arguments as OnBoardingArgument;
+    deepLink = argument.deepLink;
+  }
 
   @override
   void onInit() {
@@ -64,6 +63,16 @@ class OnBoardingController extends GetxController {
   }
 
   skip() {
-    Get.off(() => CreateAccountPage(), binding: CreateAccountBinding(), arguments: CreateAccountArgument(null));
+    Get.offAll(
+      () => CreateAccountPage(),
+      binding: CreateAccountBinding(),
+      arguments: CreateAccountArgument(deepLink),
+    );
   }
+}
+
+class OnBoardingArgument {
+  final Uri? deepLink;
+
+  const OnBoardingArgument(this.deepLink);
 }

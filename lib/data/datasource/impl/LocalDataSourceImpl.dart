@@ -68,6 +68,12 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  Future<bool> isOnBoarded() async {
+    // TODO !!!
+    return false;
+  }
+
+  @override
   Future<void> saveProfile(Profile profile) {
     return Hive.box<Profile>(_profileBox).put(0, profile);
   }

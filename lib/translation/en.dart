@@ -203,4 +203,7 @@ const Map<String, String> en = {
   'txt_your_email': 'your email',
   'txt_register_success': 'User %s was successfully registered',
   'txt_select_avatar': 'Select avatar',
+  'txt_splash_description': 'Welcome to Sator, where you earn SAO crypto for experiencing content and playing games.',
+  'txt_enter_satorverse': 'Enter the Satorverse!',
+  'txt_how_it_works': 'How It Works',
 };
