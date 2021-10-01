@@ -211,7 +211,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                                   .leftTimeInSeconds(),
                                               interval: Duration(seconds: 5),
                                               onFinished: () {
-                                                controller.checkActivation();
+                                                controller.activeTimeExpire();
                                               },
                                               build: (
                                                 BuildContext context,
