@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import 'package:satorio/controller/select_avatar_controller.dart';
+import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/avatar_list.dart';
@@ -20,6 +21,54 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
     return Scaffold(
       backgroundColor: SatorioColor.alice_blue,
       extendBodyBehindAppBar: true,
+      appBar: controller.type == SelectAvatarType.settings
+          ? AppBar(
+              automaticallyImplyLeading: false,
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              title: Container(
+                width: Get.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'txt_select_avatar'.tr,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: Colors.black,
+                        fontSize: 17.0 * coefficient,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              leading: Container(
+                height: kToolbarHeight,
+                width: kToolbarHeight,
+                child: InkWell(
+                  onTap: () {
+                    controller.backToMain();
+                  },
+                  child: Icon(
+                    Icons.chevron_left,
+                    size: 32,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              actions: [
+                Container(
+                  height: kToolbarHeight,
+                  width: kToolbarHeight,
+                ),
+              ],
+            )
+          : AppBar(
+              toolbarHeight: 0,
+              backgroundColor: Colors.transparent,
+            ),
       body: Stack(
         children: [
           Align(
@@ -101,13 +150,15 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
           SizedBox(
             height: 70 * coefficient,
           ),
-          Text(
-            'txt_select_avatar'.tr,
-            style: textTheme.headline1!.copyWith(
-                color: Colors.black,
-                fontSize: 34.0 * coefficient,
-                fontWeight: FontWeight.w700),
-          ),
+          controller.type == SelectAvatarType.registration
+              ? Text(
+                  'txt_select_avatar'.tr,
+                  style: textTheme.headline1!.copyWith(
+                      color: Colors.black,
+                      fontSize: 34.0 * coefficient,
+                      fontWeight: FontWeight.w700),
+                )
+              : Container(),
           SizedBox(
             height: 24 * coefficient,
           ),
@@ -123,11 +174,17 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
                               height: 64 * coefficient,
                               width: 64 * coefficient,
                             )
-                          : Image.asset(
-                              'images/null_avatar.png',
-                              height: 64 * coefficient,
-                              width: 64 * coefficient,
-                            ),
+                          : controller.type == SelectAvatarType.settings
+                              ? SvgPicture.asset(
+                                  controller.profileRx.value?.avatarPath ?? '',
+                                  height: 64 * coefficient,
+                                  width: 64 * coefficient,
+                                )
+                              : Image.asset(
+                                  'images/null_avatar.png',
+                                  height: 64 * coefficient,
+                                  width: 64 * coefficient,
+                                ),
                     )),
               ),
               SizedBox(
