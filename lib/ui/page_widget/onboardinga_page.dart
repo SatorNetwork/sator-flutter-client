@@ -36,7 +36,7 @@ class OnBoardingPage extends GetView<OnBoardingController> {
         fit: StackFit.expand,
         children: [
           SvgPicture.asset(
-            'images/bg/gradient_challenge_timer.svg',
+            'images/bg/onboarding.svg',
             height: Get.height,
             fit: BoxFit.cover,
           ),
@@ -153,11 +153,9 @@ class OnBoardingPage extends GetView<OnBoardingController> {
   }
 
   String _buttonText(int page) {
-    switch (page) {
-      case 2:
-        return 'txt_enter_satorverse'.tr;
-      default:
-        return 'txt_next'.tr;
-    }
+    if (page == controller.data.length - 1)
+      return 'txt_enter_satorverse'.tr;
+    else
+      return 'txt_next'.tr;
   }
 }

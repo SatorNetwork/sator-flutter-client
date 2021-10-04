@@ -15,15 +15,17 @@ class SplashPage extends GetView<SplashController> {
         fit: StackFit.expand,
         children: [
           SvgPicture.asset(
-            'images/bg/gradient_challenge_timer.svg',
+            'images/bg/splash.svg',
             height: Get.height,
             fit: BoxFit.cover,
           ),
           Padding(
             padding: EdgeInsets.only(
-                left: 40 * coefficient,
-                right: 40 * coefficient,
-                bottom: 116 * coefficient),
+              left: 40 * coefficient,
+              right: 40 * coefficient,
+              bottom: 116 * coefficient,
+              // top: Get.mediaQuery.padding.top,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,9 +40,8 @@ class SplashPage extends GetView<SplashController> {
                   ),
                 ),
                 SvgPicture.asset(
-                  'images/sator.svg',
+                  'images/sator_colored.svg',
                   height: 54 * coefficient,
-                  color: SatorioColor.brand,
                 ),
                 SizedBox(
                   height: 32 * coefficient,

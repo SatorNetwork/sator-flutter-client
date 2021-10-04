@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -5,30 +7,18 @@ import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
+import 'package:satorio/util/onboarding_list.dart';
 
 class OnBoardingController extends GetxController {
+  static const _autoPageInSec = 6;
+
   final PageController pageController = PageController();
 
   final RxInt pageRx = 0.obs;
   late final Uri? deepLink;
 
-  List<OnBoardingData> data = [
-    OnBoardingData(
-      'images/onboarding_1.svg',
-      'Watch',
-      'Check out shows that reward you on Sator. Watch as you normally would, and then...',
-    ),
-    OnBoardingData(
-      'images/onboarding_2.svg',
-      'Play + Earn',
-      'While or after watching, enter the matching Sator realm for chat, trivia, games and NFTs.',
-    ),
-    OnBoardingData(
-      'images/onboarding_3.svg',
-      'Interact',
-      'Utilize SAO to collect NFTs, extend realms, stake, tip, vote and more.',
-    ),
-  ];
+  final List<OnBoardingData> data = onBoardings;
+  Timer? _timer;
 
   OnBoardingController() {
     OnBoardingArgument argument = Get.arguments as OnBoardingArgument;
@@ -39,16 +29,18 @@ class OnBoardingController extends GetxController {
   void onInit() {
     super.onInit();
     pageController.addListener(_listener);
+
+    _startTimer();
   }
 
   @override
   void onClose() {
     pageController.removeListener(_listener);
-    super.onClose();
-  }
 
-  _listener() {
-    pageRx.value = pageController.page?.round() ?? 0;
+    _timer?.cancel();
+    _timer = null;
+
+    super.onClose();
   }
 
   void nextOrJoin() {
@@ -62,12 +54,31 @@ class OnBoardingController extends GetxController {
     }
   }
 
-  skip() {
+  void skip() {
     Get.offAll(
       () => CreateAccountPage(),
       binding: CreateAccountBinding(),
       arguments: CreateAccountArgument(deepLink),
     );
+  }
+
+  void _listener() {
+    int pageValue = pageController.page?.round() ?? 0;
+    if (pageRx.value != pageValue) {
+      pageRx.value = pageValue;
+      if (pageValue == data.length - 1) {
+        _timer?.cancel();
+      } else {
+        _startTimer();
+      }
+    }
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer(Duration(seconds: _autoPageInSec), () {
+      nextOrJoin();
+    });
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
@@ -13,6 +14,7 @@ import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
 import 'package:satorio/ui/page_widget/onboardinga_page.dart';
+import 'package:satorio/util/onboarding_list.dart';
 
 class SplashController extends GetxController {
   SatorioRepository _satorioRepository = Get.find();
@@ -111,6 +113,19 @@ class SplashController extends GetxController {
   }
 
   void _toOnBoarding() {
+    precachePicture(
+      ExactAssetPicture(
+          SvgPicture.svgStringDecoder, 'images/bg/onboarding.svg'),
+      null,
+    );
+
+    onBoardings.forEach((data) {
+      precachePicture(
+        ExactAssetPicture(SvgPicture.svgStringDecoder, data.assetName),
+        null,
+      );
+    });
+
     Get.offAll(
       () => OnBoardingPage(),
       binding: OnBoardingBinding(),
