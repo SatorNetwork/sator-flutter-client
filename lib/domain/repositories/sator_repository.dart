@@ -29,6 +29,8 @@ abstract class SatorioRepository {
 
   Future<bool> isOnBoarded();
 
+  Future<void> markOnBoarded();
+
   Future<bool> selectAvatar(String avatarPath);
 
   Future<bool> resendCode();

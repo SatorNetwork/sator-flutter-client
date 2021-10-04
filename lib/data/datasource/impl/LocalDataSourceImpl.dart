@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
@@ -22,6 +23,10 @@ class LocalDataSourceImpl implements LocalDataSource {
   static const _walletBox = 'wallet';
   static const _walletDetailBox = 'walletDetail';
   static const _transactionBox = 'transaction';
+
+  static const _onBoarded = 'onBoarded';
+
+  GetStorage _storage = GetStorage('LocalDataSource');
 
   @override
   Future<void> init() async {
@@ -68,9 +73,15 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  Future<void> markOnBoarded() async {
+    return _storage.write(_onBoarded, true);
+  }
+
+  @override
   Future<bool> isOnBoarded() async {
-    // TODO !!!
-    return false;
+    dynamic tmp = _storage.read(_onBoarded);
+    final bool result = tmp != null && tmp is bool ? tmp : false;
+    return result;
   }
 
   @override

@@ -6,10 +6,13 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/domain/entities/onboarding_data.dart';
+import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
 import 'package:satorio/util/onboarding_list.dart';
 
 class OnBoardingController extends GetxController {
+  final SatorioRepository _satorioRepository = Get.find();
+
   static const _autoPageInSec = 6;
 
   final PageController pageController = PageController();
@@ -55,11 +58,13 @@ class OnBoardingController extends GetxController {
   }
 
   void skip() {
-    Get.offAll(
-      () => CreateAccountPage(),
-      binding: CreateAccountBinding(),
-      arguments: CreateAccountArgument(deepLink),
-    );
+    _satorioRepository.markOnBoarded().then((_) {
+      Get.offAll(
+        () => CreateAccountPage(),
+        binding: CreateAccountBinding(),
+        arguments: CreateAccountArgument(deepLink),
+      );
+    });
   }
 
   void _listener() {

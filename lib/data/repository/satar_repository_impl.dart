@@ -115,6 +115,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<void> markOnBoarded() {
+    return _localDataSource.markOnBoarded();
+  }
+
+  @override
   Future<bool> selectAvatar(String avatarPath) {
     return _apiDataSource
         .selectAvatar(avatarPath)
