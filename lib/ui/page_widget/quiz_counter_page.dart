@@ -21,6 +21,7 @@ class QuizCounterPage extends GetView<QuizCounterController> {
           Align(
             alignment: Alignment.center,
             child: Obx(
+
               () => controller.countdownRx.value != 0
                   ? SvgPicture.asset(
                       _assetCounterImage(controller.countdownRx.value),

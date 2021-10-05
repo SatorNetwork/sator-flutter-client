@@ -40,6 +40,8 @@ abstract class ApiDataSource {
 
   Future<bool> isVerified();
 
+  Future<bool> selectAvatar(String avatarPath);
+
   Future<bool> resendCode();
 
   Future<bool> refreshToken();

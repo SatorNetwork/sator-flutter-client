@@ -1,0 +1,4 @@
+enum SelectAvatarType {
+  registration,
+  settings,
+}

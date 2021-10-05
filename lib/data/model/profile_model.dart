@@ -8,11 +8,13 @@ class ProfileModel extends Profile implements ToJsonInterface {
     String username,
     String firstName,
     String lastName,
+    String avatarPath,
   ) : super(
           id,
           username,
           firstName,
           lastName,
+          avatarPath,
         );
 
   factory ProfileModel.fromJson(Map json) => ProfileModel(
@@ -20,12 +22,15 @@ class ProfileModel extends Profile implements ToJsonInterface {
         json.parseValueAsString('username'),
         json.parseValueAsString('first_name'),
         json.parseValueAsString('last_name'),
+        json.parseValueAsString('avatar'),
       );
 
   @override
   Map toJson() => {
         'id': this.id,
+        'username': username,
         'first_name': firstName,
         'last_name': lastName,
+        'avatar': avatarPath,
       };
 }

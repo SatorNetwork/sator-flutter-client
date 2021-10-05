@@ -12,6 +12,7 @@ class ProfileAdapter extends TypeAdapter<Profile> {
         reader.readString(),
         reader.readString(),
         reader.readString(),
+        reader.readString(),
       );
 
   @override
@@ -20,5 +21,6 @@ class ProfileAdapter extends TypeAdapter<Profile> {
     writer.writeString(profile.username);
     writer.writeString(profile.firstName);
     writer.writeString(profile.lastName);
+    writer.writeString(profile.avatarPath);
   }
 }

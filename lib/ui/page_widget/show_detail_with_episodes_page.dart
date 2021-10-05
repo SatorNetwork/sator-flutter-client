@@ -20,7 +20,8 @@ class ShowDetailWithEpisodesPage
       Get.height -
       Get.mediaQuery.padding.top -
       kToolbarHeight -
-      tabsBlockHeight;
+      tabsBlockHeight -
+      (_isSubtitleEmpty() ? 0 : 24 * coefficient);
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +132,7 @@ class ShowDetailWithEpisodesPage
                     delegate: _SliverAppBarDelegate(
                       controller,
                       _tabBarHeight(),
+                      _isSubtitleEmpty(),
                     ),
                   ),
                 ),
@@ -384,19 +386,32 @@ class ShowDetailWithEpisodesPage
     return controller.seasonsRx.value.length == 1 &&
         controller.seasonsRx.value[0].seasonNumber == 0;
   }
+
+  bool _isSubtitleEmpty() {
+    return controller.showDetailRx.value?.realmSubtitle.isEmpty ?? true;
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this.controller, this.tabBarHeight);
+  _SliverAppBarDelegate(
+    this.controller,
+    this.tabBarHeight,
+    this.isSubtitleEmpty,
+  ) {
+    print('_SliverAppBarDelegate');
+  }
 
   final ShowDetailWithEpisodesController controller;
   final double tabBarHeight;
+  final bool isSubtitleEmpty;
 
   @override
-  double get minExtent => tabBarHeight + 32 + 16 + 60 * coefficient;
+  double get minExtent =>
+      tabBarHeight + 32 + 16 + (isSubtitleEmpty ? 36 : 60) * coefficient;
 
   @override
-  double get maxExtent => tabBarHeight + 32 + 16 + 60 * coefficient;
+  double get maxExtent =>
+      tabBarHeight + 32 + 16 + (isSubtitleEmpty ? 36 : 60) * coefficient;
 
   @override
   Widget build(
@@ -440,21 +455,32 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 8 * coefficient,
+                  Obx(
+                    () => SizedBox(
+                      height:
+                          (controller.showDetailRx.value?.realmSubtitle ?? '')
+                                  .isEmpty
+                              ? 0
+                              : 8 * coefficient,
+                    ),
                   ),
                   Obx(
-                    () => Text(
-                      controller.showDetailRx.value?.realmSubtitle ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 14 * coefficient,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    () => (controller.showDetailRx.value?.realmSubtitle ?? '')
+                            .isEmpty
+                        ? SizedBox(
+                            height: 0,
+                          )
+                        : Text(
+                            controller.showDetailRx.value?.realmSubtitle ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 14 * coefficient,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                   ),
                 ],
               ),
