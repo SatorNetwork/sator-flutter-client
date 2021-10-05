@@ -1,5 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -13,10 +14,11 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
   static const double _margin = 20.0;
   static const double _itemSpacing = 12.0;
 
+  final double answersBlockSize = Get.width - 2 * _margin;
+  final double answerSize = (Get.width - 2 * _margin - _itemSpacing) / 2;
+
   @override
   Widget build(BuildContext context) {
-    double questionsBlockSize = (Get.width - 2 * _margin) * coefficient;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
@@ -46,24 +48,13 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
                     ),
                   ),
                   Container(
-                    width: questionsBlockSize,
-                    height: questionsBlockSize,
+                    width: answersBlockSize,
+                    height: answersBlockSize,
                     color: Colors.transparent,
                     child: Obx(
-                      () => GridView.count(
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        crossAxisCount: 2,
-                        crossAxisSpacing: _itemSpacing,
-                        mainAxisSpacing: _itemSpacing,
-                        children: controller.questionRx.value == null
-                            ? []
-                            : controller.questionRx.value!.answerOptions
-                                .map((answerOption) => _answerWidget(
-                                    answerOption,
-                                    answerOption.answerId ==
-                                        controller.answerIdRx.value))
-                                .toList(),
+                      () => _answersListWidget(
+                        controller.questionRx.value?.answerOptions ?? [],
+                        controller.answerIdRx.value,
                       ),
                     ),
                   ),
@@ -227,12 +218,80 @@ class QuizQuestionPage extends GetView<QuizQuestionController> {
     );
   }
 
+  Widget _answersListWidget(
+    List<PayloadAnswerOption> answerOptions,
+    String answerId,
+  ) {
+    switch (answerOptions.length) {
+      case 2:
+        return Center(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: _itemSpacing,
+              mainAxisSpacing: _itemSpacing,
+            ),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            itemCount: answerOptions.length,
+            itemBuilder: (BuildContext context, int index) {
+              PayloadAnswerOption answerOption = answerOptions[index];
+              bool isSelected = answerOption.answerId == answerId;
+              return _answerWidget(answerOption, isSelected);
+            },
+          ),
+        );
+      case 3:
+        return StaggeredGridView.countBuilder(
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          crossAxisCount: 2,
+          crossAxisSpacing: _itemSpacing,
+          mainAxisSpacing: _itemSpacing,
+          staggeredTileBuilder: (index) =>
+              StaggeredTile.count(index == answerOptions.length - 1 ? 2 : 1, 1),
+          itemCount: answerOptions.length,
+          itemBuilder: (context, index) {
+            PayloadAnswerOption answerOption = answerOptions[index];
+            bool isSelected = answerOption.answerId == answerId;
+            return index == answerOptions.length - 1
+                ? Container(
+                    child: Center(
+                      child: _answerWidget(answerOption, isSelected),
+                    ),
+                  )
+                : _answerWidget(answerOption, isSelected);
+          },
+        );
+      case 4:
+      default:
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: _itemSpacing,
+            mainAxisSpacing: _itemSpacing,
+          ),
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          itemCount: answerOptions.length,
+          itemBuilder: (BuildContext context, int index) {
+            PayloadAnswerOption answerOption = answerOptions[index];
+            bool isSelected = answerOption.answerId == answerId;
+            return _answerWidget(answerOption, isSelected);
+          },
+        );
+    }
+  }
+
   Widget _answerWidget(PayloadAnswerOption answerOption, bool isSelected) {
     return InkWell(
       onTap: () {
         controller.selectAnswer(answerOption);
       },
       child: Container(
+        width: answerSize,
+        height: answerSize,
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
