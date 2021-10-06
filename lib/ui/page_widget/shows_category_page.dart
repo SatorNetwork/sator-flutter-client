@@ -60,11 +60,15 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _showsList(),
-                  ],
+              child: NotificationListener<OverscrollNotification>(
+                onNotification: (notification) {
+                  if (notification.metrics.pixels ==
+                      notification.metrics.maxScrollExtent)
+                    controller.loadShowsByCategoryName();
+                  return true;
+                },
+                child: SingleChildScrollView(
+                  child: _showsList(),
                 ),
               ),
             ),
@@ -75,28 +79,19 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
   }
 
   Widget _showsList() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32),
-          topRight: Radius.circular(32),
+    return Obx(
+      () => ListView.separated(
+        shrinkWrap: true,
+        padding: const EdgeInsets.all(20),
+        physics: NeverScrollableScrollPhysics(),
+        separatorBuilder: (context, index) => SizedBox(
+          height: 17 * coefficient,
         ),
-        color: Colors.white,
-      ),
-      child: Obx(
-        () => ListView.separated(
-          shrinkWrap: true,
-          padding: const EdgeInsets.all(20),
-          physics: NeverScrollableScrollPhysics(),
-          separatorBuilder: (context, index) => SizedBox(
-            height: 17 * coefficient,
-          ),
-          itemCount: controller.showsRx.value.length,
-          itemBuilder: (context, index) {
-            final Show show = controller.showsRx.value[index];
-            return _showItem(show);
-          },
-        ),
+        itemCount: controller.showsRx.value.length,
+        itemBuilder: (context, index) {
+          final Show show = controller.showsRx.value[index];
+          return _showItem(show);
+        },
       ),
     );
   }

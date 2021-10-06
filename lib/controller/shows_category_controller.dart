@@ -8,9 +8,9 @@ import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 class ShowsCategoryController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  final Rx<List<Show>> showsRx = Rx([]);
+  late final String _categoryName;
 
-  final int _itemsPerPage = 100;
+  final int _itemsPerPage = 10;
   static const int _initialPage = 1;
 
   final RxInt _pageRx = _initialPage.obs;
@@ -18,13 +18,21 @@ class ShowsCategoryController extends GetxController {
   final RxBool _isAllLoadedRx = false.obs;
 
   final Rx<String> titleRx = Rx('');
+  final Rx<List<Show>> showsRx = Rx([]);
+
+  ShowsCategoryController() {
+    ShowsCategoryArgument argument = Get.arguments;
+    _categoryName = argument.categoryName;
+
+    loadShowsByCategoryName();
+  }
 
   void back() {
     Get.back();
   }
 
-  void _loadShowsByCategoryName(String categoryName) {
-    switch (categoryName) {
+  void loadShowsByCategoryName() {
+    switch (_categoryName) {
       case 'all':
         _loadAllShows();
         titleRx.value = 'All shows';
@@ -44,12 +52,28 @@ class ShowsCategoryController extends GetxController {
     }
   }
 
-
   void _loadCategory(String categoryName) {
+    if (_isAllLoadedRx.value) return;
+
+    if (_isLoadingRx.value) return;
+
+    _isLoadingRx.value = true;
+
     _satorioRepository
-        .showsFromCategory(categoryName, itemsPerPage: _itemsPerPage)
+        .showsFromCategory(
+      categoryName,
+      page: _pageRx.value,
+      itemsPerPage: _itemsPerPage,
+    )
         .then((List<Show> shows) {
-      showsRx.value = shows;
+      showsRx.update((value) {
+        if (value != null) value.addAll(shows);
+      });
+      _isAllLoadedRx.value = shows.isEmpty;
+      _isLoadingRx.value = false;
+      _pageRx.value = _pageRx.value + 1;
+    }).catchError((value) {
+      _isLoadingRx.value = false;
     });
   }
 
@@ -60,7 +84,12 @@ class ShowsCategoryController extends GetxController {
 
     _isLoadingRx.value = true;
 
-    _satorioRepository.shows(page: _pageRx.value, itemsPerPage: _itemsPerPage).then((List<Show> shows) {
+    _satorioRepository
+        .shows(
+      page: _pageRx.value,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then((List<Show> shows) {
       showsRx.update((value) {
         if (value != null) value.addAll(shows);
       });
@@ -78,12 +107,6 @@ class ShowsCategoryController extends GetxController {
       binding: ShowDetailWithEpisodesBinding(),
       arguments: ShowDetailWithEpisodesArgument(show),
     );
-  }
-
-  ShowsCategoryController() {
-    ShowsCategoryArgument argument = Get.arguments;
-
-    _loadShowsByCategoryName(argument.categoryName);
   }
 }
 
