@@ -158,6 +158,7 @@ const Map<String, String> en = {
   'txt_status': 'Status',
   'txt_you': 'You',
   'txt_realmers': 'Realmers',
+  'txt_sao_earned': 'SAO earned',
   'txt_active': 'Active',
   'txt_ranking': 'Ranking',
   'txt_chat': 'Chat',
