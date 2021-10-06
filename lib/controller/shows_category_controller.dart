@@ -25,7 +25,7 @@ class ShowsCategoryController extends GetxController {
     ShowsCategoryArgument argument = Get.arguments;
     _categoryName = argument.categoryName;
 
-    loadShowsByCategoryName();
+    loadShows();
     _updateTitle();
   }
 
@@ -33,7 +33,7 @@ class ShowsCategoryController extends GetxController {
     Get.back();
   }
 
-  void loadShowsByCategoryName() {
+  void loadShows() {
     switch (_categoryName) {
       case ShowCategory.all:
         _loadAllShows();

@@ -63,7 +63,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
                 onNotification: (notification) {
                   if (notification.metrics.pixels ==
                       notification.metrics.maxScrollExtent)
-                    controller.loadShowsByCategoryName();
+                    controller.loadShows();
                   return true;
                 },
                 child: _showsList(),
