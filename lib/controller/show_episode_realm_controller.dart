@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
@@ -11,9 +13,12 @@ import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/last_seen.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
+import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -49,7 +54,17 @@ class ShowEpisodeRealmController extends GetxController
 
   ScrollController scrollController = ScrollController();
 
+  late ValueListenable<Box<Profile>> profileListenable;
+  late Profile profile;
+
   late final DatabaseReference _messagesRef;
+  late LastSeen lastSeen;
+  DateTime? timestamp;
+  late Rx<int> missedMessagesCountRx = Rx(0);
+  late final DatabaseReference _timestampsRef;
+  //TODO: refactor
+  static const String DATABASE_URL =
+      'https://sator-f44d6-timestamp.firebaseio.com/';
 
   late Rx<bool> isMessagesRx = Rx(false);
 
@@ -62,6 +77,17 @@ class ShowEpisodeRealmController extends GetxController
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
+
+    this.profileListenable =
+    _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+
+    profile = profileListenable.value.getAt(0)!;
+
+    _timestampsRef = FirebaseDatabase(databaseURL: DATABASE_URL)
+        .reference()
+        .child(profile.id)
+        .child(argument.showEpisode.id);
+
     _messagesRef = FirebaseDatabase.instance
         .reference()
         .child('test')
@@ -74,12 +100,38 @@ class ShowEpisodeRealmController extends GetxController
 
     _updateShowEpisode();
     _loadReviews();
+    _lastSeenInit();
 
     checkActivation();
   }
 
   void back() {
     Get.back();
+  }
+
+  Future _lastSeenInit() async {
+    //TODO: refactor
+    await _timestampsRef.once().then((DataSnapshot snapshot) {
+      final json = snapshot.value as Map<dynamic, dynamic>;
+      lastSeen = LastSeenModel.fromJson(json);
+    });
+
+    await _missedMessagesCounter();
+  }
+
+  Future _missedMessagesCounter() async {
+    List missedMessages = [];
+    await _messagesRef.once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+
+      values.forEach((key, value) {
+        if (DateTime.tryParse(value["createdAt"])!.microsecondsSinceEpoch >
+            lastSeen.timestamp!.microsecondsSinceEpoch) {
+          missedMessages.add(value);
+        }
+      });
+      missedMessagesCountRx.value = missedMessages.length;
+    });
   }
 
   void toWriteReview() async {

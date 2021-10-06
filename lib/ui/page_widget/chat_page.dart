@@ -12,6 +12,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class ChatPage extends GetView<ChatController> {
@@ -100,16 +101,16 @@ class ChatPage extends GetView<ChatController> {
           child: Stack(
             children: [
               Obx(
-                  () => CachedNetworkImage(
-                    imageUrl: controller.showEpisodeRx.value.cover,
-                    cacheKey: controller.showEpisodeRx.value.cover,
-                    width: Get.width,
-                    height: bodyHeight + 24,
-                    fit: BoxFit.cover,
-                    errorWidget: (context, url, error) => Container(
-                      color: SatorioColor.darkAccent,
-                    ),
+                () => CachedNetworkImage(
+                  imageUrl: controller.showEpisodeRx.value.cover,
+                  cacheKey: controller.showEpisodeRx.value.cover,
+                  width: Get.width,
+                  height: bodyHeight + 24,
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Container(
+                    color: SatorioColor.darkAccent,
                   ),
+                ),
               ),
               Container(
                 height: Get.mediaQuery.padding.top + kToolbarHeight + 20,
@@ -181,7 +182,8 @@ class ChatPage extends GetView<ChatController> {
               ),
               Flexible(
                 child: SingleChildScrollView(
-                    controller: controller.scrollController,
+                    controller: controller.autoScrollController,
+                    physics: AlwaysScrollableScrollPhysics(),
                     reverse: true,
                     child: ConstrainedBox(
                         constraints: BoxConstraints(
@@ -237,6 +239,9 @@ class ChatPage extends GetView<ChatController> {
                     InkWell(
                       onTap: () {
                         controller.sendMessage();
+                        controller.autoScrollController.scrollToIndex(0,
+                            duration: Duration(milliseconds: 150),
+                            preferPosition: AutoScrollPosition.begin);
                       },
                       child: Container(
                         height: 60,
@@ -268,6 +273,8 @@ class ChatPage extends GetView<ChatController> {
 
     return FirebaseAnimatedList(
       controller: _controller,
+      physics: NeverScrollableScrollPhysics(),
+      reverse: false,
       shrinkWrap: true,
       query: controller.getMessageQuery(),
       itemBuilder: (context, snapshot, animation, index) {
@@ -275,23 +282,25 @@ class ChatPage extends GetView<ChatController> {
         final message = MessageModel.fromJson(json);
         Color color = _colors[index % _colors.length];
 
-        if (message.createdAt!.microsecondsSinceEpoch >
-            controller.testStamp!.microsecondsSinceEpoch) {
-          print('error');
-          controller.scrollController.animateTo(2 * index.toDouble(),
-              duration: Duration(milliseconds: 100), curve: Curves.ease);
-        }
+        return AutoScrollTag(
+          index: index,
+          key: ValueKey(index),
+          controller: controller.autoScrollController,
+          child: VisibilityDetector(
+              key: Key('${message.createdAt}'),
+              onVisibilityChanged: (VisibilityInfo info) {
+                final bool shouldCheck = info.visibleFraction == 1.0 &&
+                    controller.lastSeen.timestamp!.microsecondsSinceEpoch <
+                        message.createdAt!.microsecondsSinceEpoch &&
+                    controller.scrollIndex != 0;
 
-        return VisibilityDetector(
-            key: Key('${message.createdAt}'),
-            onVisibilityChanged: (VisibilityInfo info) {
-              if (info.visibleFraction == 1.0 &&
-                  controller.testStamp!.microsecondsSinceEpoch <
-                      message.createdAt!.microsecondsSinceEpoch) {
-                controller.saveMessageSeen(message.createdAt!);
-              }
-            },
-            child: _showMessage(message, color));
+                if (shouldCheck) {
+                  controller.scrollIndex--;
+                  controller.saveMessageSeen(message.createdAt!);
+                }
+              },
+              child: _showMessage(message, color)),
+        );
       },
     );
   }

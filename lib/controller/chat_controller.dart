@@ -13,27 +13,31 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class ChatController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   TextEditingController messageController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  AutoScrollController autoScrollController = AutoScrollController();
 
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
 
   late ValueListenable<Box<Profile>> profileListenable;
+  late Profile profile;
   late final DatabaseReference _messagesRef;
   late final DatabaseReference _timestampsRef;
   late Rx<bool> isMessagesRx = Rx(false);
-  late Profile profile;
   late LastSeen lastSeen;
-  DateTime? testStamp;
+  DateTime? timestamp;
+  late int scrollIndex;
 
   //TODO: refactor
-  static const String DATABASE_URL = 'https://sator-f44d6-timestamp.firebaseio.com/';
+  static const String DATABASE_URL =
+      'https://sator-f44d6-timestamp.firebaseio.com/';
 
   bool canSendMessage() => messageController.text.length > 0;
 
@@ -54,16 +58,19 @@ class ChatController extends GetxController with BackToMainMixin {
     showEpisodeRx = Rx(argument.showEpisode);
     _messagesRef = argument.messagesRef;
 
+    scrollIndex = 0;
+
     this.profileListenable =
-    _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
     profile = profileListenable.value.getAt(0)!;
 
     _timestampsRef = FirebaseDatabase(databaseURL: DATABASE_URL)
         .reference()
-        .child(profile.id).child(argument.showEpisode.id);
+        .child(profile.id)
+        .child(argument.showEpisode.id);
 
-    _getTimestamp();
+    _scrollToMissedMessages();
 
     //TODO: refactor
     _messagesRef.once().then((DataSnapshot snapshot) {
@@ -71,27 +78,45 @@ class ChatController extends GetxController with BackToMainMixin {
     });
   }
 
-  Future _getTimestamp() async {
+  Future _scrollToMissedMessages() async {
     //TODO: refactor
     await _timestampsRef.once().then((DataSnapshot snapshot) {
       final json = snapshot.value as Map<dynamic, dynamic>;
       lastSeen = LastSeenModel.fromJson(json);
-      testStamp = lastSeen.timestamp!;
-      print('testStamp - $testStamp');
     });
+
+    await _scroll();
   }
 
   Query getMessageQuery() {
     return _messagesRef;
   }
 
+  Future _scroll() async {
+    List missedMessages = [];
+    scrollIndex = 0;
+    await _messagesRef.once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+
+      values.forEach((key, value) {
+        if (DateTime.tryParse(value["createdAt"])!.microsecondsSinceEpoch >
+            lastSeen.timestamp!.microsecondsSinceEpoch) {
+          missedMessages.add(value);
+        }
+      });
+      scrollIndex = missedMessages.length;
+      autoScrollController.scrollToIndex(scrollIndex,
+          preferPosition: AutoScrollPosition.begin);
+    });
+  }
+
   void saveMessageSeen(DateTime time) {
-    testStamp = time;
-    print(testStamp);
+    timestamp = time;
   }
 
   void saveTimestamp() {
-    _timestampsRef.set(LastSeenModel(testStamp).toJson());
+    if (timestamp == null) return;
+    _timestampsRef.set(LastSeenModel(timestamp).toJson());
   }
 
   void back() {
@@ -101,6 +126,8 @@ class ChatController extends GetxController with BackToMainMixin {
       if (snapshot.value != null) {
         showEpisodeRealmController.isMessagesRx.value = true;
       }
+
+      showEpisodeRealmController.missedMessagesCountRx.value = scrollIndex;
       Get.back();
     });
   }

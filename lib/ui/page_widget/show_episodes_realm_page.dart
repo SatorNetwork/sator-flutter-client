@@ -96,26 +96,31 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     ),
                   ),
                 ),
-                Positioned(
-                  left: 5,
-                  top: 5,
-                  child: ClipOval(
-                    child: Container(
-                      height: 20,
-                      width: 20,
-                      color: SatorioColor.brand,
-                      child: Center(
-                        child: Text(
-                          '55',
-                          style: textTheme.bodyText2!.copyWith(
-                            color: Colors.white,
-                            fontSize: 9 * coefficient,
-                            fontWeight: FontWeight.w700,
+                Obx(
+                  () => controller.missedMessagesCountRx.value > 0
+                      ? Positioned(
+                          left: 5,
+                          top: 5,
+                          child: ClipOval(
+                            child: Container(
+                              height: 20,
+                              width: 20,
+                              color: SatorioColor.brand,
+                              child: Center(
+                                child: Text(
+                                  controller.missedMessagesCountRx.value
+                                      .toString(),
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 9 * coefficient,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        )
+                      : Container(),
                 ),
               ],
             ),
