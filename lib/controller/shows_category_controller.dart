@@ -10,7 +10,7 @@ class ShowsCategoryController extends GetxController {
 
   final Rx<List<Show>> showsRx = Rx([]);
 
-  // final int _itemsPerPage = 10;
+  final int _itemsPerPage = 100;
   static const int _initialPage = 1;
 
   final RxInt _pageRx = _initialPage.obs;
@@ -30,30 +30,27 @@ class ShowsCategoryController extends GetxController {
         titleRx.value = 'All shows';
         break;
       case 'highest_rewarding':
-        _satorioRepository
-            .showsFromCategory('highest_rewarding')
-            .then((List<Show> shows) {
-          showsRx.value = shows;
-        });
+        _loadCategory('highest_rewarding');
         titleRx.value = 'Highest Rewards';
         break;
       case 'most_socializing':
-        _satorioRepository
-            .showsFromCategory('most_socializing')
-            .then((List<Show> shows) {
-          showsRx.value = shows;
-        });
+        _loadCategory('most_socializing');
         titleRx.value = 'Most Social';
         break;
       case 'newest_added':
-        _satorioRepository
-            .showsFromCategory('newest_added')
-            .then((List<Show> shows) {
-          showsRx.value = shows;
-        });
+        _loadCategory('newest_added');
         titleRx.value = 'Newest added';
         break;
     }
+  }
+
+
+  void _loadCategory(String categoryName) {
+    _satorioRepository
+        .showsFromCategory(categoryName, itemsPerPage: _itemsPerPage)
+        .then((List<Show> shows) {
+      showsRx.value = shows;
+    });
   }
 
   void _loadAllShows() {
@@ -63,7 +60,7 @@ class ShowsCategoryController extends GetxController {
 
     _isLoadingRx.value = true;
 
-    _satorioRepository.shows(page: _pageRx.value).then((List<Show> shows) {
+    _satorioRepository.shows(page: _pageRx.value, itemsPerPage: _itemsPerPage).then((List<Show> shows) {
       showsRx.update((value) {
         if (value != null) value.addAll(shows);
       });
