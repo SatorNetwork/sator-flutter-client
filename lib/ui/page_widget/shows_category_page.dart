@@ -49,15 +49,14 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
             fit: BoxFit.cover,
           ),
           Container(
-            constraints: BoxConstraints(
-                minHeight: Get.mediaQuery.size.height -
-                    (Get.mediaQuery.padding.top + kToolbarHeight)),
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               color: Colors.white,
             ),
+            height: Get.mediaQuery.size.height -
+                (Get.mediaQuery.padding.top + kToolbarHeight),
             child: ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               child: NotificationListener<OverscrollNotification>(
@@ -67,9 +66,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
                     controller.loadShowsByCategoryName();
                   return true;
                 },
-                child: SingleChildScrollView(
-                  child: _showsList(),
-                ),
+                child: _showsList(),
               ),
             ),
           )
@@ -81,9 +78,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
   Widget _showsList() {
     return Obx(
       () => ListView.separated(
-        shrinkWrap: true,
         padding: const EdgeInsets.all(20),
-        physics: NeverScrollableScrollPhysics(),
         separatorBuilder: (context, index) => SizedBox(
           height: 17 * coefficient,
         ),

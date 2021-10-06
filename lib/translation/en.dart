@@ -203,4 +203,8 @@ const Map<String, String> en = {
   'txt_your_email': 'your email',
   'txt_register_success': 'User %s was successfully registered',
   'txt_select_avatar': 'Select avatar',
+  'txt_all_realms': 'All realms',
+  'txt_highest_rewards': 'Highest Rewards',
+  'txt_most_social': 'Most Social',
+  'txt_newest_added': 'Newest added',
 };

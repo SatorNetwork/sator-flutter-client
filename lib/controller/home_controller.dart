@@ -11,6 +11,7 @@ import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
@@ -77,19 +78,19 @@ class HomeController extends GetxController
 
   void _loadShowByCategoryName() {
     _satorioRepository
-        .showsFromCategory('highest_rewarding')
+        .showsFromCategory(ShowCategory.highestRewarding)
         .then((List<Show> shows) {
       showsHighestRewardingRx.value = shows;
     });
 
     _satorioRepository
-        .showsFromCategory('most_socializing')
+        .showsFromCategory(ShowCategory.mostSocializing)
         .then((List<Show> shows) {
       showsMostSocializingRx.value = shows;
     });
 
     _satorioRepository
-        .showsFromCategory('newest_added')
+        .showsFromCategory(ShowCategory.newestAdded)
         .then((List<Show> shows) {
       showsNewestAddedRx.value = shows;
     });

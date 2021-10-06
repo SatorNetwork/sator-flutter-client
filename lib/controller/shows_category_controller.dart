@@ -3,6 +3,7 @@ import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 
 class ShowsCategoryController extends GetxController {
@@ -25,6 +26,7 @@ class ShowsCategoryController extends GetxController {
     _categoryName = argument.categoryName;
 
     loadShowsByCategoryName();
+    _updateTitle();
   }
 
   void back() {
@@ -33,21 +35,36 @@ class ShowsCategoryController extends GetxController {
 
   void loadShowsByCategoryName() {
     switch (_categoryName) {
-      case 'all':
+      case ShowCategory.all:
         _loadAllShows();
-        titleRx.value = 'All shows';
         break;
-      case 'highest_rewarding':
-        _loadCategory('highest_rewarding');
-        titleRx.value = 'Highest Rewards';
+      default:
+        _loadCategory(_categoryName);
         break;
-      case 'most_socializing':
-        _loadCategory('most_socializing');
-        titleRx.value = 'Most Social';
+    }
+  }
+
+  void toShowDetail(Show show) {
+    Get.to(
+      () => ShowDetailWithEpisodesPage(),
+      binding: ShowDetailWithEpisodesBinding(),
+      arguments: ShowDetailWithEpisodesArgument(show),
+    );
+  }
+
+  void _updateTitle() {
+    switch (_categoryName) {
+      case ShowCategory.all:
+        titleRx.value = 'txt_all_realms'.tr;
         break;
-      case 'newest_added':
-        _loadCategory('newest_added');
-        titleRx.value = 'Newest added';
+      case ShowCategory.highestRewarding:
+        titleRx.value = 'txt_highest_rewards'.tr;
+        break;
+      case ShowCategory.mostSocializing:
+        titleRx.value = 'txt_most_social'.tr;
+        break;
+      case ShowCategory.newestAdded:
+        titleRx.value = 'txt_newest_added'.tr;
         break;
     }
   }
@@ -99,14 +116,6 @@ class ShowsCategoryController extends GetxController {
     }).catchError((value) {
       _isLoadingRx.value = false;
     });
-  }
-
-  void toShowDetail(Show show) {
-    Get.to(
-      () => ShowDetailWithEpisodesPage(),
-      binding: ShowDetailWithEpisodesBinding(),
-      arguments: ShowDetailWithEpisodesArgument(show),
-    );
   }
 }
 
