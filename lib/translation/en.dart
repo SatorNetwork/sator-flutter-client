@@ -158,6 +158,7 @@ const Map<String, String> en = {
   'txt_status': 'Status',
   'txt_you': 'You',
   'txt_realmers': 'Realmers',
+  'txt_sao_earned': 'SAO earned',
   'txt_active': 'Active',
   'txt_ranking': 'Ranking',
   'txt_chat': 'Chat',
@@ -203,6 +204,19 @@ const Map<String, String> en = {
   'txt_your_email': 'your email',
   'txt_register_success': 'User %s was successfully registered',
   'txt_select_avatar': 'Select avatar',
+  'txt_splash_description':
+      'Welcome to Sator, where you earn SAO crypto for experiencing content and playing games.',
+  'txt_enter_satorverse': 'Enter the Satorverse!',
+  'txt_how_it_works': 'How It Works',
+  'txt_onboarding_1_title': 'Watch',
+  'txt_onboarding_2_title': 'Play + Earn',
+  'txt_onboarding_3_title': 'Interact',
+  'txt_onboarding_1_description':
+      'Check out shows that reward you on Sator. Watch as you normally would, and then...',
+  'txt_onboarding_2_description':
+      'While or after watching, enter the matching Sator realm for chat, trivia, games and NFTs.',
+  'txt_onboarding_3_description':
+      'Utilize SAO to collect NFTs, extend realms, stake, tip, vote and more.',
   'txt_all_realms': 'All realms',
   'txt_highest_rewards': 'Highest Rewards',
   'txt_most_social': 'Most Social',
