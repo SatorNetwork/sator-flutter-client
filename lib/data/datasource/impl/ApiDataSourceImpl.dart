@@ -44,6 +44,7 @@ import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
 import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
+import 'package:satorio/data/response/attempts_left_response.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
@@ -628,6 +629,17 @@ class ApiDataSourceImpl implements ApiDataSource {
       PaidUnlockRequest(paidOption),
     ).then((Response response) {
       return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
+    });
+  }
+
+  @override
+  Future<int> showEpisodeAttemptsLeft(String episodeId) {
+    return _requestGet(
+      'challenges/$episodeId/attempts-left',
+    ).then((Response response) {
+      return AttemptsLeftResponse.fromJson(
+              json.decode(response.bodyString!)['data'])
+          .attemptsLeft;
     });
   }
 
