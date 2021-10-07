@@ -291,11 +291,9 @@ class ChatPage extends GetView<ChatController> {
               onVisibilityChanged: (VisibilityInfo info) {
                 final bool shouldCheck = info.visibleFraction == 1.0 &&
                     controller.lastSeen.timestamp!.microsecondsSinceEpoch <
-                        message.createdAt!.microsecondsSinceEpoch &&
-                    controller.scrollIndex != 0;
+                        message.createdAt!.microsecondsSinceEpoch;
 
                 if (shouldCheck) {
-                  controller.scrollIndex--;
                   controller.saveMessageSeen(message.createdAt!);
                 }
               },

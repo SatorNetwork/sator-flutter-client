@@ -100,7 +100,7 @@ class ShowEpisodeRealmController extends GetxController
 
     _updateShowEpisode();
     _loadReviews();
-    _lastSeenInit();
+    lastSeenInit();
 
     _checkActivation();
   }
@@ -109,7 +109,7 @@ class ShowEpisodeRealmController extends GetxController
     Get.back();
   }
 
-  Future _lastSeenInit() async {
+  Future lastSeenInit() async {
     //TODO: refactor
     await _timestampsRef.once().then((DataSnapshot snapshot) {
       if (snapshot.value == null) {
@@ -120,7 +120,6 @@ class ShowEpisodeRealmController extends GetxController
 
       final json = snapshot.value as Map<dynamic, dynamic>;
       lastSeen = LastSeenModel.fromJson(json);
-      print(lastSeen);
     });
 
     await _missedMessagesCounter();

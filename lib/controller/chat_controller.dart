@@ -81,6 +81,7 @@ class ChatController extends GetxController with BackToMainMixin {
   @override
   void onClose() {
     saveTimestamp();
+    _checkLastSeen();
     super.onClose();
   }
 
@@ -136,9 +137,14 @@ class ChatController extends GetxController with BackToMainMixin {
         showEpisodeRealmController.isMessagesRx.value = true;
       }
 
-      showEpisodeRealmController.missedMessagesCountRx.value = scrollIndex;
+      showEpisodeRealmController.lastSeenInit();
       Get.back();
     });
+  }
+
+  void _checkLastSeen() {
+    ShowEpisodeRealmController showEpisodeRealmController = Get.find();
+    showEpisodeRealmController.lastSeenInit();
   }
 
   void sendMessage() {
