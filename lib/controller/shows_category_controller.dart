@@ -11,7 +11,7 @@ class ShowsCategoryController extends GetxController {
 
   late final String _categoryName;
 
-  final int _itemsPerPage = 5;
+  final int _itemsPerPage = 10;
   static const int _initialPage = 1;
 
   final RxInt _pageRx = _initialPage.obs;
