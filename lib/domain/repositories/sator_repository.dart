@@ -68,7 +68,11 @@ abstract class SatorioRepository {
 
   Future<List<Show>> shows({int? page, int? itemsPerPage});
 
-  Future<List<Show>> showsFromCategory(String category);
+  Future<List<Show>> showsFromCategory(
+    String category, {
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<ShowDetail> showDetail(String showId);
 

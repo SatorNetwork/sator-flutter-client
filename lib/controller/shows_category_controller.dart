@@ -3,14 +3,15 @@ import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 
 class ShowsCategoryController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  final Rx<List<Show>> showsRx = Rx([]);
+  late final String _categoryName;
 
-  // final int _itemsPerPage = 10;
+  final int _itemsPerPage = 10;
   static const int _initialPage = 1;
 
   final RxInt _pageRx = _initialPage.obs;
@@ -18,52 +19,70 @@ class ShowsCategoryController extends GetxController {
   final RxBool _isAllLoadedRx = false.obs;
 
   final Rx<String> titleRx = Rx('');
+  final Rx<List<Show>> showsRx = Rx([]);
+
+  ShowsCategoryController() {
+    ShowsCategoryArgument argument = Get.arguments;
+    _categoryName = argument.categoryName;
+
+    loadShows();
+    _updateTitle();
+  }
 
   void back() {
     Get.back();
   }
 
-  void _loadShowsByCategoryName(String categoryName) {
-    switch (categoryName) {
-      case 'all':
+  void loadShows() {
+    switch (_categoryName) {
+      case ShowCategory.all:
         _loadAllShows();
-        titleRx.value = 'All shows';
         break;
-      case 'highest_rewarding':
-        _satorioRepository
-            .showsFromCategory('highest_rewarding')
-            .then((List<Show> shows) {
-          showsRx.value = shows;
-        });
-        titleRx.value = 'Highest Rewards';
-        break;
-      case 'most_socializing':
-        _satorioRepository
-            .showsFromCategory('most_socializing')
-            .then((List<Show> shows) {
-          showsRx.value = shows;
-        });
-        titleRx.value = 'Most Social';
-        break;
-      case 'newest_added':
-        _satorioRepository
-            .showsFromCategory('newest_added')
-            .then((List<Show> shows) {
-          showsRx.value = shows;
-        });
-        titleRx.value = 'Newest added';
+      default:
+        _loadCategory(_categoryName);
         break;
     }
   }
 
-  void _loadAllShows() {
+  void toShowDetail(Show show) {
+    Get.to(
+      () => ShowDetailWithEpisodesPage(),
+      binding: ShowDetailWithEpisodesBinding(),
+      arguments: ShowDetailWithEpisodesArgument(show),
+    );
+  }
+
+  void _updateTitle() {
+    switch (_categoryName) {
+      case ShowCategory.all:
+        titleRx.value = 'txt_all_realms'.tr;
+        break;
+      case ShowCategory.highestRewarding:
+        titleRx.value = 'txt_highest_rewards'.tr;
+        break;
+      case ShowCategory.mostSocializing:
+        titleRx.value = 'txt_most_social'.tr;
+        break;
+      case ShowCategory.newestAdded:
+        titleRx.value = 'txt_newest_added'.tr;
+        break;
+    }
+  }
+
+  void _loadCategory(String categoryName) {
     if (_isAllLoadedRx.value) return;
 
     if (_isLoadingRx.value) return;
 
     _isLoadingRx.value = true;
 
-    _satorioRepository.shows(page: _pageRx.value).then((List<Show> shows) {
+    _satorioRepository
+        .showsFromCategory(
+      categoryName,
+      page: _pageRx.value,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then((List<Show> shows) {
       showsRx.update((value) {
         if (value != null) value.addAll(shows);
       });
@@ -75,18 +94,28 @@ class ShowsCategoryController extends GetxController {
     });
   }
 
-  void toShowDetail(Show show) {
-    Get.to(
-      () => ShowDetailWithEpisodesPage(),
-      binding: ShowDetailWithEpisodesBinding(),
-      arguments: ShowDetailWithEpisodesArgument(show),
-    );
-  }
+  void _loadAllShows() {
+    if (_isAllLoadedRx.value) return;
 
-  ShowsCategoryController() {
-    ShowsCategoryArgument argument = Get.arguments;
+    if (_isLoadingRx.value) return;
 
-    _loadShowsByCategoryName(argument.categoryName);
+    _isLoadingRx.value = true;
+
+    _satorioRepository
+        .shows(
+      page: _pageRx.value,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then((List<Show> shows) {
+      showsRx.update((value) {
+        if (value != null) value.addAll(shows);
+      });
+      _isAllLoadedRx.value = shows.isEmpty;
+      _isLoadingRx.value = false;
+      _pageRx.value = _pageRx.value + 1;
+    }).catchError((value) {
+      _isLoadingRx.value = false;
+    });
   }
 }
 
