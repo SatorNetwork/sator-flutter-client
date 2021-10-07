@@ -81,7 +81,7 @@ class ShowEpisodeRealmController extends GetxController
     showEpisodeRx = Rx(argument.showEpisode);
 
     this.profileListenable =
-    _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
     profile = profileListenable.value.getAt(0)!;
 
@@ -298,7 +298,6 @@ class ShowEpisodeRealmController extends GetxController
     if (result != null && result is bool) {
       _checkActivation(showUnlock: true);
       _updateShowEpisode();
-      _updateLeftAttempts();
     }
 
     _updateLeftAttempts();
