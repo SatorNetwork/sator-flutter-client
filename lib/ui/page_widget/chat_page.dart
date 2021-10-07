@@ -354,8 +354,8 @@ class ChatPage extends GetView<ChatController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  child: RichText(
-                    text: TextSpan(
+                  child: SelectableText.rich(
+                    TextSpan(
                       text: '${message.fromUserName}: ',
                       style: textTheme.bodyText2!.copyWith(
                         color: color,
@@ -370,6 +370,7 @@ class ChatPage extends GetView<ChatController> {
                             fontSize: 12 * coefficient,
                             fontWeight: FontWeight.w400,
                           ),
+                          // recognizer: TapGestureRecognizer()..onTap = () {},
                         ),
                       ],
                     ),

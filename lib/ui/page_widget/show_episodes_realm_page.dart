@@ -108,8 +108,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               color: SatorioColor.brand,
                               child: Center(
                                 child: Text(
-                                  controller.missedMessagesCountRx.value
-                                      .toString(),
+                                  controller.missedMessagesCountRx.value > 9
+                                      ? '9+'
+                                      : '${controller.missedMessagesCountRx.value}',
                                   style: textTheme.bodyText2!.copyWith(
                                     color: Colors.white,
                                     fontSize: 9 * coefficient,
