@@ -238,8 +238,9 @@ class ShowEpisodeRealmController extends GetxController
     if (result != null && result is bool) {
       _checkActivation(showUnlock: true);
       _updateShowEpisode();
-      _updateLeftAttempts();
     }
+
+    _updateLeftAttempts();
   }
 
   void _toRealmPaidActivationBottomSheet() {
