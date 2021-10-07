@@ -217,4 +217,5 @@ const Map<String, String> en = {
       'While or after watching, enter the matching Sator realm for chat, trivia, games and NFTs.',
   'txt_onboarding_3_description':
       'Utilize SAO to collect NFTs, extend realms, stake, tip, vote and more.',
+  'txt_attempts_left_alert': 'You have no more attempts to unlock with a quiz, please unlock with SAO',
 };

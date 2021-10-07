@@ -25,6 +25,7 @@ import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
@@ -46,6 +47,7 @@ class ShowEpisodeRealmController extends GetxController
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
   );
+  final RxInt attemptsLeftRx = 100500.obs;
 
   ScrollController scrollController = ScrollController();
 
@@ -76,6 +78,7 @@ class ShowEpisodeRealmController extends GetxController
     _loadReviews();
 
     _checkActivation();
+    _updateLeftAttempts();
   }
 
   void back() {
@@ -127,7 +130,17 @@ class ShowEpisodeRealmController extends GetxController
     Get.bottomSheet(
       EpisodeRealmBottomSheet(
         onQuizPressed: () {
-          _loadQuizQuestion();
+          if (attemptsLeftRx.value > 0) {
+            _loadQuizQuestion();
+          } else {
+            Get.dialog(
+              DefaultDialog(
+                'txt_oops'.tr,
+                'txt_attempts_left_alert'.tr,
+                'txt_ok'.tr,
+              ),
+            );
+          }
         },
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
@@ -225,6 +238,7 @@ class ShowEpisodeRealmController extends GetxController
     if (result != null && result is bool) {
       _checkActivation(showUnlock: true);
       _updateShowEpisode();
+      _updateLeftAttempts();
     }
   }
 
@@ -295,6 +309,14 @@ class ShowEpisodeRealmController extends GetxController
         .then(
       (ShowEpisode showEpisode) {
         showEpisodeRx.value = showEpisode;
+      },
+    );
+  }
+
+  void _updateLeftAttempts() {
+    _satorioRepository.showEpisodeAttemptsLeft(showEpisodeRx.value.id).then(
+      (leftAttempts) {
+        attemptsLeftRx.value = leftAttempts;
       },
     );
   }

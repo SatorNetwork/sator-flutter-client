@@ -122,6 +122,8 @@ abstract class ApiDataSource {
     String paidOption,
   );
 
+  Future<int> showEpisodeAttemptsLeft(String episodeId);
+
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId);
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
