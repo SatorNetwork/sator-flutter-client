@@ -133,7 +133,7 @@ const Map<String, String> en = {
   'txt_dividends': 'Dividends',
   'txt_number': 'Number',
   'txt_current': 'Current',
-  'txt_coming_soon': 'Coming Soon',
+  'txt_coming_soon': 'Coming soon',
   'txt_non_working_feature':
       'This feature will be available in upcoming releases.',
   'txt_choose_your_destination_wallet': 'Choose your destination wallet',
@@ -218,7 +218,8 @@ const Map<String, String> en = {
   'txt_onboarding_3_description':
       'Utilize SAO to collect NFTs, extend realms, stake, tip, vote and more.',
   'txt_all_realms': 'All realms',
-  'txt_highest_rewards': 'Highest Rewards',
-  'txt_most_social': 'Most Social',
+  'txt_highest_rewards': 'Highest rewards',
+  'txt_most_social': 'Most social',
   'txt_newest_added': 'Newest added',
+  'txt_all_shows': 'All shows',
 };

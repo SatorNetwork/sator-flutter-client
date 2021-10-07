@@ -59,10 +59,10 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
                 (Get.mediaQuery.padding.top + kToolbarHeight),
             child: ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-              child: NotificationListener<OverscrollNotification>(
+              child: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
-                  if (notification.metrics.pixels ==
-                      notification.metrics.maxScrollExtent)
+                  if (notification.metrics.pixels >=
+                      notification.metrics.maxScrollExtent - 100)
                     controller.loadShows();
                   return true;
                 },
