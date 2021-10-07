@@ -222,4 +222,5 @@ const Map<String, String> en = {
   'txt_most_social': 'Most social',
   'txt_newest_added': 'Newest added',
   'txt_all_shows': 'All shows',
+  'txt_attempts_left_alert': 'You have no more attempts to unlock with a quiz, please unlock with SAO',
 };

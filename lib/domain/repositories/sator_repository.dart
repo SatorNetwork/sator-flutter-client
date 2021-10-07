@@ -97,6 +97,8 @@ abstract class SatorioRepository {
     String paidOption,
   );
 
+  Future<int> showEpisodeAttemptsLeft(String episodeId);
+
   Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId);
 
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId);
