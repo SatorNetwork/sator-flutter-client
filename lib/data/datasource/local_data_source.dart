@@ -10,6 +10,10 @@ abstract class LocalDataSource {
 
   Future<void> clear();
 
+  Future<void> markOnBoarded();
+
+  Future<bool> isOnBoarded();
+
   Future<void> saveProfile(Profile profile);
 
   ValueListenable profileListenable();

@@ -102,7 +102,7 @@ class ShowEpisodeRealmController extends GetxController
     _loadReviews();
     _lastSeenInit();
 
-    checkActivation();
+    _checkActivation();
   }
 
   void back() {
@@ -224,7 +224,12 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
-  void checkActivation({bool showUnlock = false}) {
+  void activeTimeExpire() {
+    _checkActivation();
+    _updateShowEpisode();
+  }
+
+  void _checkActivation({bool showUnlock = false}) {
     _satorioRepository
         .isEpisodeActivated(showEpisodeRx.value.id)
         .then((EpisodeActivation episodeActivation) {
@@ -270,7 +275,8 @@ class ShowEpisodeRealmController extends GetxController
     );
 
     if (result != null && result is bool) {
-      checkActivation(showUnlock: true);
+      _checkActivation(showUnlock: true);
+      _updateShowEpisode();
     }
   }
 
@@ -297,6 +303,7 @@ class ShowEpisodeRealmController extends GetxController
         activationRx.value = episodeActivation;
         if (episodeActivation.isActive) {
           _toUnlockBottomSheet();
+          _updateShowEpisode();
         }
       },
     );

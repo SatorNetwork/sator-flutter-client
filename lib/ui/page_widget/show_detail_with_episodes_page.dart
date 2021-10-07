@@ -397,9 +397,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
     this.controller,
     this.tabBarHeight,
     this.isSubtitleEmpty,
-  ) {
-    print('_SliverAppBarDelegate');
-  }
+  );
 
   final ShowDetailWithEpisodesController controller;
   final double tabBarHeight;

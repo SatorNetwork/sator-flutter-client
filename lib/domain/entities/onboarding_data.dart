@@ -1,12 +1,11 @@
-import 'dart:ui';
-
 class OnBoardingData {
   final String assetName;
-  final String text;
-  final Color backgroundColor;
-  final Color textColor;
-  final Color buttonColor;
+  final String title;
+  final String description;
 
-  const OnBoardingData(this.assetName, this.text, this.backgroundColor,
-      this.textColor, this.buttonColor);
+  const OnBoardingData(
+    this.assetName,
+    this.title,
+    this.description,
+  );
 }
