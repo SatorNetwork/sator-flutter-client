@@ -112,8 +112,15 @@ class ShowEpisodeRealmController extends GetxController
   Future _lastSeenInit() async {
     //TODO: refactor
     await _timestampsRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value == null) {
+        _timestampsRef.set(LastSeenModel(DateTime.now()).toJson());
+        lastSeen = LastSeen(DateTime.now());
+        return;
+      }
+
       final json = snapshot.value as Map<dynamic, dynamic>;
       lastSeen = LastSeenModel.fromJson(json);
+      print(lastSeen);
     });
 
     await _missedMessagesCounter();
@@ -122,6 +129,8 @@ class ShowEpisodeRealmController extends GetxController
   Future _missedMessagesCounter() async {
     List missedMessages = [];
     await _messagesRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value == null) return;
+
       Map<dynamic, dynamic> values = snapshot.value;
 
       values.forEach((key, value) {

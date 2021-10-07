@@ -96,6 +96,8 @@ class ChatController extends GetxController with BackToMainMixin {
     List missedMessages = [];
     scrollIndex = 0;
     await _messagesRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value == null) return;
+
       Map<dynamic, dynamic> values = snapshot.value;
 
       values.forEach((key, value) {
@@ -116,6 +118,7 @@ class ChatController extends GetxController with BackToMainMixin {
 
   void saveTimestamp() {
     if (timestamp == null) return;
+
     _timestampsRef.set(LastSeenModel(timestamp).toJson());
   }
 
