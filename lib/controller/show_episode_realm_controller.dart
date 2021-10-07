@@ -300,6 +300,8 @@ class ShowEpisodeRealmController extends GetxController
       _updateShowEpisode();
       _updateLeftAttempts();
     }
+
+    _updateLeftAttempts();
   }
 
   void _toRealmPaidActivationBottomSheet() {
