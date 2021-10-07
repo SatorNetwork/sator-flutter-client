@@ -78,6 +78,12 @@ class ChatController extends GetxController with BackToMainMixin {
     });
   }
 
+  @override
+  void onClose() {
+    saveTimestamp();
+    super.onClose();
+  }
+
   Future _scrollToMissedMessages() async {
     //TODO: refactor
     await _timestampsRef.once().then((DataSnapshot snapshot) {
