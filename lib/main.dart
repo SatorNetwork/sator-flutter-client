@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/app_binding.dart';
-import 'package:satorio/controller/splash_controller.dart';
+import 'package:satorio/binding/splash_binding.dart';
 import 'package:satorio/translation/sator_translation.dart';
 import 'package:satorio/ui/page_widget/splash_page.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -14,6 +15,20 @@ void main() async {
 
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]).then((_) {
+    precachePicture(
+      ExactAssetPicture(SvgPicture.svgStringDecoder, 'images/bg/splash.svg'),
+      null,
+    );
+    precachePicture(
+      ExactAssetPicture(SvgPicture.svgStringDecoder, 'images/splash.svg'),
+      null,
+    );
+    precachePicture(
+      ExactAssetPicture(
+          SvgPicture.svgStringDecoder, 'images/sator_colored.svg'),
+      null,
+    );
+
     runApp(GetMaterialApp(
       initialBinding: AppBinding(),
       debugShowCheckedModeBanner: false,
@@ -29,10 +44,14 @@ void main() async {
       supportedLocales: [
         Locale('en'),
       ],
-      home: SplashPage(),
-      onInit: () {
-        Get.lazyPut<SplashController>(() => SplashController());
-      },
+      initialRoute: '/splash',
+      getPages: [
+        GetPage(
+          name: '/splash',
+          page: () => SplashPage(),
+          binding: SplashBinding(),
+        ),
+      ],
     ));
   });
 }

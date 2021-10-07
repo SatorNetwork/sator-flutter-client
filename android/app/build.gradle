@@ -39,6 +39,8 @@ android {
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+
+        setProperty("archivesBaseName","sator-$versionName($versionCode)")
     }
 
     signingConfigs {

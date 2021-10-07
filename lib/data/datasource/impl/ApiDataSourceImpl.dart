@@ -44,6 +44,7 @@ import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
 import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
+import 'package:satorio/data/response/attempts_left_response.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
@@ -56,7 +57,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.sator.io/';
+    _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -474,9 +475,22 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ShowModel>> showsFromCategory(String category) {
+  Future<List<ShowModel>> showsFromCategory(
+    String category, {
+    int? page,
+    int? itemsPerPage,
+  }) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
     return _requestGet(
       'shows/filter/$category',
+      query: query,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
@@ -628,6 +642,17 @@ class ApiDataSourceImpl implements ApiDataSource {
       PaidUnlockRequest(paidOption),
     ).then((Response response) {
       return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
+    });
+  }
+
+  @override
+  Future<int> showEpisodeAttemptsLeft(String episodeId) {
+    return _requestGet(
+      'challenges/$episodeId/attempts-left',
+    ).then((Response response) {
+      return AttemptsLeftResponse.fromJson(
+              json.decode(response.bodyString!)['data'])
+          .attemptsLeft;
     });
   }
 

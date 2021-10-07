@@ -27,6 +27,10 @@ abstract class SatorioRepository {
 
   Future<bool> isVerified();
 
+  Future<bool> isOnBoarded();
+
+  Future<void> markOnBoarded();
+
   Future<bool> selectAvatar(String avatarPath);
 
   Future<bool> resendCode();
@@ -64,7 +68,11 @@ abstract class SatorioRepository {
 
   Future<List<Show>> shows({int? page, int? itemsPerPage});
 
-  Future<List<Show>> showsFromCategory(String category);
+  Future<List<Show>> showsFromCategory(
+    String category, {
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<ShowDetail> showDetail(String showId);
 
@@ -88,6 +96,8 @@ abstract class SatorioRepository {
     String episodeId,
     String paidOption,
   );
+
+  Future<int> showEpisodeAttemptsLeft(String episodeId);
 
   Future<PayloadQuestion> showEpisodeQuizQuestion(String episodeId);
 

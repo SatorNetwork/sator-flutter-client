@@ -265,7 +265,7 @@ class NFTsPage extends GetView<NFTsController> {
                 onTap: () {
                   controller.toNonWorkingFeatureDialog();
                 },
-                textCode: 'All Shows',
+                textCode: 'txt_all_shows'.tr,
                 fontSize: 24.0 * coefficient,
                 fontWeight: FontWeight.w700,
                 buttonText: 'View',

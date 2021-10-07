@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -180,9 +181,9 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Highest Rewards',
+            textCode: 'txt_highest_rewards'.tr,
             onTap: () {
-              controller.toShowsCategory('highest_rewarding');
+              controller.toShowsCategory(ShowCategory.highestRewarding);
             },
           ),
         ),
@@ -207,9 +208,9 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Most Social',
+            textCode: 'txt_most_social'.tr,
             onTap: () {
-              controller.toShowsCategory('most_socializing');
+              controller.toShowsCategory(ShowCategory.mostSocializing);
             },
           ),
         ),
@@ -234,9 +235,9 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Newest Added',
+            textCode: 'txt_newest_added'.tr,
             onTap: () {
-              controller.toShowsCategory('newest_added');
+              controller.toShowsCategory(ShowCategory.newestAdded);
             },
           ),
         ),
@@ -447,7 +448,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  List<String> _nfts = [
+  final List<String> _nfts = [
     'images/tmp_nft_home_1.jpg',
     'images/tmp_nft_home_2.jpg',
     'images/tmp_nft_home_3.jpg',

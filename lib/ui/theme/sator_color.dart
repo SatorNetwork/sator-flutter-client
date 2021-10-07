@@ -37,4 +37,5 @@ class SatorioColor {
   static const Color lavender = Color(0xFFE3E1FB);
   static const Color razzle_dazzle_rose = Color(0xFFFF46ED);
   static const Color dodger_blue = Color(0xFF46A6FF);
+  static const Color link_water = Color(0xFFCDCFD5);
 }

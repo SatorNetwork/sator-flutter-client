@@ -91,7 +91,11 @@ abstract class ApiDataSource {
 
   Future<List<ShowModel>> shows({int? page, int? itemsPerPage});
 
-  Future<List<ShowModel>> showsFromCategory(String category);
+  Future<List<ShowModel>> showsFromCategory(
+    String category, {
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<ShowDetailModel> showDetail(String showId);
 
@@ -121,6 +125,8 @@ abstract class ApiDataSource {
     String episodeId,
     String paidOption,
   );
+
+  Future<int> showEpisodeAttemptsLeft(String episodeId);
 
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId);
 

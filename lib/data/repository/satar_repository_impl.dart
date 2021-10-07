@@ -110,6 +110,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> isOnBoarded() {
+    return _localDataSource.isOnBoarded();
+  }
+
+  @override
+  Future<void> markOnBoarded() {
+    return _localDataSource.markOnBoarded();
+  }
+
+  @override
   Future<bool> selectAvatar(String avatarPath) {
     return _apiDataSource
         .selectAvatar(avatarPath)
@@ -152,9 +162,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Show>> showsFromCategory(String category) {
+  Future<List<Show>> showsFromCategory(
+    String category, {
+    int? page,
+    int? itemsPerPage,
+  }) {
     return _apiDataSource
-        .showsFromCategory(category)
+        .showsFromCategory(category, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -235,6 +249,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   ) {
     return _apiDataSource
         .paidUnlockEpisode(episodeId, paidOption)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<int> showEpisodeAttemptsLeft(String episodeId) {
+    return _apiDataSource
+        .showEpisodeAttemptsLeft(episodeId)
         .catchError((value) => _handleException(value));
   }
 

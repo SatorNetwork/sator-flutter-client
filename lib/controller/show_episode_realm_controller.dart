@@ -1,6 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
@@ -11,9 +13,12 @@ import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/last_seen.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
+import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -25,6 +30,7 @@ import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
@@ -46,10 +52,21 @@ class ShowEpisodeRealmController extends GetxController
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
   );
+  final RxInt attemptsLeftRx = 100500.obs;
 
   ScrollController scrollController = ScrollController();
 
+  late ValueListenable<Box<Profile>> profileListenable;
+  late Profile profile;
+
   late final DatabaseReference _messagesRef;
+  late LastSeen lastSeen;
+  DateTime? timestamp;
+  late Rx<int> missedMessagesCountRx = Rx(0);
+  late final DatabaseReference _timestampsRef;
+  //TODO: refactor
+  static const String DATABASE_URL =
+      'https://sator-f44d6-timestamp.firebaseio.com/';
 
   late Rx<bool> isMessagesRx = Rx(false);
 
@@ -62,9 +79,20 @@ class ShowEpisodeRealmController extends GetxController
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
+
+    this.profileListenable =
+        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+
+    profile = profileListenable.value.getAt(0)!;
+
+    _timestampsRef = FirebaseDatabase(databaseURL: DATABASE_URL)
+        .reference()
+        .child(profile.id)
+        .child(argument.showEpisode.id);
+
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child('prod')
+        .child('test')
         .child(argument.showEpisode.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {
@@ -74,12 +102,47 @@ class ShowEpisodeRealmController extends GetxController
 
     _updateShowEpisode();
     _loadReviews();
+    lastSeenInit();
 
-    checkActivation();
+    _checkActivation();
+    _updateLeftAttempts();
   }
 
   void back() {
     Get.back();
+  }
+
+  Future lastSeenInit() async {
+    //TODO: refactor
+    await _timestampsRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value == null) {
+        _timestampsRef.set(LastSeenModel(DateTime.now()).toJson());
+        lastSeen = LastSeen(DateTime.now());
+        return;
+      }
+
+      final json = snapshot.value as Map<dynamic, dynamic>;
+      lastSeen = LastSeenModel.fromJson(json);
+    });
+
+    await _missedMessagesCounter();
+  }
+
+  Future _missedMessagesCounter() async {
+    List missedMessages = [];
+    await _messagesRef.once().then((DataSnapshot snapshot) {
+      if (snapshot.value == null) return;
+
+      Map<dynamic, dynamic> values = snapshot.value;
+
+      values.forEach((key, value) {
+        if (DateTime.tryParse(value["createdAt"])!.microsecondsSinceEpoch >
+            lastSeen.timestamp!.microsecondsSinceEpoch) {
+          missedMessages.add(value);
+        }
+      });
+      missedMessagesCountRx.value = missedMessages.length;
+    });
   }
 
   void toWriteReview() async {
@@ -127,7 +190,17 @@ class ShowEpisodeRealmController extends GetxController
     Get.bottomSheet(
       EpisodeRealmBottomSheet(
         onQuizPressed: () {
-          _loadQuizQuestion();
+          if (attemptsLeftRx.value > 0) {
+            _loadQuizQuestion();
+          } else {
+            Get.dialog(
+              DefaultDialog(
+                'txt_oops'.tr,
+                'txt_attempts_left_alert'.tr,
+                'txt_ok'.tr,
+              ),
+            );
+          }
         },
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
@@ -172,7 +245,12 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
-  void checkActivation({bool showUnlock = false}) {
+  void activeTimeExpire() {
+    _checkActivation();
+    _updateShowEpisode();
+  }
+
+  void _checkActivation({bool showUnlock = false}) {
     _satorioRepository
         .isEpisodeActivated(showEpisodeRx.value.id)
         .then((EpisodeActivation episodeActivation) {
@@ -218,8 +296,11 @@ class ShowEpisodeRealmController extends GetxController
     );
 
     if (result != null && result is bool) {
-      checkActivation(showUnlock: true);
+      _checkActivation(showUnlock: true);
+      _updateShowEpisode();
     }
+
+    _updateLeftAttempts();
   }
 
   void _toRealmPaidActivationBottomSheet() {
@@ -245,6 +326,7 @@ class ShowEpisodeRealmController extends GetxController
         activationRx.value = episodeActivation;
         if (episodeActivation.isActive) {
           _toUnlockBottomSheet();
+          _updateShowEpisode();
         }
       },
     );
@@ -288,6 +370,14 @@ class ShowEpisodeRealmController extends GetxController
         .then(
       (ShowEpisode showEpisode) {
         showEpisodeRx.value = showEpisode;
+      },
+    );
+  }
+
+  void _updateLeftAttempts() {
+    _satorioRepository.showEpisodeAttemptsLeft(showEpisodeRx.value.id).then(
+      (leftAttempts) {
+        attemptsLeftRx.value = leftAttempts;
       },
     );
   }
