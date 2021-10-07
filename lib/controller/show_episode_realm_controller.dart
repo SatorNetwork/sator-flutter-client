@@ -92,7 +92,7 @@ class ShowEpisodeRealmController extends GetxController
 
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child('test')
+        .child('prod')
         .child(argument.showEpisode.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {
