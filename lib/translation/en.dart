@@ -223,4 +223,7 @@ const Map<String, String> en = {
   'txt_newest_added': 'Newest added',
   'txt_all_shows': 'All shows',
   'txt_attempts_left_alert': 'You have no more attempts to unlock with a quiz, please unlock with SAO',
+  'txt_current_price': 'Current Price',
+  'txt_buy': 'Buy',
+  'txt_description': 'Description',
 };
