@@ -904,19 +904,6 @@ class ProfilePage extends GetView<ProfileController> {
       'Beat @jerry in 1-1 super challenge.',
     ),
   ];
-
-  final List<RealmTmp> _realms = [
-    RealmTmp(
-      'https://upload.wikimedia.org/wikipedia/en/d/d6/Cat%27s_in_the_Bag.jpg',
-      'Breaking Bad',
-      'Cat\'s in the Bag...',
-    ),
-    RealmTmp(
-      'https://media.npr.org/assets/img/2013/09/20/184ad101-eeb2-bc20-378a-35487bcb135f_bb_rv-and-scenic_004-2802-90c9764ed9e1155c92a1faf560b8b90e9e275335.jpg',
-      'Breaking Bad',
-      'Pilot',
-    ),
-  ];
 }
 
 class BadgeTmp {
@@ -925,14 +912,6 @@ class BadgeTmp {
   final String asset;
   final String name;
   final int count;
-}
-
-class RealmTmp {
-  const RealmTmp(this.imageUrl, this.showTitle, this.episodeTitle);
-
-  final String imageUrl;
-  final String showTitle;
-  final String episodeTitle;
 }
 
 class ActivitySimpleTmp {
