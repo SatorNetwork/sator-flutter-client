@@ -1,166 +1,304 @@
-import 'dart:math';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
 import 'package:satorio/controller/profile_controller.dart';
+import 'package:satorio/domain/entities/activated_episode_simple.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
-import 'package:satorio/util/avatar_list.dart';
 
 class ProfilePage extends GetView<ProfileController> {
-  final int avatarIndex = Random().nextInt(avatars.length);
-
   final double nftsLargestImageSize =
       (Get.width - 2 * 20 - 16 * coefficient) / 2;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
-          width: Get.width,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 100 * coefficient,
-                height: 72 * coefficient,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: InkWell(
-                        onTap: () => {
-                          controller.toSelectAvatar()
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16 * coefficient),
-                          child: Obx(
-                            () => SvgPicture.asset(
-                              controller.profileRx.value?.avatarPath ?? '',
-                              width: 72 * coefficient,
-                              height: 72 * coefficient,
-                              fit: BoxFit.fitWidth,
+    return RefreshIndicator(
+      color: SatorioColor.brand,
+      onRefresh: () async {
+        controller.refreshPage();
+      },
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
+            width: Get.width,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 100 * coefficient,
+                  height: 72 * coefficient,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                          onTap: () => {controller.toSelectAvatar()},
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(16 * coefficient),
+                            child: Obx(
+                              () => SvgPicture.asset(
+                                controller.profileRx.value?.avatarPath ?? '',
+                                width: 72 * coefficient,
+                                height: 72 * coefficient,
+                                fit: BoxFit.fitWidth,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        width: 40 * coefficient,
-                        height: 40 * coefficient,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: SatorioColor.magic_mint,
-                              width: 3 * coefficient),
-                          color: Colors.white,
-                        ),
-                        child: Center(
-                          child: Image.asset(
-                            'images/tmp_shuriken.png',
-                            height: 24 * coefficient,
-                            width: 24 * coefficient,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Obx(
-                        () => Text(
-                          controller.profileRx.value?.displayedName ?? '',
-                          style: textTheme.headline6!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 18.0 * coefficient,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          controller.toNonWorkingFeatureDialog();
-                          //TODO: uncomment
-                          // controller.getReferralCode();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(24, 24),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          primary: SatorioColor.brand,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          'txt_invite_friends'.tr.toUpperCase(),
-                          style: textTheme.bodyText2!.copyWith(
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          width: 40 * coefficient,
+                          height: 40 * coefficient,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: SatorioColor.magic_mint,
+                                width: 3 * coefficient),
                             color: Colors.white,
-                            fontSize: 12.0 * coefficient,
-                            fontWeight: FontWeight.w700,
+                          ),
+                          child: Center(
+                            child: Image.asset(
+                              'images/tmp_shuriken.png',
+                              height: 24 * coefficient,
+                              width: 24 * coefficient,
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              IconButton(
-                icon: Icon(
-                  SatorIcons.exit,
-                  size: 24,
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Obx(
+                          () => Text(
+                            controller.profileRx.value?.displayedName ?? '',
+                            style: textTheme.headline6!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 18.0 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            controller.toNonWorkingFeatureDialog();
+                            //TODO: uncomment
+                            // controller.getReferralCode();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(24, 24),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            primary: SatorioColor.brand,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          child: Text(
+                            'txt_invite_friends'.tr.toUpperCase(),
+                            style: textTheme.bodyText2!.copyWith(
+                              color: Colors.white,
+                              fontSize: 12.0 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  controller.toLogoutDialog();
-                },
-              )
-            ],
-          ),
-        ),
-        Expanded(
-          child: Container(
-            width: Get.width,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-              color: Colors.white,
+                IconButton(
+                  icon: Icon(
+                    SatorIcons.exit,
+                    size: 24,
+                  ),
+                  onPressed: () {
+                    controller.toLogoutDialog();
+                  },
+                )
+              ],
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-              child: SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          controller.toNonWorkingFeatureDialog();
-                        },
-                        child: Padding(
+          ),
+          Expanded(
+            child: Container(
+              width: Get.width,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                color: Colors.white,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+                child: SingleChildScrollView(
+                  child: Container(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            controller.toNonWorkingFeatureDialog();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 28, bottom: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'txt_nfts'.tr,
+                                  style: textTheme.headline3!.copyWith(
+                                    color: SatorioColor.textBlack,
+                                    fontSize: 24.0 * coefficient,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.chevron_right_rounded,
+                                  size: 32 * coefficient,
+                                  color: SatorioColor.textBlack,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            controller.toNonWorkingFeatureDialog();
+                          },
+                          child: Container(
+                            height: nftsLargestImageSize + 21 * coefficient,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(17 * coefficient),
+                                          ),
+                                          child: Image.asset(
+                                            'images/tmp_nft_1.png',
+                                            width: nftsLargestImageSize,
+                                            height: nftsLargestImageSize,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 16 * coefficient,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(
+                                                      17 * coefficient),
+                                                ),
+                                                child: Image.asset(
+                                                  'images/tmp_nft_2.png',
+                                                  width: nftsLargestImageSize,
+                                                  height: nftsLargestImageSize,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                  top: 16 * coefficient,
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(
+                                                              17 * coefficient),
+                                                        ),
+                                                        child: Image.asset(
+                                                          'images/tmp_nft_3.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 15 * coefficient,
+                                                    ),
+                                                    Expanded(
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(
+                                                              17 * coefficient),
+                                                        ),
+                                                        child: Image.asset(
+                                                          'images/tmp_nft_4.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  'Breaking Bad',
+                                  style: textTheme.headline3!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 15.0 * coefficient,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
                           padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 28, bottom: 16),
+                            left: 20,
+                            right: 20,
+                            top: 32,
+                            bottom: 16,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'txt_nfts'.tr,
+                                'txt_your_activity'.tr,
                                 style: textTheme.headline3!.copyWith(
                                   color: SatorioColor.textBlack,
                                   fontSize: 24.0 * coefficient,
@@ -175,273 +313,116 @@ class ProfilePage extends GetView<ProfileController> {
                             ],
                           ),
                         ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          controller.toNonWorkingFeatureDialog();
-                        },
-                        child: Container(
-                          height: nftsLargestImageSize + 21 * coefficient,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        _activatedEpisodes(),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 28, bottom: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(17 * coefficient),
-                                        ),
-                                        child: Image.asset(
-                                          'images/tmp_nft_1.png',
-                                          width: nftsLargestImageSize,
-                                          height: nftsLargestImageSize,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16 * coefficient,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    17 * coefficient),
-                                              ),
-                                              child: Image.asset(
-                                                'images/tmp_nft_2.png',
-                                                width: nftsLargestImageSize,
-                                                height: nftsLargestImageSize,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                top: 16 * coefficient,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(
-                                                            17 * coefficient),
-                                                      ),
-                                                      child: Image.asset(
-                                                        'images/tmp_nft_3.png',
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 15 * coefficient,
-                                                  ),
-                                                  Expanded(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(
-                                                            17 * coefficient),
-                                                      ),
-                                                      child: Image.asset(
-                                                        'images/tmp_nft_4.png',
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               Text(
-                                'Breaking Bad',
+                                'txt_realms_open'.tr,
                                 style: textTheme.headline3!.copyWith(
-                                  color: SatorioColor.interactive,
-                                  fontSize: 15.0 * coefficient,
-                                  fontWeight: FontWeight.w400,
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 24.0 * coefficient,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                size: 32 * coefficient,
+                                color: SatorioColor.textBlack,
+                              )
                             ],
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                          top: 32,
-                          bottom: 16,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_your_activity'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
+                        SizedBox(
+                          height: 180 * coefficient,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 16 * coefficient,
                             ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        separatorBuilder: (context, index) => SizedBox(
-                          height: 8 * coefficient,
-                        ),
-                        itemCount: _activities.length,
-                        itemBuilder: (context, index) {
-                          ActivitySimpleTmp activity = _activities[index];
-                          return _activityItem(activity);
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 28, bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_realms_open'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 180 * coefficient,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          separatorBuilder: (context, index) => SizedBox(
-                            width: 16 * coefficient,
+                            itemCount: _realms.length,
+                            itemBuilder: (context, index) {
+                              RealmTmp realm = _realms[index];
+                              return _realmItem(realm);
+                            },
                           ),
-                          itemCount: _realms.length,
-                          itemBuilder: (context, index) {
-                            RealmTmp realm = _realms[index];
-                            return _realmItem(realm);
-                          },
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 28, bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_badges'.tr,
-                              style: textTheme.headline3!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 28, bottom: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'txt_badges'.tr,
+                                style: textTheme.headline3!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 24.0 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 121 * coefficient,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          separatorBuilder: (context, index) => SizedBox(
-                            width: 12 * coefficient,
-                          ),
-                          itemCount: _badges.length,
-                          itemBuilder: (context, index) {
-                            BadgeTmp badge = _badges[index];
-                            return _badgeItem(badge);
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 28, bottom: 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'txt_reviews'.tr,
-                              style: textTheme.headline3!.copyWith(
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                size: 32 * coefficient,
                                 color: SatorioColor.textBlack,
-                                fontSize: 24.0 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            Icon(
-                              Icons.chevron_right_rounded,
-                              size: 32 * coefficient,
-                              color: SatorioColor.textBlack,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 230 * coefficient,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          separatorBuilder: (context, index) => SizedBox(
-                            width: 16 * coefficient,
+                              )
+                            ],
                           ),
-                          itemCount: 2,
-                          itemBuilder: (context, index) {
-                            return _reviewItem();
-                          },
                         ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                    ],
+                        SizedBox(
+                          height: 121 * coefficient,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 12 * coefficient,
+                            ),
+                            itemCount: _badges.length,
+                            itemBuilder: (context, index) {
+                              BadgeTmp badge = _badges[index];
+                              return _badgeItem(badge);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 28, bottom: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'txt_reviews'.tr,
+                                style: textTheme.headline3!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 24.0 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              Icon(
+                                Icons.chevron_right_rounded,
+                                size: 32 * coefficient,
+                                color: SatorioColor.textBlack,
+                              )
+                            ],
+                          ),
+                        ),
+                        _reviews(),
+                        SizedBox(
+                          height: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 
@@ -511,7 +492,31 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _activityItem(ActivitySimpleTmp activity) {
+  Widget _activatedEpisodes() {
+    return Obx(
+      () => controller.activatedEpisodesRx.value.length != 0
+          ? ListView.separated(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              separatorBuilder: (context, index) => SizedBox(
+                height: 8 * coefficient,
+              ),
+              itemCount: controller.activatedEpisodesRx.value.length,
+              itemBuilder: (context, index) {
+                ActivatedEpisode? activatedEpisode =
+                    controller.activatedEpisodesRx.value[index];
+                return _activityItem(activatedEpisode!);
+              },
+            )
+          : Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: _emptyState('txt_null_activity'),
+          ),
+    );
+  }
+
+  Widget _activityItem(ActivatedEpisode activatedEpisode) {
     return InkWell(
       onTap: () {
         controller.toNonWorkingFeatureDialog();
@@ -529,8 +534,14 @@ class ProfilePage extends GetView<ProfileController> {
               width: 110 * coefficient,
               padding: EdgeInsets.symmetric(horizontal: 13 * coefficient),
               child: Center(
-                child: Image.asset(
-                  activity.asset,
+                child: CachedNetworkImage(
+                  imageUrl: activatedEpisode.cover,
+                  cacheKey: activatedEpisode.cover,
+                  width: Get.width,
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Container(
+                    color: SatorioColor.darkAccent,
+                  ),
                 ),
               ),
             ),
@@ -542,7 +553,7 @@ class ProfilePage extends GetView<ProfileController> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16 * coefficient),
                 child: Text(
-                  activity.text,
+                  activatedEpisode.description,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(
@@ -641,10 +652,58 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _reviewItem() {
+  Widget _emptyState(String message) {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(13),
+          ),
+          color: SatorioColor.alice_blue,
+        ),
+        height: 60 * coefficient,
+        child: Center(
+          child: Text(
+            message.tr,
+            style: textTheme.bodyText2!.copyWith(
+              color: SatorioColor.interactive,
+              fontSize: 14 * coefficient,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ));
+  }
+
+  Widget _reviews() {
+    return Obx(
+      () => SizedBox(
+        height: controller.reviewsRx.value.length != 0 ? 230 : 60 * coefficient,
+        child: controller.reviewsRx.value.length == 0
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _emptyState('txt_null_reviews'),
+              )
+            : ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 16 * coefficient,
+                ),
+                itemCount: controller.reviewsRx.value.length,
+                itemBuilder: (context, index) {
+                  Review? review = controller.reviewsRx.value[index];
+                  return _reviewItem(review);
+                },
+              ),
+      ),
+    );
+  }
+
+  Widget _reviewItem(Review? review) {
     final double itemWidth = Get.width - 20 - 2 * 16 * coefficient;
     final EdgeInsets padding =
         EdgeInsets.only(left: 16 * coefficient, right: 16 * coefficient);
+    final formatter = DateFormat('dd MMMM yyyy');
+
     return InkWell(
       onTap: () {
         controller.toNonWorkingFeatureDialog();
@@ -686,7 +745,7 @@ class ProfilePage extends GetView<ProfileController> {
                       width: 4 * coefficient,
                     ),
                     Text(
-                      '9 / 10',
+                      '${review!.rating}',
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 12.0 * coefficient,
@@ -695,7 +754,7 @@ class ProfilePage extends GetView<ProfileController> {
                     ),
                     Expanded(
                       child: Text(
-                        '06 June 2021',
+                        '${formatter.format(review.createdAt!)}',
                         textAlign: TextAlign.end,
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
@@ -711,7 +770,7 @@ class ProfilePage extends GetView<ProfileController> {
             Padding(
               padding: padding,
               child: Text(
-                'Something nice to watch',
+                '${review.title}',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: textTheme.headline6!.copyWith(
@@ -724,7 +783,7 @@ class ProfilePage extends GetView<ProfileController> {
             Padding(
               padding: padding,
               child: Text(
-                'A high school chemistry teacher dying of cancer teams with a former student to secure his family\'s future...',
+                '${review.review}',
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: textTheme.bodyText2!.copyWith(
@@ -773,7 +832,7 @@ class ProfilePage extends GetView<ProfileController> {
                   ),
                   Expanded(
                     child: Text(
-                      'username',
+                      '${review.userName}',
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 15.0 * coefficient,
@@ -790,7 +849,7 @@ class ProfilePage extends GetView<ProfileController> {
                     width: 8 * coefficient,
                   ),
                   Text(
-                    '2.5k',
+                    '${review.likes}k',
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.interactive,
                       fontSize: 14.0 * coefficient,
@@ -809,7 +868,7 @@ class ProfilePage extends GetView<ProfileController> {
                     width: 8 * coefficient,
                   ),
                   Text(
-                    '234',
+                    '${review.unlikes}',
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 14.0 * coefficient,
@@ -832,25 +891,6 @@ class ProfilePage extends GetView<ProfileController> {
     BadgeTmp('images/tmp_badge_4.png', 'Collector', 0),
   ];
 
-  final List<ActivitySimpleTmp> _activities = [
-    ActivitySimpleTmp(
-      'images/tmp_stranger_things.png',
-      'You scored top 50 in S1. E4 realm.',
-    ),
-    ActivitySimpleTmp(
-      'images/tmp_breaking_bad.png',
-      'Finished all of 2nd season.',
-    ),
-    ActivitySimpleTmp(
-      'images/tmp_stranger_things.png',
-      'Beat @jerry24 in 1-1 super challenge.',
-    ),
-    ActivitySimpleTmp(
-      'images/tmp_stranger_things.png',
-      'Beat @jerry in 1-1 super challenge.',
-    ),
-  ];
-
   final List<RealmTmp> _realms = [
     RealmTmp(
       'https://upload.wikimedia.org/wikipedia/en/d/d6/Cat%27s_in_the_Bag.jpg',
@@ -871,13 +911,6 @@ class BadgeTmp {
   final String asset;
   final String name;
   final int count;
-}
-
-class ActivitySimpleTmp {
-  const ActivitySimpleTmp(this.asset, this.text);
-
-  final String asset;
-  final String text;
 }
 
 class RealmTmp {

@@ -32,7 +32,7 @@ class ReviewModel extends Review implements ToJsonInterface {
         json.parseValueAsInt('rating'),
         json.parseValueAsString('title'),
         json.parseValueAsString('review'),
-        json.tryParseValueAsDateTime('createdAt'),
+        json.tryParseValueAsDateTime('created_at'),
         json.parseValueAsInt('likes'),
         json.parseValueAsInt('unlikes'),
       );

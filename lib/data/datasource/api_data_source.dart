@@ -18,6 +18,7 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/domain/entities/activated_episode_simple.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -110,7 +111,11 @@ abstract class ApiDataSource {
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
   Future<List<ReviewModel>> getReviews(String showId, String episodeId);
-  
+
+  Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
+
+  Future<List<ActivatedEpisode>> getActivatedEpisodes({int? page, int? itemsPerPage});
+
   Future<bool> clapShow(String showId);
 
   // endregion

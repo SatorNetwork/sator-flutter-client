@@ -6,6 +6,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
+import 'package:satorio/domain/entities/activated_episode_simple.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
@@ -433,6 +434,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<List<Review>> getReviews(String showId, String episodeId) {
     return _apiDataSource
         .getReviews(showId, episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<Review>> getUserReviews({int? page, int? itemsPerPage}) {
+    return _apiDataSource
+        .getUserReviews()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<ActivatedEpisode>> getActivatedEpisodes({int? page, int? itemsPerPage}) {
+    return _apiDataSource
+        .getActivatedEpisodes()
         .catchError((value) => _handleException(value));
   }
 

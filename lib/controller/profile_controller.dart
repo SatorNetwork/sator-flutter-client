@@ -6,7 +6,9 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/select_avatar_controller.dart';
+import 'package:satorio/domain/entities/activated_episode_simple.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
@@ -16,7 +18,12 @@ import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 class ProfileController extends GetxController with NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
+  final int _itemsPerPage = 10;
+  static const int _initialPage = 1;
+
   final Rx<Profile?> profileRx = Rx(null);
+  final Rx<List<Review?>> reviewsRx = Rx([]);
+  final Rx<List<ActivatedEpisode?>> activatedEpisodesRx = Rx([]);
 
   late final ValueListenable<Box<Profile>> profileListenable;
 
@@ -25,12 +32,13 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   ProfileController() {
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+    _loadUserReviews();
+    _loadActivatedEpisodes();
   }
 
   @override
   void onInit() {
     super.onInit();
-
     _profileListener();
     profileListenable.addListener(_profileListener);
   }
@@ -39,6 +47,28 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void onClose() {
     profileListenable.removeListener(_profileListener);
     super.onClose();
+  }
+
+  void refreshPage() {
+    _satorioRepository.updateProfile();
+    _loadUserReviews();
+    _loadActivatedEpisodes();
+  }
+
+  void _loadUserReviews() {
+    _satorioRepository
+        .getUserReviews(page: _initialPage, itemsPerPage: _itemsPerPage)
+        .then((List<Review> reviews) {
+      reviewsRx.value = reviews;
+    });
+  }
+
+  void _loadActivatedEpisodes() {
+    _satorioRepository
+        .getActivatedEpisodes(page: _initialPage, itemsPerPage: _itemsPerPage)
+        .then((List<ActivatedEpisode> episodes) {
+      activatedEpisodesRx.value = episodes;
+    });
   }
 
   Future<void> getReferralCode() async {
