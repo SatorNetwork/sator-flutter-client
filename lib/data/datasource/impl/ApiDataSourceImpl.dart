@@ -7,7 +7,7 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
-import 'package:satorio/data/model/activated_episode_model.dart';
+import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
@@ -580,7 +580,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ActivatedEpisodeModel>> getActivatedEpisodes({int? page, int? itemsPerPage}) {
+  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
@@ -595,7 +595,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
-            .map((element) => ActivatedEpisodeModel.fromJson(element))
+            .map((element) => ActivatedRealmModel.fromJson(element))
             .toList();
       else
         return [];

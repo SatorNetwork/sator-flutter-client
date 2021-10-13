@@ -1,4 +1,4 @@
-class ActivatedEpisode {
+class ActivatedRealm {
   final String id;
   final String showId;
   final String seasonId;
@@ -10,7 +10,7 @@ class ActivatedEpisode {
   final String challengeId;
   final String verificationChallengeId;
 
-  const ActivatedEpisode(
+  const ActivatedRealm(
       this.id,
       this.showId,
       this.seasonId,

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:satorio/controller/profile_controller.dart';
-import 'package:satorio/domain/entities/activated_episode_simple.dart';
+import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -313,7 +313,19 @@ class ProfilePage extends GetView<ProfileController> {
                             ],
                           ),
                         ),
-                        _activatedEpisodes(),
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: 8 * coefficient,
+                          ),
+                          itemCount: _activities.length,
+                          itemBuilder: (context, index) {
+                            ActivitySimpleTmp activity = _activities[index];
+                            return _activityItem(activity);
+                          },
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 28, bottom: 16),
@@ -336,21 +348,7 @@ class ProfilePage extends GetView<ProfileController> {
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 180 * coefficient,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            separatorBuilder: (context, index) => SizedBox(
-                              width: 16 * coefficient,
-                            ),
-                            itemCount: _realms.length,
-                            itemBuilder: (context, index) {
-                              RealmTmp realm = _realms[index];
-                              return _realmItem(realm);
-                            },
-                          ),
-                        ),
+                        _activatedRealms(),
                         Padding(
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 28, bottom: 16),
@@ -492,31 +490,30 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _activatedEpisodes() {
+  Widget _activatedRealms() {
     return Obx(
-      () => controller.activatedEpisodesRx.value.length != 0
-          ? ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              separatorBuilder: (context, index) => SizedBox(
-                height: 8 * coefficient,
-              ),
-              itemCount: controller.activatedEpisodesRx.value.length,
-              itemBuilder: (context, index) {
-                ActivatedEpisode? activatedEpisode =
-                    controller.activatedEpisodesRx.value[index];
-                return _activityItem(activatedEpisode!);
-              },
-            )
-          : Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: _emptyState('txt_null_activity'),
+          () => SizedBox(
+        height: controller.activatedRealmsRx.value.length != 0 ? 180 : 60 * coefficient,
+        child: controller.activatedRealmsRx.value.length != 0 ? ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          separatorBuilder: (context, index) => SizedBox(
+            width: 16 * coefficient,
           ),
+          itemCount: controller.activatedRealmsRx.value.length,
+          itemBuilder: (context, index) {
+            ActivatedRealm? realm = controller.activatedRealmsRx.value[index];
+            return _realmItem(realm!);
+          },
+        ) : Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: _emptyState('txt_null_realms'),
+        ),
+      ),
     );
   }
 
-  Widget _activityItem(ActivatedEpisode activatedEpisode) {
+  Widget _activityItem(ActivitySimpleTmp activity) {
     return InkWell(
       onTap: () {
         controller.toNonWorkingFeatureDialog();
@@ -534,14 +531,8 @@ class ProfilePage extends GetView<ProfileController> {
               width: 110 * coefficient,
               padding: EdgeInsets.symmetric(horizontal: 13 * coefficient),
               child: Center(
-                child: CachedNetworkImage(
-                  imageUrl: activatedEpisode.cover,
-                  cacheKey: activatedEpisode.cover,
-                  width: Get.width,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => Container(
-                    color: SatorioColor.darkAccent,
-                  ),
+                child: Image.asset(
+                  activity.asset,
                 ),
               ),
             ),
@@ -553,7 +544,7 @@ class ProfilePage extends GetView<ProfileController> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16 * coefficient),
                 child: Text(
-                  activatedEpisode.description,
+                  activity.text,
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(
@@ -570,7 +561,7 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _realmItem(RealmTmp realm) {
+  Widget _realmItem(ActivatedRealm realm) {
     final double itemWidth = Get.width - 2 * 20 - 16 * coefficient;
     final double borderWidth = 5 * coefficient;
 
@@ -594,10 +585,14 @@ class ProfilePage extends GetView<ProfileController> {
           child: Stack(
             fit: StackFit.passthrough,
             children: [
-              Image.network(
-                realm.imageUrl,
-                height: 180 * coefficient,
+              CachedNetworkImage(
+                imageUrl: realm.cover,
+                cacheKey: realm.cover,
+                width: Get.width,
                 fit: BoxFit.cover,
+                errorWidget: (context, url, error) => Container(
+                  color: SatorioColor.darkAccent,
+                ),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
@@ -622,7 +617,7 @@ class ProfilePage extends GetView<ProfileController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        realm.showTitle,
+                        realm.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.bodyText1!.copyWith(
@@ -632,7 +627,7 @@ class ProfilePage extends GetView<ProfileController> {
                         ),
                       ),
                       Text(
-                        realm.episodeTitle,
+                        realm.title,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.headline6!.copyWith(
@@ -891,6 +886,25 @@ class ProfilePage extends GetView<ProfileController> {
     BadgeTmp('images/tmp_badge_4.png', 'Collector', 0),
   ];
 
+  final List<ActivitySimpleTmp> _activities = [
+    ActivitySimpleTmp(
+      'images/tmp_stranger_things.png',
+      'You scored top 50 in S1. E4 realm.',
+    ),
+    ActivitySimpleTmp(
+      'images/tmp_breaking_bad.png',
+      'Finished all of 2nd season.',
+    ),
+    ActivitySimpleTmp(
+      'images/tmp_stranger_things.png',
+      'Beat @jerry24 in 1-1 super challenge.',
+    ),
+    ActivitySimpleTmp(
+      'images/tmp_stranger_things.png',
+      'Beat @jerry in 1-1 super challenge.',
+    ),
+  ];
+
   final List<RealmTmp> _realms = [
     RealmTmp(
       'https://upload.wikimedia.org/wikipedia/en/d/d6/Cat%27s_in_the_Bag.jpg',
@@ -919,4 +933,11 @@ class RealmTmp {
   final String imageUrl;
   final String showTitle;
   final String episodeTitle;
+}
+
+class ActivitySimpleTmp {
+  const ActivitySimpleTmp(this.asset, this.text);
+
+  final String asset;
+  final String text;
 }

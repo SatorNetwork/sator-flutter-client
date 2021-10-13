@@ -1,10 +1,10 @@
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/domain/entities/activated_episode_simple.dart';
+import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/util/extension.dart';
 
-class ActivatedEpisodeModel extends ActivatedEpisode
+class ActivatedRealmModel extends ActivatedRealm
     implements ToJsonInterface {
-  const ActivatedEpisodeModel(
+  const ActivatedRealmModel(
     String id,
     String showId,
     String seasonId,
@@ -28,7 +28,7 @@ class ActivatedEpisodeModel extends ActivatedEpisode
           verificationChallengeId,
         );
 
-  factory ActivatedEpisodeModel.fromJson(Map json) => ActivatedEpisodeModel(
+  factory ActivatedRealmModel.fromJson(Map json) => ActivatedRealmModel(
         json.parseValueAsString('id'),
         json.parseValueAsString('show_id'),
         json.parseValueAsString('season_id'),

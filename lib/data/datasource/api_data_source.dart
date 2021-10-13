@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
@@ -18,7 +19,6 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
-import 'package:satorio/domain/entities/activated_episode_simple.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -114,7 +114,7 @@ abstract class ApiDataSource {
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 
-  Future<List<ActivatedEpisode>> getActivatedEpisodes({int? page, int? itemsPerPage});
+  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage});
 
   Future<bool> clapShow(String showId);
 

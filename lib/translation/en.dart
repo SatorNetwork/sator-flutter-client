@@ -153,7 +153,7 @@ const Map<String, String> en = {
   'txt_tip': 'Tip',
   'txt_write_review': 'Write a review',
   'txt_null_reviews': 'No review yet',
-  'txt_null_activity': 'No activity yet',
+  'txt_null_realms': 'No active realms yet',
   'txt_x_left': '%s left',
   'txt_locked': 'Locked',
   'txt_status': 'Status',
