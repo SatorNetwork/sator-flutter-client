@@ -226,4 +226,7 @@ const Map<String, String> en = {
   'txt_current_price': 'Current Price',
   'txt_buy': 'Buy',
   'txt_description': 'Description',
+  'txt_popular': 'Popular',
+  'txt_shows': 'Shows',
+  'txt_sport': 'Sport',
 };
