@@ -326,26 +326,32 @@ class ProfilePage extends GetView<ProfileController> {
                             return _activityItem(activity);
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 28, bottom: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'txt_realms_open'.tr,
-                                style: textTheme.headline3!.copyWith(
-                                  color: SatorioColor.textBlack,
-                                  fontSize: 24.0 * coefficient,
-                                  fontWeight: FontWeight.w700,
+                        InkWell(
+                          onTap: () =>
+                              controller.activatedRealmsRx.value.length != 0
+                                  ? controller.toActiveRealmsPage()
+                                  : {},
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 28, bottom: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'txt_realms_open'.tr,
+                                  style: textTheme.headline3!.copyWith(
+                                    color: SatorioColor.textBlack,
+                                    fontSize: 24.0 * coefficient,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                size: 32 * coefficient,
-                                color: SatorioColor.textBlack,
-                              )
-                            ],
+                                Icon(
+                                  Icons.chevron_right_rounded,
+                                  size: 32 * coefficient,
+                                  color: SatorioColor.textBlack,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         _activatedRealms(),
@@ -386,26 +392,32 @@ class ProfilePage extends GetView<ProfileController> {
                             },
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 28, bottom: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'txt_reviews'.tr,
-                                style: textTheme.headline3!.copyWith(
-                                  color: SatorioColor.textBlack,
-                                  fontSize: 24.0 * coefficient,
-                                  fontWeight: FontWeight.w700,
+                        InkWell(
+                          onTap: () =>
+                              controller.reviewsRx.value.length != 0
+                                  ? controller.toReviewsPage()
+                                  : {},
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 28, bottom: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'txt_reviews'.tr,
+                                  style: textTheme.headline3!.copyWith(
+                                    color: SatorioColor.textBlack,
+                                    fontSize: 24.0 * coefficient,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                size: 32 * coefficient,
-                                color: SatorioColor.textBlack,
-                              )
-                            ],
+                                Icon(
+                                  Icons.chevron_right_rounded,
+                                  size: 32 * coefficient,
+                                  color: SatorioColor.textBlack,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         _reviews(),
@@ -492,23 +504,28 @@ class ProfilePage extends GetView<ProfileController> {
 
   Widget _activatedRealms() {
     return Obx(
-          () => SizedBox(
-        height: controller.activatedRealmsRx.value.length != 0 ? 180 : 60 * coefficient,
-        child: controller.activatedRealmsRx.value.length != 0 ? ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          separatorBuilder: (context, index) => SizedBox(
-            width: 16 * coefficient,
-          ),
-          itemCount: controller.activatedRealmsRx.value.length,
-          itemBuilder: (context, index) {
-            ActivatedRealm? realm = controller.activatedRealmsRx.value[index];
-            return _realmItem(realm!);
-          },
-        ) : Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _emptyState('txt_null_realms'),
-        ),
+      () => SizedBox(
+        height: controller.activatedRealmsRx.value.length != 0
+            ? 180
+            : 60 * coefficient,
+        child: controller.activatedRealmsRx.value.length != 0
+            ? ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                separatorBuilder: (context, index) => SizedBox(
+                  width: 16 * coefficient,
+                ),
+                itemCount: controller.activatedRealmsRx.value.length,
+                itemBuilder: (context, index) {
+                  ActivatedRealm? realm =
+                      controller.activatedRealmsRx.value[index];
+                  return _realmItem(realm!);
+                },
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: _emptyState('txt_null_realms'),
+              ),
       ),
     );
   }

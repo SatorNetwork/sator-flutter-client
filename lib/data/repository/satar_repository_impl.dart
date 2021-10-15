@@ -440,14 +440,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<List<Review>> getUserReviews({int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .getUserReviews()
+        .getUserReviews(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
   @override
   Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .getActivatedRealms()
+        .getActivatedRealms(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 

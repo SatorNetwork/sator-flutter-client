@@ -182,6 +182,7 @@ class ShowEpisodeRealmController extends GetxController
       arguments: ReviewsArgument(
         showDetailRx.value.id,
         showEpisodeRx.value.id,
+        true
       ),
     );
   }

@@ -74,7 +74,15 @@ class ReviewsPage extends GetView<ReviewsController> {
                   borderRadius:
                   BorderRadius.vertical(top: Radius.circular(32)),
                   child: Stack(children: [
-                    SingleChildScrollView(child: _reviews()),
+                    NotificationListener<ScrollNotification>(
+                      onNotification: (notification) {
+                        if (notification.metrics.pixels >=
+                            notification.metrics.maxScrollExtent - 100)
+                          controller.loadReviews();
+                        return true;
+                      },
+                      child: _reviews(),
+                    ),
                     Align(
                       alignment: Alignment.topCenter,
                       child: Container(
@@ -106,7 +114,6 @@ class ReviewsPage extends GetView<ReviewsController> {
     () => ListView.separated(
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
-          physics: NeverScrollableScrollPhysics(),
           itemCount: controller.reviewsRx.value.length,
           shrinkWrap: true,
           separatorBuilder: (context, index) => SizedBox(
