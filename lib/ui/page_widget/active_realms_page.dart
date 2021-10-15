@@ -131,7 +131,7 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
 
     return InkWell(
       onTap: () {
-        controller.toNonWorkingFeatureDialog();
+        controller.toEpisodeDetail(realm);
       },
       child: Container(
         width: itemWidth,
@@ -191,7 +191,7 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
                         ),
                       ),
                       Text(
-                        realm.title,
+                        realm.showTitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.headline6!.copyWith(

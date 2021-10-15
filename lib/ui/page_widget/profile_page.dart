@@ -584,7 +584,7 @@ class ProfilePage extends GetView<ProfileController> {
 
     return InkWell(
       onTap: () {
-        controller.toNonWorkingFeatureDialog();
+        controller.toEpisodeDetail(realm);
       },
       child: Container(
         width: itemWidth,
@@ -644,7 +644,7 @@ class ProfilePage extends GetView<ProfileController> {
                         ),
                       ),
                       Text(
-                        realm.title,
+                        realm.showTitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: textTheme.headline6!.copyWith(

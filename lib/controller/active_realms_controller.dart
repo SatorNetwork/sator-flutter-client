@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
+import 'package:satorio/binding/show_episodes_realm_binding.dart';
+import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
+import 'package:satorio/domain/entities/show_detail.dart';
+import 'package:satorio/domain/entities/show_episode.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 
-class ActiveRealmsController extends GetxController with NonWorkingFeatureMixin {
+class ActiveRealmsController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<List<ActivatedRealm?>> activatedRealmsRx = Rx([]);
@@ -14,6 +19,9 @@ class ActiveRealmsController extends GetxController with NonWorkingFeatureMixin 
   final RxInt _pageRx = _initialPage.obs;
   final RxBool _isLoadingRx = false.obs;
   final RxBool _isAllLoadedRx = false.obs;
+
+  ShowDetail? showDetail;
+  ShowEpisode? showEpisode;
 
   ActiveRealmsController() {
     loadActivatedRealms();
@@ -40,6 +48,33 @@ class ActiveRealmsController extends GetxController with NonWorkingFeatureMixin 
       _pageRx.value = _pageRx.value + 1;
     }).catchError((value) {
       _isLoadingRx.value = false;
+    });
+  }
+
+  Future toEpisodeDetail(ActivatedRealm realm) async {
+    await getShowDetail(realm);
+    await getShowEpisode(realm);
+
+    Get.to(
+      () => ShowEpisodesRealmPage(),
+      binding: ShowEpisodesRealmBinding(),
+      arguments: ShowEpisodeRealmArgument(
+        showDetail!,
+        ShowSeason(realm.showId, realm.seasonNumber, realm.showTitle, []),
+        showEpisode!,
+      ),
+    );
+  }
+
+  Future getShowEpisode(ActivatedRealm realm) async {
+    await _satorioRepository.showEpisode(realm.showId, realm.id).then((value) {
+      showEpisode = value;
+    });
+  }
+
+  Future getShowDetail(ActivatedRealm realm) async {
+    await _satorioRepository.showDetail(realm.showId).then((value) {
+      showDetail = value;
     });
   }
 
