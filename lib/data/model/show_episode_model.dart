@@ -4,34 +4,35 @@ import 'package:satorio/util/extension.dart';
 
 class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
   const ShowEpisodeModel(
-    String id,
-    String showId,
-    String challengeId,
-    int episodeNumber,
-    String title,
-    String description,
-    String cover,
-    DateTime? releaseDate,
-    double rating,
-    int ratingsCount,
-    activeUsers,
-    userRewardsAmount,
-    totalRewardsAmount,
-  ) : super(
-          id,
-          showId,
-          challengeId,
-          episodeNumber,
-          title,
-          description,
-          cover,
-          releaseDate,
-          rating,
-          ratingsCount,
-          activeUsers,
-          userRewardsAmount,
-          totalRewardsAmount,
-        );
+      String id,
+      String showId,
+      String challengeId,
+      int episodeNumber,
+      String title,
+      String description,
+      String cover,
+      DateTime? releaseDate,
+      double rating,
+      int ratingsCount,
+      activeUsers,
+      userRewardsAmount,
+      totalRewardsAmount,
+      String? hint)
+      : super(
+            id,
+            showId,
+            challengeId,
+            episodeNumber,
+            title,
+            description,
+            cover,
+            releaseDate,
+            rating,
+            ratingsCount,
+            activeUsers,
+            userRewardsAmount,
+            totalRewardsAmount,
+            hint);
 
   factory ShowEpisodeModel.fromJson(Map json) => ShowEpisodeModel(
         json.parseValueAsString('id'),
@@ -47,6 +48,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         json.parseValueAsInt('active_users'),
         json.parseValueAsDouble('user_rewards_amount'),
         json.parseValueAsDouble('total_rewards_amount'),
+        json.parseValueAsString('hint_text'),
       );
 
   @override
@@ -64,5 +66,6 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         'active_users': activeUsers,
         'user_rewards_amount': userRewardsAmount,
         'total_rewards_amount': totalRewardsAmount,
+        'hint_text': hint,
       };
 }

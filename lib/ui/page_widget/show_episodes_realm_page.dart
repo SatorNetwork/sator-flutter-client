@@ -954,12 +954,17 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Text(
-                        'txt_start_watching_earn_sao'.tr,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 13 * coefficient,
-                          fontWeight: FontWeight.w400,
+                      Obx(
+                        () => Text(
+                          controller.showEpisodeRx.value.hint == null ||
+                                  controller.showEpisodeRx.value.hint == ''
+                              ? 'txt_start_watching_earn_sao'.tr
+                              : controller.showEpisodeRx.value.hint!,
+                          style: textTheme.bodyText2!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 13 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                       SizedBox(

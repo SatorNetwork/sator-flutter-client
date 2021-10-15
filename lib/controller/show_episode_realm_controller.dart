@@ -97,7 +97,6 @@ class ShowEpisodeRealmController extends GetxController
 
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
-      print(isMessagesRx.value);
     });
 
     _updateShowEpisode();
