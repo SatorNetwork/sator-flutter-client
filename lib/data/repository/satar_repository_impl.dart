@@ -11,6 +11,8 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
@@ -433,6 +435,27 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<List<Review>> getReviews(String showId, String episodeId) {
     return _apiDataSource
         .getReviews(showId, episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<NftCategory>> nftCategories() {
+    return _apiDataSource
+        .nftCategories()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<NftItem>> nftItemsByCategory(String categoryId) {
+    return _apiDataSource
+        .nftItemsByCategory(categoryId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<NftItem> nftItem(String nftItemId) {
+    return _apiDataSource
+        .nftItem(nftItemId)
         .catchError((value) => _handleException(value));
   }
 

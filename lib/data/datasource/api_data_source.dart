@@ -4,6 +4,8 @@ import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nft_category_model.dart';
+import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
@@ -110,7 +112,7 @@ abstract class ApiDataSource {
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
   Future<List<ReviewModel>> getReviews(String showId, String episodeId);
-  
+
   Future<bool> clapShow(String showId);
 
   // endregion
@@ -163,6 +165,16 @@ abstract class ApiDataSource {
   Future<ReferralCodeModel> getReferralCode();
 
   Future<bool> confirmReferralCode(String referralCode);
+
+  // endregion
+
+  // region NFT
+
+  Future<List<NftCategoryModel>> nftCategories();
+
+  Future<List<NftItemModel>> nftItemsByCategory(String categoryId);
+
+  Future<NftItemModel> nftItem(String nftItemId);
 
   // endregion
 
