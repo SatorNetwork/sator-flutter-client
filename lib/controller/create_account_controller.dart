@@ -13,6 +13,7 @@ import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/links.dart';
 
 class CreateAccountController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
@@ -57,7 +58,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
       () => WebPage(),
       binding: WebBinding(),
       arguments: WebArgument(
-        'https://backoffice.sator.io/legal/terms-of-use',
+        linkTermsOfUse,
       ),
     );
   }

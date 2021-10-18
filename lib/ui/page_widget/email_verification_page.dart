@@ -6,7 +6,6 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/util/extension.dart';
-import 'package:satorio/util/extension.dart';
 
 class EmailVerificationPage extends GetView<EmailVerificationController> {
   @override
@@ -114,8 +113,8 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
     final int start = textFull.indexOf(email);
     final int end = start + email.length;
 
-    return Text.rich(
-      TextSpan(
+    return RichText(
+      text: TextSpan(
         text: textFull.substring(0, start),
         style: textTheme.bodyText2!.copyWith(
           color: SatorioColor.textBlack,

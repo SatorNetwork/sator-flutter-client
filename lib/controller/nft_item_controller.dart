@@ -4,7 +4,9 @@ import 'package:satorio/controller/web_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/checkout_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/success_nft_bought_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
+import 'package:satorio/util/links.dart';
 
 class NftItemController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -39,7 +41,7 @@ class NftItemController extends GetxController {
       () => WebPage(),
       binding: WebBinding(),
       arguments: WebArgument(
-        'https://backoffice.sator.io/legal/terms-of-use',
+        linkTermsOfUse,
       ),
     );
   }
@@ -58,7 +60,9 @@ class NftItemController extends GetxController {
         .then(
           (isSuccess) {
             if (isSuccess) {
-              // Get.bottomSheet(bottomsheet);
+              Get.bottomSheet(
+                SuccessNftBoughtBottomSheet(nftItemRx.value.name),
+              );
             }
             isBuyRequested.value = false;
           },

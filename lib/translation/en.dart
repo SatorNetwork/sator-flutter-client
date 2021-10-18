@@ -231,4 +231,6 @@ const Map<String, String> en = {
   'txt_checkout_description': 'By checking this box, I agree to Sator’s\n',
   'txt_item': 'Item',
   'txt_total': 'Total',
+  'txt_youve_just_bought': 'You’ve just bought “%s”',
+  'txt_to_my_nfts': 'To my NFT’s',
 };
