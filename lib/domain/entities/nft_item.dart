@@ -5,11 +5,12 @@ class NftItem {
   final String imageLink;
   final String name;
   final String description;
-  final Map<String, String> tags;
+  final Map<String, dynamic> tags;
   final double supply;
   final double royalties;
   final String blockchain;
   final String sellType;
+  final double buyNowPrice;
   final AuctionParams? auctionParams;
 
   const NftItem(
@@ -22,6 +23,7 @@ class NftItem {
     this.royalties,
     this.blockchain,
     this.sellType,
+    this.buyNowPrice,
     this.auctionParams,
   );
 }

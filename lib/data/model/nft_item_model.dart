@@ -11,11 +11,12 @@ class NftItemModel extends NftItem implements ToJsonInterface {
     String imageLink,
     String name,
     String description,
-    Map<String, String> tags,
+    Map<String, dynamic> tags,
     double supply,
     double royalties,
     String blockchain,
     String sellType,
+    double buyNowPrice,
     AuctionParams? auctionParams,
   ) : super(
           id,
@@ -27,6 +28,7 @@ class NftItemModel extends NftItem implements ToJsonInterface {
           royalties,
           blockchain,
           sellType,
+          buyNowPrice,
           auctionParams,
         );
 
@@ -40,6 +42,7 @@ class NftItemModel extends NftItem implements ToJsonInterface {
         json.parseValueAsDouble('royalties'),
         json.parseValueAsString('blockchain'),
         json.parseValueAsString('sell_type'),
+        json.parseValueAsDouble('buy_now_price'),
         json['auction_params'] == null
             ? null
             : AuctionParamsModel.fromJson(json['auction_params']),

@@ -66,14 +66,29 @@ class HomePage extends GetView<HomeController> {
                                               BorderRadius.circular(12.0),
                                           child: Center(
                                             child: Obx(
-                                              () => SvgPicture.asset(
-                                                controller.profileRx.value
-                                                        ?.avatarPath ??
-                                                    '',
-                                                width: 50,
-                                                height: 50,
-                                                fit: BoxFit.fitWidth,
-                                              ),
+                                              () =>
+                                                  controller.profileRx.value ==
+                                                              null ||
+                                                          controller
+                                                              .profileRx
+                                                              .value!
+                                                              .avatarPath
+                                                              .isEmpty
+                                                      ? Image.asset(
+                                                          'images/null_avatar.png',
+                                                          width: 50,
+                                                          height: 50,
+                                                          fit: BoxFit.fitWidth,
+                                                        )
+                                                      : SvgPicture.asset(
+                                                          controller
+                                                              .profileRx
+                                                              .value!
+                                                              .avatarPath,
+                                                          width: 50,
+                                                          height: 50,
+                                                          fit: BoxFit.fitWidth,
+                                                        ),
                                             ),
                                           ),
                                         ),
