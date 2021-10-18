@@ -234,6 +234,8 @@ class NftItemPage extends GetView<NftItemController> {
             child: Obx(
               () => Text(
                 controller.nftItemRx.value.description,
+                maxLines: 5,
+                overflow: TextOverflow.ellipsis,
                 style: textTheme.bodyText2!.copyWith(
                   color: SatorioColor.charcoal,
                   fontSize: 17 * coefficient,
@@ -273,12 +275,14 @@ class NftItemPage extends GetView<NftItemController> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
-                      '15.00 SAO',
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w600,
+                    Obx(
+                      () => Text(
+                        '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ],
@@ -290,7 +294,7 @@ class NftItemPage extends GetView<NftItemController> {
                   child: ElevatedGradientButton(
                     text: 'txt_buy'.tr,
                     onPressed: () {
-                      controller.buy();
+                      controller.toCheckout();
                     },
                   ),
                 ),

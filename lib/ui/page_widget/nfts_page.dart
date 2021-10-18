@@ -117,10 +117,9 @@ class NFTsPage extends GetView<NFTsController> {
             height: 12 * coefficient,
           ),
           Container(
-            height: 2 * (12 + 4) * coefficient,
             child: Text(
               nftItem.name,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: textTheme.bodyText2!.copyWith(
                 color: SatorioColor.textBlack,
@@ -134,24 +133,24 @@ class NFTsPage extends GetView<NFTsController> {
           ),
           RichText(
             text: TextSpan(
-              text: '32,284 sao',
+              text: '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
               style: TextStyle(
                 color: SatorioColor.textBlack,
                 fontSize: 12.0 * coefficient,
                 fontWeight: FontWeight.w500,
                 backgroundColor: Colors.transparent,
               ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: '/ \$1,300',
-                  style: TextStyle(
-                    color: SatorioColor.comet,
-                    fontSize: 12.0 * coefficient,
-                    fontWeight: FontWeight.w500,
-                    backgroundColor: Colors.transparent,
-                  ),
-                ),
-              ],
+              // children: <TextSpan>[
+              //   TextSpan(
+              //     text: '/ \$1,300',
+              //     style: TextStyle(
+              //       color: SatorioColor.comet,
+              //       fontSize: 12.0 * coefficient,
+              //       fontWeight: FontWeight.w500,
+              //       backgroundColor: Colors.transparent,
+              //     ),
+              //   ),
+              // ],
             ),
           ),
         ],

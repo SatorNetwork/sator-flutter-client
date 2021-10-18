@@ -815,6 +815,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  @override
+  Future<bool> buyNftItem(String nftItemId) {
+    return _requestPost(
+      'nft/$nftItemId/buy',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
   // endregion
 
   // region Socket

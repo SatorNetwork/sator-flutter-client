@@ -41,4 +41,5 @@ class SatorioColor {
   static const Color charcoal = Color(0xFF454545);
   static const Color geraldine = Color(0xFFE87373);
   static const Color acadia = Color(0xFFC4C4C);
+  static const Color mischka = Color(0xFFA3A6B3);
 }

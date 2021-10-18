@@ -226,4 +226,9 @@ const Map<String, String> en = {
   'txt_current_price': 'Current Price',
   'txt_buy': 'Buy',
   'txt_description': 'Description',
+  'txt_checkout': 'Checkout',
+  'txt_complete_checkout': 'Complete checkout',
+  'txt_checkout_description': 'By checking this box, I agree to Sator’s\n',
+  'txt_item': 'Item',
+  'txt_total': 'Total',
 };

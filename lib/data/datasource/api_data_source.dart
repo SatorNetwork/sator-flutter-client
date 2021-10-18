@@ -176,6 +176,8 @@ abstract class ApiDataSource {
 
   Future<NftItemModel> nftItem(String nftItemId);
 
+  Future<bool> buyNftItem(String nftItemId);
+
   // endregion
 
   // region Socket

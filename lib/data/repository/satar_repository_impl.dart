@@ -459,6 +459,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .catchError((value) => _handleException(value));
   }
 
+  @override
+  Future<bool> buyNftItem(String nftItemId) {
+    return _apiDataSource
+        .buyNftItem(nftItemId)
+        .catchError((value) => _handleException(value));
+  }
+
   //
 
   @override
