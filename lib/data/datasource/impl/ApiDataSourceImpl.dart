@@ -821,7 +821,8 @@ class ApiDataSourceImpl implements ApiDataSource {
       'nft/$nftItemId/buy',
       EmptyRequest(),
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      return response.isOk;
+      // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
