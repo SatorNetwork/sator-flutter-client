@@ -77,7 +77,7 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
                     NotificationListener<ScrollNotification>(
                       onNotification: (notification) {
                         if (notification.metrics.pixels >=
-                            notification.metrics.maxScrollExtent - 100)
+                            notification.metrics.maxScrollExtent)
                           controller.loadActivatedRealms();
                         return true;
                       },

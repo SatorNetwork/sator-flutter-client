@@ -128,59 +128,63 @@ class ReviewsPage extends GetView<ReviewsController> {
 
   Widget _reviewItem(Review review) {
     final double reviewContainerHeight = 184.0 * coefficient;
-    return InkWell(
-      onTap: () {
-        controller.toNonWorkingFeatureDialog();
-      },
-      child: Container(
-        height: reviewContainerHeight,
-        padding: EdgeInsets.only(bottom: 16, top: 16),
-        width: Get.mediaQuery.size.width - 70,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(13),
+
+    Rx<bool> isExpandedRx = Rx(false);
+
+    return Obx(
+        () => InkWell(
+        onTap: () {
+          if (review.review.length < 70) return;
+          isExpandedRx.value = !isExpandedRx.value;
+        },
+        child: Container(
+          height: isExpandedRx.value ? null : reviewContainerHeight,
+          padding: EdgeInsets.only(bottom: 16, top: 16),
+          width: Get.mediaQuery.size.width - 70,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(13),
+            ),
+            color: SatorioColor.alice_blue,
           ),
-          color: SatorioColor.alice_blue,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    smile[review.rating] ?? '',
-                    width: 24 * coefficient,
-                    height: 24 * coefficient,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Expanded(
-                    child: Text(
-                      review.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 18 * coefficient,
-                        fontWeight: FontWeight.w700,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      smile[review.rating] ?? '',
+                      width: 24 * coefficient,
+                      height: 24 * coefficient,
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Expanded(
+                      child: Text(
+                        review.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 18 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
                 child: Text(
                   review.review,
-                  maxLines: 4,
+                  maxLines: isExpandedRx.value ? 1000 : 4,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(
                     color: SatorioColor.textBlack,
@@ -189,107 +193,107 @@ class ReviewsPage extends GetView<ReviewsController> {
                   ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 16, left: 20, right: 20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    SatorioColor.alice_blue2,
-                    SatorioColor.alice_blue,
-                  ],
+              isExpandedRx.value ? Container() : Spacer(flex: 5),
+              Container(
+                padding: EdgeInsets.only(top: 16, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      SatorioColor.alice_blue2,
+                      SatorioColor.alice_blue,
+                    ],
+                  ),
                 ),
-              ),
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Row(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 20,
+                            width: 20,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                begin: Alignment.topRight,
+                                end: Alignment.bottomLeft,
+                                colors: [
+                                  SatorioColor.yellow_orange,
+                                  SatorioColor.tomato,
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(
+                            review.userName,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 15 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
                       children: [
+                        SvgPicture.asset(
+                          'images/like_icon.svg',
+                          color: SatorioColor.textBlack,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          review.likes.toString(),
+                          style: textTheme.bodyText2!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 14 * coefficient,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
                         Container(
-                          height: 20,
-                          width: 20,
+                          height: 24,
+                          width: 24,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                SatorioColor.yellow_orange,
-                                SatorioColor.tomato,
-                              ],
+                            color: SatorioColor.interactive,
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'images/sator_logo.svg',
+                              width: 12,
+                              height: 12,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                         SizedBox(
-                          width: 6,
+                          width: 4,
                         ),
                         Text(
-                          review.userName,
+                          'txt_tip'.tr,
                           style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 15 * coefficient,
-                            fontWeight: FontWeight.w600,
+                            color: SatorioColor.interactive,
+                            fontSize: 14 * coefficient,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        'images/like_icon.svg',
-                        color: SatorioColor.textBlack,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        review.likes.toString(),
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 14 * coefficient,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Container(
-                        height: 24,
-                        width: 24,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: SatorioColor.interactive,
-                        ),
-                        child: Center(
-                          child: SvgPicture.asset(
-                            'images/sator_logo.svg',
-                            width: 12,
-                            height: 12,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        'txt_tip'.tr,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.interactive,
-                          fontSize: 14 * coefficient,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            )
-          ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
