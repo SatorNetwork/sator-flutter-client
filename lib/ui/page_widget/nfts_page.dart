@@ -76,21 +76,27 @@ class NFTsPage extends GetView<NFTsController> {
   }
 
   Widget _nftItemListWidget(final NftCategory nftCategory) {
-    return Obx(
-      () => GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 15 * coefficient,
-          mainAxisSpacing: 20 * coefficient,
-          childAspectRatio: 0.6,
+    return RefreshIndicator(
+      color: SatorioColor.brand,
+      onRefresh: () async {
+        controller.refreshData();
+      },
+      child: Obx(
+        () => GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 15 * coefficient,
+            mainAxisSpacing: 20 * coefficient,
+            childAspectRatio: 0.6,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+          itemCount: controller.itemsRx.value[nftCategory.id]?.length ?? 0,
+          itemBuilder: (context, index) {
+            final NftItem nftItem =
+                controller.itemsRx.value[nftCategory.id]![index];
+            return _nftItemWidget(nftItem);
+          },
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-        itemCount: controller.itemsRx.value[nftCategory.id]?.length ?? 0,
-        itemBuilder: (context, index) {
-          final NftItem nftItem =
-              controller.itemsRx.value[nftCategory.id]![index];
-          return _nftItemWidget(nftItem);
-        },
       ),
     );
   }
