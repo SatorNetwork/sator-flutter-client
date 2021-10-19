@@ -50,8 +50,8 @@ class CheckoutBottomSheet extends StatelessWidget {
                   textAlign: TextAlign.start,
                   style: textTheme.bodyText2!.copyWith(
                     color: SatorioColor.textBlack,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 18 * coefficient,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
@@ -59,8 +59,8 @@ class CheckoutBottomSheet extends StatelessWidget {
                 'txt_total'.tr,
                 style: textTheme.bodyText2!.copyWith(
                   color: SatorioColor.textBlack,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 18 * coefficient,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
