@@ -40,9 +40,6 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
 
   final Rx<Uri?> referralLinkRx = Rx(null);
 
-  ShowDetail? showDetail;
-  ShowEpisode? showEpisode;
-
   ProfileController() {
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
@@ -88,32 +85,19 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   }
 
   Future toEpisodeDetail(ActivatedRealm realm) async {
-    await getShowDetail(realm);
-    await getShowEpisode(realm);
+    ShowDetail showDetail = await _satorioRepository.showDetail(realm.showId);
+    ShowEpisode showEpisode = await _satorioRepository.showEpisode(realm.showId, realm.id);
 
     Get.to(
           () => ShowEpisodesRealmPage(),
       binding: ShowEpisodesRealmBinding(),
       arguments: ShowEpisodeRealmArgument(
-        showDetail!,
+        showDetail,
         ShowSeason(realm.showId, realm.seasonNumber, realm.showTitle, []),
-        showEpisode!,
+        showEpisode,
       ),
     );
   }
-
-  Future getShowEpisode(ActivatedRealm realm) async {
-    await _satorioRepository.showEpisode(realm.showId, realm.id).then((value) {
-      showEpisode = value;
-    });
-  }
-
-  Future getShowDetail(ActivatedRealm realm) async {
-    await _satorioRepository.showDetail(realm.showId).then((value) {
-      showDetail = value;
-    });
-  }
-
 
   void _loadUserReviews() {
     _satorioRepository

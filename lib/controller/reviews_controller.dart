@@ -70,6 +70,7 @@ class ReviewsController extends GetxController with NonWorkingFeatureMixin {
   }
 }
 
+//TODO: refactor, object
 class ReviewsArgument{
   final String showDetailId;
   final String showEpisodeId;

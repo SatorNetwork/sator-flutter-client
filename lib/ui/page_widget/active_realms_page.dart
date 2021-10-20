@@ -42,69 +42,63 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
           ),
         ),
       ),
-      body: RefreshIndicator(
-        color: SatorioColor.brand,
-        onRefresh: () async {
-          // controller.refreshHomePage();
-        },
-        child: Stack(
-          children: [
-            Container(
-              color: SatorioColor.darkAccent,
-              child: Column(
-                children: [
-                  SvgPicture.asset(
-                    'images/bg/gradient.svg',
-                    height: Get.height - 56,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 100),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
+      body: Stack(
+        children: [
+          Container(
+            color: SatorioColor.darkAccent,
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  'images/bg/gradient.svg',
+                  height: Get.height - 56,
+                  fit: BoxFit.cover,
                 ),
-                color: Colors.white,
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 100),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(32),
+                topRight: Radius.circular(32),
               ),
-              child: ClipRRect(
-                  borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(32)),
-                  child: Stack(children: [
-                    NotificationListener<ScrollNotification>(
-                      onNotification: (notification) {
-                        if (notification.metrics.pixels >=
-                            notification.metrics.maxScrollExtent)
-                          controller.loadActivatedRealms();
-                        return true;
-                      },
-                      child: _activeRealms(),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 40,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.white.withOpacity(1),
-                              Colors.white.withOpacity(0.1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+            child: ClipRRect(
+                borderRadius:
+                BorderRadius.vertical(top: Radius.circular(32)),
+                child: Stack(children: [
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification.metrics.pixels >=
+                          notification.metrics.maxScrollExtent)
+                        controller.loadActivatedRealms();
+                      return true;
+                    },
+                    child: _activeRealms(),
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: 40,
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.white.withOpacity(1),
+                            Colors.white.withOpacity(0.1),
+                          ],
                         ),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                  ])),
-            )
-          ],
-        ),
+                  ),
+                ])),
+          )
+        ],
       ),
     );
   }
@@ -161,7 +155,7 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  width: itemWidth,
+                  width: Get.width,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,

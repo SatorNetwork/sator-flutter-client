@@ -42,69 +42,63 @@ class ReviewsPage extends GetView<ReviewsController> {
           ),
         ),
       ),
-      body: RefreshIndicator(
-        color: SatorioColor.brand,
-        onRefresh: () async {
-          // controller.refreshHomePage();
-        },
-        child: Stack(
-          children: [
-            Container(
-              color: SatorioColor.darkAccent,
-              child: Column(
-                children: [
-                  SvgPicture.asset(
-                    'images/bg/gradient.svg',
-                    height: Get.height - 56,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 100),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(32),
-                  topRight: Radius.circular(32),
+      body: Stack(
+        children: [
+          Container(
+            color: SatorioColor.darkAccent,
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  'images/bg/gradient.svg',
+                  height: Get.height - 56,
+                  fit: BoxFit.cover,
                 ),
-                color: Colors.white,
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 100),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(32),
+                topRight: Radius.circular(32),
               ),
-              child: ClipRRect(
-                  borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(32)),
-                  child: Stack(children: [
-                    NotificationListener<ScrollNotification>(
-                      onNotification: (notification) {
-                        if (notification.metrics.pixels >=
-                            notification.metrics.maxScrollExtent - 100)
-                          controller.loadReviews();
-                        return true;
-                      },
-                      child: _reviews(),
-                    ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 40,
-                        width: Get.width,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.white.withOpacity(1),
-                              Colors.white.withOpacity(0.1),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+            child: ClipRRect(
+                borderRadius:
+                BorderRadius.vertical(top: Radius.circular(32)),
+                child: Stack(children: [
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification.metrics.pixels >=
+                          notification.metrics.maxScrollExtent - 100)
+                        controller.loadReviews();
+                      return true;
+                    },
+                    child: _reviews(),
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: 40,
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.white.withOpacity(1),
+                            Colors.white.withOpacity(0.1),
+                          ],
                         ),
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                  ])),
-            )
-          ],
-        ),
+                  ),
+                ])),
+          )
+        ],
       ),
     );
   }
@@ -127,9 +121,8 @@ class ReviewsPage extends GetView<ReviewsController> {
 
 
   Widget _reviewItem(Review review) {
-    final double reviewContainerHeight = 184.0 * coefficient;
-
     Rx<bool> isExpandedRx = Rx(false);
+    final int minStringLength = 45;
 
     return Obx(
         () => InkWell(
@@ -138,7 +131,6 @@ class ReviewsPage extends GetView<ReviewsController> {
           isExpandedRx.value = !isExpandedRx.value;
         },
         child: Container(
-          height: isExpandedRx.value ? null : reviewContainerHeight,
           padding: EdgeInsets.only(bottom: 16, top: 16),
           width: Get.mediaQuery.size.width - 70,
           decoration: BoxDecoration(
@@ -162,16 +154,14 @@ class ReviewsPage extends GetView<ReviewsController> {
                     SizedBox(
                       width: 12,
                     ),
-                    Expanded(
-                      child: Text(
-                        review.title,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: textTheme.bodyText1!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 18 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
+                    Text(
+                      review.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 18 * coefficient,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ],
@@ -181,10 +171,10 @@ class ReviewsPage extends GetView<ReviewsController> {
                 height: 8,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                 child: Text(
                   review.review,
-                  maxLines: isExpandedRx.value ? 1000 : 4,
+                  maxLines: isExpandedRx.value ? 1000 : review.review.length < minStringLength ? 1 : 4,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(
                     color: SatorioColor.textBlack,
@@ -193,7 +183,6 @@ class ReviewsPage extends GetView<ReviewsController> {
                   ),
                 ),
               ),
-              isExpandedRx.value ? Container() : Spacer(flex: 5),
               Container(
                 padding: EdgeInsets.only(top: 16, left: 20, right: 20),
                 decoration: BoxDecoration(

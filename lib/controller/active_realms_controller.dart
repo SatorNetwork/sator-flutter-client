@@ -20,9 +20,6 @@ class ActiveRealmsController extends GetxController {
   final RxBool _isLoadingRx = false.obs;
   final RxBool _isAllLoadedRx = false.obs;
 
-  ShowDetail? showDetail;
-  ShowEpisode? showEpisode;
-
   ActiveRealmsController() {
     loadActivatedRealms();
   }
@@ -52,30 +49,18 @@ class ActiveRealmsController extends GetxController {
   }
 
   Future toEpisodeDetail(ActivatedRealm realm) async {
-    await getShowDetail(realm);
-    await getShowEpisode(realm);
+    ShowDetail showDetail = await _satorioRepository.showDetail(realm.showId);
+    ShowEpisode showEpisode = await _satorioRepository.showEpisode(realm.showId, realm.id);
 
     Get.to(
       () => ShowEpisodesRealmPage(),
       binding: ShowEpisodesRealmBinding(),
       arguments: ShowEpisodeRealmArgument(
-        showDetail!,
+        showDetail,
         ShowSeason(realm.showId, realm.seasonNumber, realm.showTitle, []),
-        showEpisode!,
+        showEpisode,
       ),
     );
-  }
-
-  Future getShowEpisode(ActivatedRealm realm) async {
-    await _satorioRepository.showEpisode(realm.showId, realm.id).then((value) {
-      showEpisode = value;
-    });
-  }
-
-  Future getShowDetail(ActivatedRealm realm) async {
-    await _satorioRepository.showDetail(realm.showId).then((value) {
-      showDetail = value;
-    });
   }
 
   void back() {
