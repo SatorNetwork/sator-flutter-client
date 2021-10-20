@@ -233,4 +233,5 @@ const Map<String, String> en = {
   'txt_total': 'Total',
   'txt_youve_just_bought': 'You’ve just bought “%s”',
   'txt_to_my_nfts': 'To my NFT’s',
+  'txt_view': 'View',
 };

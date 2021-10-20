@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/nfts_controller.dart';
+import 'package:satorio/domain/entities/nft_home.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/nft_preview.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -46,7 +48,9 @@ class NftsPage extends GetView<NftsController> {
       extendBodyBehindAppBar: true,
       body: RefreshIndicator(
         color: SatorioColor.brand,
-        onRefresh: () async {},
+        onRefresh: () async {
+          controller.refreshData();
+        },
         child: SingleChildScrollView(
           child: Stack(
             children: [
@@ -76,212 +80,275 @@ class NftsPage extends GetView<NftsController> {
 
   Widget _content() {
     final double topMargin = 140 * coefficient;
-    return InkWell(
-      onTap: () {
-        controller.toNonWorkingFeatureDialog();
-      },
-      child: Container(
-        margin: EdgeInsets.only(top: topMargin),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TitleWithButton(
-                onTap: () {},
-                textCode: 'Popular NFTs',
-                fontSize: 24.0 * coefficient,
-                fontWeight: FontWeight.w700,
-                buttonText: 'View',
-                color: Colors.black,
-                iconColor: SatorioColor.darkAccent,
-              ),
-            ),
-            SizedBox(
-              height: 20 * coefficient,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(17 * coefficient),
-                              ),
-                              child: Image.asset(
-                                'images/tmp_nft_5.png',
-                                width: Get.width,
-                                height: 200,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 8 * coefficient,
-                            ),
-                            Row(
-                              children: [
-                                RichText(
-                                  text: TextSpan(
-                                    text: '1,784',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.0 * coefficient,
-                                      fontWeight: FontWeight.w500,
-                                      backgroundColor: Colors.transparent,
-                                    ),
-                                    children: <TextSpan>[
-                                      TextSpan(text: ' '),
-                                      TextSpan(
-                                        text: 'sao',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 14.0 * coefficient,
-                                          fontWeight: FontWeight.w500,
-                                          backgroundColor: Colors.transparent,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 15 * coefficient,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(17 * coefficient),
-                              ),
-                              child: Image.asset(
-                                'images/tmp_nft_6.png',
-                                height: 200,
-                                width: Get.width,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 8 * coefficient,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                text: '32,284',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(text: ' '),
-                                  TextSpan(
-                                    text: 'sao',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.0 * coefficient,
-                                      fontWeight: FontWeight.w500,
-                                      backgroundColor: Colors.transparent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15 * coefficient,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(17 * coefficient),
-                              ),
-                              child: Image.asset(
-                                'images/tmp_nft_7.png',
-                                height: 200,
-                                width: Get.width,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 8 * coefficient,
-                            ),
-                            RichText(
-                              text: TextSpan(
-                                text: '3,284',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14.0 * coefficient,
-                                  fontWeight: FontWeight.w500,
-                                  backgroundColor: Colors.transparent,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(text: ' '),
-                                  TextSpan(
-                                    text: 'sao',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14.0 * coefficient,
-                                      fontWeight: FontWeight.w500,
-                                      backgroundColor: Colors.transparent,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 34 * coefficient,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TitleWithButton(
+    return Container(
+      margin: EdgeInsets.only(top: topMargin),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Obx(
+              () => TitleWithButton(
                 onTap: () {
-                  controller.toNonWorkingFeatureDialog();
+                  controller.toNftCategory();
                 },
-                textCode: 'txt_all_shows'.tr,
+                textCode: controller.nftHomeRx.value?.title ?? '',
                 fontSize: 24.0 * coefficient,
                 fontWeight: FontWeight.w700,
-                buttonText: 'View',
+                buttonText: 'txt_view'.tr,
                 color: Colors.black,
                 iconColor: SatorioColor.darkAccent,
               ),
             ),
-            SizedBox(
-              height: 10 * coefficient,
+          ),
+          SizedBox(
+            height: 20 * coefficient,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(17 * coefficient),
+                            ),
+                            child: Obx(
+                              () {
+                                final NftHome? nftHome =
+                                    controller.nftHomeRx.value;
+                                return nftHome != null &&
+                                        nftHome.items.length > 0
+                                    ? Image.network(
+                                        nftHome.items[0].imageLink,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        height: 200,
+                                      );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8 * coefficient,
+                          ),
+                          Obx(
+                            () {
+                              final NftHome? nftHome =
+                                  controller.nftHomeRx.value;
+                              final double price =
+                                  nftHome != null && nftHome.items.length > 0
+                                      ? nftHome.items[0].buyNowPrice
+                                      : 0.0;
+                              return RichText(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(
+                                  text: price.toStringAsFixed(2),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(text: ' '),
+                                    TextSpan(
+                                      text: 'SAO',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.0 * coefficient,
+                                        fontWeight: FontWeight.w500,
+                                        backgroundColor: Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15 * coefficient,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(17 * coefficient),
+                            ),
+                            child: Obx(
+                              () {
+                                final NftHome? nftHome =
+                                    controller.nftHomeRx.value;
+                                return nftHome != null &&
+                                        nftHome.items.length > 1
+                                    ? Image.network(
+                                        nftHome.items[1].imageLink,
+                                        height: 200,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        height: 200,
+                                      );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8 * coefficient,
+                          ),
+                          Obx(
+                            () {
+                              final NftHome? nftHome =
+                                  controller.nftHomeRx.value;
+                              final double price =
+                                  nftHome != null && nftHome.items.length > 1
+                                      ? nftHome.items[1].buyNowPrice
+                                      : 0.0;
+                              return RichText(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(
+                                  text: price.toStringAsFixed(2),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(text: ' '),
+                                    TextSpan(
+                                      text: 'SAO',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.0 * coefficient,
+                                        fontWeight: FontWeight.w500,
+                                        backgroundColor: Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15 * coefficient,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(17 * coefficient),
+                            ),
+                            child: Obx(
+                              () {
+                                final NftHome? nftHome =
+                                    controller.nftHomeRx.value;
+                                return nftHome != null &&
+                                        nftHome.items.length > 2
+                                    ? Image.network(
+                                        nftHome.items[2].imageLink,
+                                        height: 200,
+                                        width: Get.width,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        height: 200,
+                                        width: Get.width,
+                                      );
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8 * coefficient,
+                          ),
+                          Obx(
+                            () {
+                              final NftHome? nftHome =
+                                  controller.nftHomeRx.value;
+                              final double price =
+                                  nftHome != null && nftHome.items.length > 2
+                                      ? nftHome.items[2].buyNowPrice
+                                      : 0.0;
+                              return RichText(
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                text: TextSpan(
+                                  text: price.toStringAsFixed(2),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14.0 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                    backgroundColor: Colors.transparent,
+                                  ),
+                                  children: <TextSpan>[
+                                    TextSpan(text: ' '),
+                                    TextSpan(
+                                      text: 'SAO',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.0 * coefficient,
+                                        fontWeight: FontWeight.w500,
+                                        backgroundColor: Colors.transparent,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            _allShows(),
-            SizedBox(
-              height: 15 * coefficient,
+          ),
+          SizedBox(
+            height: 34 * coefficient,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TitleWithButton(
+              onTap: () {
+                controller.toNonWorkingFeatureDialog();
+              },
+              textCode: 'txt_all_shows'.tr,
+              fontSize: 24.0 * coefficient,
+              fontWeight: FontWeight.w700,
+              buttonText: 'View',
+              color: Colors.black,
+              iconColor: SatorioColor.darkAccent,
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 10 * coefficient,
+          ),
+          _allShows(),
+          SizedBox(
+            height: 15 * coefficient,
+          ),
+        ],
       ),
     );
   }
@@ -302,6 +369,58 @@ class NftsPage extends GetView<NftsController> {
           return _showItem(nftPreview);
         },
       ),
+    );
+  }
+
+  Widget _nftItem(NftItem? nftItem) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.all(
+            Radius.circular(17 * coefficient),
+          ),
+          child: nftItem != null
+              ? Image.network(
+                  nftItem.imageLink,
+                  height: 200,
+                  width: Get.width,
+                  fit: BoxFit.cover,
+                )
+              : Container(
+                  height: 200,
+                  width: Get.width,
+                ),
+        ),
+        SizedBox(
+          height: 8 * coefficient,
+        ),
+        RichText(
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          text: TextSpan(
+            text: nftItem?.buyNowPrice.toStringAsFixed(2) ?? '',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14.0 * coefficient,
+              fontWeight: FontWeight.w500,
+              backgroundColor: Colors.transparent,
+            ),
+            children: <TextSpan>[
+              TextSpan(text: ' '),
+              TextSpan(
+                text: nftItem != null ? 'SAO' : '',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14.0 * coefficient,
+                  fontWeight: FontWeight.w500,
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

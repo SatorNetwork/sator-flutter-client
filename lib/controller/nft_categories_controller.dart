@@ -22,14 +22,14 @@ class NftCategoriesController extends GetxController
 
     tabController = TabController(length: 0, vsync: this);
 
-    refreshData();
+    _loadNftCategories(toCategoryId: argument.nftCategoryId);
   }
 
   void refreshData() {
     _loadNftCategories();
   }
 
-  void _loadNftCategories() {
+  void _loadNftCategories({String? toCategoryId}) {
     _satorioRepository.nftCategories().then((List<NftCategory> categories) {
       tabController = TabController(length: categories.length, vsync: this);
       categoriesRx.value = categories;
@@ -37,6 +37,13 @@ class NftCategoriesController extends GetxController
       categories.forEach((category) {
         _loadItemsByCategory(category);
       });
+
+      if (toCategoryId != null) {
+        int tab = categories.indexWhere(
+          (element) => element.id == toCategoryId,
+        );
+        tabController.animateTo(tab);
+      }
     });
   }
 
@@ -60,7 +67,7 @@ class NftCategoriesController extends GetxController
 }
 
 class NftCategoriesArgument {
-  final NftCategory nftCategory;
+  final String? nftCategoryId;
 
-  const NftCategoriesArgument(this.nftCategory);
+  const NftCategoriesArgument(this.nftCategoryId);
 }

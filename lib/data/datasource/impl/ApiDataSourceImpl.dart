@@ -13,6 +13,7 @@ import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
 import 'package:satorio/data/model/nft_category_model.dart';
+import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
@@ -773,6 +774,15 @@ class ApiDataSourceImpl implements ApiDataSource {
   // endregion
 
   // region NFT
+
+  @override
+  Future<NftHomeModel> nftHome() {
+    return _requestGet(
+      'nft/home',
+    ).then((Response response) {
+      return NftHomeModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
 
   @override
   Future<List<NftCategoryModel>> nftCategories() {
