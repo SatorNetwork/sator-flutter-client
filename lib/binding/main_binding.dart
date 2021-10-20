@@ -13,7 +13,7 @@ class MainBinding extends Bindings {
     Get.lazyPut<MainController>(() => MainController());
 
     Get.lazyPut<HomeController>(() => HomeController());
-    Get.lazyPut<NFTsController>(() => NFTsController());
+    Get.lazyPut<NftsController>(() => NftsController());
     Get.lazyPut<WalletController>(() => WalletController());
     Get.lazyPut<PersonalProfileController>(() => PersonalProfileController());
 
