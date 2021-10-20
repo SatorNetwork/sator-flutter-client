@@ -12,7 +12,7 @@ class ShowEpisode {
   final int activeUsers;
   final double userRewardsAmount;
   final double totalRewardsAmount;
-  final String? hint;
+  final String hint;
 
   const ShowEpisode(
       this.id,

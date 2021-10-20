@@ -14,10 +14,10 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
       DateTime? releaseDate,
       double rating,
       int ratingsCount,
-      activeUsers,
-      userRewardsAmount,
-      totalRewardsAmount,
-      String? hint)
+      int activeUsers,
+      double userRewardsAmount,
+      double totalRewardsAmount,
+      String hint)
       : super(
             id,
             showId,

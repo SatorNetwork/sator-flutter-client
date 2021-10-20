@@ -956,15 +956,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     children: [
                       Obx(
                         () => Text(
-                          controller.showEpisodeRx.value.hint == null ||
-                                  controller.showEpisodeRx.value.hint == ''
+                          controller.showEpisodeRx.value.hint.isEmpty
                               ? 'txt_start_watching_earn_sao'.tr
-                              : controller.showEpisodeRx.value.hint!,
+                              : controller.showEpisodeRx.value.hint,
                           style: textTheme.bodyText2!.copyWith(
                             color: SatorioColor.textBlack,
                             fontSize: 13 * coefficient,
                             fontWeight: FontWeight.w400,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                       SizedBox(
