@@ -59,6 +59,7 @@ class ActiveRealmsController extends GetxController {
         showDetail,
         ShowSeason(realm.showId, realm.seasonNumber, realm.showTitle, []),
         showEpisode,
+        true
       ),
     );
   }

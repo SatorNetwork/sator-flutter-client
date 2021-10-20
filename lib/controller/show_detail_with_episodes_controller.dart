@@ -78,6 +78,7 @@ class ShowDetailWithEpisodesController extends GetxController
           showDetailRx.value!,
           showSeason,
           showEpisode,
+          false
         ),
       );
     }

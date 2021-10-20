@@ -154,14 +154,16 @@ class ReviewsPage extends GetView<ReviewsController> {
                     SizedBox(
                       width: 12,
                     ),
-                    Text(
-                      review.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 18 * coefficient,
-                        fontWeight: FontWeight.w700,
+                    Flexible(
+                      child: Text(
+                        review.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 18 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ],

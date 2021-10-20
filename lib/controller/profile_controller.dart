@@ -95,6 +95,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
         showDetail,
         ShowSeason(realm.showId, realm.seasonNumber, realm.showTitle, []),
         showEpisode,
+        true
       ),
     );
   }
