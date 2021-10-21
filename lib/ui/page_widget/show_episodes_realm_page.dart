@@ -841,7 +841,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           ),
                           Obx(
                             () => controller.reviewsRx.value.length != 0
-                                ? _reviews()
+                                ? _reviews(controller.reviewsRx.value)
                                 : _emptyReviews(),
                           ),
                           SizedBox(
@@ -1226,19 +1226,15 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     );
   }
 
-  Widget _reviews() {
-    final double reviewContainerHeight = 184.0 * coefficient;
-    return Container(
-      height: reviewContainerHeight,
-      child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          itemCount: controller.reviewsRx.value.length,
-          separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-          itemBuilder: (context, index) {
-            return _reviewItem(controller.reviewsRx.value[index]);
-          }),
+  Widget _reviews(List<Review> reviews) {
+    List<Widget> reviewsList = reviews.map((review) => _reviewItem(review)).toList();
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: reviewsList,
+      ),
     );
   }
 
@@ -1264,58 +1260,65 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviewItem(Review review) {
-    return InkWell(
-      onTap: () {
-        controller.toNonWorkingFeatureDialog();
-      },
-      child: Container(
-        padding: EdgeInsets.only(bottom: 16, top: 16),
-        width: Get.mediaQuery.size.width - 70,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(13),
+    final double reviewContainerHeight = 190.0 * coefficient;
+
+    Rx<bool> isExpandedRx = Rx(false);
+
+    return Obx(
+      () => InkWell(
+        onTap: () {
+          if (review.review.length < 70) return;
+          isExpandedRx.value = !isExpandedRx.value;
+        },
+        child: Container(
+          margin: EdgeInsets.only(right: 12),
+          height: isExpandedRx.value ? null : reviewContainerHeight,
+          padding: EdgeInsets.only(bottom: 16, top: 16),
+          width: Get.mediaQuery.size.width - 70,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(13),
+            ),
+            color: SatorioColor.alice_blue,
           ),
-          color: SatorioColor.alice_blue,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    smile[review.rating] ?? '',
-                    width: 24 * coefficient,
-                    height: 24 * coefficient,
-                  ),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Expanded(
-                    child: Text(
-                      review.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 18 * coefficient,
-                        fontWeight: FontWeight.w700,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    SvgPicture.asset(
+                      smile[review.rating] ?? '',
+                      width: 24 * coefficient,
+                      height: 24 * coefficient,
+                    ),
+                    SizedBox(
+                      width: 12,
+                    ),
+                    Expanded(
+                      child: Text(
+                        review.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 18 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+              SizedBox(
+                height: 8,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                 child: Text(
                   review.review,
-                  maxLines: 4,
+                  maxLines: isExpandedRx.value ? 1000 : 4,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(
                     color: SatorioColor.textBlack,
@@ -1324,42 +1327,45 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   ),
                 ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 16, left: 20, right: 20),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    SatorioColor.alice_blue2,
-                    SatorioColor.alice_blue,
-                  ],
+              isExpandedRx.value
+                  ? Container()
+                  : Spacer(
+                      flex: 4,
+                    ),
+              Container(
+                padding: EdgeInsets.only(top: 16, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      SatorioColor.alice_blue2,
+                      SatorioColor.alice_blue,
+                    ],
+                  ),
                 ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          SatorioColor.yellow_orange,
-                          SatorioColor.tomato,
-                        ],
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 20,
+                      width: 20,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            SatorioColor.yellow_orange,
+                            SatorioColor.tomato,
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 6,
-                  ),
-                  Expanded(
-                    child: Text(
+                    SizedBox(
+                      width: 6,
+                    ),
+                    Text(
                       review.userName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -1369,56 +1375,57 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                  SvgPicture.asset(
-                    'images/like_icon.svg',
-                    color: SatorioColor.textBlack,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    review.likes.toString(),
-                    style: textTheme.bodyText2!.copyWith(
+                    Spacer(flex: 5),
+                    SvgPicture.asset(
+                      'images/like_icon.svg',
                       color: SatorioColor.textBlack,
-                      fontSize: 14 * coefficient,
-                      fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Container(
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: SatorioColor.interactive,
+                    SizedBox(
+                      width: 8,
                     ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'images/sator_logo.svg',
-                        width: 12,
-                        height: 12,
-                        color: Colors.white,
+                    Text(
+                      review.likes.toString(),
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    'txt_tip'.tr,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.interactive,
-                      fontSize: 14 * coefficient,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: 15,
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                    Container(
+                      height: 24,
+                      width: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: SatorioColor.interactive,
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset(
+                          'images/sator_logo.svg',
+                          width: 12,
+                          height: 12,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 4,
+                    ),
+                    Text(
+                      'txt_tip'.tr,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

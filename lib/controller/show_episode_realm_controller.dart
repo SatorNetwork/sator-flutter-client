@@ -11,6 +11,7 @@ import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
@@ -58,6 +59,7 @@ class ShowEpisodeRealmController extends GetxController
 
   late ValueListenable<Box<Profile>> profileListenable;
   late Profile profile;
+  late bool isProfileRealm;
 
   late final DatabaseReference _messagesRef;
   late LastSeen lastSeen;
@@ -79,6 +81,8 @@ class ShowEpisodeRealmController extends GetxController
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
+
+    isProfileRealm = argument.isProfileRealm;
 
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
@@ -108,6 +112,10 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void back() {
+    if (isProfileRealm) {
+      ProfileController profileController = Get.find();
+      profileController.refreshPage();
+    }
     Get.back();
   }
 
@@ -181,6 +189,7 @@ class ShowEpisodeRealmController extends GetxController
       arguments: ReviewsArgument(
         showDetailRx.value.id,
         showEpisodeRx.value.id,
+        true
       ),
     );
   }
@@ -386,10 +395,12 @@ class ShowEpisodeRealmArgument {
   final ShowDetail showDetail;
   final ShowSeason showSeason;
   final ShowEpisode showEpisode;
+  final bool isProfileRealm;
 
   const ShowEpisodeRealmArgument(
     this.showDetail,
     this.showSeason,
     this.showEpisode,
+    this.isProfileRealm,
   );
 }

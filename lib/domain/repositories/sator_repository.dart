@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
@@ -131,6 +132,10 @@ abstract class SatorioRepository {
   Future<bool> confirmReferralCode(String referralCode);
 
   Future<List<Review>> getReviews(String showId, String episodeId);
+
+  Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
+
+  Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage});
 
   //
 

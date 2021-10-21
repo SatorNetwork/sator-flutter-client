@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/page_widget/empty_page.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
@@ -37,6 +38,12 @@ class MainPage extends GetView<MainController> {
                   WalletController walletController = Get.find();
                   walletController.resetPageToInitValue();
                   walletController.refreshAllWallets();
+                }
+                break;
+              case MainController.TabProfile:
+                if (Get.isRegistered<WalletController>()) {
+                  ProfileController profileController = Get.find();
+                  profileController.refreshPage();
                 }
                 break;
               default:
