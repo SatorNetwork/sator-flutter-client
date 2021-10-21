@@ -817,6 +817,35 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<List<NftItemModel>> nftByUser(
+    String userId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    return _requestGet(
+      'nft/filter/user_id/$userId',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftItemModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
   Future<NftItemModel> nftItem(String nftItemId) {
     return _requestGet(
       'nft/$nftItemId',

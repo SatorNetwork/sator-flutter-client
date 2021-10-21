@@ -177,6 +177,12 @@ abstract class ApiDataSource {
 
   Future<List<NftItemModel>> nftItemsByCategory(String categoryId);
 
+  Future<List<NftItemModel>> nftByUser(
+    String userId, {
+    int? page,
+    int? itemsPerPage,
+  });
+
   Future<NftItemModel> nftItem(String nftItemId);
 
   Future<bool> buyNftItem(String nftItemId);

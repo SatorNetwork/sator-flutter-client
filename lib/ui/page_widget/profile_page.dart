@@ -36,9 +36,7 @@ class ProfilePage extends GetView<ProfileController> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: InkWell(
-                        onTap: () => {
-                          controller.toSelectAvatar()
-                        },
+                        onTap: () => {controller.toSelectAvatar()},
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16 * coefficient),
                           child: Obx(
@@ -151,7 +149,7 @@ class ProfilePage extends GetView<ProfileController> {
                     children: [
                       InkWell(
                         onTap: () {
-                          controller.toNonWorkingFeatureDialog();
+                          controller.toMyNfts();
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(

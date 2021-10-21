@@ -141,6 +141,9 @@ abstract class SatorioRepository {
 
   Future<List<NftItem>> nftItemsByCategory(String categoryId);
 
+  Future<List<NftItem>> nftByUser(String userId,
+      {int? page, int? itemsPerPage});
+
   Future<NftItem> nftItem(String nftItemId);
 
   Future<bool> buyNftItem(String nftItemId);

@@ -233,6 +233,8 @@ const Map<String, String> en = {
   'txt_total': 'Total',
   'txt_youve_just_bought': 'You’ve just bought “%s”',
   'txt_to_my_nfts': 'To my NFT’s',
+  'txt_my_nfts': 'My NFT’s',
+  'txt_not_my_nfts': '%s\'s NFT’s',
   'txt_view': 'View',
   'txt_home': 'Home',
 };
