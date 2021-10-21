@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -80,11 +79,11 @@ class NftItemPage extends GetView<NftItemController> {
                 ),
                 Container(
                   margin: EdgeInsets.only(
-                    left: 24,
+                    left: 20,
                     top: Get.mediaQuery.padding.top + kToolbarHeight,
-                    right: 24,
+                    right: 20,
                   ),
-                  width: Get.width - 2 * 24,
+                  width: Get.width - 2 * 20,
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     child: Obx(
@@ -121,94 +120,94 @@ class NftItemPage extends GetView<NftItemController> {
                           overflow: TextOverflow.ellipsis,
                           style: textTheme.bodyText2!.copyWith(
                             color: SatorioColor.textBlack,
-                            fontSize: 18.0 * coefficient,
+                            fontSize: 20.0 * coefficient,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 10 * coefficient,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Container(
-                            width: 20 * coefficient,
-                            height: 20 * coefficient,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                  SatorioColor.yellow_orange,
-                                  SatorioColor.tomato,
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 6 * coefficient,
-                          ),
-                          Expanded(
-                            child: Text(
-                              'roberto21',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: textTheme.bodyText2!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 15.0 * coefficient,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
+                      // SizedBox(
+                      //   height: 10 * coefficient,
+                      // ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                      //   mainAxisSize: MainAxisSize.max,
+                      //   children: [
+                      //     Container(
+                      //       width: 20 * coefficient,
+                      //       height: 20 * coefficient,
+                      //       decoration: BoxDecoration(
+                      //         shape: BoxShape.circle,
+                      //         gradient: LinearGradient(
+                      //           begin: Alignment.topRight,
+                      //           end: Alignment.bottomLeft,
+                      //           colors: [
+                      //             SatorioColor.yellow_orange,
+                      //             SatorioColor.tomato,
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 6 * coefficient,
+                      //     ),
+                      //     Expanded(
+                      //       child: Text(
+                      //         'roberto21',
+                      //         maxLines: 1,
+                      //         overflow: TextOverflow.ellipsis,
+                      //         style: textTheme.bodyText2!.copyWith(
+                      //           color: SatorioColor.textBlack,
+                      //           fontSize: 15.0 * coefficient,
+                      //           fontWeight: FontWeight.w600,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: 23 * coefficient,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    controller.addToFavourite();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: SatorioColor.geraldine,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 7,
-                      horizontal: 10,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SvgPicture.asset(
-                        'images/heart.svg',
-                        width: 22 * coefficient,
-                        height: 22 * coefficient,
-                        color: Colors.white,
-                      ),
-                      SizedBox(
-                        width: 5 * coefficient,
-                      ),
-                      Text(
-                        '310',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: Colors.white,
-                          fontSize: 16.0 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                // SizedBox(
+                //   width: 23 * coefficient,
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     controller.addToFavourite();
+                //   },
+                //   style: ElevatedButton.styleFrom(
+                //     primary: SatorioColor.geraldine,
+                //     padding: const EdgeInsets.symmetric(
+                //       vertical: 7,
+                //       horizontal: 10,
+                //     ),
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.all(Radius.circular(8)),
+                //     ),
+                //   ),
+                //   child: Row(
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     mainAxisSize: MainAxisSize.min,
+                //     children: [
+                //       SvgPicture.asset(
+                //         'images/heart.svg',
+                //         width: 22 * coefficient,
+                //         height: 22 * coefficient,
+                //         color: Colors.white,
+                //       ),
+                //       SizedBox(
+                //         width: 5 * coefficient,
+                //       ),
+                //       Text(
+                //         '310',
+                //         style: textTheme.bodyText2!.copyWith(
+                //           color: Colors.white,
+                //           fontSize: 16.0 * coefficient,
+                //           fontWeight: FontWeight.w700,
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
               ],
             ),
           ),
