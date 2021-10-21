@@ -35,6 +35,8 @@ class WalletController extends GetxController {
 
   RxBool _isMoreLoading = false.obs;
 
+  Rx<bool> isClaimLoadRx = Rx(false);
+
   WalletController() {
     _walletsListenable =
         _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
@@ -186,6 +188,7 @@ class WalletController extends GetxController {
   }
 
   void toClaimRewards(String claimRewardsPath) {
+    isClaimLoadRx.value = true;
     _satorioRepository.claimReward(claimRewardsPath).then(
       (ClaimReward claimReward) {
         Get.bottomSheet(
@@ -196,8 +199,11 @@ class WalletController extends GetxController {
             },
           ),
         );
+        isClaimLoadRx.value = false;
       },
-    );
+    ).catchError((error) {
+      isClaimLoadRx.value = false;
+    });
   }
 
   void refreshAllWallets() {
