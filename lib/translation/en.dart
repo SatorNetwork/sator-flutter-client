@@ -205,6 +205,7 @@ const Map<String, String> en = {
   'txt_your_email': 'your email',
   'txt_register_success': 'User %s was successfully registered',
   'txt_select_avatar': 'Select avatar',
+  'txt_avatar': 'Avatar',
   'txt_splash_description':
       'Welcome to Sator, where you earn SAO crypto for experiencing content and playing games.',
   'txt_enter_satorverse': 'Enter the Satorverse!',
@@ -224,4 +225,13 @@ const Map<String, String> en = {
   'txt_newest_added': 'Newest added',
   'txt_all_shows': 'All shows',
   'txt_attempts_left_alert': 'You have no more attempts to unlock with a quiz, please unlock with SAO',
+  'txt_settings': 'Settings',
+  'txt_user_name': 'User name',
+  'txt_settings_email': 'Email',
+  'txt_rate_sator': 'Rate Sator',
+  'txt_report_bug': 'Report a bug',
+  'txt_help': 'Help',
+  'txt_about': 'About',
+  'txt_delete_account': 'Delete account',
+  'txt_app': 'App',
 };
