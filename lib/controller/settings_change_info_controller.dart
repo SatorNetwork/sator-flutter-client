@@ -112,6 +112,7 @@ class SettingsChangeInfoController extends GetxController
   }
 }
 
+//TODO: refactor with enum types
 class ChangeInfoArgument {
   final bool isChangeEmail;
 
