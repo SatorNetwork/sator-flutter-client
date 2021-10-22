@@ -67,7 +67,9 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                     enableActiveFill: true,
                     controller: controller.codeController,
                     onCompleted: (v) {
-                      controller.verifyAccount();
+                      controller.isUpdate
+                          ? controller.verifyUpdateEmail()
+                          : controller.verifyAccount();
                     },
                     onChanged: (value) {},
                     beforeTextPaste: (text) => true,

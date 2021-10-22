@@ -41,8 +41,10 @@ import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
+import 'package:satorio/data/request/update_email_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
+import 'package:satorio/data/request/verify_update_email_request.dart';
 import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
 import 'package:satorio/data/response/attempts_left_response.dart';
@@ -227,6 +229,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<bool> requestUpdateEmail(String email) {
+    return _requestPost(
+      'auth/request-update-email',
+      UpdateEmailRequest(email)
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
   Future<bool> apiLogout() {
     return _requestPost(
       'auth/logout',
@@ -241,6 +253,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'auth/verify-account',
       VerifyAccountRequest(code),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> verifyUpdateEmail(String email, String code) {
+    return _requestPost(
+      'auth/update-email',
+      VerifyUpdateEmailRequest(email, code),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

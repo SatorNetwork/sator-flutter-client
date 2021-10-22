@@ -82,7 +82,7 @@ class SplashController extends GetxController {
         Get.offAll(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
-          arguments: EmailVerificationArgument('txt_your_email'.tr),
+          arguments: EmailVerificationArgument('txt_your_email'.tr, false),
         );
       }
     }).catchError(

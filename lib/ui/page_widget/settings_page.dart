@@ -130,7 +130,7 @@ class SettingsPage extends GetView<SettingsController> {
     return Column(
       children: [
         _settingsButton('txt_user_name'.tr, 'images/settings/ico_profile',
-            () => controller.toNonWorkingDialog()),
+            () => controller.toChangeInfo(false)),
         SizedBox(
           height: 12,
         ),
@@ -142,7 +142,7 @@ class SettingsPage extends GetView<SettingsController> {
         _settingsButton(
             'txt_settings_email'.tr,
             'images/settings/ico_daily_planner',
-            () => controller.toNonWorkingDialog()),
+            () => controller.toChangeInfo(true)),
       ],
     );
   }
