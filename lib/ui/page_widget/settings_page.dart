@@ -199,7 +199,7 @@ class SettingsPage extends GetView<SettingsController> {
           height: 12,
         ),
         _settingsButton('txt_about'.tr, 'images/settings/ico_document',
-            () => controller.toNonWorkingDialog()),
+            () => controller.toAbout()),
       ],
     );
   }
