@@ -42,6 +42,7 @@ import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/update_email_request.dart';
+import 'package:satorio/data/request/update_username_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
 import 'package:satorio/data/request/verify_update_email_request.dart';
@@ -233,6 +234,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'auth/request-update-email',
       UpdateEmailRequest(email)
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> updateUsername(String username) {
+    return _requestPost(
+        'auth/update-username',
+        UpdateUsernameRequest(username)
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

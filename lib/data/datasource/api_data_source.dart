@@ -37,6 +37,8 @@ abstract class ApiDataSource {
 
   Future<bool> requestUpdateEmail(String email);
 
+  Future<bool> updateUsername(String username);
+
   Future<bool> apiLogout();
 
   Future<bool> verifyAccount(String code);

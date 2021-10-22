@@ -78,7 +78,10 @@ class SettingsChangeInfoPage extends GetView<SettingsChangeInfoController> {
           () => ElevatedGradientButton(
             text: 'txt_change_user_name'.tr,
             isEnabled: controller.usernameRx.value.isNotEmpty,
-            onPressed: () {},
+            isInProgress: controller.isRequested.value,
+            onPressed: () {
+              controller.updateUsername();
+            },
           ),
         ),
       ],

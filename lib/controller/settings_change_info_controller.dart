@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
+import 'package:satorio/binding/settings_binding.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
+import 'package:satorio/ui/page_widget/settings_page.dart';
 
 import 'email_verification_controller.dart';
 import 'mixin/validation_mixin.dart';
@@ -68,7 +70,29 @@ class SettingsChangeInfoController extends GetxController
         handleValidationException(error);
       });
     });
+  }
 
+  void updateUsername() {
+    Future.value(true)
+        .then((value) {
+      isRequested.value = true;
+      return value;
+    }).then((value) {
+      _satorioRepository.updateUsername(usernameRx.value).then((isSuccess) {
+        if (isSuccess) {
+          _satorioRepository.updateProfile();
+          Get.to(
+                () => SettingsPage(),
+            binding: SettingsBinding(),
+          );
+          usernameController.clear();
+        }
+        isRequested.value = false;
+      }).catchError((error) {
+        isRequested.value = false;
+        handleValidationException(error);
+      });
+    });
   }
 
   void _emailListener() {

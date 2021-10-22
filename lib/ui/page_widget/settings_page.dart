@@ -33,7 +33,7 @@ class SettingsPage extends GetView<SettingsController> {
             width: kToolbarHeight,
             child: InkWell(
               onTap: () {
-                controller.back();
+                controller.backToMain();
               },
               child: Icon(
                 Icons.close,
@@ -48,14 +48,10 @@ class SettingsPage extends GetView<SettingsController> {
         children: [
           Container(
             color: SatorioColor.darkAccent,
-            child: Column(
-              children: [
-                SvgPicture.asset(
-                  'images/bg/gradient.svg',
-                  height: Get.height - 56,
-                  fit: BoxFit.cover,
-                ),
-              ],
+            child: SvgPicture.asset(
+              'images/bg/gradient.svg',
+              height: Get.height - 100,
+              fit: BoxFit.cover,
             ),
           ),
           Container(

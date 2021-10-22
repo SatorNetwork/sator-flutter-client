@@ -26,6 +26,8 @@ abstract class SatorioRepository {
 
   Future<bool> requestUpdateEmail(String email);
 
+  Future<bool> updateUsername(String username);
+
   Future<bool> verifyAccount(String code);
 
   Future<bool> verifyUpdateEmail(String email, String code);
