@@ -237,4 +237,5 @@ const Map<String, String> en = {
   'txt_not_my_nfts': '%s\'s NFT’s',
   'txt_view': 'View',
   'txt_home': 'Home',
+  'txt_you_havent_nfts': 'You have no NFTs yet.',
 };

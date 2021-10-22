@@ -22,6 +22,8 @@ class NftByUserPage extends GetView<NftByUserController> {
         title: Obx(
           () => Text(
             controller.titleRx.value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: textTheme.bodyText1!.copyWith(
               color: SatorioColor.darkAccent,
               fontSize: 17,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/profile_controller.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
@@ -149,7 +150,10 @@ class ProfilePage extends GetView<ProfileController> {
                     children: [
                       InkWell(
                         onTap: () {
-                          controller.toMyNfts();
+                          if (controller.nftItemsRx.value.isEmpty)
+                            controller.toBuyNfts();
+                          else
+                            controller.toMyNfts();
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(
@@ -174,112 +178,7 @@ class ProfilePage extends GetView<ProfileController> {
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          controller.toNonWorkingFeatureDialog();
-                        },
-                        child: Container(
-                          height: nftsLargestImageSize + 21 * coefficient,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(17 * coefficient),
-                                        ),
-                                        child: Image.asset(
-                                          'images/tmp_nft_1.png',
-                                          width: nftsLargestImageSize,
-                                          height: nftsLargestImageSize,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 16 * coefficient,
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Expanded(
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(
-                                                    17 * coefficient),
-                                              ),
-                                              child: Image.asset(
-                                                'images/tmp_nft_2.png',
-                                                width: nftsLargestImageSize,
-                                                height: nftsLargestImageSize,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              margin: EdgeInsets.only(
-                                                top: 16 * coefficient,
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(
-                                                            17 * coefficient),
-                                                      ),
-                                                      child: Image.asset(
-                                                        'images/tmp_nft_3.png',
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 15 * coefficient,
-                                                  ),
-                                                  Expanded(
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(
-                                                            17 * coefficient),
-                                                      ),
-                                                      child: Image.asset(
-                                                        'images/tmp_nft_4.png',
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Text(
-                                'Breaking Bad',
-                                style: textTheme.headline3!.copyWith(
-                                  color: SatorioColor.interactive,
-                                  fontSize: 15.0 * coefficient,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      _nftsBlock(),
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 20,
@@ -440,6 +339,180 @@ class ProfilePage extends GetView<ProfileController> {
           ),
         )
       ],
+    );
+  }
+
+  Widget _nftsBlock() {
+    return Obx(
+      () {
+        List<NftItem> nfts = controller.nftItemsRx.value;
+        return nfts.isEmpty
+            ? InkWell(
+                onTap: () {
+                  controller.toBuyNfts();
+                },
+                child: Container(
+                  width: Get.width,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(17 * coefficient)),
+                    color: SatorioColor.alice_blue,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'txt_you_havent_nfts'.tr,
+                        style: textTheme.headline3!.copyWith(
+                          color: SatorioColor.darkAccent,
+                          fontSize: 15.0 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Container(
+                height: nftsLargestImageSize + 21 * coefficient,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: nfts.length > 0
+                                ? InkWell(
+                                    onTap: () {
+                                      controller.toNftItem(nfts[0]);
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(17 * coefficient),
+                                      ),
+                                      child: Image.network(
+                                        nfts[0].imageLink,
+                                        width: nftsLargestImageSize,
+                                        height: nftsLargestImageSize,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: nftsLargestImageSize,
+                                    height: nftsLargestImageSize,
+                                  ),
+                          ),
+                          SizedBox(
+                            width: 16 * coefficient,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: nfts.length > 1
+                                      ? InkWell(
+                                          onTap: () {
+                                            controller.toNftItem(nfts[1]);
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(17 * coefficient),
+                                            ),
+                                            child: Image.network(
+                                              nfts[1].imageLink,
+                                              width: nftsLargestImageSize,
+                                              height: nftsLargestImageSize,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          width: nftsLargestImageSize,
+                                          height: nftsLargestImageSize,
+                                        ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      top: 16 * coefficient,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: nfts.length > 2
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    controller.toNftItem(nfts[2]);
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.network(
+                                                      nfts[2].imageLink,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ),
+                                        SizedBox(
+                                          width: 15 * coefficient,
+                                        ),
+                                        Expanded(
+                                          child: nfts.length > 3
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    controller.toNftItem(nfts[3]);
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.network(
+                                                      nfts[3].imageLink,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      nfts.length > 0 ? nfts[0].name : '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.headline3!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 15.0 * coefficient,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+      },
     );
   }
 
