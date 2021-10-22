@@ -45,7 +45,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
             break;
           case SelectAvatarType.settings:
             avatarRx.value = null;
-            Get.back();
+            back();
             break;
         }
         _satorioRepository.updateProfile();
@@ -55,6 +55,10 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
     }).catchError((value) {
       avatarRx.value = null;
     });
+  }
+
+  void back() {
+    Get.back();
   }
 
   @override

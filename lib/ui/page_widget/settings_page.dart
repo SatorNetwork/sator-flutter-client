@@ -7,6 +7,7 @@ import 'package:satorio/controller/settings_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 
 class SettingsPage extends GetView<SettingsController> {
   @override
@@ -60,8 +61,6 @@ class SettingsPage extends GetView<SettingsController> {
           Container(
             height: Get.height - 100,
             margin: const EdgeInsets.only(top: 100),
-            // width: Get.width,
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32),
@@ -69,45 +68,114 @@ class SettingsPage extends GetView<SettingsController> {
               ),
               color: Colors.white,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _settingsTitle('txt_profile'.tr),
-                SizedBox(
-                  height: 14,
-                ),
-                _profileGroup(),
-                SizedBox(
-                  height: 32,
-                ),
-                _settingsTitle('txt_app'.tr),
-                SizedBox(
-                  height: 14,
-                ),
-                _appGroup()
-              ],
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+              child: Stack(
+                children: [
+                  SingleChildScrollView(
+                      padding: EdgeInsets.all(24), child: _settingsContent()),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: 40,
+                      width: Get.width,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.white.withOpacity(1),
+                            Colors.white.withOpacity(0.1),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _settingsContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _settingsTitle('txt_profile'.tr),
+        SizedBox(
+          height: 14,
+        ),
+        _profileGroup(),
+        SizedBox(
+          height: 32,
+        ),
+        _settingsTitle('txt_app'.tr),
+        SizedBox(
+          height: 14,
+        ),
+        _appGroup(),
+        SizedBox(
+          height: 85,
+        ),
+        _buttonsGroup()
+      ],
     );
   }
 
   Widget _profileGroup() {
     return Column(
       children: [
-        _settingsButton('txt_user_name'.tr, 'images/profile',
+        _settingsButton('txt_user_name'.tr, 'images/settings/ico_profile',
             () => controller.toNonWorkingDialog()),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_avatar'.tr, 'images/profile',
+        _settingsButton('txt_avatar'.tr, 'images/settings/ico_daily_planner',
             () => controller.toSelectAvatar()),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_settings_email'.tr, 'images/profile',
+        _settingsButton(
+            'txt_settings_email'.tr,
+            'images/settings/ico_daily_planner',
             () => controller.toNonWorkingDialog()),
+      ],
+    );
+  }
+
+  Widget _buttonsGroup() {
+    return Column(
+      children: [
+        BorderedButton(
+          text: 'txt_sign_out'.tr,
+          textColor: SatorioColor.interactive,
+          borderColor: SatorioColor.interactive,
+          borderWidth: 2,
+          onPressed: () {
+            controller.toLogoutDialog();
+          },
+        ),
+        InkWell(
+          onTap: () => controller.toNonWorkingDialog(),
+          child: Container(
+            height: 48,
+            width: Get.width,
+            child: Center(
+              child: Text(
+                'txt_delete_account'.tr,
+                style: textTheme.bodyText2!.copyWith(
+                  color: SatorioColor.brand,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }
@@ -115,22 +183,22 @@ class SettingsPage extends GetView<SettingsController> {
   Widget _appGroup() {
     return Column(
       children: [
-        _settingsButton('txt_rate_sator'.tr, 'images/profile',
+        _settingsButton('txt_rate_sator'.tr, 'images/settings/ico_star',
             () => controller.toNonWorkingDialog()),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_report_bug'.tr, 'images/profile',
+        _settingsButton('txt_report_bug'.tr, 'images/settings/ico_danger',
             () => controller.toNonWorkingDialog()),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_help'.tr, 'images/profile',
+        _settingsButton('txt_help'.tr, 'images/settings/ico_help',
             () => controller.toNonWorkingDialog()),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_about'.tr, 'images/profile',
+        _settingsButton('txt_about'.tr, 'images/settings/ico_document',
             () => controller.toNonWorkingDialog()),
       ],
     );

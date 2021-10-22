@@ -49,7 +49,7 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
                 width: kToolbarHeight,
                 child: InkWell(
                   onTap: () {
-                    controller.backToMain();
+                    controller.back();
                   },
                   child: Icon(
                     Icons.chevron_left,
