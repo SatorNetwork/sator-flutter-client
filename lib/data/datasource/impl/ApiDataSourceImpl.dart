@@ -831,7 +831,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     }
 
     return _requestGet(
-      'nft/filter/user_id/$userId',
+      'nft/filter/user/$userId',
       query: query,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
