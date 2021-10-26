@@ -188,22 +188,32 @@ class WalletController extends GetxController {
   }
 
   void toClaimRewards(String claimRewardsPath) {
-    isClaimLoadRx.value = true;
-    _satorioRepository.claimReward(claimRewardsPath).then(
-      (ClaimReward claimReward) {
-        Get.bottomSheet(
-          ClaimRewardsBottomSheet(
-            claimReward,
-            () {
-              refreshAllWallets();
-            },
-          ),
-        );
-        isClaimLoadRx.value = false;
-      },
-    ).catchError((error) {
-      isClaimLoadRx.value = false;
-    });
+    Future.value(true)
+        .then(
+          (value) {
+            isClaimLoadRx.value = true;
+            return value;
+          },
+        )
+        .then(
+          (value) => _satorioRepository.claimReward(claimRewardsPath),
+        )
+        .then(
+          (ClaimReward claimReward) {
+            Get.bottomSheet(
+              ClaimRewardsBottomSheet(
+                claimReward,
+                () {
+                  refreshAllWallets();
+                },
+              ),
+            );
+            isClaimLoadRx.value = false;
+          },
+        )
+        .catchError((error) {
+          isClaimLoadRx.value = false;
+        });
   }
 
   void refreshAllWallets() {

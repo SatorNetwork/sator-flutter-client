@@ -67,7 +67,7 @@ class ShowEpisodeRealmController extends GetxController
   late Rx<int> missedMessagesCountRx = Rx(0);
   late final DatabaseReference _timestampsRef;
   //TODO: refactor
-  static const String DATABASE_URL =
+  static const String _DATABASE_URL =
       'https://sator-f44d6-timestamp.firebaseio.com/';
 
   late Rx<bool> isMessagesRx = Rx(false);
@@ -89,7 +89,7 @@ class ShowEpisodeRealmController extends GetxController
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: DATABASE_URL)
+    _timestampsRef = FirebaseDatabase(databaseURL: _DATABASE_URL)
         .reference()
         .child(profile.id)
         .child(argument.showEpisode.id);
