@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
@@ -16,18 +17,27 @@ class NftCategoriesController extends GetxController
 
   late TabController tabController;
 
-  final Rx<NftHome?> nftHomeRx = Rx(null);
+  late final Rx<NftHome?> nftHomeRx;
   final Rx<List<NftCategory>> categoriesRx = Rx([]);
   final Rx<Map<String, List<NftItem>>> itemsRx = Rx({});
 
   NftCategoriesController() {
     tabController = TabController(length: _fixedTabLength, vsync: this);
 
-    refreshData();
+    _loadNftCategories();
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      nftHomeRx = mainController.nftHomeRx;
+    } else {
+      nftHomeRx = Rx(null);
+    }
   }
 
   void refreshData() {
-    _loadNftHome();
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.loadNftHome();
+    }
     _loadNftCategories();
   }
 
@@ -46,14 +56,6 @@ class NftCategoriesController extends GetxController
     if (categoryIndex >= 0) {
       tabController.animateTo(categoryIndex + _fixedTabLength);
     }
-  }
-
-  void _loadNftHome() {
-    _satorioRepository.nftHome().then(
-      (NftHome nftHome) {
-        nftHomeRx.value = nftHome;
-      },
-    );
   }
 
   void _loadNftCategories() {

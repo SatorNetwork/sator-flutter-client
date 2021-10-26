@@ -225,7 +225,8 @@ const Map<String, String> en = {
   'txt_most_social': 'Most social',
   'txt_newest_added': 'Newest added',
   'txt_all_shows': 'All shows',
-  'txt_attempts_left_alert': 'You have no more attempts to unlock with a quiz, please unlock with SAO',
+  'txt_attempts_left_alert':
+      'You have no more attempts to unlock with a quiz, please unlock with SAO',
   'txt_settings': 'Settings',
   'txt_user_name': 'User name',
   'txt_change_user_name': 'Change user name',
@@ -252,4 +253,5 @@ const Map<String, String> en = {
   'txt_view': 'View',
   'txt_home': 'Home',
   'txt_you_havent_nfts': 'You have no NFTs yet.',
+  'txt_featured_nfts': 'Featured NFTs',
 };
