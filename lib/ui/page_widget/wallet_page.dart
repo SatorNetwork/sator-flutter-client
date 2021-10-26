@@ -110,23 +110,30 @@ class WalletPage extends GetView<WalletController> {
               Container(
                 height: 90,
                 child: Obx(
-                  () => ListView.separated(
-                    shrinkWrap: true,
-                    separatorBuilder: (context, index) => SizedBox(
-                      width: 50,
-                    ),
-                    itemCount: controller.walletDetailsRx.value.length > 0
-                        ? controller.walletDetailsRx
-                            .value[controller.pageRx.value].actions.length
-                        : 0,
-                    itemBuilder: (context, index) {
-                      WalletDetail walletDetail = controller
-                          .walletDetailsRx.value[controller.pageRx.value];
-                      WalletAction walletAction = walletDetail.actions[index];
-                      return _walletActionItem(walletDetail, walletAction);
-                    },
-                    scrollDirection: Axis.horizontal,
-                  ),
+                  () => controller.isClaimLoadRx.value
+                      ? Center(
+                          child: CircularProgressIndicator(
+                          backgroundColor: SatorioColor.brand,
+                        ))
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) => SizedBox(
+                            width: 50,
+                          ),
+                          itemCount: controller.walletDetailsRx.value.length > 0
+                              ? controller.walletDetailsRx
+                                  .value[controller.pageRx.value].actions.length
+                              : 0,
+                          itemBuilder: (context, index) {
+                            WalletDetail walletDetail = controller
+                                .walletDetailsRx.value[controller.pageRx.value];
+                            WalletAction walletAction =
+                                walletDetail.actions[index];
+                            return _walletActionItem(
+                                walletDetail, walletAction);
+                          },
+                          scrollDirection: Axis.horizontal,
+                        ),
                 ),
               ),
             ],

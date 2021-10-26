@@ -36,7 +36,7 @@ class ChatController extends GetxController with BackToMainMixin {
   late int scrollIndex;
 
   //TODO: refactor
-  static const String DATABASE_URL =
+  static const String _DATABASE_URL =
       'https://sator-f44d6-timestamp.firebaseio.com/';
 
   bool canSendMessage() => messageController.text.length > 0;
@@ -65,7 +65,7 @@ class ChatController extends GetxController with BackToMainMixin {
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: DATABASE_URL)
+    _timestampsRef = FirebaseDatabase(databaseURL: _DATABASE_URL)
         .reference()
         .child(profile.id)
         .child(argument.showEpisode.id);
