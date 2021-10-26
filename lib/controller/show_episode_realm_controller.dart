@@ -11,6 +11,7 @@ import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
@@ -49,6 +50,8 @@ class ShowEpisodeRealmController extends GetxController
   late final Rx<ShowEpisode> showEpisodeRx;
   final Rx<List<Review>> reviewsRx = Rx([]);
 
+  final RxBool isRequestedForUnlock = false.obs;
+
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
   );
@@ -58,12 +61,14 @@ class ShowEpisodeRealmController extends GetxController
 
   late ValueListenable<Box<Profile>> profileListenable;
   late Profile profile;
+  late bool isProfileRealm;
 
   late final DatabaseReference _messagesRef;
   late LastSeen lastSeen;
   DateTime? timestamp;
   late Rx<int> missedMessagesCountRx = Rx(0);
   late final DatabaseReference _timestampsRef;
+
   //TODO: refactor
   static const String DATABASE_URL =
       'https://sator-f44d6-timestamp.firebaseio.com/';
@@ -79,6 +84,8 @@ class ShowEpisodeRealmController extends GetxController
     showDetailRx = Rx(argument.showDetail);
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
+
+    isProfileRealm = argument.isProfileRealm;
 
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
@@ -97,7 +104,6 @@ class ShowEpisodeRealmController extends GetxController
 
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
-      print(isMessagesRx.value);
     });
 
     _updateShowEpisode();
@@ -109,6 +115,10 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void back() {
+    if (isProfileRealm) {
+      ProfileController profileController = Get.find();
+      profileController.refreshPage();
+    }
     Get.back();
   }
 
@@ -182,6 +192,7 @@ class ShowEpisodeRealmController extends GetxController
       arguments: ReviewsArgument(
         showDetailRx.value.id,
         showEpisodeRx.value.id,
+        true,
       ),
     );
   }
@@ -269,11 +280,24 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _loadQuizQuestion() {
-    _satorioRepository
-        .showEpisodeQuizQuestion(showEpisodeRx.value.id)
+    Future.value(true)
+        .then((value) {
+          isRequestedForUnlock.value = true;
+          return value;
+        })
+        .then(
+          (value) => _satorioRepository
+              .showEpisodeQuizQuestion(showEpisodeRx.value.id),
+        )
         .then((PayloadQuestion payloadQuestion) {
-      _toEpisodeQuiz(payloadQuestion);
-    });
+          isRequestedForUnlock.value = false;
+          _toEpisodeQuiz(payloadQuestion);
+        })
+        .catchError(
+          (value) {
+            isRequestedForUnlock.value = false;
+          },
+        );
   }
 
   void _loadReviews() {
@@ -316,20 +340,32 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _paidUnlock(PaidOption paidOption) {
-    _satorioRepository
-        .paidUnlockEpisode(
-      showEpisodeRx.value.id,
-      paidOption.label,
-    )
+    Future.value(true)
+        .then((value) {
+          isRequestedForUnlock.value = true;
+          return value;
+        })
         .then(
-      (EpisodeActivation episodeActivation) {
-        activationRx.value = episodeActivation;
-        if (episodeActivation.isActive) {
-          _toUnlockBottomSheet();
-          _updateShowEpisode();
-        }
-      },
-    );
+          (value) => _satorioRepository.paidUnlockEpisode(
+            showEpisodeRx.value.id,
+            paidOption.label,
+          ),
+        )
+        .then(
+          (EpisodeActivation episodeActivation) {
+            isRequestedForUnlock.value = false;
+            activationRx.value = episodeActivation;
+            if (episodeActivation.isActive) {
+              _toUnlockBottomSheet();
+              _updateShowEpisode();
+            }
+          },
+        )
+        .catchError(
+          (value) {
+            isRequestedForUnlock.value = false;
+          },
+        );
   }
 
   void _toUnlockBottomSheet() {
@@ -387,10 +423,12 @@ class ShowEpisodeRealmArgument {
   final ShowDetail showDetail;
   final ShowSeason showSeason;
   final ShowEpisode showEpisode;
+  final bool isProfileRealm;
 
   const ShowEpisodeRealmArgument(
     this.showDetail,
     this.showSeason,
     this.showEpisode,
+    this.isProfileRealm,
   );
 }

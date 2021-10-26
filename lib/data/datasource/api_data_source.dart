@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
@@ -37,9 +38,15 @@ abstract class ApiDataSource {
 
   Future<bool> signUp(String email, String password, String username);
 
+  Future<bool> requestUpdateEmail(String email);
+
+  Future<bool> updateUsername(String username);
+
   Future<bool> apiLogout();
 
   Future<bool> verifyAccount(String code);
+
+  Future<bool> verifyUpdateEmail(String email, String code);
 
   Future<bool> isVerified();
 
@@ -113,6 +120,10 @@ abstract class ApiDataSource {
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
   Future<List<ReviewModel>> getReviews(String showId, String episodeId);
+
+  Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
+
+  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage});
 
   Future<bool> clapShow(String showId);
 

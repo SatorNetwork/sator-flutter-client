@@ -7,6 +7,7 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
@@ -43,8 +44,11 @@ import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
+import 'package:satorio/data/request/update_email_request.dart';
+import 'package:satorio/data/request/update_username_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
+import 'package:satorio/data/request/verify_update_email_request.dart';
 import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
 import 'package:satorio/data/response/attempts_left_response.dart';
@@ -229,6 +233,26 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<bool> requestUpdateEmail(String email) {
+    return _requestPost(
+      'auth/request-update-email',
+      UpdateEmailRequest(email)
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> updateUsername(String username) {
+    return _requestPost(
+        'auth/update-username',
+        UpdateUsernameRequest(username)
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
   Future<bool> apiLogout() {
     return _requestPost(
       'auth/logout',
@@ -243,6 +267,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'auth/verify-account',
       VerifyAccountRequest(code),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> verifyUpdateEmail(String email, String code) {
+    return _requestPost(
+      'auth/update-email',
+      VerifyUpdateEmailRequest(email, code),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -570,6 +604,52 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<List<ReviewModel>> getReviews(String showId, String episodeId) {
     return _requestGet(
       'shows/$showId/episodes/$episodeId/reviews',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ReviewModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+    return _requestGet(
+      'shows/episodes',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ActivatedRealmModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+    return _requestGet(
+      'shows/reviews',
+      query: query,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)

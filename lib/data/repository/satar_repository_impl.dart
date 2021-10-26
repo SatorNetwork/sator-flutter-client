@@ -6,6 +6,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
+import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
@@ -99,9 +100,29 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .catchError((value) => _handleException(value));
   }
 
+  @override
+  Future<bool> requestUpdateEmail(String email) {
+    return _apiDataSource
+        .requestUpdateEmail(email)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> updateUsername(String username) {
+    return _apiDataSource
+        .updateUsername(username)
+        .catchError((value) => _handleException(value));
+  }
+
   Future<bool> verifyAccount(String code) {
     return _apiDataSource
         .verifyAccount(code)
+        .catchError((value) => _handleException(value));
+  }
+
+  Future<bool> verifyUpdateEmail(String email, String code) {
+    return _apiDataSource
+        .verifyUpdateEmail(email, code)
         .catchError((value) => _handleException(value));
   }
 
@@ -440,6 +461,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<Review>> getUserReviews({int? page, int? itemsPerPage}) {
+    return _apiDataSource
+        .getUserReviews(page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage}) {
+    return _apiDataSource
+        .getActivatedRealms(page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<NftHome> nftHome() {
     return _apiDataSource
         .nftHome()
@@ -462,16 +497,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<List<NftItem>> nftByUser(
-    String userId, {
-    int? page,
-    int? itemsPerPage,
-  }) {
+      String userId, {
+        int? page,
+        int? itemsPerPage,
+      }) {
     return _apiDataSource
         .nftByUser(
-          userId,
-          page: page,
-          itemsPerPage: itemsPerPage,
-        )
+      userId,
+      page: page,
+      itemsPerPage: itemsPerPage,
+    )
         .catchError((value) => _handleException(value));
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
@@ -26,7 +27,13 @@ abstract class SatorioRepository {
 
   Future<bool> signUp(String email, String password, String username);
 
+  Future<bool> requestUpdateEmail(String email);
+
+  Future<bool> updateUsername(String username);
+
   Future<bool> verifyAccount(String code);
+
+  Future<bool> verifyUpdateEmail(String email, String code);
 
   Future<bool> isVerified();
 
@@ -134,6 +141,10 @@ abstract class SatorioRepository {
   Future<bool> confirmReferralCode(String referralCode);
 
   Future<List<Review>> getReviews(String showId, String episodeId);
+
+  Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
+
+  Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage});
 
   Future<NftHome> nftHome();
 
