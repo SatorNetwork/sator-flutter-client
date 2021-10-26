@@ -970,11 +970,14 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       SizedBox(
                         height: 12,
                       ),
-                      ElevatedGradientButton(
-                        text: 'txt_unlock_realm'.tr,
-                        onPressed: () {
-                          controller.toEpisodeRealmDialog();
-                        },
+                      Obx(
+                        () => ElevatedGradientButton(
+                          text: 'txt_unlock_realm'.tr,
+                          isInProgress: controller.isRequestedForUnlock.value,
+                          onPressed: () {
+                            controller.toEpisodeRealmDialog();
+                          },
+                        ),
                       ),
                       Expanded(
                         child: Container(),
@@ -1227,7 +1230,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviews(List<Review> reviews) {
-    List<Widget> reviewsList = reviews.map((review) => _reviewItem(review)).toList();
+    List<Widget> reviewsList =
+        reviews.map((review) => _reviewItem(review)).toList();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

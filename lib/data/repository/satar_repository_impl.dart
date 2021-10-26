@@ -97,9 +97,29 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .catchError((value) => _handleException(value));
   }
 
+  @override
+  Future<bool> requestUpdateEmail(String email) {
+    return _apiDataSource
+        .requestUpdateEmail(email)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> updateUsername(String username) {
+    return _apiDataSource
+        .updateUsername(username)
+        .catchError((value) => _handleException(value));
+  }
+
   Future<bool> verifyAccount(String code) {
     return _apiDataSource
         .verifyAccount(code)
+        .catchError((value) => _handleException(value));
+  }
+
+  Future<bool> verifyUpdateEmail(String email, String code) {
+    return _apiDataSource
+        .verifyUpdateEmail(email, code)
         .catchError((value) => _handleException(value));
   }
 

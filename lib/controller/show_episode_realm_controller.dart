@@ -50,6 +50,8 @@ class ShowEpisodeRealmController extends GetxController
   late final Rx<ShowEpisode> showEpisodeRx;
   final Rx<List<Review>> reviewsRx = Rx([]);
 
+  final RxBool isRequestedForUnlock = false.obs;
+
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
   );
@@ -66,6 +68,7 @@ class ShowEpisodeRealmController extends GetxController
   DateTime? timestamp;
   late Rx<int> missedMessagesCountRx = Rx(0);
   late final DatabaseReference _timestampsRef;
+
   //TODO: refactor
   static const String _DATABASE_URL =
       'https://sator-f44d6-timestamp.firebaseio.com/';
@@ -189,7 +192,7 @@ class ShowEpisodeRealmController extends GetxController
       arguments: ReviewsArgument(
         showDetailRx.value.id,
         showEpisodeRx.value.id,
-        true
+        true,
       ),
     );
   }
@@ -277,11 +280,24 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _loadQuizQuestion() {
-    _satorioRepository
-        .showEpisodeQuizQuestion(showEpisodeRx.value.id)
+    Future.value(true)
+        .then((value) {
+          isRequestedForUnlock.value = true;
+          return value;
+        })
+        .then(
+          (value) => _satorioRepository
+              .showEpisodeQuizQuestion(showEpisodeRx.value.id),
+        )
         .then((PayloadQuestion payloadQuestion) {
-      _toEpisodeQuiz(payloadQuestion);
-    });
+          isRequestedForUnlock.value = false;
+          _toEpisodeQuiz(payloadQuestion);
+        })
+        .catchError(
+          (value) {
+            isRequestedForUnlock.value = false;
+          },
+        );
   }
 
   void _loadReviews() {
@@ -324,20 +340,32 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _paidUnlock(PaidOption paidOption) {
-    _satorioRepository
-        .paidUnlockEpisode(
-      showEpisodeRx.value.id,
-      paidOption.label,
-    )
+    Future.value(true)
+        .then((value) {
+          isRequestedForUnlock.value = true;
+          return value;
+        })
         .then(
-      (EpisodeActivation episodeActivation) {
-        activationRx.value = episodeActivation;
-        if (episodeActivation.isActive) {
-          _toUnlockBottomSheet();
-          _updateShowEpisode();
-        }
-      },
-    );
+          (value) => _satorioRepository.paidUnlockEpisode(
+            showEpisodeRx.value.id,
+            paidOption.label,
+          ),
+        )
+        .then(
+          (EpisodeActivation episodeActivation) {
+            isRequestedForUnlock.value = false;
+            activationRx.value = episodeActivation;
+            if (episodeActivation.isActive) {
+              _toUnlockBottomSheet();
+              _updateShowEpisode();
+            }
+          },
+        )
+        .catchError(
+          (value) {
+            isRequestedForUnlock.value = false;
+          },
+        );
   }
 
   void _toUnlockBottomSheet() {

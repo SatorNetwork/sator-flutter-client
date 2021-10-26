@@ -99,7 +99,7 @@ class LoginController extends GetxController with ValidationMixin {
         Get.to(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
-          arguments: EmailVerificationArgument(emailRx.value),
+          arguments: EmailVerificationArgument(emailRx.value, false),
         );
       isRequested.value = false;
     });
