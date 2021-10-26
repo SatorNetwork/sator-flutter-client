@@ -1,0 +1,1 @@
+final String linkTermsOfUse = 'https://backoffice.sator.io/legal/terms-of-use';

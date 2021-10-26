@@ -17,7 +17,9 @@ import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WalletPage extends GetView<WalletController> {
+  static const double _threshHold = 0.0;
   static const double _separatorSize = 6.0;
+
   late final double _viewportFraction =
       (Get.width - 2 * (8 + _separatorSize)) / Get.width;
 
@@ -155,10 +157,10 @@ class WalletPage extends GetView<WalletController> {
       maxChildSize: maxSize,
       expand: false,
       builder: (context, scrollController) =>
-          NotificationListener<OverscrollNotification>(
+          NotificationListener<ScrollNotification>(
         onNotification: (notification) {
-          if (notification.metrics.pixels ==
-              notification.metrics.maxScrollExtent)
+          if (notification.metrics.pixels >=
+              notification.metrics.maxScrollExtent - _threshHold)
             controller.loadMoreTransactions();
           return true;
         },

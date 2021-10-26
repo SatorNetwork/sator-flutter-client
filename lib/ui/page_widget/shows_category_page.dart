@@ -9,6 +9,9 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowsCategoryPage extends GetView<ShowsCategoryController> {
+
+  static const double _threshHold = 100.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +65,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
               child: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification.metrics.pixels >=
-                      notification.metrics.maxScrollExtent - 100)
+                      notification.metrics.maxScrollExtent - _threshHold)
                     controller.loadShows();
                   return true;
                 },

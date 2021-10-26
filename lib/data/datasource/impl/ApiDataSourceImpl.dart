@@ -13,6 +13,9 @@ import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nft_category_model.dart';
+import 'package:satorio/data/model/nft_home_model.dart';
+import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
@@ -845,6 +848,100 @@ class ApiDataSourceImpl implements ApiDataSource {
       EmptyRequest(),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  // endregion
+
+  // region NFT
+
+  @override
+  Future<NftHomeModel> nftHome() {
+    return _requestGet(
+      'nft/home',
+    ).then((Response response) {
+      return NftHomeModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<List<NftCategoryModel>> nftCategories() {
+    return _requestGet(
+      'nft/categories',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftCategoryModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<List<NftItemModel>> nftItemsByCategory(String categoryId) {
+    return _requestGet(
+      'nft/filter/category/$categoryId',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftItemModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<List<NftItemModel>> nftByUser(
+    String userId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    return _requestGet(
+      'nft/filter/user/$userId',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftItemModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<NftItemModel> nftItem(String nftItemId) {
+    return _requestGet(
+      'nft/$nftItemId',
+    ).then((Response response) {
+      return NftItemModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<bool> buyNftItem(String nftItemId) {
+    return _requestPost(
+      'nft/$nftItemId/buy',
+      EmptyRequest(),
+    ).then((Response response) {
+      return response.isOk;
+      // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 

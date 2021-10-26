@@ -12,6 +12,9 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_home.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
@@ -465,9 +468,60 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage}) {
+  Future<List<ActivatedRealm>> getActivatedRealms(
+      {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .getActivatedRealms(page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<NftHome> nftHome() {
+    return _apiDataSource
+        .nftHome()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<NftCategory>> nftCategories() {
+    return _apiDataSource
+        .nftCategories()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<NftItem>> nftItemsByCategory(String categoryId) {
+    return _apiDataSource
+        .nftItemsByCategory(categoryId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<NftItem>> nftByUser(
+    String userId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
+    return _apiDataSource
+        .nftByUser(
+          userId,
+          page: page,
+          itemsPerPage: itemsPerPage,
+        )
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<NftItem> nftItem(String nftItemId) {
+    return _apiDataSource
+        .nftItem(nftItemId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> buyNftItem(String nftItemId) {
+    return _apiDataSource
+        .buyNftItem(nftItemId)
         .catchError((value) => _handleException(value));
   }
 

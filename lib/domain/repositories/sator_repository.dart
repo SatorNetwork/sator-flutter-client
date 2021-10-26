@@ -5,6 +5,9 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_home.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
@@ -142,6 +145,19 @@ abstract class SatorioRepository {
   Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
 
   Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage});
+
+  Future<NftHome> nftHome();
+
+  Future<List<NftCategory>> nftCategories();
+
+  Future<List<NftItem>> nftItemsByCategory(String categoryId);
+
+  Future<List<NftItem>> nftByUser(String userId,
+      {int? page, int? itemsPerPage});
+
+  Future<NftItem> nftItem(String nftItemId);
+
+  Future<bool> buyNftItem(String nftItemId);
 
   //
 

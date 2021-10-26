@@ -4,9 +4,9 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
 import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -156,7 +156,10 @@ class ProfilePage extends GetView<ProfileController> {
                       children: [
                         InkWell(
                           onTap: () {
-                            controller.toNonWorkingFeatureDialog();
+                            if (controller.nftItemsRx.value.isEmpty)
+                              controller.toBuyNfts();
+                            else
+                              controller.toMyNfts();
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(
@@ -181,112 +184,7 @@ class ProfilePage extends GetView<ProfileController> {
                             ),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            controller.toNonWorkingFeatureDialog();
-                          },
-                          child: Container(
-                            height: nftsLargestImageSize + 21 * coefficient,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(17 * coefficient),
-                                          ),
-                                          child: Image.asset(
-                                            'images/tmp_nft_1.png',
-                                            width: nftsLargestImageSize,
-                                            height: nftsLargestImageSize,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 16 * coefficient,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Expanded(
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      17 * coefficient),
-                                                ),
-                                                child: Image.asset(
-                                                  'images/tmp_nft_2.png',
-                                                  width: nftsLargestImageSize,
-                                                  height: nftsLargestImageSize,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                margin: EdgeInsets.only(
-                                                  top: 16 * coefficient,
-                                                ),
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(
-                                                              17 * coefficient),
-                                                        ),
-                                                        child: Image.asset(
-                                                          'images/tmp_nft_3.png',
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 15 * coefficient,
-                                                    ),
-                                                    Expanded(
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(
-                                                              17 * coefficient),
-                                                        ),
-                                                        child: Image.asset(
-                                                          'images/tmp_nft_4.png',
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Text(
-                                  'Breaking Bad',
-                                  style: textTheme.headline3!.copyWith(
-                                    color: SatorioColor.interactive,
-                                    fontSize: 15.0 * coefficient,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        _nftsBlock(),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 20,
@@ -432,6 +330,182 @@ class ProfilePage extends GetView<ProfileController> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _nftsBlock() {
+    return Obx(
+      () {
+        List<NftItem> nfts = controller.nftItemsRx.value;
+        return nfts.isEmpty
+            ? InkWell(
+                onTap: () {
+                  controller.toBuyNfts();
+                },
+                child: Container(
+                  width: Get.width,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(17 * coefficient)),
+                    color: SatorioColor.alice_blue,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'txt_you_havent_nfts'.tr,
+                        style: textTheme.headline3!.copyWith(
+                          color: SatorioColor.darkAccent,
+                          fontSize: 15.0 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            : Container(
+                height: nftsLargestImageSize + 21 * coefficient,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: nfts.length > 0
+                                ? InkWell(
+                                    onTap: () {
+                                      controller.toNftItem(nfts[0]);
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(17 * coefficient),
+                                      ),
+                                      child: Image.network(
+                                        nfts[0].imageLink,
+                                        width: nftsLargestImageSize,
+                                        height: nftsLargestImageSize,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    width: nftsLargestImageSize,
+                                    height: nftsLargestImageSize,
+                                  ),
+                          ),
+                          SizedBox(
+                            width: 16 * coefficient,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: nfts.length > 1
+                                      ? InkWell(
+                                          onTap: () {
+                                            controller.toNftItem(nfts[1]);
+                                          },
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(17 * coefficient),
+                                            ),
+                                            child: Image.network(
+                                              nfts[1].imageLink,
+                                              width: nftsLargestImageSize,
+                                              height: nftsLargestImageSize,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(
+                                          width: nftsLargestImageSize,
+                                          height: nftsLargestImageSize,
+                                        ),
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                      top: 16 * coefficient,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: nfts.length > 2
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    controller
+                                                        .toNftItem(nfts[2]);
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.network(
+                                                      nfts[2].imageLink,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ),
+                                        SizedBox(
+                                          width: 15 * coefficient,
+                                        ),
+                                        Expanded(
+                                          child: nfts.length > 3
+                                              ? InkWell(
+                                                  onTap: () {
+                                                    controller
+                                                        .toNftItem(nfts[3]);
+                                                  },
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(
+                                                          17 * coefficient),
+                                                    ),
+                                                    child: Image.network(
+                                                      nfts[3].imageLink,
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                )
+                                              : Container(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      nfts.length > 0 ? nfts[0].name : '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.headline3!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 15.0 * coefficient,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+      },
     );
   }
 
@@ -685,216 +759,217 @@ class ProfilePage extends GetView<ProfileController> {
   }
 
   Widget _reviews(List<Review?> reviews) {
-    List<Widget> reviewsList = reviews.map((review) => _reviewItem(review)).toList();
+    List<Widget> reviewsList =
+        reviews.map((review) => _reviewItem(review)).toList();
 
     return reviews.length != 0
-          ? SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: reviewsList,
-                ),
+        ? SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: reviewsList,
               ),
-            )
-          : _emptyState('txt_null_reviews'.tr);
+            ),
+          )
+        : _emptyState('txt_null_reviews'.tr);
   }
 
   Widget _reviewItem(Review? review) {
     final double reviewContainerHeight = 230.0 * coefficient;
     final double itemWidth = Get.width - 20 - 2 * 16 * coefficient;
     final EdgeInsets padding =
-    EdgeInsets.symmetric(horizontal: 16 * coefficient, vertical: 2);
+        EdgeInsets.symmetric(horizontal: 16 * coefficient, vertical: 2);
     final formatter = DateFormat('dd MMMM yyyy');
 
     Rx<bool> isExpandedRx = Rx(false);
 
     return Obx(
-        () => InkWell(
+      () => InkWell(
         onTap: () {
           if (review!.review.length < 70) return;
           isExpandedRx.value = !isExpandedRx.value;
         },
         child: Container(
-            margin: EdgeInsets.only(right: 10),
-            height: isExpandedRx.value ? null : reviewContainerHeight,
-            width: itemWidth,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
-              color: SatorioColor.alice_blue,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 44 * coefficient,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black.withOpacity(0.08),
-                        width: 1 * coefficient,
-                      ),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: padding,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          size: 22 * coefficient,
-                          color: SatorioColor.interactive,
-                        ),
-                        SizedBox(
-                          width: 4 * coefficient,
-                        ),
-                        Text(
-                          '${review!.rating}',
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 12.0 * coefficient,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            '${formatter.format(review.createdAt!)}',
-                            textAlign: TextAlign.end,
-                            style: textTheme.bodyText2!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 12.0 * coefficient,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: padding,
-                  child: Text(
-                    '${review.title}',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.headline6!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 18.0 * coefficient,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: padding,
-                  child: Text(
-                    '${review.review}',
-                    maxLines: isExpandedRx.value ? 1000 : 4,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ),
-                isExpandedRx.value
-                  ? Container()
-                  : Spacer(
-                      flex: 5,
-                    ),
+          margin: EdgeInsets.only(right: 10),
+          height: isExpandedRx.value ? null : reviewContainerHeight,
+          width: itemWidth,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
+            color: SatorioColor.alice_blue,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Container(
-                  height: 60 * coefficient,
-                  width: itemWidth,
-                  padding: padding,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(17 * coefficient),
-                    ),
-                    // color: Colors.red
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+                height: 44 * coefficient,
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: Colors.black.withOpacity(0.08),
+                      width: 1 * coefficient,
                     ),
                   ),
+                ),
+                child: Padding(
+                  padding: padding,
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Container(
-                        width: 20 * coefficient,
-                        height: 20 * coefficient,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              SatorioColor.yellow_orange,
-                              SatorioColor.tomato,
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 6 * coefficient,
-                      ),
-                      Expanded(
-                        child: Text(
-                          '${review.userName}',
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 15.0 * coefficient,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
                       Icon(
-                        Icons.thumb_up_rounded,
-                        size: 20 * coefficient,
+                        Icons.star_rounded,
+                        size: 22 * coefficient,
                         color: SatorioColor.interactive,
                       ),
                       SizedBox(
-                        width: 8 * coefficient,
+                        width: 4 * coefficient,
                       ),
                       Text(
-                        '${review.likes}k',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.interactive,
-                          fontSize: 14.0 * coefficient,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 24 * coefficient,
-                      ),
-                      Icon(
-                        Icons.thumb_down_rounded,
-                        size: 20 * coefficient,
-                        color: SatorioColor.textBlack,
-                      ),
-                      SizedBox(
-                        width: 8 * coefficient,
-                      ),
-                      Text(
-                        '${review.unlikes}',
+                        '${review!.rating}',
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
-                          fontSize: 14.0 * coefficient,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 12.0 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '${formatter.format(review.createdAt!)}',
+                          textAlign: TextAlign.end,
+                          style: textTheme.bodyText2!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 12.0 * coefficient,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: padding,
+                child: Text(
+                  '${review.title}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.headline6!.copyWith(
+                    color: SatorioColor.textBlack,
+                    fontSize: 18.0 * coefficient,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: padding,
+                child: Text(
+                  '${review.review}',
+                  maxLines: isExpandedRx.value ? 1000 : 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: SatorioColor.textBlack,
+                    fontSize: 15.0 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              isExpandedRx.value
+                  ? Container()
+                  : Spacer(
+                      flex: 5,
+                    ),
+              Container(
+                height: 60 * coefficient,
+                width: itemWidth,
+                padding: padding,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(17 * coefficient),
+                  ),
+                  // color: Colors.red
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+                  ),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: 20 * coefficient,
+                      height: 20 * coefficient,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [
+                            SatorioColor.yellow_orange,
+                            SatorioColor.tomato,
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 6 * coefficient,
+                    ),
+                    Expanded(
+                      child: Text(
+                        '${review.userName}',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15.0 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    Icon(
+                      Icons.thumb_up_rounded,
+                      size: 20 * coefficient,
+                      color: SatorioColor.interactive,
+                    ),
+                    SizedBox(
+                      width: 8 * coefficient,
+                    ),
+                    Text(
+                      '${review.likes}k',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 14.0 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 24 * coefficient,
+                    ),
+                    Icon(
+                      Icons.thumb_down_rounded,
+                      size: 20 * coefficient,
+                      color: SatorioColor.textBlack,
+                    ),
+                    SizedBox(
+                      width: 8 * coefficient,
+                    ),
+                    Text(
+                      '${review.unlikes}',
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 14.0 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
+        ),
       ),
     );
   }

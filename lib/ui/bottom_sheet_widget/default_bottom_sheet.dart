@@ -7,8 +7,13 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/extension.dart';
 
 class DefaultBottomSheet extends StatelessWidget {
-  const DefaultBottomSheet(this.title, this.text, this.buttonText,
-      {this.onPressed, this.icon});
+  const DefaultBottomSheet(
+    this.title,
+    this.text,
+    this.buttonText, {
+    this.onPressed,
+    this.icon,
+  });
 
   final String title;
   final String text;
@@ -48,9 +53,10 @@ class DefaultBottomSheet extends StatelessWidget {
           Text(
             title,
             style: textTheme.headline1!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 24.0 * coefficient,
-                fontWeight: FontWeight.w700),
+              color: SatorioColor.textBlack,
+              fontSize: 24.0 * coefficient,
+              fontWeight: FontWeight.w700,
+            ),
           ),
           SizedBox(height: 8),
           Text(

@@ -5,6 +5,9 @@ import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nft_category_model.dart';
+import 'package:satorio/data/model/nft_home_model.dart';
+import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
@@ -120,7 +123,8 @@ abstract class ApiDataSource {
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 
-  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage});
+  Future<List<ActivatedRealmModel>> getActivatedRealms(
+      {int? page, int? itemsPerPage});
 
   Future<bool> clapShow(String showId);
 
@@ -174,6 +178,26 @@ abstract class ApiDataSource {
   Future<ReferralCodeModel> getReferralCode();
 
   Future<bool> confirmReferralCode(String referralCode);
+
+  // endregion
+
+  // region NFT
+
+  Future<NftHomeModel> nftHome();
+
+  Future<List<NftCategoryModel>> nftCategories();
+
+  Future<List<NftItemModel>> nftItemsByCategory(String categoryId);
+
+  Future<List<NftItemModel>> nftByUser(
+    String userId, {
+    int? page,
+    int? itemsPerPage,
+  });
+
+  Future<NftItemModel> nftItem(String nftItemId);
+
+  Future<bool> buyNftItem(String nftItemId);
 
   // endregion
 

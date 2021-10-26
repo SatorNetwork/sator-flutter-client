@@ -93,6 +93,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         children: [
                           Obx(
                             () => Checkbox(
+                              activeColor: SatorioColor.interactive,
                               value: controller.termsOfUseCheck.value,
                               onChanged: (value) {
                                 controller.termsOfUseCheck.toggle();
@@ -104,14 +105,18 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                               text: TextSpan(
                                 text: 'txt_terms_description'.tr,
                                 style: textTheme.bodyText1!.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: SatorioColor.textBlack),
+                                  fontSize: 15 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                  color: SatorioColor.textBlack,
+                                ),
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: 'txt_terms'.tr,
                                     style: textTheme.bodyText1!.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: SatorioColor.interactive),
+                                      fontSize: 15 * coefficient,
+                                      fontWeight: FontWeight.w500,
+                                      color: SatorioColor.interactive,
+                                    ),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         controller.toTermsOfUse();

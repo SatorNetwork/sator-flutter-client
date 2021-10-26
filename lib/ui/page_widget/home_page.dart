@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -66,14 +67,29 @@ class HomePage extends GetView<HomeController> {
                                               BorderRadius.circular(12.0),
                                           child: Center(
                                             child: Obx(
-                                              () => SvgPicture.asset(
-                                                controller.profileRx.value
-                                                        ?.avatarPath ??
-                                                    '',
-                                                width: 50,
-                                                height: 50,
-                                                fit: BoxFit.fitWidth,
-                                              ),
+                                              () =>
+                                                  controller.profileRx.value ==
+                                                              null ||
+                                                          controller
+                                                              .profileRx
+                                                              .value!
+                                                              .avatarPath
+                                                              .isEmpty
+                                                      ? Image.asset(
+                                                          'images/null_avatar.png',
+                                                          width: 50,
+                                                          height: 50,
+                                                          fit: BoxFit.fitWidth,
+                                                        )
+                                                      : SvgPicture.asset(
+                                                          controller
+                                                              .profileRx
+                                                              .value!
+                                                              .avatarPath,
+                                                          width: 50,
+                                                          height: 50,
+                                                          fit: BoxFit.fitWidth,
+                                                        ),
                                             ),
                                           ),
                                         ),
@@ -157,7 +173,7 @@ class HomePage extends GetView<HomeController> {
         Padding(
           padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: TitleWithButton(
-            textCode: 'Featured NFTs',
+            textCode: 'txt_featured_nfts'.tr,
             onTap: () {
               controller.toNfts();
             },
@@ -166,16 +182,20 @@ class HomePage extends GetView<HomeController> {
         Container(
           margin: const EdgeInsets.only(top: 16),
           height: 125 * coefficient,
-          child: ListView.separated(
-            separatorBuilder: (context, index) => SizedBox(
-              width: 12,
+          child: Obx(
+            () => ListView.separated(
+              separatorBuilder: (context, index) => SizedBox(
+                width: 12,
+              ),
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              itemCount: controller.nftHomeRx.value?.items.length ?? 0,
+              itemBuilder: (context, index) {
+                final NftItem nftItem =
+                    controller.nftHomeRx.value!.items[index];
+                return _nftItem(nftItem);
+              },
             ),
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: _nfts.length,
-            itemBuilder: (context, index) {
-              return _nftItem(_nfts[index]);
-            },
           ),
         ),
         Padding(
@@ -376,12 +396,12 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _nftItem(String nftAsset) {
+  Widget _nftItem(final NftItem nftItem) {
     final width = (Get.width - 12 - 2 * 20 - 8) / 2;
     final height = 125 * coefficient;
     return InkWell(
       onTap: () {
-        controller.toNonWorkingFeatureDialog();
+        controller.toNftItem(nftItem);
       },
       child: Container(
         height: height,
@@ -391,8 +411,8 @@ class HomePage extends GetView<HomeController> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                nftAsset,
+              child: Image.network(
+                nftItem.imageLink,
                 width: width,
                 height: height - 25 * coefficient,
                 fit: BoxFit.cover,
@@ -431,7 +451,9 @@ class HomePage extends GetView<HomeController> {
                   ),
                   Expanded(
                     child: Text(
-                      '3,284 SAO',
+                      '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: textTheme.bodyText2!.copyWith(
                         color: Colors.black,
                         fontSize: 12.0 * coefficient,
@@ -447,18 +469,4 @@ class HomePage extends GetView<HomeController> {
       ),
     );
   }
-
-  final List<String> _nfts = [
-    'images/tmp_nft_home_1.jpg',
-    'images/tmp_nft_home_2.jpg',
-    'images/tmp_nft_home_3.jpg',
-    'images/tmp_nft_home_4.jpg',
-    'images/tmp_nft_home_5.jpg',
-    'images/tmp_nft_home_6.jpg',
-    'images/tmp_nft_home_7.jpg',
-    'images/tmp_nft_home_8.jpg',
-    'images/tmp_nft_home_9.jpg',
-    'images/tmp_nft_home_10.jpg',
-    'images/tmp_nft_home_11.jpg',
-  ];
 }
