@@ -5,6 +5,7 @@ class NftItem {
   final String imageLink;
   final String name;
   final String description;
+  final String ownerId;
   final Map<String, dynamic> tags;
   final double supply;
   final double royalties;
@@ -18,6 +19,7 @@ class NftItem {
     this.imageLink,
     this.name,
     this.description,
+    this.ownerId,
     this.tags,
     this.supply,
     this.royalties,

@@ -290,11 +290,15 @@ class NftItemPage extends GetView<NftItemController> {
                   width: 36 * coefficient,
                 ),
                 Expanded(
-                  child: ElevatedGradientButton(
-                    text: 'txt_buy'.tr,
-                    onPressed: () {
-                      controller.toCheckout();
-                    },
+                  child: Obx(
+                    () => controller.isOwner.value
+                        ? Container()
+                        : ElevatedGradientButton(
+                            text: 'txt_buy'.tr,
+                            onPressed: () {
+                              controller.toCheckout();
+                            },
+                          ),
                   ),
                 ),
               ],
