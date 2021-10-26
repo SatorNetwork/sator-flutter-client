@@ -13,6 +13,7 @@ import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/payload/payload_countdown.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/payload/payload_question_result.dart';
+import 'package:satorio/domain/entities/payload/payload_time_out.dart';
 import 'package:satorio/domain/entities/payload/payload_user.dart';
 import 'package:satorio/domain/entities/payload/socket_message.dart';
 import 'package:satorio/domain/entities/quiz_screen_type.dart';
@@ -97,6 +98,9 @@ class QuizController extends GetxController {
             _handlePayloadChallengeResult(
                 socketMessage.payload as PayloadChallengeResult);
             break;
+          case Type.time_out:
+            _handleTimeOut(socketMessage.payload as PayloadTimeOut);
+            break;
         }
       }
     });
@@ -178,6 +182,21 @@ class QuizController extends GetxController {
 
     QuizResultController quizResultController = Get.find();
     quizResultController.resultRx.value = payloadChallengeResult;
+  }
+
+  _handleTimeOut(PayloadTimeOut payloadTimeOut) {
+    Get.dialog(
+      DefaultDialog(
+        'txt_oops'.tr,
+        payloadTimeOut.message,
+        'txt_back_realm'.tr,
+        icon: Icons.sentiment_dissatisfied_rounded,
+        onButtonPressed: () {
+          backToEpisode();
+        },
+      ),
+      barrierDismissible: false,
+    );
   }
 }
 
