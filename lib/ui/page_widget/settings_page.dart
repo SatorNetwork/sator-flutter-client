@@ -147,7 +147,7 @@ class SettingsPage extends GetView<SettingsController> {
     return Column(
       children: [
         BorderedButton(
-          text: 'txt_sign_out'.tr,
+          text: 'txt_log_out'.tr,
           textColor: SatorioColor.interactive,
           borderColor: SatorioColor.interactive,
           borderWidth: 2,
