@@ -123,7 +123,8 @@ abstract class ApiDataSource {
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 
-  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage});
+  Future<List<ActivatedRealmModel>> getActivatedRealms(
+      {int? page, int? itemsPerPage});
 
   Future<bool> clapShow(String showId);
 

@@ -468,7 +468,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage}) {
+  Future<List<ActivatedRealm>> getActivatedRealms(
+      {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .getActivatedRealms(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
@@ -497,16 +498,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<List<NftItem>> nftByUser(
-      String userId, {
-        int? page,
-        int? itemsPerPage,
-      }) {
+    String userId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
     return _apiDataSource
         .nftByUser(
-      userId,
-      page: page,
-      itemsPerPage: itemsPerPage,
-    )
+          userId,
+          page: page,
+          itemsPerPage: itemsPerPage,
+        )
         .catchError((value) => _handleException(value));
   }
 
