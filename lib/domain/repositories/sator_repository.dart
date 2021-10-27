@@ -21,6 +21,8 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
+  Future<void> clearAllLocalData();
+
   Future<bool> isTokenValid();
 
   Future<bool> signIn(String email, String password);
@@ -59,8 +61,11 @@ abstract class SatorioRepository {
 
   Future<void> updateWalletDetail(String detailPath);
 
-  Future<void> updateWalletTransactions(String transactionsPath,
-      {DateTime? from, DateTime? to});
+  Future<void> updateWalletTransactions(
+    String transactionsPath, {
+    DateTime? from,
+    DateTime? to,
+  });
 
   Future<Transfer> createTransfer(
     String fromWalletId,
@@ -130,7 +135,10 @@ abstract class SatorioRepository {
   Future<GetSocket> createQuizSocket(String socketUrl);
 
   Future<void> sendAnswer(
-      GetSocket? socket, String questionId, String answerId);
+    GetSocket? socket,
+    String questionId,
+    String answerId,
+  );
 
   Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
@@ -144,7 +152,10 @@ abstract class SatorioRepository {
 
   Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
 
-  Future<List<ActivatedRealm>> getActivatedRealms({int? page, int? itemsPerPage});
+  Future<List<ActivatedRealm>> getActivatedRealms({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<NftHome> nftHome();
 
@@ -152,8 +163,11 @@ abstract class SatorioRepository {
 
   Future<List<NftItem>> nftItemsByCategory(String categoryId);
 
-  Future<List<NftItem>> nftByUser(String userId,
-      {int? page, int? itemsPerPage});
+  Future<List<NftItem>> nftByUser(
+    String userId, {
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<NftItem> nftItem(String nftItemId);
 
