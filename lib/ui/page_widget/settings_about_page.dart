@@ -59,8 +59,8 @@ class SettingsAboutPage extends GetView<SettingsAboutController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _aboutButton('txt_policy'.tr, () => controller.toNonWorkingDialog()),
-        _aboutButton('txt_terms'.tr, () => controller.toTermsOfUse()),
+        _aboutButton('txt_policy'.tr, () => controller.toWebPage('https://backoffice.sator.io/legal/privacy-policy')),
+        _aboutButton('txt_terms'.tr, () => controller.toWebPage('https://backoffice.sator.io/legal/terms-of-use')),
       ],
     );
   }
