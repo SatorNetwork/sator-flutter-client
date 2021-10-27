@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/settings_about_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/util/links.dart';
 
 class SettingsAboutPage extends GetView<SettingsAboutController> {
   @override
@@ -59,8 +60,8 @@ class SettingsAboutPage extends GetView<SettingsAboutController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _aboutButton('txt_policy'.tr, () => controller.toWebPage('https://backoffice.sator.io/legal/privacy-policy')),
-        _aboutButton('txt_terms'.tr, () => controller.toWebPage('https://backoffice.sator.io/legal/terms-of-use')),
+        _aboutButton('txt_policy'.tr, () => controller.toWebPage(linkPrivacyPolicy)),
+        _aboutButton('txt_terms'.tr, () => controller.toWebPage(linkTermsOfUse)),
       ],
     );
   }
