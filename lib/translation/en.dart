@@ -184,6 +184,7 @@ const Map<String, String> en = {
   'txt_rate_episode': 'Rate episode',
   'txt_rate_content': 'Rate content',
   'txt_rate': 'Rate',
+  'txt_null_rate': 'No rating yet',
   'txt_rate_success': 'You have rated the episode with “%d”',
   'txt_ratings': '%d ratings',
   'txt_no_messages': 'Welcome to the chat room!',
