@@ -34,6 +34,7 @@ const Map<String, String> en = {
   'txt_badges': 'Badges',
   'txt_challenges': 'Challenges',
   'txt_nfts': 'NFTs',
+  'txt_nft': 'NFT',
   'txt_log_out': 'Log out',
   'txt_log_out_message': 'Are you sure you want to log out?',
   'txt_yes': 'Yes',
@@ -254,4 +255,5 @@ const Map<String, String> en = {
   'txt_home': 'Home',
   'txt_you_havent_nfts': 'You have no NFTs yet.',
   'txt_featured_nfts': 'Featured NFTs',
+  'txt_null_nfts': 'This episode has no NFTs yet.\nGo to NFT marketplace',
 };

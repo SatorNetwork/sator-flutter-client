@@ -234,20 +234,16 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> requestUpdateEmail(String email) {
-    return _requestPost(
-      'auth/request-update-email',
-      UpdateEmailRequest(email)
-    ).then((Response response) {
+    return _requestPost('auth/request-update-email', UpdateEmailRequest(email))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> updateUsername(String username) {
-    return _requestPost(
-        'auth/update-username',
-        UpdateUsernameRequest(username)
-    ).then((Response response) {
+    return _requestPost('auth/update-username', UpdateUsernameRequest(username))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -616,7 +612,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage}) {
+  Future<List<ActivatedRealmModel>> getActivatedRealms(
+      {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
@@ -884,6 +881,35 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<List<NftItemModel>> nftItemsByCategory(String categoryId) {
     return _requestGet(
       'nft/filter/category/$categoryId',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftItemModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<List<NftItemModel>> nftItemsByEpisode(
+    String episodeId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    return _requestGet(
+      'nft/filter/episode/$episodeId',
+      query: query,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable) {

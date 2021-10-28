@@ -123,8 +123,10 @@ abstract class ApiDataSource {
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 
-  Future<List<ActivatedRealmModel>> getActivatedRealms(
-      {int? page, int? itemsPerPage});
+  Future<List<ActivatedRealmModel>> getActivatedRealms({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<bool> clapShow(String showId);
 
@@ -189,6 +191,12 @@ abstract class ApiDataSource {
 
   Future<List<NftItemModel>> nftItemsByCategory(String categoryId);
 
+  Future<List<NftItemModel>> nftItemsByEpisode(
+    String episodeId, {
+    int? page,
+    int? itemsPerPage,
+  });
+
   Future<List<NftItemModel>> nftByUser(
     String userId, {
     int? page,
@@ -206,7 +214,10 @@ abstract class ApiDataSource {
   Future<GetSocket> createSocket(String url);
 
   Future<void> sendAnswer(
-      GetSocket? socket, String questionId, String answerId);
+    GetSocket? socket,
+    String questionId,
+    String answerId,
+  );
 
 // endregion
 

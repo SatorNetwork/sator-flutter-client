@@ -181,7 +181,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
     );
   }
 
-  void toBuyNfts() {
+  void toNftsMarketplace() {
     if (Get.isRegistered<MainController>()) {
       MainController mainController = Get.find();
       mainController.selectedBottomTabIndex.value = MainController.TabNfts;

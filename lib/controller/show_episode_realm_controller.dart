@@ -5,18 +5,23 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
+import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/last_seen.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -34,6 +39,7 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
+import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
@@ -42,13 +48,17 @@ import 'package:satorio/util/extension.dart';
 import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
-    with NonWorkingFeatureMixin {
+    with BackToMainMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
+
+  final int _itemsPerPage = 10;
+  static const int _initialPage = 1;
 
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
   final Rx<List<Review>> reviewsRx = Rx([]);
+  final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
   final RxBool isRequestedForUnlock = false.obs;
 
@@ -108,6 +118,7 @@ class ShowEpisodeRealmController extends GetxController
 
     _updateShowEpisode();
     _loadReviews();
+    _loadNftItems();
     lastSeenInit();
 
     _checkActivation();
@@ -256,6 +267,24 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
+  void toNftsMarketplace() {
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.selectedBottomTabIndex.value = MainController.TabNfts;
+      backToMain();
+    }
+  }
+
+  void toNftList() {}
+
+  void toNftItem(final NftItem nftItem) {
+    Get.to(
+      () => NftItemPage(),
+      binding: NftItemBinding(),
+      arguments: NftItemArgument(nftItem),
+    );
+  }
+
   void activeTimeExpire() {
     _checkActivation();
     _updateShowEpisode();
@@ -306,6 +335,21 @@ class ShowEpisodeRealmController extends GetxController
         .then((List<Review> reviews) {
       reviewsRx.value = reviews;
     });
+  }
+
+  void _loadNftItems() {
+    _satorioRepository
+        .nftItemsByEpisode(
+      showEpisodeRx.value.id,
+      page: _initialPage,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then(
+      (List<NftItem> nftItems) {
+        print('_loadNftItems ${nftItems.length}');
+        nftItemsRx.value = nftItems;
+      },
+    );
   }
 
   void _toEpisodeQuiz(PayloadQuestion payloadQuestion) async {

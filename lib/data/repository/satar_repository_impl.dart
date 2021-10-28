@@ -497,6 +497,21 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<NftItem>> nftItemsByEpisode(
+    String episodeId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
+    return _apiDataSource
+        .nftItemsByEpisode(
+          episodeId,
+          page: page,
+          itemsPerPage: itemsPerPage,
+        )
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<NftItem>> nftByUser(
     String userId, {
     int? page,
