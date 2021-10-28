@@ -57,6 +57,7 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -878,24 +879,9 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<NftItemModel>> nftItemsByCategory(String categoryId) {
-    return _requestGet(
-      'nft/filter/category/$categoryId',
-    ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable) {
-        return (jsonData['data'] as Iterable)
-            .map((element) => NftItemModel.fromJson(element))
-            .toList();
-      } else {
-        return [];
-      }
-    });
-  }
-
-  @override
-  Future<List<NftItemModel>> nftItemsByEpisode(
-    String episodeId, {
+  Future<List<NftItemModel>> nftItems(
+    NftFilterType filterType,
+    String objectId, {
     int? page,
     int? itemsPerPage,
   }) {
@@ -907,48 +893,37 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _requestGet(
-      'nft/filter/episode/$episodeId',
-      query: query,
-    ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable) {
-        return (jsonData['data'] as Iterable)
-            .map((element) => NftItemModel.fromJson(element))
-            .toList();
-      } else {
-        return [];
-      }
-    });
-  }
-
-  @override
-  Future<List<NftItemModel>> nftByUser(
-    String userId, {
-    int? page,
-    int? itemsPerPage,
-  }) {
-    Map<String, String>? query;
-    if (page != null || itemsPerPage != null) {
-      query = {};
-      if (page != null) query['page'] = page.toString();
-      if (itemsPerPage != null)
-        query['items_per_page'] = itemsPerPage.toString();
+    String pathParameter;
+    switch (filterType) {
+      case NftFilterType.NftCategory:
+        pathParameter = 'category';
+        break;
+      case NftFilterType.Show:
+        pathParameter = 'show';
+        break;
+      case NftFilterType.Episode:
+        pathParameter = 'episode';
+        break;
+      case NftFilterType.User:
+        pathParameter = 'user';
+        break;
     }
 
     return _requestGet(
-      'nft/filter/user/$userId',
+      'nft/filter/$pathParameter/$objectId',
       query: query,
-    ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable) {
-        return (jsonData['data'] as Iterable)
-            .map((element) => NftItemModel.fromJson(element))
-            .toList();
-      } else {
-        return [];
-      }
-    });
+    ).then(
+      (Response response) {
+        Map jsonData = json.decode(response.bodyString!);
+        if (jsonData['data'] is Iterable) {
+          return (jsonData['data'] as Iterable)
+              .map((element) => NftItemModel.fromJson(element))
+              .toList();
+        } else {
+          return [];
+        }
+      },
+    );
   }
 
   @override

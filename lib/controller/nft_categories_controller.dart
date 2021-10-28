@@ -5,6 +5,7 @@ import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -59,20 +60,27 @@ class NftCategoriesController extends GetxController
   }
 
   void _loadNftCategories() {
-    _satorioRepository.nftCategories().then((List<NftCategory> categories) {
-      tabController = TabController(
-          length: categories.length + _fixedTabLength, vsync: this);
-      categoriesRx.value = categories;
+    _satorioRepository.nftCategories().then(
+      (List<NftCategory> categories) {
+        tabController = TabController(
+            length: categories.length + _fixedTabLength, vsync: this);
+        categoriesRx.value = categories;
 
-      categories.forEach((category) {
-        _loadItemsByCategory(category);
-      });
-    });
+        categories.forEach(
+          (category) {
+            _loadItemsByCategory(category);
+          },
+        );
+      },
+    );
   }
 
   void _loadItemsByCategory(final NftCategory category) {
     _satorioRepository
-        .nftItemsByCategory(category.id)
+        .nftItems(
+      NftFilterType.NftCategory,
+      category.id,
+    )
         .then((List<NftItem> items) {
       itemsRx.update((value) {
         if (value != null) value[category.id] = items;

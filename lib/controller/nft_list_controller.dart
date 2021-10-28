@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -10,10 +11,11 @@ import 'package:satorio/util/extension.dart';
 
 import 'nft_item_controller.dart';
 
-class NftByUserController extends GetxController {
+class NftListController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  late final String _userId;
+  late final String _objectId;
+  late final NftFilterType _filterType;
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
@@ -25,9 +27,10 @@ class NftByUserController extends GetxController {
   final RxString titleRx = ''.obs;
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
-  NftByUserController() {
-    NftByUserArgument argument = Get.arguments as NftByUserArgument;
-    _userId = argument.usedId;
+  NftListController() {
+    NftListArgument argument = Get.arguments as NftListArgument;
+    _filterType = argument.filterType;
+    _objectId = argument.objectId;
 
     loadNfts();
     _updateTitle();
@@ -53,8 +56,9 @@ class NftByUserController extends GetxController {
     _isLoadingRx.value = true;
 
     _satorioRepository
-        .nftByUser(
-      _userId,
+        .nftItems(
+      _filterType,
+      _objectId,
       page: _pageRx.value,
       itemsPerPage: _itemsPerPage,
     )
@@ -71,20 +75,34 @@ class NftByUserController extends GetxController {
   }
 
   void _updateTitle() {
-    Profile? profile = (_satorioRepository.profileListenable()
-            as ValueListenable<Box<Profile>>)
-        .value
-        .getAt(0);
-    if (profile != null) {
-      titleRx.value = _userId == profile.id
-          ? 'txt_my_nfts'.tr
-          : 'txt_not_my_nfts'.tr.format([profile.username]);
+    switch (_filterType) {
+      case NftFilterType.NftCategory:
+        titleRx.value = 'Category NFTs';
+        break;
+      case NftFilterType.Show:
+        titleRx.value = 'Show NFTs';
+        break;
+      case NftFilterType.Episode:
+        titleRx.value = 'ShowEpisode NFTs';
+        break;
+      case NftFilterType.User:
+        Profile? profile = (_satorioRepository.profileListenable()
+                as ValueListenable<Box<Profile>>)
+            .value
+            .getAt(0);
+        if (profile != null) {
+          titleRx.value = _objectId == profile.id
+              ? 'txt_my_nfts'.tr
+              : 'txt_not_my_nfts'.tr.format([profile.username]);
+        }
+        break;
     }
   }
 }
 
-class NftByUserArgument {
-  final String usedId;
+class NftListArgument {
+  final NftFilterType filterType;
+  final String objectId;
 
-  const NftByUserArgument(this.usedId);
+  const NftListArgument(this.filterType, this.objectId);
 }

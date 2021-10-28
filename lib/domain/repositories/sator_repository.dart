@@ -6,6 +6,7 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
@@ -161,16 +162,9 @@ abstract class SatorioRepository {
 
   Future<List<NftCategory>> nftCategories();
 
-  Future<List<NftItem>> nftItemsByCategory(String categoryId);
-
-  Future<List<NftItem>> nftItemsByEpisode(
-    String episodeId, {
-    int? page,
-    int? itemsPerPage,
-  });
-
-  Future<List<NftItem>> nftByUser(
-    String userId, {
+  Future<List<NftItem>> nftItems(
+    NftFilterType filterType,
+    String objectId, {
     int? page,
     int? itemsPerPage,
   });

@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/binding/write_review_binding.dart';
@@ -15,12 +16,14 @@ import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
+import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/last_seen.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
@@ -40,6 +43,7 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
+import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
@@ -275,7 +279,13 @@ class ShowEpisodeRealmController extends GetxController
     }
   }
 
-  void toNftList() {}
+  void toNftList() {
+    Get.to(
+      () => NftListPage(),
+      binding: NftListBinding(),
+      arguments: NftListArgument(NftFilterType.Episode, showEpisodeRx.value.id),
+    );
+  }
 
   void toNftItem(final NftItem nftItem) {
     Get.to(
@@ -339,7 +349,8 @@ class ShowEpisodeRealmController extends GetxController
 
   void _loadNftItems() {
     _satorioRepository
-        .nftItemsByEpisode(
+        .nftItems(
+      NftFilterType.Episode,
       showEpisodeRx.value.id,
       page: _initialPage,
       itemsPerPage: _itemsPerPage,
