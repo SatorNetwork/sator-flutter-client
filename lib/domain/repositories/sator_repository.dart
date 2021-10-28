@@ -21,6 +21,8 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
+  Future<void> clearAllLocalData();
+
   Future<bool> isTokenValid();
 
   Future<bool> signIn(String email, String password);

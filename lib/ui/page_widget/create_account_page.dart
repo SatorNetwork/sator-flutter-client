@@ -166,7 +166,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                               color: SatorioColor.interactive),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              controller.toSignIn();
+                              controller.toLogin();
                             },
                         ),
                       ],
