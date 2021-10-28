@@ -105,10 +105,14 @@ class SplashController extends GetxController {
   }
 
   void _toLogin() {
-    Get.offAll(
-      () => LoginPage(),
-      binding: LoginBinding(),
-      arguments: LoginArgument(deepLink),
+    _satorioRepository.clearAllLocalData().then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(deepLink),
+        );
+      },
     );
   }
 
