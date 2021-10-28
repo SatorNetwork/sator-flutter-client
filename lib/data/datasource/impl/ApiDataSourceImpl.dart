@@ -33,6 +33,7 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/data/request/change_password_request.dart';
 import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
@@ -247,6 +248,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
         'auth/update-username',
         UpdateUsernameRequest(username)
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> changePassword(String oldPassword, String newPassword) {
+    return _requestPost(
+        'auth/change-password',
+        ChangePasswordRequest(oldPassword, newPassword)
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

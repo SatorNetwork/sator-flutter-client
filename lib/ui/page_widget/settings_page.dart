@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/settings_controller.dart';
+import 'package:satorio/domain/entities/change_info_type.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -126,7 +127,7 @@ class SettingsPage extends GetView<SettingsController> {
     return Column(
       children: [
         _settingsButton('txt_user_name'.tr, 'images/settings/ico_profile',
-            () => controller.toChangeInfo(false)),
+            () => controller.toChangeInfo(ChangeInfoType.username)),
         SizedBox(
           height: 12,
         ),
@@ -138,7 +139,14 @@ class SettingsPage extends GetView<SettingsController> {
         _settingsButton(
             'txt_settings_email'.tr,
             'images/settings/ico_daily_planner',
-            () => controller.toChangeInfo(true)),
+            () => controller.toChangeInfo(ChangeInfoType.email)),
+        SizedBox(
+          height: 12,
+        ),
+        _settingsButton(
+            'txt_password'.tr,
+            'images/settings/ico_daily_planner',
+                () => controller.toChangeInfo(ChangeInfoType.password)),
       ],
     );
   }
