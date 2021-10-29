@@ -26,9 +26,13 @@ class NftCategoriesController extends GetxController
   final Rx<List<NftCategory>> categoriesRx = Rx([]);
 
   final Rx<Map<String, List<NftItem>>> itemsRx = Rx({});
-  final Rx<Map<String, int>> _pageRx = Rx({});
-  final Rx<Map<String, bool>> _isLoadingRx = Rx({});
-  final Rx<Map<String, bool>> _isAllLoadedRx = Rx({});
+
+  // final Rx<Map<String, int>> _pageRx = Rx({});
+  // final Rx<Map<String, bool>> _isLoadingRx = Rx({});
+  // final Rx<Map<String, bool>> _isAllLoadedRx = Rx({});
+  final Map<String, int> _pageRx = {};
+  final Map<String, bool> _isLoadingRx = {};
+  final Map<String, bool> _isAllLoadedRx = {};
 
   NftCategoriesController() {
     tabController = TabController(length: _fixedTabLength, vsync: this);
@@ -77,9 +81,9 @@ class NftCategoriesController extends GetxController
 
         categories.forEach(
           (category) {
-            _pageRx.value[category.id] = _initialPage;
-            _isLoadingRx.value[category.id] = false;
-            _isAllLoadedRx.value[category.id] = false;
+            _pageRx[category.id] = _initialPage;
+            _isLoadingRx[category.id] = false;
+            _isAllLoadedRx[category.id] = false;
             itemsRx.value[category.id] = [];
             loadItemsByCategory(category);
           },
@@ -88,39 +92,33 @@ class NftCategoriesController extends GetxController
     );
   }
 
-  void loadItemsByCategory(final NftCategory category) {
-    print(_isLoadingRx.value[category.id]!);
-    if (_isAllLoadedRx.value[category.id]!) return;
+  void loadItemsByCategory(final NftCategory category) async {
+    print(_isLoadingRx[category.id]!);
+    if (_isAllLoadedRx[category.id]!) return;
+    if (_isLoadingRx[category.id]!) return;
 
-    if (_isLoadingRx.value[category.id]!) return;
+    _isLoadingRx[category.id] = true;
 
-    Future.value(true)
-        .then((value) {
-          _isLoadingRx.value[category.id] = true;
-          return value;
-        })
+    await _satorioRepository
+        .nftItems(
+      NftFilterType.NftCategory,
+      category.id,
+      page: _pageRx[category.id],
+      itemsPerPage: _itemsPerPage,
+    )
         .then(
-          (value) => _satorioRepository.nftItems(
-            NftFilterType.NftCategory,
-            category.id,
-            page: _pageRx.value[category.id],
-            itemsPerPage: _itemsPerPage,
-          ),
-        )
-        .then(
-          (List<NftItem> items) {
-            itemsRx.update((value) {
-              value![category.id]!.addAll(items);
-            });
-            _isAllLoadedRx.value[category.id] = items.isEmpty;
-            _isLoadingRx.value[category.id] = false;
-            _pageRx.value[category.id] = _pageRx.value[category.id]! + 1;
-          },
-        )
-        .catchError(
-          (value) {
-            _isLoadingRx.value[category.id] = false;
-          },
-        );
+      (List<NftItem> items) {
+        itemsRx.update((value) {
+          value![category.id]!.addAll(items);
+        });
+        _pageRx[category.id] = _pageRx[category.id]! + 1;
+        _isAllLoadedRx[category.id] = items.isEmpty;
+        _isLoadingRx[category.id] = false;
+      },
+    ).catchError(
+      (value) {
+        _isLoadingRx[category.id] = false;
+      },
+    );
   }
 }
