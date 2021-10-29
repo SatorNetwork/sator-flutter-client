@@ -11,6 +11,8 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 
 class NftCategoriesPage extends GetView<NftCategoriesController> {
+  static const double _threshHold = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,11 +91,11 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
 
   List<Widget> _generateTabContent(List<NftCategory> value) {
     List<Widget> result = [];
-    result.add(_home());
+    result.add(_homeTab());
     result.addAll(
       controller.categoriesRx.value
           .map(
-            (category) => _nftItemListWidget(category),
+            (category) => _nftItemList(category),
           )
           .toList(),
     );
@@ -101,33 +103,41 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
     return result;
   }
 
-  Widget _nftItemListWidget(final NftCategory nftCategory) {
-    return RefreshIndicator(
-      color: SatorioColor.brand,
-      onRefresh: () async {
-        controller.refreshData();
+  Widget _nftItemList(final NftCategory nftCategory) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.pixels >=
+            notification.metrics.maxScrollExtent - _threshHold)
+          controller.loadItemsByCategory(nftCategory);
+        return true;
       },
-      child: Obx(
-        () => GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 15 * coefficient,
-            mainAxisSpacing: 20 * coefficient,
-            childAspectRatio: 0.6,
+      child: RefreshIndicator(
+        color: SatorioColor.brand,
+        onRefresh: () async {
+          controller.refreshData();
+        },
+        child: Obx(
+          () => GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15 * coefficient,
+              mainAxisSpacing: 20 * coefficient,
+              childAspectRatio: 0.6,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            itemCount: controller.itemsRx.value[nftCategory.id]?.length ?? 0,
+            itemBuilder: (context, index) {
+              final NftItem nftItem =
+                  controller.itemsRx.value[nftCategory.id]![index];
+              return _nftItem(nftItem);
+            },
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          itemCount: controller.itemsRx.value[nftCategory.id]?.length ?? 0,
-          itemBuilder: (context, index) {
-            final NftItem nftItem =
-                controller.itemsRx.value[nftCategory.id]![index];
-            return _nftItemWidget(nftItem);
-          },
         ),
       ),
     );
   }
 
-  Widget _nftItemWidget(final NftItem nftItem) {
+  Widget _nftItem(final NftItem nftItem) {
     return InkWell(
       onTap: () {
         controller.toNftItem(nftItem);
@@ -190,7 +200,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
     );
   }
 
-  Widget _home() {
+  Widget _homeTab() {
     return RefreshIndicator(
       color: SatorioColor.brand,
       onRefresh: () async {
@@ -198,7 +208,14 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
       },
       child: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 16),
+          padding: EdgeInsets.only(top: 16),
+          constraints: BoxConstraints(
+            minHeight: Get.height -
+                kBottomNavigationBarHeight -
+                Get.mediaQuery.padding.top -
+                kTextTabBarHeight +
+                1,
+          ),
           child: Column(
             children: [
               Padding(
@@ -226,62 +243,28 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Obx(
-                            () {
-                              NftItem? item = controller.nftHomeRx.value !=
-                                          null &&
-                                      controller.nftHomeRx.value!.items.length >
-                                          0
-                                  ? controller.nftHomeRx.value!.items[0]
-                                  : null;
-                              return _homeNftItem(item);
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15 * coefficient,
-                        ),
-                        Expanded(
-                          child: Obx(
-                            () {
-                              NftItem? item = controller.nftHomeRx.value !=
-                                          null &&
-                                      controller.nftHomeRx.value!.items.length >
-                                          1
-                                  ? controller.nftHomeRx.value!.items[1]
-                                  : null;
-                              return _homeNftItem(item);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15 * coefficient,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Obx(
-                            () {
-                              NftItem? item = controller.nftHomeRx.value !=
-                                          null &&
-                                      controller.nftHomeRx.value!.items.length >
-                                          2
-                                  ? controller.nftHomeRx.value!.items[2]
-                                  : null;
-                              return _homeNftItem(item);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                child: Obx(
+                  () {
+                    switch (controller.nftHomeRx.value?.items.length ?? 0) {
+                      case 0:
+                        return Container();
+                      case 1:
+                        return _homeNft1(
+                          controller.nftHomeRx.value!.items[0],
+                        );
+                      case 2:
+                        return _homeNft2(
+                          controller.nftHomeRx.value!.items[0],
+                          controller.nftHomeRx.value!.items[1],
+                        );
+                      default:
+                        return _homeNft3(
+                          controller.nftHomeRx.value!.items[0],
+                          controller.nftHomeRx.value!.items[1],
+                          controller.nftHomeRx.value!.items[2],
+                        );
+                    }
+                  },
                 ),
               ),
               SizedBox(
@@ -330,13 +313,67 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
     );
   }
 
-  Widget _homeNftItem(NftItem? nftItem) {
+  Widget _homeNft1(NftItem nftItem) {
+    return Row(
+      children: [
+        Expanded(
+          child: _homeNftItem(nftItem),
+        ),
+      ],
+    );
+  }
+
+  Widget _homeNft2(NftItem nftItem1, NftItem nftItem2) {
+    return Row(
+      children: [
+        Expanded(
+          child: _homeNftItem(nftItem1),
+        ),
+        SizedBox(
+          width: 15 * coefficient,
+        ),
+        Expanded(
+          child: _homeNftItem(nftItem2),
+        ),
+      ],
+    );
+  }
+
+  Widget _homeNft3(NftItem nftItem1, NftItem nftItem2, NftItem nftItem3) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: _homeNftItem(nftItem1),
+            ),
+            SizedBox(
+              width: 15 * coefficient,
+            ),
+            Expanded(
+              child: _homeNftItem(nftItem2),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 15 * coefficient,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: _homeNftItem(nftItem3),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _homeNftItem(NftItem nftItem) {
     return InkWell(
-      onTap: nftItem == null
-          ? null
-          : () {
-              controller.toNftItem(nftItem);
-            },
+      onTap: () {
+        controller.toNftItem(nftItem);
+      },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -344,17 +381,12 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             borderRadius: BorderRadius.all(
               Radius.circular(17 * coefficient),
             ),
-            child: nftItem != null
-                ? Image.network(
-                    nftItem.imageLink,
-                    height: 200,
-                    width: Get.width,
-                    fit: BoxFit.cover,
-                  )
-                : Container(
-                    height: 200,
-                    width: Get.width,
-                  ),
+            child: Image.network(
+              nftItem.imageLink,
+              height: 200,
+              width: Get.width,
+              fit: BoxFit.cover,
+            ),
           ),
           SizedBox(
             height: 8 * coefficient,
@@ -363,7 +395,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
-              text: nftItem?.buyNowPrice.toStringAsFixed(2) ?? '',
+              text: nftItem.buyNowPrice.toStringAsFixed(2),
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 14.0 * coefficient,
@@ -373,7 +405,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
               children: <TextSpan>[
                 TextSpan(text: ' '),
                 TextSpan(
-                  text: nftItem != null ? 'SAO' : '',
+                  text: 'SAO',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.0 * coefficient,

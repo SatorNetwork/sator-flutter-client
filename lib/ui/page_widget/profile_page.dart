@@ -157,7 +157,7 @@ class ProfilePage extends GetView<ProfileController> {
                         InkWell(
                           onTap: () {
                             if (controller.nftItemsRx.value.isEmpty)
-                              controller.toBuyNfts();
+                              controller.toNftsMarketplace();
                             else
                               controller.toMyNfts();
                           },
@@ -341,7 +341,7 @@ class ProfilePage extends GetView<ProfileController> {
         return nfts.isEmpty
             ? InkWell(
                 onTap: () {
-                  controller.toBuyNfts();
+                  controller.toNftsMarketplace();
                 },
                 child: Container(
                   width: Get.width,
