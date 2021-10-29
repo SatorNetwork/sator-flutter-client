@@ -253,43 +253,44 @@ class ProfilePage extends GetView<ProfileController> {
                           ),
                         ),
                         _activatedRealms(),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 28, bottom: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'txt_badges'.tr,
-                                style: textTheme.headline3!.copyWith(
-                                  color: SatorioColor.textBlack,
-                                  fontSize: 24.0 * coefficient,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                size: 32 * coefficient,
-                                color: SatorioColor.textBlack,
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 121 * coefficient,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            separatorBuilder: (context, index) => SizedBox(
-                              width: 12 * coefficient,
-                            ),
-                            itemCount: _badges.length,
-                            itemBuilder: (context, index) {
-                              BadgeTmp badge = _badges[index];
-                              return _badgeItem(badge);
-                            },
-                          ),
-                        ),
+                        //TODO: uncomment
+                        // Padding(
+                        //   padding: const EdgeInsets.only(
+                        //       left: 20, right: 20, top: 28, bottom: 16),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Text(
+                        //         'txt_badges'.tr,
+                        //         style: textTheme.headline3!.copyWith(
+                        //           color: SatorioColor.textBlack,
+                        //           fontSize: 24.0 * coefficient,
+                        //           fontWeight: FontWeight.w700,
+                        //         ),
+                        //       ),
+                        //       Icon(
+                        //         Icons.chevron_right_rounded,
+                        //         size: 32 * coefficient,
+                        //         color: SatorioColor.textBlack,
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 121 * coefficient,
+                        //   child: ListView.separated(
+                        //     scrollDirection: Axis.horizontal,
+                        //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                        //     separatorBuilder: (context, index) => SizedBox(
+                        //       width: 12 * coefficient,
+                        //     ),
+                        //     itemCount: _badges.length,
+                        //     itemBuilder: (context, index) {
+                        //       BadgeTmp badge = _badges[index];
+                        //       return _badgeItem(badge);
+                        //     },
+                        //   ),
+                        // ),
                         InkWell(
                           onTap: () => controller.reviewsRx.value.length != 0
                               ? controller.toReviewsPage()

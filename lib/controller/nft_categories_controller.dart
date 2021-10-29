@@ -27,9 +27,6 @@ class NftCategoriesController extends GetxController
 
   final Rx<Map<String, List<NftItem>>> itemsRx = Rx({});
 
-  // final Rx<Map<String, int>> _pageRx = Rx({});
-  // final Rx<Map<String, bool>> _isLoadingRx = Rx({});
-  // final Rx<Map<String, bool>> _isAllLoadedRx = Rx({});
   final Map<String, int> _pageRx = {};
   final Map<String, bool> _isLoadingRx = {};
   final Map<String, bool> _isAllLoadedRx = {};

@@ -4,6 +4,7 @@ import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/payload/payload_countdown.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/payload/payload_question_result.dart';
+import 'package:satorio/domain/entities/payload/payload_time_out.dart';
 import 'package:satorio/domain/entities/payload/payload_user.dart';
 
 class SocketMessage<T extends Payload> {
@@ -21,6 +22,7 @@ class Type {
   static const question_result = 'question_result';
   static const challenge_result = 'challenge_result';
   static const answer = 'answer';
+  static const time_out = 'time_out';
 }
 
 class SocketMessagePlayerConnected extends SocketMessage<PayloadUser> {
@@ -56,4 +58,8 @@ class SocketMessageChallengeResult
 
 class SocketMessageAnswer extends SocketMessage<PayloadAnswer> {
   SocketMessageAnswer(PayloadAnswer payload) : super(Type.answer, payload);
+}
+
+class SocketMessageTimeOut extends SocketMessage<PayloadTimeOut> {
+  SocketMessageTimeOut(PayloadTimeOut payload) : super(Type.time_out, payload);
 }
