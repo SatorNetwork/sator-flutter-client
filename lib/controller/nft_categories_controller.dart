@@ -93,7 +93,6 @@ class NftCategoriesController extends GetxController
   }
 
   void loadItemsByCategory(final NftCategory category) async {
-    print(_isLoadingRx[category.id]!);
     if (_isAllLoadedRx[category.id]!) return;
     if (_isLoadingRx[category.id]!) return;
 
