@@ -53,25 +53,34 @@ class NftListController extends GetxController {
 
     if (_isLoadingRx.value) return;
 
-    _isLoadingRx.value = true;
-
-    _satorioRepository
-        .nftItems(
-      _filterType,
-      _objectId,
-      page: _pageRx.value,
-      itemsPerPage: _itemsPerPage,
-    )
-        .then((List<NftItem> nftItems) {
-      nftItemsRx.update((value) {
-        if (value != null) value.addAll(nftItems);
-      });
-      _isAllLoadedRx.value = nftItems.isEmpty;
-      _isLoadingRx.value = false;
-      _pageRx.value = _pageRx.value + 1;
-    }).catchError((value) {
-      _isLoadingRx.value = false;
-    });
+    Future.value(true)
+        .then((value) {
+          _isLoadingRx.value = true;
+          return value;
+        })
+        .then(
+          (value) => _satorioRepository.nftItems(
+            _filterType,
+            _objectId,
+            page: _pageRx.value,
+            itemsPerPage: _itemsPerPage,
+          ),
+        )
+        .then(
+          (List<NftItem> nftItems) {
+            nftItemsRx.update((value) {
+              if (value != null) value.addAll(nftItems);
+            });
+            _isAllLoadedRx.value = nftItems.isEmpty;
+            _isLoadingRx.value = false;
+            _pageRx.value = _pageRx.value + 1;
+          },
+        )
+        .catchError(
+          (value) {
+            _isLoadingRx.value = false;
+          },
+        );
   }
 
   void _updateTitle() {

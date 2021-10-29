@@ -11,6 +11,8 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 
 class NftCategoriesPage extends GetView<NftCategoriesController> {
+  static const double _threshHold = 50.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,11 +91,11 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
 
   List<Widget> _generateTabContent(List<NftCategory> value) {
     List<Widget> result = [];
-    result.add(_home());
+    result.add(_homeTab());
     result.addAll(
       controller.categoriesRx.value
           .map(
-            (category) => _nftItemListWidget(category),
+            (category) => _nftItemList(category),
           )
           .toList(),
     );
@@ -101,33 +103,41 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
     return result;
   }
 
-  Widget _nftItemListWidget(final NftCategory nftCategory) {
-    return RefreshIndicator(
-      color: SatorioColor.brand,
-      onRefresh: () async {
-        controller.refreshData();
+  Widget _nftItemList(final NftCategory nftCategory) {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.pixels >=
+            notification.metrics.maxScrollExtent - _threshHold)
+          controller.loadItemsByCategory(nftCategory);
+        return true;
       },
-      child: Obx(
-        () => GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 15 * coefficient,
-            mainAxisSpacing: 20 * coefficient,
-            childAspectRatio: 0.6,
+      child: RefreshIndicator(
+        color: SatorioColor.brand,
+        onRefresh: () async {
+          controller.refreshData();
+        },
+        child: Obx(
+          () => GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15 * coefficient,
+              mainAxisSpacing: 20 * coefficient,
+              childAspectRatio: 0.6,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            itemCount: controller.itemsRx.value[nftCategory.id]?.length ?? 0,
+            itemBuilder: (context, index) {
+              final NftItem nftItem =
+                  controller.itemsRx.value[nftCategory.id]![index];
+              return _nftItem(nftItem);
+            },
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          itemCount: controller.itemsRx.value[nftCategory.id]?.length ?? 0,
-          itemBuilder: (context, index) {
-            final NftItem nftItem =
-                controller.itemsRx.value[nftCategory.id]![index];
-            return _nftItemWidget(nftItem);
-          },
         ),
       ),
     );
   }
 
-  Widget _nftItemWidget(final NftItem nftItem) {
+  Widget _nftItem(final NftItem nftItem) {
     return InkWell(
       onTap: () {
         controller.toNftItem(nftItem);
@@ -190,7 +200,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
     );
   }
 
-  Widget _home() {
+  Widget _homeTab() {
     return RefreshIndicator(
       color: SatorioColor.brand,
       onRefresh: () async {
