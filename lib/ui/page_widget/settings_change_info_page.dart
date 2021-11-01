@@ -155,7 +155,7 @@ class SettingsChangeInfoPage extends GetView<SettingsChangeInfoController> {
             enableSuggestions: false,
             autocorrect: false,
             obscureText: controller.oldPasswordObscured.value,
-            errorText: controller.validationRx.value['password'],
+            errorText: controller.validationRx.value['old_password'],
             icon: Icon(
                 controller.oldPasswordObscured.value
                     ? Icons.visibility_off_outlined
@@ -177,7 +177,7 @@ class SettingsChangeInfoPage extends GetView<SettingsChangeInfoController> {
             enableSuggestions: false,
             autocorrect: false,
             obscureText: controller.newPasswordObscured.value,
-            errorText: controller.validationRx.value['password'],
+            errorText: controller.validationRx.value['new_password'],
             icon: Icon(
                 controller.newPasswordObscured.value
                     ? Icons.visibility_off_outlined
