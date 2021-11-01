@@ -13,6 +13,7 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
@@ -515,21 +516,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<NftItem>> nftItemsByCategory(String categoryId) {
-    return _apiDataSource
-        .nftItemsByCategory(categoryId)
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
-  Future<List<NftItem>> nftByUser(
-    String userId, {
+  Future<List<NftItem>> nftItems(
+    NftFilterType filterType,
+    String objectId, {
     int? page,
     int? itemsPerPage,
   }) {
     return _apiDataSource
-        .nftByUser(
-          userId,
+        .nftItems(
+          filterType,
+          objectId,
           page: page,
           itemsPerPage: itemsPerPage,
         )

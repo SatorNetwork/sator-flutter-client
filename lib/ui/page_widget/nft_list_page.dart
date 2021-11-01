@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/nft_by_user_controller.dart';
+import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
-class NftByUserPage extends GetView<NftByUserController> {
+class NftListPage extends GetView<NftListController> {
   static const double _threshHold = 50.0;
 
   @override

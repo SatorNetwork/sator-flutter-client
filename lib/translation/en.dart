@@ -13,7 +13,7 @@ const Map<String, String> en = {
   'txt_create_account': 'Create Account',
   'txt_terms_description': 'Creating an account means you’re okay with our ',
   'txt_terms': 'Terms of Use',
-  'txt_policy': 'Data Policy',
+  'txt_policy': 'Privacy Policy',
   'txt_already_member': 'Already a member? ',
   'txt_sign_in': 'Sign In',
   'txt_sign_out': 'Sign out',
@@ -36,6 +36,7 @@ const Map<String, String> en = {
   'txt_badges': 'Badges',
   'txt_challenges': 'Challenges',
   'txt_nfts': 'NFTs',
+  'txt_nft': 'NFT',
   'txt_log_out': 'Log out',
   'txt_log_out_message': 'Are you sure you want to log out?',
   'txt_yes': 'Yes',
@@ -257,4 +258,5 @@ const Map<String, String> en = {
   'txt_home': 'Home',
   'txt_you_havent_nfts': 'You have no NFTs yet.',
   'txt_featured_nfts': 'Featured NFTs',
+  'txt_null_nfts': 'This episode has no NFTs yet.\nGo to NFT marketplace',
 };

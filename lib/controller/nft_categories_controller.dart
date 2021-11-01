@@ -5,6 +5,7 @@ import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -13,13 +14,22 @@ import 'package:satorio/ui/page_widget/nft_item_page.dart';
 class NftCategoriesController extends GetxController
     with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
   static const int _fixedTabLength = 1;
+
+  final int _itemsPerPage = 10;
+  static const int _initialPage = 1;
+
   final SatorioRepository _satorioRepository = Get.find();
 
   late TabController tabController;
 
   late final Rx<NftHome?> nftHomeRx;
   final Rx<List<NftCategory>> categoriesRx = Rx([]);
+
   final Rx<Map<String, List<NftItem>>> itemsRx = Rx({});
+
+  final Map<String, int> _pageRx = {};
+  final Map<String, bool> _isLoadingRx = {};
+  final Map<String, bool> _isAllLoadedRx = {};
 
   NftCategoriesController() {
     tabController = TabController(length: _fixedTabLength, vsync: this);
@@ -59,24 +69,52 @@ class NftCategoriesController extends GetxController
   }
 
   void _loadNftCategories() {
-    _satorioRepository.nftCategories().then((List<NftCategory> categories) {
-      tabController = TabController(
-          length: categories.length + _fixedTabLength, vsync: this);
-      categoriesRx.value = categories;
+    _satorioRepository.nftCategories().then(
+      (List<NftCategory> categories) {
+        tabController = TabController(
+            length: categories.length + _fixedTabLength, vsync: this);
 
-      categories.forEach((category) {
-        _loadItemsByCategory(category);
-      });
-    });
+        categoriesRx.value = categories;
+
+        categories.forEach(
+          (category) {
+            _pageRx[category.id] = _initialPage;
+            _isLoadingRx[category.id] = false;
+            _isAllLoadedRx[category.id] = false;
+            itemsRx.value[category.id] = [];
+            loadItemsByCategory(category);
+          },
+        );
+      },
+    );
   }
 
-  void _loadItemsByCategory(final NftCategory category) {
-    _satorioRepository
-        .nftItemsByCategory(category.id)
-        .then((List<NftItem> items) {
-      itemsRx.update((value) {
-        if (value != null) value[category.id] = items;
-      });
-    });
+  void loadItemsByCategory(final NftCategory category) async {
+    if (_isAllLoadedRx[category.id]!) return;
+    if (_isLoadingRx[category.id]!) return;
+
+    _isLoadingRx[category.id] = true;
+
+    await _satorioRepository
+        .nftItems(
+      NftFilterType.NftCategory,
+      category.id,
+      page: _pageRx[category.id],
+      itemsPerPage: _itemsPerPage,
+    )
+        .then(
+      (List<NftItem> items) {
+        itemsRx.update((value) {
+          value![category.id]!.addAll(items);
+        });
+        _pageRx[category.id] = _pageRx[category.id]! + 1;
+        _isAllLoadedRx[category.id] = items.isEmpty;
+        _isLoadingRx[category.id] = false;
+      },
+    ).catchError(
+      (value) {
+        _isLoadingRx[category.id] = false;
+      },
+    );
   }
 }

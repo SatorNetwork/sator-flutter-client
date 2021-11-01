@@ -58,6 +58,7 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -235,20 +236,16 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> requestUpdateEmail(String email) {
-    return _requestPost(
-      'auth/request-update-email',
-      UpdateEmailRequest(email)
-    ).then((Response response) {
+    return _requestPost('auth/request-update-email', UpdateEmailRequest(email))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> updateUsername(String username) {
-    return _requestPost(
-        'auth/update-username',
-        UpdateUsernameRequest(username)
-    ).then((Response response) {
+    return _requestPost('auth/update-username', UpdateUsernameRequest(username))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -627,7 +624,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ActivatedRealmModel>> getActivatedRealms({int? page, int? itemsPerPage}) {
+  Future<List<ActivatedRealmModel>> getActivatedRealms(
+      {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
@@ -892,24 +890,9 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<NftItemModel>> nftItemsByCategory(String categoryId) {
-    return _requestGet(
-      'nft/filter/category/$categoryId',
-    ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable) {
-        return (jsonData['data'] as Iterable)
-            .map((element) => NftItemModel.fromJson(element))
-            .toList();
-      } else {
-        return [];
-      }
-    });
-  }
-
-  @override
-  Future<List<NftItemModel>> nftByUser(
-    String userId, {
+  Future<List<NftItemModel>> nftItems(
+    NftFilterType filterType,
+    String objectId, {
     int? page,
     int? itemsPerPage,
   }) {
@@ -921,19 +904,37 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
+    String pathParameter;
+    switch (filterType) {
+      case NftFilterType.NftCategory:
+        pathParameter = 'category';
+        break;
+      case NftFilterType.Show:
+        pathParameter = 'show';
+        break;
+      case NftFilterType.Episode:
+        pathParameter = 'episode';
+        break;
+      case NftFilterType.User:
+        pathParameter = 'user';
+        break;
+    }
+
     return _requestGet(
-      'nft/filter/user/$userId',
+      'nft/filter/$pathParameter/$objectId',
       query: query,
-    ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable) {
-        return (jsonData['data'] as Iterable)
-            .map((element) => NftItemModel.fromJson(element))
-            .toList();
-      } else {
-        return [];
-      }
-    });
+    ).then(
+      (Response response) {
+        Map jsonData = json.decode(response.bodyString!);
+        if (jsonData['data'] is Iterable) {
+          return (jsonData['data'] as Iterable)
+              .map((element) => NftItemModel.fromJson(element))
+              .toList();
+        } else {
+          return [];
+        }
+      },
+    );
   }
 
   @override

@@ -4,19 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/active_realms_binding.dart';
-import 'package:satorio/binding/nft_by_user_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
 import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
-import 'package:satorio/controller/nft_by_user_controller.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
+import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/review.dart';
@@ -28,8 +29,8 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/dialog_widget/send_invite_dialog.dart';
 import 'package:satorio/ui/page_widget/active_realms_page.dart';
-import 'package:satorio/ui/page_widget/nft_by_user_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
+import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
@@ -181,7 +182,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
     );
   }
 
-  void toBuyNfts() {
+  void toNftsMarketplace() {
     if (Get.isRegistered<MainController>()) {
       MainController mainController = Get.find();
       mainController.selectedBottomTabIndex.value = MainController.TabNfts;
@@ -191,9 +192,9 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void toMyNfts() {
     if (profileRx.value != null) {
       Get.to(
-        () => NftByUserPage(),
-        binding: NftByUserBinding(),
-        arguments: NftByUserArgument(profileRx.value!.id),
+        () => NftListPage(),
+        binding: NftListBinding(),
+        arguments: NftListArgument(NftFilterType.User, profileRx.value!.id),
       );
     }
   }
@@ -214,7 +215,8 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void _loadNfts() {
     if (profileRx.value != null) {
       _satorioRepository
-          .nftByUser(
+          .nftItems(
+        NftFilterType.User,
         profileRx.value!.id,
         page: _initialPage,
         itemsPerPage: _itemsPerPageNft,
