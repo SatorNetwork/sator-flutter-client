@@ -22,6 +22,7 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -41,6 +42,8 @@ abstract class ApiDataSource {
   Future<bool> requestUpdateEmail(String email);
 
   Future<bool> updateUsername(String username);
+
+  Future<bool> changePassword(String oldPassword, String newPassword);
 
   Future<bool> apiLogout();
 
@@ -123,8 +126,10 @@ abstract class ApiDataSource {
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 
-  Future<List<ActivatedRealmModel>> getActivatedRealms(
-      {int? page, int? itemsPerPage});
+  Future<List<ActivatedRealmModel>> getActivatedRealms({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<bool> clapShow(String showId);
 
@@ -187,10 +192,9 @@ abstract class ApiDataSource {
 
   Future<List<NftCategoryModel>> nftCategories();
 
-  Future<List<NftItemModel>> nftItemsByCategory(String categoryId);
-
-  Future<List<NftItemModel>> nftByUser(
-    String userId, {
+  Future<List<NftItemModel>> nftItems(
+    NftFilterType filterType,
+    String id, {
     int? page,
     int? itemsPerPage,
   });
@@ -206,7 +210,10 @@ abstract class ApiDataSource {
   Future<GetSocket> createSocket(String url);
 
   Future<void> sendAnswer(
-      GetSocket? socket, String questionId, String answerId);
+    GetSocket? socket,
+    String questionId,
+    String answerId,
+  );
 
 // endregion
 

@@ -63,11 +63,15 @@ class CreateAccountController extends GetxController with ValidationMixin {
     );
   }
 
-  void toSignIn() {
-    Get.off(
-      () => LoginPage(),
-      binding: LoginBinding(),
-      arguments: LoginArgument(null),
+  void toLogin() {
+    _satorioRepository.clearAllLocalData().then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
+        );
+      },
     );
   }
 

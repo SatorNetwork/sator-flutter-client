@@ -6,6 +6,7 @@ import 'package:satorio/binding/settings_change_info_binding.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/controller/settings_change_info_controller.dart';
+import 'package:satorio/domain/entities/change_info_type.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
@@ -27,10 +28,10 @@ class SettingsController extends GetxController with NonWorkingFeatureMixin, Bac
         arguments: SelectAvatarArgument(SelectAvatarType.settings));
   }
 
-  void toChangeInfo(bool isChangeEmail) {
+  void toChangeInfo(ChangeInfoType type) {
     Get.to(() => SettingsChangeInfoPage(),
         binding: SettingsChangeInfoBinding(),
-        arguments: ChangeInfoArgument(isChangeEmail));
+        arguments: ChangeInfoArgument(type));
   }
 
   void toAbout() {

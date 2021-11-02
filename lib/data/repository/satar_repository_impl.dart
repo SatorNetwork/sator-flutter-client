@@ -13,6 +13,7 @@ import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
@@ -51,27 +52,26 @@ class SatorioRepositoryImpl implements SatorioRepository {
         ),
       );
     } else if (exception is ApiUnauthorizedException) {
-      _localLogoutGoToLogin();
-      Get.snackbar('txt_oops'.tr, exception.errorMessage);
+      clearAllLocalData().then(
+        (value) {
+          Get.offAll(
+            () => LoginPage(),
+            binding: LoginBinding(),
+            arguments: LoginArgument(null),
+          );
+          Get.snackbar('txt_oops'.tr, exception.errorMessage);
+        },
+      );
     } else {
       throw exception;
     }
   }
 
-  Future<void> _localLogoutGoToLogin() {
+  @override
+  Future<void> clearAllLocalData() {
     return _localDataSource
         .clear()
-        .then((value) => _apiDataSource.authLogout())
-        .then(
-      (value) {
-        Get.offAll(
-          () => LoginPage(),
-          binding: LoginBinding(),
-          arguments: LoginArgument(null),
-        );
-        return;
-      },
-    );
+        .then((value) => _apiDataSource.authLogout());
   }
 
   @override
@@ -111,6 +111,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> updateUsername(String username) {
     return _apiDataSource
         .updateUsername(username)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> changePassword(String oldPassword, String newPassword) {
+    return _apiDataSource
+        .changePassword(oldPassword, newPassword)
         .catchError((value) => _handleException(value));
   }
 
@@ -247,9 +254,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> logout() {
-    return _apiDataSource.apiLogout().then(
-          (value) => _localLogoutGoToLogin(),
+    return _apiDataSource
+        .apiLogout()
+        .then(
+          (value) => clearAllLocalData(),
+        )
+        .then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
         );
+      },
+    );
   }
 
   @override
@@ -407,8 +425,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> updateWalletTransactions(String transactionsPath,
-      {DateTime? from, DateTime? to}) {
+  Future<void> updateWalletTransactions(
+    String transactionsPath, {
+    DateTime? from,
+    DateTime? to,
+  }) {
     return _apiDataSource
         .walletTransactions(transactionsPath, from: from, to: to)
         .then(
@@ -419,7 +440,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<Transfer> createTransfer(
-      String fromWalletId, String recipientAddress, double amount) {
+    String fromWalletId,
+    String recipientAddress,
+    double amount,
+  ) {
     return _apiDataSource
         .createTransfer(fromWalletId, recipientAddress, amount)
         .catchError((value) => _handleException(value));
@@ -468,8 +492,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<ActivatedRealm>> getActivatedRealms(
-      {int? page, int? itemsPerPage}) {
+  Future<List<ActivatedRealm>> getActivatedRealms({
+    int? page,
+    int? itemsPerPage,
+  }) {
     return _apiDataSource
         .getActivatedRealms(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
@@ -490,21 +516,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<NftItem>> nftItemsByCategory(String categoryId) {
-    return _apiDataSource
-        .nftItemsByCategory(categoryId)
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
-  Future<List<NftItem>> nftByUser(
-    String userId, {
+  Future<List<NftItem>> nftItems(
+    NftFilterType filterType,
+    String objectId, {
     int? page,
     int? itemsPerPage,
   }) {
     return _apiDataSource
-        .nftByUser(
-          userId,
+        .nftItems(
+          filterType,
+          objectId,
           page: page,
           itemsPerPage: itemsPerPage,
         )
