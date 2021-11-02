@@ -723,67 +723,87 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         SizedBox(
                           height: 16,
                         ),
-                        Container(
-                          padding: EdgeInsets.all(16),
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(13),
-                            ),
-                            color: SatorioColor.alice_blue,
-                          ),
-                          child: Row(
-                            children: [
-                              Obx(
-                                () => controller.showEpisodeRx.value.rating > 1
-                                    ? SvgPicture.asset(
-                                        smile[controller
-                                                .showEpisodeRx.value.rating
-                                                .toInt()] ??
-                                            '',
-                                        width: 30 * coefficient,
-                                      )
-                                    : SizedBox(
-                                        width: 0,
-                                      ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Container(
+                            padding: EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(13),
                               ),
-                              Obx(
-                                () => SizedBox(
-                                  width:
-                                      controller.showEpisodeRx.value.rating > 1
+                              color: SatorioColor.alice_blue,
+                            ),
+                            child: Obx(
+                                  () => controller.showEpisodeRx.value.rating == 0
+                                  ? Center(
+                                child: Text(
+                                  'txt_null_rate'.tr,
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 14 * coefficient,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              )
+                                  : Row(
+                                children: [
+                                  Obx(
+                                        () => controller.showEpisodeRx.value
+                                        .rating >
+                                        1
+                                        ? SvgPicture.asset(
+                                      smile[controller.showEpisodeRx
+                                          .value.rating
+                                          .toInt()] ??
+                                          '',
+                                      width: 30 * coefficient,
+                                    )
+                                        : SizedBox(
+                                      width: 0,
+                                    ),
+                                  ),
+                                  Obx(
+                                        () => SizedBox(
+                                      width: controller.showEpisodeRx
+                                          .value.rating >
+                                          1
                                           ? 10 * coefficient
                                           : 0,
-                                ),
-                              ),
-                              Obx(
-                                () => Text(
-                                  '${(controller.showEpisodeRx.value.rating * 10).toInt()}%',
-                                  style: textTheme.headline5!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 20 * coefficient,
-                                    fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(),
-                              ),
-                              Obx(
-                                () => Text(
-                                  'txt_ratings'.tr.format(
-                                    [
-                                      controller
-                                          .showEpisodeRx.value.ratingsCount
-                                    ],
+                                  Obx(
+                                        () => Text(
+                                      '${(controller.showEpisodeRx.value.rating * 10).toInt()}%',
+                                      style:
+                                      textTheme.headline5!.copyWith(
+                                        color: SatorioColor.textBlack,
+                                        fontSize: 20 * coefficient,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
                                   ),
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 15 * coefficient,
-                                    fontWeight: FontWeight.w500,
+                                  Expanded(
+                                    child: Container(),
                                   ),
-                                ),
+                                  Obx(
+                                        () => Text(
+                                      'txt_ratings'.tr.format(
+                                        [
+                                          controller.showEpisodeRx.value
+                                              .ratingsCount
+                                        ],
+                                      ),
+                                      style:
+                                      textTheme.bodyText2!.copyWith(
+                                        color: SatorioColor.textBlack,
+                                        fontSize: 15 * coefficient,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         Padding(
@@ -810,7 +830,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               child: Center(
                                 child: Text(
                                   controller.showSeasonRx.value.seasonNumber ==
-                                          0
+                                      0
                                       ? 'txt_rate_content'.tr
                                       : 'txt_rate_episode'.tr,
                                   style: textTheme.bodyText2!.copyWith(
