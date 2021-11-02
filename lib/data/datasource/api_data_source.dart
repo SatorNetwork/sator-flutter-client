@@ -43,6 +43,8 @@ abstract class ApiDataSource {
 
   Future<bool> updateUsername(String username);
 
+  Future<bool> changePassword(String oldPassword, String newPassword);
+
   Future<bool> apiLogout();
 
   Future<bool> verifyAccount(String code);

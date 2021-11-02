@@ -114,6 +114,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .catchError((value) => _handleException(value));
   }
 
+  @override
+  Future<bool> changePassword(String oldPassword, String newPassword) {
+    return _apiDataSource
+        .changePassword(oldPassword, newPassword)
+        .catchError((value) => _handleException(value));
+  }
+
   Future<bool> verifyAccount(String code) {
     return _apiDataSource
         .verifyAccount(code)
