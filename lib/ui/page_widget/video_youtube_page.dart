@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/youtube_video_controller.dart';
+import 'package:satorio/controller/video_youtube_controller.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class YoutubeVideoPage extends GetView<YoutubeVideoController> {
+class VideoYoutubePage extends GetView<VideoYoutubeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,10 +33,18 @@ class YoutubeVideoPage extends GetView<YoutubeVideoController> {
             controller.videoEnded();
           },
           showVideoProgressIndicator: true,
+          progressIndicatorColor: SatorioColor.brand,
+          bufferIndicator: CircularProgressIndicator(
+            backgroundColor: Colors.transparent,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              SatorioColor.brand,
+            ),
+          ),
           progressColors: ProgressBarColors(
-              playedColor: SatorioColor.brand,
-              handleColor: SatorioColor.brand,
-              bufferedColor: SatorioColor.brand.withOpacity(0.5)),
+            playedColor: SatorioColor.brand,
+            handleColor: SatorioColor.brand,
+            bufferedColor: SatorioColor.brand.withOpacity(0.3),
+          ),
         ),
         builder: (context, player) => Container(
           child: Center(

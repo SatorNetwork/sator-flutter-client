@@ -2,11 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class YoutubeVideoController extends GetxController {
+class VideoYoutubeController extends GetxController {
   late final YoutubePlayerController youtubeController;
 
-  YoutubeVideoController() {
-    YoutubeVideoArgument argument = Get.arguments as YoutubeVideoArgument;
+  VideoYoutubeController() {
+    VideoYoutubeArgument argument = Get.arguments as VideoYoutubeArgument;
 
     String videoId = YoutubePlayer.convertUrlToId(argument.youtubeLink) ?? '';
 
@@ -33,23 +33,10 @@ class YoutubeVideoController extends GetxController {
     }
     Get.back();
   }
-
-// Future<void> updateToPortrait() async {
-//   if (Get.mediaQuery.orientation == Orientation.landscape) {
-//     await SystemChrome.setPreferredOrientations(
-//       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp],
-//     );
-//   }
-//   // await SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
-//   await SystemChrome.setEnabledSystemUIMode(
-//     SystemUiMode.manual,
-//     overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
-//   );
-// }
 }
 
-class YoutubeVideoArgument {
+class VideoYoutubeArgument {
   final String youtubeLink;
 
-  const YoutubeVideoArgument(this.youtubeLink);
+  const VideoYoutubeArgument(this.youtubeLink);
 }
