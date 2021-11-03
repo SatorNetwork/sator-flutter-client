@@ -9,6 +9,7 @@ class NftItemModel extends NftItem implements ToJsonInterface {
   const NftItemModel(
     String id,
     String imageLink,
+    String tokenUri,
     String name,
     String description,
     String ownerId,
@@ -22,6 +23,7 @@ class NftItemModel extends NftItem implements ToJsonInterface {
   ) : super(
           id,
           imageLink,
+          tokenUri,
           name,
           description,
           ownerId,
@@ -37,6 +39,7 @@ class NftItemModel extends NftItem implements ToJsonInterface {
   factory NftItemModel.fromJson(Map json) => NftItemModel(
         json.parseValueAsString('id'),
         json.parseValueAsString('image_link'),
+        json.parseValueAsString('token_uri'),
         json.parseValueAsString('name'),
         json.parseValueAsString('description'),
         json.parseValueAsString('owner_id'),
@@ -55,6 +58,7 @@ class NftItemModel extends NftItem implements ToJsonInterface {
   Map toJson() => {
         'id': id,
         'image_link': imageLink,
+        'token_uri': tokenUri,
         'name': name,
         'description': description,
         'owner_id': ownerId,

@@ -37,10 +37,31 @@ class VideoNetworkController extends GetxController {
     );
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    playerController.addEventsListener(_eventListener);
+  }
+
+  @override
+  void onClose() {
+    playerController.removeEventsListener(_eventListener);
+    super.onClose();
+  }
+
   void back() async {
     if (Get.mediaQuery.orientation == Orientation.landscape) {
       playerController.toggleFullScreen();
     } else {
+      Get.back();
+    }
+  }
+
+  void _eventListener(BetterPlayerEvent event) {
+    if (event.betterPlayerEventType == BetterPlayerEventType.finished) {
+      if (Get.mediaQuery.orientation == Orientation.landscape) {
+        playerController.toggleFullScreen();
+      }
       Get.back();
     }
   }

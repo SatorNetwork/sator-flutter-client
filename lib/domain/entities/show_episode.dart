@@ -13,20 +13,23 @@ class ShowEpisode {
   final double userRewardsAmount;
   final double totalRewardsAmount;
   final String hint;
+  final String watch;
 
   const ShowEpisode(
-      this.id,
-      this.showId,
-      this.challengeId,
-      this.episodeNumber,
-      this.title,
-      this.description,
-      this.cover,
-      this.releaseDate,
-      this.rating,
-      this.ratingsCount,
-      this.activeUsers,
-      this.userRewardsAmount,
-      this.totalRewardsAmount,
-      this.hint);
+    this.id,
+    this.showId,
+    this.challengeId,
+    this.episodeNumber,
+    this.title,
+    this.description,
+    this.cover,
+    this.releaseDate,
+    this.rating,
+    this.ratingsCount,
+    this.activeUsers,
+    this.userRewardsAmount,
+    this.totalRewardsAmount,
+    this.hint,
+    this.watch,
+  );
 }

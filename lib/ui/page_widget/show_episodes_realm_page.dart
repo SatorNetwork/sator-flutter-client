@@ -472,7 +472,35 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          height: 48 * coefficient,
+                          height: 24 * coefficient,
+                        ),
+                        Obx(
+                          () => controller.showEpisodeRx.value.watch.isEmpty
+                              ? SizedBox(
+                                  height: 0,
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
+                                  child: BorderedButton(
+                                    text: 'txt_watch'.tr,
+                                    textColor: SatorioColor.interactive,
+                                    backgroundColor: Colors.white,
+                                    borderColor: SatorioColor.interactive,
+                                    borderWidth: 2,
+                                    onPressed: () {
+                                      controller.watchVideo();
+                                    },
+                                  ),
+                                ),
+                        ),
+                        Obx(
+                          () => SizedBox(
+                            height: controller.showEpisodeRx.value.watch.isEmpty
+                                ? 0
+                                : 8,
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -984,6 +1012,29 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             controller.toEpisodeRealmDialog();
                           },
                         ),
+                      ),
+                      Obx(
+                        () => SizedBox(
+                          height: controller.showEpisodeRx.value.watch.isEmpty
+                              ? 0
+                              : 8 * coefficient,
+                        ),
+                      ),
+                      Obx(
+                        () => controller.showEpisodeRx.value.watch.isEmpty
+                            ? SizedBox(
+                                height: 0,
+                              )
+                            : BorderedButton(
+                                text: 'txt_watch'.tr,
+                                textColor: SatorioColor.interactive,
+                                backgroundColor: Colors.white,
+                                borderColor: SatorioColor.interactive,
+                                borderWidth: 2,
+                                onPressed: () {
+                                  controller.watchVideo();
+                                },
+                              ),
                       ),
                       Expanded(
                         child: Container(),

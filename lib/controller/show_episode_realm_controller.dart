@@ -9,6 +9,7 @@ import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/binding/video_youtube_binding.dart';
 import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
@@ -20,6 +21,7 @@ import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/controller/video_youtube_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/last_seen.dart';
@@ -46,8 +48,11 @@ import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
+import 'package:satorio/ui/page_widget/video_youtube_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'write_review_controller.dart';
 
@@ -293,6 +298,19 @@ class ShowEpisodeRealmController extends GetxController
       binding: NftItemBinding(),
       arguments: NftItemArgument(nftItem),
     );
+  }
+
+  void watchVideo() async {
+    String url = showEpisodeRx.value.watch;
+    if (YoutubePlayer.convertUrlToId(url) != null) {
+      Get.to(
+        () => VideoYoutubePage(),
+        binding: VideoYoutubeBinding(),
+        arguments: VideoYoutubeArgument(url),
+      );
+    } else {
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+    }
   }
 
   void activeTimeExpire() {

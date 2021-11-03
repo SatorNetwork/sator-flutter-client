@@ -34,12 +34,12 @@ class VideoYoutubePage extends GetView<VideoYoutubeController> {
           },
           showVideoProgressIndicator: true,
           progressIndicatorColor: SatorioColor.brand,
-          bufferIndicator: CircularProgressIndicator(
-            backgroundColor: Colors.transparent,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              SatorioColor.brand,
-            ),
-          ),
+          // bufferIndicator: CircularProgressIndicator(
+          //   backgroundColor: Colors.transparent,
+          //   valueColor: AlwaysStoppedAnimation<Color>(
+          //     SatorioColor.brand,
+          //   ),
+          // ),
           progressColors: ProgressBarColors(
             playedColor: SatorioColor.brand,
             handleColor: SatorioColor.brand,

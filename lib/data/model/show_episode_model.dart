@@ -4,35 +4,38 @@ import 'package:satorio/util/extension.dart';
 
 class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
   const ShowEpisodeModel(
-      String id,
-      String showId,
-      String challengeId,
-      int episodeNumber,
-      String title,
-      String description,
-      String cover,
-      DateTime? releaseDate,
-      double rating,
-      int ratingsCount,
-      int activeUsers,
-      double userRewardsAmount,
-      double totalRewardsAmount,
-      String hint)
-      : super(
-            id,
-            showId,
-            challengeId,
-            episodeNumber,
-            title,
-            description,
-            cover,
-            releaseDate,
-            rating,
-            ratingsCount,
-            activeUsers,
-            userRewardsAmount,
-            totalRewardsAmount,
-            hint);
+    String id,
+    String showId,
+    String challengeId,
+    int episodeNumber,
+    String title,
+    String description,
+    String cover,
+    DateTime? releaseDate,
+    double rating,
+    int ratingsCount,
+    int activeUsers,
+    double userRewardsAmount,
+    double totalRewardsAmount,
+    String hint,
+    String watch,
+  ) : super(
+          id,
+          showId,
+          challengeId,
+          episodeNumber,
+          title,
+          description,
+          cover,
+          releaseDate,
+          rating,
+          ratingsCount,
+          activeUsers,
+          userRewardsAmount,
+          totalRewardsAmount,
+          hint,
+          watch,
+        );
 
   factory ShowEpisodeModel.fromJson(Map json) => ShowEpisodeModel(
         json.parseValueAsString('id'),
@@ -49,6 +52,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         json.parseValueAsDouble('user_rewards_amount'),
         json.parseValueAsDouble('total_rewards_amount'),
         json.parseValueAsString('hint_text'),
+        json.parseValueAsString('watch'),
       );
 
   @override
@@ -67,5 +71,6 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         'user_rewards_amount': userRewardsAmount,
         'total_rewards_amount': totalRewardsAmount,
         'hint_text': hint,
+        'watch': watch,
       };
 }

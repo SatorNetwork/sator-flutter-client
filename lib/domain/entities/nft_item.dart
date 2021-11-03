@@ -3,6 +3,7 @@ import 'package:satorio/domain/entities/auction_params.dart';
 class NftItem {
   final String id;
   final String imageLink;
+  final String tokenUri;
   final String name;
   final String description;
   final String ownerId;
@@ -17,6 +18,7 @@ class NftItem {
   const NftItem(
     this.id,
     this.imageLink,
+    this.tokenUri,
     this.name,
     this.description,
     this.ownerId,
@@ -28,4 +30,21 @@ class NftItem {
     this.buyNowPrice,
     this.auctionParams,
   );
+
+  bool isVideoNft() {
+    final List<String> videoTypes = [
+      '.mp4',
+      '.mov',
+      '.wmv',
+      '.flv',
+      '.avi',
+      '.mkv',
+    ];
+
+    return videoTypes.any(
+      (videoType) => tokenUri.toLowerCase().endsWith(
+            videoType.toLowerCase(),
+          ),
+    );
+  }
 }
