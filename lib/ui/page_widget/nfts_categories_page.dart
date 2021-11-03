@@ -21,11 +21,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
       body: Stack(
         children: [
           Container(
-            child: SvgPicture.asset(
-              'images/bg/gradient.svg',
-              height: Get.height,
-              fit: BoxFit.cover,
-            ),
+            child: backgroundImage,
           ),
           Column(
             mainAxisSize: MainAxisSize.max,

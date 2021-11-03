@@ -43,11 +43,7 @@ class ShowChallengesPage extends GetView<ShowChallengesController> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage,
           Container(
             constraints: BoxConstraints(
                 minHeight: Get.mediaQuery.size.height -

@@ -88,11 +88,7 @@ class PersonalProfilePage extends GetView<PersonalProfileController> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage,
           Container(
             margin: EdgeInsets.only(
               top: Get.mediaQuery.padding.top +

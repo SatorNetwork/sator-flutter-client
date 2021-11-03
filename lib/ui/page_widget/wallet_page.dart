@@ -46,11 +46,7 @@ class WalletPage extends GetView<WalletController> {
     return SingleChildScrollView(
       child: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage,
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [

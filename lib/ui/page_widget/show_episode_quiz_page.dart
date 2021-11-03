@@ -14,11 +14,14 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
   static const double _margin = 20.0;
   static const double _itemSpacing = 12.0;
 
-  final double answersBlockSize = Get.width - 2 * _margin;
+  final double answersBlockSize = isMaxScreenWidth ? Get.height / 2 : Get.width - 2 * _margin;
   final double answerSize = (Get.width - 2 * _margin - _itemSpacing) / 2;
 
   @override
   Widget build(BuildContext context) {
+    //TODO: remove after tests
+    print(isMaxScreenWidth);
+    print(Get.width);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
@@ -26,7 +29,8 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
           children: [
             SvgPicture.asset(
               'images/bg/gradient_challenge_timer.svg',
-              height: Get.height,
+              height: isMaxScreenWidth ? null : Get.height,
+              width: isMaxScreenWidth ? Get.width : null,
               fit: BoxFit.cover,
             ),
             Container(

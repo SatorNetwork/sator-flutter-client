@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -24,4 +25,11 @@ final lightTheme = ThemeData(
 
 final double coefficient = Get.height / 812;
 
+final bool isMaxScreenWidth = Get.width > 580.0;
 
+final SvgPicture backgroundImage = SvgPicture.asset(
+  'images/bg/gradient.svg',
+  height: isMaxScreenWidth ? null : Get.height,
+  width: isMaxScreenWidth ? Get.width : null,
+  fit: BoxFit.cover,
+);
