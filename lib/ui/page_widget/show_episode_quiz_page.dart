@@ -19,9 +19,6 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: remove after tests
-    print(isMaxScreenWidth);
-    print(Get.width);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Container(
