@@ -96,6 +96,34 @@ class NftItemPage extends GetView<NftItemController> {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Obx(
+                    () => controller.nftItemRx.value.isVideoNft()
+                        ? Container(
+                            margin: EdgeInsets.only(
+                              right: 20 + 10 * coefficient,
+                              bottom: 10 * coefficient,
+                            ),
+                            child: FloatingActionButton(
+                              onPressed: () {
+                                controller.toNetworkVideo();
+                              },
+                              backgroundColor: SatorioColor.darkAccent,
+                              splashColor: SatorioColor.interactive,
+                              child: Icon(
+                                Icons.play_arrow_rounded,
+                                size: 32,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : SizedBox(
+                            height: 0,
+                            width: 0,
+                          ),
+                  ),
+                )
               ],
             ),
           ),
