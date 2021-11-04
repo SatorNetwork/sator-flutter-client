@@ -170,141 +170,255 @@ class HomePage extends GetView<HomeController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'txt_featured_nfts'.tr,
-            onTap: () {
-              controller.toNfts();
-            },
-          ),
+        Obx(
+          () => controller.nftHomeRx.value?.items.length != 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                  child: TitleWithButton(
+                    textCode: 'txt_featured_nfts'.tr,
+                    onTap: () {
+                      controller.toNfts();
+                    },
+                  ),
+                )
+              : Container(),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 125 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 12,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.nftHomeRx.value?.items.length ?? 0,
-              itemBuilder: (context, index) {
-                final NftItem nftItem =
-                    controller.nftHomeRx.value!.items[index];
-                return _nftItem(nftItem);
-              },
-            ),
-          ),
+        Obx(
+          () => controller.nftHomeRx.value?.items.length != 0
+              ? Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  height: 125 * coefficient,
+                  child: Obx(
+                    () => ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 12,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: controller.nftHomeRx.value?.items.length ?? 0,
+                      itemBuilder: (context, index) {
+                        final NftItem nftItem =
+                            controller.nftHomeRx.value!.items[index];
+                        return _nftItem(nftItem);
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'txt_highest_rewards'.tr,
-            onTap: () {
-              controller.toShowsCategory(ShowCategory.highestRewarding);
-            },
-          ),
+        Obx(
+          () => controller.showsHighestRewardingRx.value.length != 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                  child: TitleWithButton(
+                    textCode: 'txt_highest_rewards'.tr,
+                    onTap: () {
+                      controller.toShowsCategory(ShowCategory.highestRewarding);
+                    },
+                  ),
+                )
+              : Container(),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.showsHighestRewardingRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.showsHighestRewardingRx.value[index];
-                return _showItem(show);
-              },
-            ),
-          ),
+        Obx(
+          () => controller.showsHighestRewardingRx.value.length != 0
+              ? Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  height: 168 * coefficient,
+                  child: Obx(
+                    () => ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount:
+                          controller.showsHighestRewardingRx.value.length,
+                      itemBuilder: (context, index) {
+                        Show show =
+                            controller.showsHighestRewardingRx.value[index];
+                        return _showItem(show);
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'txt_most_social'.tr,
-            onTap: () {
-              controller.toShowsCategory(ShowCategory.mostSocializing);
-            },
-          ),
+        Obx(
+          () => controller.showsMostSocializingRx.value.length != 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                  child: TitleWithButton(
+                    textCode: 'txt_most_social'.tr,
+                    onTap: () {
+                      controller.toShowsCategory(ShowCategory.mostSocializing);
+                    },
+                  ),
+                )
+              : Container(),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.showsMostSocializingRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.showsMostSocializingRx.value[index];
-                return _showItem(show);
-              },
-            ),
-          ),
+        Obx(
+          () => controller.showsMostSocializingRx.value.length != 0
+              ? Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  height: 168 * coefficient,
+                  child: Obx(
+                    () => ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: controller.showsMostSocializingRx.value.length,
+                      itemBuilder: (context, index) {
+                        Show show =
+                            controller.showsMostSocializingRx.value[index];
+                        return _showItem(show);
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'txt_newest_added'.tr,
-            onTap: () {
-              controller.toShowsCategory(ShowCategory.newestAdded);
-            },
-          ),
+        Obx(
+          () => controller.showsNewestAddedRx.value.length != 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                  child: TitleWithButton(
+                    textCode: 'txt_newest_added'.tr,
+                    onTap: () {
+                      controller.toShowsCategory(ShowCategory.newestAdded);
+                    },
+                  ),
+                )
+              : Container(),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.showsNewestAddedRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.showsNewestAddedRx.value[index];
-                return _showItem(show);
-              },
-            ),
-          ),
+        Obx(
+          () => controller.showsNewestAddedRx.value.length != 0
+              ? Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  height: 168 * coefficient,
+                  child: Obx(
+                    () => ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: controller.showsNewestAddedRx.value.length,
+                      itemBuilder: (context, index) {
+                        Show show = controller.showsNewestAddedRx.value[index];
+                        return _showItem(show);
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'All realms',
-            onTap: () {
-              controller.toShowsCategory('all');
-            },
-          ),
+        Obx(
+          () => controller.showsPopularMoviesRx.value.length != 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                  child: TitleWithButton(
+                    textCode: 'txt_popular_movies'.tr,
+                    onTap: () {
+                      controller.toShowsCategory(ShowCategory.popularMovies);
+                    },
+                  ),
+                )
+              : Container(),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          child: Obx(
-            () => ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                width: 16,
-              ),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: controller.allShowsRx.value.length,
-              itemBuilder: (context, index) {
-                Show show = controller.allShowsRx.value[index];
-                return _showItem(show);
-              },
-            ),
-          ),
+        Obx(
+          () => controller.showsPopularMoviesRx.value.length != 0
+              ? Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  height: 168 * coefficient,
+                  child: Obx(
+                    () => ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: controller.showsPopularMoviesRx.value.length,
+                      itemBuilder: (context, index) {
+                        Show show =
+                            controller.showsPopularMoviesRx.value[index];
+                        return _showItem(show);
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
+        ),
+        Obx(
+          () => controller.showsMusicRealmsRx.value.length != 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                  child: TitleWithButton(
+                    textCode: 'txt_music_realms'.tr,
+                    onTap: () {
+                      controller.toShowsCategory(ShowCategory.musicRealms);
+                    },
+                  ),
+                )
+              : Container(),
+        ),
+        Obx(
+          () => controller.showsMusicRealmsRx.value.length != 0
+              ? Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  height: 168 * coefficient,
+                  child: Obx(
+                    () => ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: controller.showsMusicRealmsRx.value.length,
+                      itemBuilder: (context, index) {
+                        Show show = controller.showsMusicRealmsRx.value[index];
+                        return _showItem(show);
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
+        ),
+        Obx(
+          () => controller.allShowsRx.value.length != 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+                  child: TitleWithButton(
+                    textCode: 'All realms',
+                    onTap: () {
+                      controller.toShowsCategory('all');
+                    },
+                  ),
+                )
+              : Container(),
+        ),
+        Obx(
+          () => controller.allShowsRx.value.length != 0
+              ? Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  height: 168 * coefficient,
+                  child: Obx(
+                    () => ListView.separated(
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      itemCount: controller.allShowsRx.value.length,
+                      itemBuilder: (context, index) {
+                        Show show = controller.allShowsRx.value[index];
+                        return _showItem(show);
+                      },
+                    ),
+                  ),
+                )
+              : Container(),
         ),
         SizedBox(
           height: 24,

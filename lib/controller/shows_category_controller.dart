@@ -66,6 +66,12 @@ class ShowsCategoryController extends GetxController {
       case ShowCategory.newestAdded:
         titleRx.value = 'txt_newest_added'.tr;
         break;
+      case ShowCategory.popularMovies:
+        titleRx.value = 'txt_popular_movies'.tr;
+        break;
+      case ShowCategory.musicRealms:
+        titleRx.value = 'txt_music_realms'.tr;
+        break;
     }
   }
 
