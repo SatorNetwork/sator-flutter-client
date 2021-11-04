@@ -30,6 +30,8 @@ class HomeController extends GetxController
 
   late final Rx<NftHome?> nftHomeRx;
   final Rx<List<Show>> showsHighestRewardingRx = Rx([]);
+  final Rx<List<Show>> showsPopularMoviesRx = Rx([]);
+  final Rx<List<Show>> showsMusicRealmsRx = Rx([]);
   final Rx<List<Show>> showsMostSocializingRx = Rx([]);
   final Rx<List<Show>> showsNewestAddedRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
@@ -112,6 +114,18 @@ class HomeController extends GetxController
         .showsFromCategory(ShowCategory.newestAdded)
         .then((List<Show> shows) {
       showsNewestAddedRx.value = shows;
+    });
+
+    _satorioRepository
+        .showsFromCategory(ShowCategory.popularMovies)
+        .then((List<Show> shows) {
+      showsPopularMoviesRx.value = shows;
+    });
+
+    _satorioRepository
+        .showsFromCategory(ShowCategory.musicRealms)
+        .then((List<Show> shows) {
+      showsMusicRealmsRx.value = shows;
     });
   }
 

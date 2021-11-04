@@ -229,6 +229,8 @@ const Map<String, String> en = {
   'txt_highest_rewards': 'Highest rewards',
   'txt_most_social': 'Most social',
   'txt_newest_added': 'Newest added',
+  'txt_popular_movies': 'Popular movies',
+  'txt_music_realms': 'Music realms',
   'txt_all_shows': 'All shows',
   'txt_attempts_left_alert':
       'You have no more attempts to unlock with a quiz, please unlock with SAO',
