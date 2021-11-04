@@ -14,6 +14,7 @@ import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
@@ -118,7 +119,7 @@ class HomeController extends GetxController
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(categoryName),
+      arguments: ShowsCategoryArgument(categoryName, ShowsType.HomeAllShows),
     );
   }
 

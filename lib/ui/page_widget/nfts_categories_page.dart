@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
-import 'package:satorio/domain/entities/nft_preview.dart';
+import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -274,7 +275,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TitleWithButton(
                   onTap: () {
-                    controller.toNonWorkingFeatureDialog();
+                    controller.toAllShows();
                   },
                   textCode: 'txt_all_shows'.tr,
                   fontSize: 24.0 * coefficient,
@@ -296,10 +297,10 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
                     width: 16,
                   ),
                   scrollDirection: Axis.horizontal,
-                  itemCount: nftsList.length,
+                  itemCount: controller.allShowsRx.value.length,
                   itemBuilder: (context, index) {
-                    NFTPreview nftPreview = nftsList[index];
-                    return _homeShowItem(nftPreview);
+                    Show show = controller.allShowsRx.value[index];
+                    return _homeShowItem(show);
                   },
                 ),
               ),
@@ -421,11 +422,11 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
     );
   }
 
-  Widget _homeShowItem(NFTPreview nftPreview) {
+  Widget _homeShowItem(Show show) {
     final double width = 125.0;
     return InkWell(
       onTap: () {
-        controller.toNonWorkingFeatureDialog();
+        controller.toShowNfts(show.id);
       },
       child: Container(
         width: width,
@@ -435,20 +436,25 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           children: [
             ClipOval(
               child: Container(
-                  color: Colors.white,
-                  child: Image.asset(
-                    nftPreview.cover,
-                    width: width,
-                    height: width,
-                    fit: BoxFit.cover,
-                  )),
+                height: 120,
+                width: 120,
+                color: Colors.white,
+                child: CachedNetworkImage(
+                  imageUrl: show.cover,
+                  cacheKey: show.cover,
+                  fit: BoxFit.cover,
+                  errorWidget: (context, url, error) => Container(
+                    color: SatorioColor.darkAccent,
+                  ),
+                ),
+              ),
             ),
             SizedBox(
               height: 2 * coefficient,
             ),
             Expanded(
               child: Text(
-                nftPreview.title,
+                show.title,
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: textTheme.headline4!.copyWith(
@@ -463,18 +469,4 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
       ),
     );
   }
-
-  final List<NFTPreview> nftsList = [
-    NFTPreview('Ballers', 'images/tmp_nft_show_1.jpg'),
-    NFTPreview('Breaking Bad', 'images/tmp_nft_show_2.jpg'),
-    NFTPreview('Entourage', 'images/tmp_nft_show_3.jpg'),
-    NFTPreview('Friends', 'images/tmp_nft_show_4.jpg'),
-    NFTPreview('Grace and Frankie', 'images/tmp_nft_show_5.jpg'),
-    NFTPreview('HODL', 'images/tmp_nft_show_6.jpg'),
-    NFTPreview('How To Make It In America', 'images/tmp_nft_show_7.jpg'),
-    NFTPreview('Loki', 'images/tmp_nft_show_8.jpg'),
-    NFTPreview('Nine Perfect Strangers', 'images/tmp_nft_show_9.jpg'),
-    NFTPreview(
-        'The Falcon and the Winter Soldier', 'images/tmp_nft_show_10.jpg'),
-  ];
 }

@@ -56,7 +56,7 @@ class SettingsPage extends GetView<SettingsController> {
             ),
           ),
           Container(
-            height: Get.height - 100,
+            height: Get.height,
             margin: const EdgeInsets.only(top: 100),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -69,26 +69,33 @@ class SettingsPage extends GetView<SettingsController> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               child: Stack(
                 children: [
-                  SingleChildScrollView(
-                      padding: EdgeInsets.all(24), child: _settingsContent()),
                   Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: 40,
-                      width: Get.width,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.white.withOpacity(1),
-                            Colors.white.withOpacity(0.1),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
+                    alignment: Alignment.bottomCenter,
                   ),
+                  //TODO: add singleChildScroll, remove padding
+                  Padding(
+                    padding: EdgeInsets.all(24),
+                    child: _settingsContent(),
+                  ),
+                  //TODO: uncomment
+                  // Align(
+                  //   alignment: Alignment.topCenter,
+                  //   child: Container(
+                  //     height: 40,
+                  //     width: Get.width,
+                  //     decoration: BoxDecoration(
+                  //       gradient: LinearGradient(
+                  //         begin: Alignment.topCenter,
+                  //         end: Alignment.bottomCenter,
+                  //         colors: [
+                  //           Colors.white.withOpacity(1),
+                  //           Colors.white.withOpacity(0.1),
+                  //         ],
+                  //       ),
+                  //       borderRadius: BorderRadius.circular(8),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -99,53 +106,57 @@ class SettingsPage extends GetView<SettingsController> {
   }
 
   Widget _settingsContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _settingsTitle('txt_profile'.tr),
-        SizedBox(
-          height: 14,
-        ),
-        _profileGroup(),
-        SizedBox(
-          height: 32,
-        ),
-        _settingsTitle('txt_app'.tr),
-        SizedBox(
-          height: 14,
-        ),
-        _appGroup(),
-        SizedBox(
-          height: 85,
-        ),
-        _buttonsGroup()
-      ],
+    return Container(
+      height: Get.height,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _settingsTitle('txt_profile'.tr),
+          SizedBox(
+            height: 14,
+          ),
+          _profileGroup(),
+          SizedBox(
+            height: 32,
+          ),
+          _settingsTitle('txt_app'.tr),
+          SizedBox(
+            height: 14,
+          ),
+          _appGroup(),
+          // SizedBox(
+          //   height: 85,
+          // ),
+          Spacer(),
+          _buttonsGroup()
+        ],
+      ),
     );
   }
 
   Widget _profileGroup() {
     return Column(
       children: [
-        _settingsButton('txt_user_name'.tr, 'images/settings/ico_profile',
+        _settingsButton('txt_user_name'.tr, 'images/profile',
             () => controller.toChangeInfo(ChangeInfoType.username)),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_avatar'.tr, 'images/settings/ico_daily_planner',
+        _settingsButton('txt_avatar'.tr, 'images/settings/ico_avatar',
             () => controller.toSelectAvatar()),
         SizedBox(
           height: 12,
         ),
         _settingsButton(
             'txt_settings_email'.tr,
-            'images/settings/ico_daily_planner',
+            'images/settings/ico_email',
             () => controller.toChangeInfo(ChangeInfoType.email)),
         SizedBox(
           height: 12,
         ),
         _settingsButton(
             'txt_password'.tr,
-            'images/settings/ico_daily_planner',
+            'images/settings/ico_pass',
                 () => controller.toChangeInfo(ChangeInfoType.password)),
       ],
     );
@@ -163,23 +174,24 @@ class SettingsPage extends GetView<SettingsController> {
             controller.toLogoutDialog();
           },
         ),
-        InkWell(
-          onTap: () => controller.toNonWorkingDialog(),
-          child: Container(
-            height: 48,
-            width: Get.width,
-            child: Center(
-              child: Text(
-                'txt_delete_account'.tr,
-                style: textTheme.bodyText2!.copyWith(
-                  color: SatorioColor.brand,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        )
+        //TODO: uncomment
+        // InkWell(
+        //   onTap: () => controller.toNonWorkingDialog(),
+        //   child: Container(
+        //     height: 48,
+        //     width: Get.width,
+        //     child: Center(
+        //       child: Text(
+        //         'txt_delete_account'.tr,
+        //         style: textTheme.bodyText2!.copyWith(
+        //           color: SatorioColor.brand,
+        //           fontSize: 16.0,
+        //           fontWeight: FontWeight.w600,
+        //         ),
+        //       ),
+        //     ),
+        //   ),
+        // )
       ],
     );
   }
@@ -187,21 +199,22 @@ class SettingsPage extends GetView<SettingsController> {
   Widget _appGroup() {
     return Column(
       children: [
-        _settingsButton('txt_rate_sator'.tr, 'images/settings/ico_star',
-            () => controller.toNonWorkingDialog()),
-        SizedBox(
-          height: 12,
-        ),
-        _settingsButton('txt_report_bug'.tr, 'images/settings/ico_danger',
-            () => controller.toNonWorkingDialog()),
-        SizedBox(
-          height: 12,
-        ),
-        _settingsButton('txt_help'.tr, 'images/settings/ico_help',
-            () => controller.toNonWorkingDialog()),
-        SizedBox(
-          height: 12,
-        ),
+        //TODO: uncomment
+        // _settingsButton('txt_rate_sator'.tr, 'images/settings/ico_star',
+        //     () => controller.toNonWorkingDialog()),
+        // SizedBox(
+        //   height: 12,
+        // ),
+        // _settingsButton('txt_report_bug'.tr, 'images/settings/ico_danger',
+        //     () => controller.toNonWorkingDialog()),
+        // SizedBox(
+        //   height: 12,
+        // ),
+        // _settingsButton('txt_help'.tr, 'images/settings/ico_help',
+        //     () => controller.toNonWorkingDialog()),
+        // SizedBox(
+        //   height: 12,
+        // ),
         _settingsButton('txt_about'.tr, 'images/settings/ico_document',
             () => controller.toAbout()),
       ],

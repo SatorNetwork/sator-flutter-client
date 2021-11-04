@@ -97,32 +97,32 @@ class ProfilePage extends GetView<ProfileController> {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            controller.toNonWorkingFeatureDialog();
-                            //TODO: uncomment
-                            // controller.getReferralCode();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(24, 24),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            primary: SatorioColor.brand,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: Text(
-                            'txt_invite_friends'.tr.toUpperCase(),
-                            style: textTheme.bodyText2!.copyWith(
-                              color: Colors.white,
-                              fontSize: 12.0 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     controller.toNonWorkingFeatureDialog();
+                        //     //TODO: uncomment
+                        //     // controller.getReferralCode();
+                        //   },
+                        //   style: ElevatedButton.styleFrom(
+                        //     minimumSize: Size(24, 24),
+                        //     padding: const EdgeInsets.symmetric(
+                        //       horizontal: 8,
+                        //       vertical: 4,
+                        //     ),
+                        //     primary: SatorioColor.brand,
+                        //     shape: RoundedRectangleBorder(
+                        //       borderRadius: BorderRadius.circular(12),
+                        //     ),
+                        //   ),
+                        //   child: Text(
+                        //     'txt_invite_friends'.tr.toUpperCase(),
+                        //     style: textTheme.bodyText2!.copyWith(
+                        //       color: Colors.white,
+                        //       fontSize: 12.0 * coefficient,
+                        //       fontWeight: FontWeight.w700,
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -185,45 +185,45 @@ class ProfilePage extends GetView<ProfileController> {
                           ),
                         ),
                         _nftsBlock(),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            right: 20,
-                            top: 32,
-                            bottom: 16,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'txt_your_activity'.tr,
-                                style: textTheme.headline3!.copyWith(
-                                  color: SatorioColor.textBlack,
-                                  fontSize: 24.0 * coefficient,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                size: 32 * coefficient,
-                                color: SatorioColor.textBlack,
-                              )
-                            ],
-                          ),
-                        ),
-                        ListView.separated(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: 8 * coefficient,
-                          ),
-                          itemCount: _activities.length,
-                          itemBuilder: (context, index) {
-                            ActivitySimpleTmp activity = _activities[index];
-                            return _activityItem(activity);
-                          },
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(
+                        //     left: 20,
+                        //     right: 20,
+                        //     top: 32,
+                        //     bottom: 16,
+                        //   ),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Text(
+                        //         'txt_your_activity'.tr,
+                        //         style: textTheme.headline3!.copyWith(
+                        //           color: SatorioColor.textBlack,
+                        //           fontSize: 24.0 * coefficient,
+                        //           fontWeight: FontWeight.w700,
+                        //         ),
+                        //       ),
+                        //       Icon(
+                        //         Icons.chevron_right_rounded,
+                        //         size: 32 * coefficient,
+                        //         color: SatorioColor.textBlack,
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                        // ListView.separated(
+                        //   shrinkWrap: true,
+                        //   physics: NeverScrollableScrollPhysics(),
+                        //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                        //   separatorBuilder: (context, index) => SizedBox(
+                        //     height: 8 * coefficient,
+                        //   ),
+                        //   itemCount: _activities.length,
+                        //   itemBuilder: (context, index) {
+                        //     ActivitySimpleTmp activity = _activities[index];
+                        //     return _activityItem(activity);
+                        //   },
+                        // ),
                         InkWell(
                           onTap: () =>
                               controller.activatedRealmsRx.value.length != 0
@@ -930,41 +930,42 @@ class ProfilePage extends GetView<ProfileController> {
                         ),
                       ),
                     ),
-                    Icon(
-                      Icons.thumb_up_rounded,
-                      size: 20 * coefficient,
-                      color: SatorioColor.interactive,
-                    ),
-                    SizedBox(
-                      width: 8 * coefficient,
-                    ),
-                    Text(
-                      '${review.likes}k',
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.interactive,
-                        fontSize: 14.0 * coefficient,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 24 * coefficient,
-                    ),
-                    Icon(
-                      Icons.thumb_down_rounded,
-                      size: 20 * coefficient,
-                      color: SatorioColor.textBlack,
-                    ),
-                    SizedBox(
-                      width: 8 * coefficient,
-                    ),
-                    Text(
-                      '${review.unlikes}',
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 14.0 * coefficient,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    //TODO: uncomment
+                    // Icon(
+                    //   Icons.thumb_up_rounded,
+                    //   size: 20 * coefficient,
+                    //   color: SatorioColor.interactive,
+                    // ),
+                    // SizedBox(
+                    //   width: 8 * coefficient,
+                    // ),
+                    // Text(
+                    //   '${review.likes}k',
+                    //   style: textTheme.bodyText2!.copyWith(
+                    //     color: SatorioColor.interactive,
+                    //     fontSize: 14.0 * coefficient,
+                    //     fontWeight: FontWeight.w500,
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   width: 24 * coefficient,
+                    // ),
+                    // Icon(
+                    //   Icons.thumb_down_rounded,
+                    //   size: 20 * coefficient,
+                    //   color: SatorioColor.textBlack,
+                    // ),
+                    // SizedBox(
+                    //   width: 8 * coefficient,
+                    // ),
+                    // Text(
+                    //   '${review.unlikes}',
+                    //   style: textTheme.bodyText2!.copyWith(
+                    //     color: SatorioColor.textBlack,
+                    //     fontSize: 14.0 * coefficient,
+                    //     fontWeight: FontWeight.w500,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

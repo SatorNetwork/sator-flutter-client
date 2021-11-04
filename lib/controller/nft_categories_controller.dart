@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/binding/nft_list_binding.dart';
+import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
+import 'package:satorio/controller/nft_list_controller.dart';
+import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
+import 'package:satorio/ui/page_widget/nft_list_page.dart';
+import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class NftCategoriesController extends GetxController
     with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
@@ -24,6 +33,7 @@ class NftCategoriesController extends GetxController
 
   late final Rx<NftHome?> nftHomeRx;
   final Rx<List<NftCategory>> categoriesRx = Rx([]);
+  final Rx<List<Show>> allShowsRx = Rx([]);
 
   final Rx<Map<String, List<NftItem>>> itemsRx = Rx({});
 
@@ -33,6 +43,8 @@ class NftCategoriesController extends GetxController
 
   NftCategoriesController() {
     tabController = TabController(length: _fixedTabLength, vsync: this);
+
+    _loadAllShows();
 
     _loadNftCategories();
     if (Get.isRegistered<MainController>()) {
@@ -49,6 +61,30 @@ class NftCategoriesController extends GetxController
       mainController.loadNftHome();
     }
     _loadNftCategories();
+  }
+
+  void _loadAllShows() {
+    _satorioRepository
+        .shows(page: _initialPage, itemsPerPage: _itemsPerPage)
+        .then((List<Show> shows) {
+      allShowsRx.value = shows;
+    });
+  }
+
+  void toAllShows() {
+    Get.to(
+      () => ShowsCategoryPage(),
+      binding: ShowsCategoryBinding(),
+      arguments: ShowsCategoryArgument(ShowCategory.all, ShowsType.NftsAllShows),
+    );
+  }
+
+  void toShowNfts(String showId) {
+      Get.to(
+            () => NftListPage(),
+        binding: NftListBinding(),
+        arguments: NftListArgument(NftFilterType.Show, showId),
+      );
   }
 
   void toNftItem(final NftItem nftItem) {

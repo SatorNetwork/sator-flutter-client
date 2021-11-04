@@ -28,63 +28,64 @@ class PersonalProfilePage extends GetView<PersonalProfileController> {
             controller.toSettings();
           },
         ),
+        //TODO: uncomment
         actions: [
-          Container(
-            width: kToolbarHeight,
-            height: kToolbarHeight,
-            child: Stack(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.notifications_none_rounded,
-                    color: SatorioColor.textBlack,
-                  ),
-                  onPressed: () {
-                    controller.toNotificationSettings();
-                  },
-                ),
-                Positioned(
-                  right: 22,
-                  top: 14,
-                  child: Container(
-                    width: 7,
-                    height: 7,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: SatorioColor.brand,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
+          // Container(
+          //   width: kToolbarHeight,
+          //   height: kToolbarHeight,
+          //   child: Stack(
+          //     children: [
+          //       IconButton(
+          //         icon: Icon(
+          //           Icons.notifications_none_rounded,
+          //           color: SatorioColor.textBlack,
+          //         ),
+          //         onPressed: () {
+          //           controller.toNotificationSettings();
+          //         },
+          //       ),
+          //       Positioned(
+          //         right: 22,
+          //         top: 14,
+          //         child: Container(
+          //           width: 7,
+          //           height: 7,
+          //           decoration: BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: SatorioColor.brand,
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // )
         ],
-        bottom: TabBar(
-          controller: controller.tabController,
-          indicatorColor: SatorioColor.textBlack,
-          labelColor: SatorioColor.textBlack,
-          unselectedLabelColor: SatorioColor.textBlack.withOpacity(0.7),
-          indicator: UnderlineTabIndicator(
-            borderSide: BorderSide(color: SatorioColor.textBlack, width: 2),
-            insets: EdgeInsets.symmetric(horizontal: 20),
-          ),
-          labelStyle: textTheme.headline5!.copyWith(
-            color: SatorioColor.textBlack,
-            fontSize: 20 * coefficient,
-            fontWeight: FontWeight.w700,
-          ),
-          tabs: [
-            Tab(
-              text: 'txt_profile'.tr,
-            ),
-            Tab(
-              text: 'txt_activity'.tr,
-            ),
-            Tab(
-              text: 'txt_friends'.tr,
-            ),
-          ],
-        ),
+        // bottom: TabBar(
+        //   controller: controller.tabController,
+        //   indicatorColor: SatorioColor.textBlack,
+        //   labelColor: SatorioColor.textBlack,
+        //   unselectedLabelColor: SatorioColor.textBlack.withOpacity(0.7),
+        //   indicator: UnderlineTabIndicator(
+        //     borderSide: BorderSide(color: SatorioColor.textBlack, width: 2),
+        //     insets: EdgeInsets.symmetric(horizontal: 20),
+        //   ),
+        //   labelStyle: textTheme.headline5!.copyWith(
+        //     color: SatorioColor.textBlack,
+        //     fontSize: 20 * coefficient,
+        //     fontWeight: FontWeight.w700,
+        //   ),
+        //   tabs: [
+        //     Tab(
+        //       text: 'txt_profile'.tr,
+        //     ),
+        //     Tab(
+        //       text: 'txt_activity'.tr,
+        //     ),
+        //     Tab(
+        //       text: 'txt_friends'.tr,
+        //     ),
+        //   ],
+        // ),
       ),
       body: Stack(
         children: [
@@ -95,9 +96,11 @@ class PersonalProfilePage extends GetView<PersonalProfileController> {
           ),
           Container(
             margin: EdgeInsets.only(
-              top: Get.mediaQuery.padding.top +
-                  kToolbarHeight +
-                  kTextTabBarHeight,
+              top: 60,
+              //TODO: uncomment
+              // Get.mediaQuery.padding.top +
+              //     kToolbarHeight +
+              //     kTextTabBarHeight,
             ),
             width: Get.width,
             child: TabBarView(
