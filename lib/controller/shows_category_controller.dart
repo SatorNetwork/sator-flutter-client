@@ -1,15 +1,22 @@
 import 'package:get/get.dart';
+import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/domain/show_category.dart';
+import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
+
+import 'nft_list_controller.dart';
 
 class ShowsCategoryController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final String _categoryName;
+  late final ShowsType showsType;
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
@@ -24,6 +31,7 @@ class ShowsCategoryController extends GetxController {
   ShowsCategoryController() {
     ShowsCategoryArgument argument = Get.arguments;
     _categoryName = argument.categoryName;
+    showsType = argument.showsType;
 
     loadShows();
     _updateTitle();
@@ -49,6 +57,14 @@ class ShowsCategoryController extends GetxController {
       () => ShowDetailWithEpisodesPage(),
       binding: ShowDetailWithEpisodesBinding(),
       arguments: ShowDetailWithEpisodesArgument(show),
+    );
+  }
+
+  void toShowNfts(Show show) {
+    Get.to(
+          () => NftListPage(),
+      binding: NftListBinding(),
+      arguments: NftListArgument(NftFilterType.Show, show.id),
     );
   }
 
@@ -121,6 +137,7 @@ class ShowsCategoryController extends GetxController {
 
 class ShowsCategoryArgument {
   final String categoryName;
+  final ShowsType showsType;
 
-  const ShowsCategoryArgument(this.categoryName);
+  const ShowsCategoryArgument(this.categoryName, this.showsType);
 }

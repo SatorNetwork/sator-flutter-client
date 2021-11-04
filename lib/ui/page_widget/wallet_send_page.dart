@@ -39,15 +39,16 @@ class WalletSendPage extends GetView<WalletSendController> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.info_outline_rounded,
-              color: SatorioColor.darkAccent,
-            ),
-            onPressed: () {
-              controller.toTransactingTipsDialog();
-            },
-          )
+          //TODO: uncomment
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.info_outline_rounded,
+          //     color: SatorioColor.darkAccent,
+          //   ),
+          //   onPressed: () {
+          //     controller.toTransactingTipsDialog();
+          //   },
+          // )
         ],
       ),
       body: Stack(

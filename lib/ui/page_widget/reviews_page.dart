@@ -231,55 +231,55 @@ class ReviewsPage extends GetView<ReviewsController> {
                         ],
                       ),
                     ),
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          'images/like_icon.svg',
-                          color: SatorioColor.textBlack,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          review.likes.toString(),
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 14 * coefficient,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        ),
-                        Container(
-                          height: 24,
-                          width: 24,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: SatorioColor.interactive,
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'images/sator_logo.svg',
-                              width: 12,
-                              height: 12,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          'txt_tip'.tr,
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.interactive,
-                            fontSize: 14 * coefficient,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    )
+                    // Row(
+                    //   children: [
+                    //     SvgPicture.asset(
+                    //       'images/like_icon.svg',
+                    //       color: SatorioColor.textBlack,
+                    //     ),
+                    //     SizedBox(
+                    //       width: 8,
+                    //     ),
+                    //     Text(
+                    //       review.likes.toString(),
+                    //       style: textTheme.bodyText2!.copyWith(
+                    //         color: SatorioColor.textBlack,
+                    //         fontSize: 14 * coefficient,
+                    //         fontWeight: FontWeight.w500,
+                    //       ),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 15,
+                    //     ),
+                    //     Container(
+                    //       height: 24,
+                    //       width: 24,
+                    //       decoration: BoxDecoration(
+                    //         shape: BoxShape.circle,
+                    //         color: SatorioColor.interactive,
+                    //       ),
+                    //       child: Center(
+                    //         child: SvgPicture.asset(
+                    //           'images/sator_logo.svg',
+                    //           width: 12,
+                    //           height: 12,
+                    //           color: Colors.white,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 4,
+                    //     ),
+                    //     Text(
+                    //       'txt_tip'.tr,
+                    //       style: textTheme.bodyText2!.copyWith(
+                    //         color: SatorioColor.interactive,
+                    //         fontSize: 14 * coefficient,
+                    //         fontWeight: FontWeight.w500,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // )
                   ],
                 ),
               )
