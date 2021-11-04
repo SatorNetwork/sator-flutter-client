@@ -1,4 +1,9 @@
 PODS:
+  - better_player (0.0.1):
+    - Cache (~> 6.0.0)
+    - Flutter
+    - HLSCachingReverseProxyServer
+  - Cache (6.0.0)
   - Firebase/Analytics (8.3.0):
     - Firebase/Core
   - Firebase/Core (8.3.0):
@@ -61,9 +66,19 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.4)
     - PromisesObjC (< 3.0, >= 1.2)
   - Flutter (1.0.0)
+  - flutter_inappwebview (0.0.1):
+    - Flutter
+    - flutter_inappwebview/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
+  - GCDWebServer (3.5.4):
+    - GCDWebServer/Core (= 3.5.4)
+  - GCDWebServer/Core (3.5.4)
   - GoogleAppMeasurement (8.3.0):
     - GoogleAppMeasurement/AdIdSupport (= 8.3.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.4)
@@ -100,6 +115,9 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.5.0):
     - GoogleUtilities/Logger
+  - HLSCachingReverseProxyServer (0.1.0):
+    - GCDWebServer (~> 3.5)
+    - PINCache (>= 3.0.1-beta.3)
   - leveldb-library (1.22.1)
   - MTBBarcodeScanner (5.0.11)
   - nanopb (2.30908.0):
@@ -107,8 +125,17 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - OrderedSet (5.0.0)
   - path_provider (0.0.1):
     - Flutter
+  - PINCache (3.0.3):
+    - PINCache/Arc-exception-safe (= 3.0.3)
+    - PINCache/Core (= 3.0.3)
+  - PINCache/Arc-exception-safe (3.0.3):
+    - PINCache/Core
+  - PINCache/Core (3.0.3):
+    - PINOperation (~> 1.2.1)
+  - PINOperation (1.2.1)
   - PromisesObjC (2.0.0)
   - qr_code_scanner (0.2.0):
     - Flutter
@@ -120,24 +147,30 @@ PODS:
     - FMDB (>= 2.7.5)
   - url_launcher (0.0.1):
     - Flutter
+  - wakelock (0.0.1):
+    - Flutter
   - webview_flutter (0.0.1):
     - Flutter
 
 DEPENDENCIES:
+  - better_player (from `.symlinks/plugins/better_player/ios`)
   - Firebase/Analytics
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - firebase_dynamic_links (from `.symlinks/plugins/firebase_dynamic_links/ios`)
   - Flutter (from `Flutter`)
+  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter (from `.symlinks/plugins/webview_flutter/ios`)
 
 SPEC REPOS:
   trunk:
+    - Cache
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -146,15 +179,22 @@ SPEC REPOS:
     - FirebaseDynamicLinks
     - FirebaseInstallations
     - FMDB
+    - GCDWebServer
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - HLSCachingReverseProxyServer
     - leveldb-library
     - MTBBarcodeScanner
     - nanopb
+    - OrderedSet
+    - PINCache
+    - PINOperation
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  better_player:
+    :path: ".symlinks/plugins/better_player/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_database:
@@ -163,6 +203,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_dynamic_links/ios"
   Flutter:
     :path: Flutter
+  flutter_inappwebview:
+    :path: ".symlinks/plugins/flutter_inappwebview/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   qr_code_scanner:
@@ -173,10 +215,14 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
   webview_flutter:
     :path: ".symlinks/plugins/webview_flutter/ios"
 
 SPEC CHECKSUMS:
+  better_player: 5f77b030c433bd39af0aaaffc184cf4267601a84
+  Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
   Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
   firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
   firebase_database: 27de7affa8b73e25afe25ee7ec18e3216d8d279c
@@ -187,22 +233,29 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 3cb36bbf667be87d72cebc8dbe72e2e8cac1d615
   FirebaseDynamicLinks: 5ab1f7988e31b5b267a2e034659e43cef4fff613
   FirebaseInstallations: f2bc590b291d25fb40a9a05b8281c02a881b5117
-  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   GoogleAppMeasurement: de70802583dedceb0bca18172b345307e8f410b8
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
+  HLSCachingReverseProxyServer: 59935e1e0244ad7f3375d75b5ef46e8eb26ab181
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
+  path_provider: d1e9807085df1f9cc9318206cd649dc0b76be3de
+  PINCache: 7a8fc1a691173d21dbddbf86cd515de6efa55086
+  PINOperation: 00c935935f1e8cf0d1e2d6b542e75b88fc3e5e20
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter: 3603125dfd3bcbc9d8d418c3f80aeecf331c068b
 
-PODFILE CHECKSUM: d7146a73e9c5bc5f2bd8ea4f5c6823d5c0d37121
+PODFILE CHECKSUM: ed9ba8565ac36c7509f67f19bc052db6f0f1b1de
 
 COCOAPODS: 1.11.0
