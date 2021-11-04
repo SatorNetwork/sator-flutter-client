@@ -53,11 +53,7 @@ class WalletSendPage extends GetView<WalletSendController> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             width: Get.width,
             height: Get.mediaQuery.size.height -

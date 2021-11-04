@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/personal_profile_controller.dart';
 import 'package:satorio/ui/page_widget/activity_page.dart';
@@ -89,11 +88,7 @@ class PersonalProfilePage extends GetView<PersonalProfileController> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             margin: EdgeInsets.only(
               top: 60,

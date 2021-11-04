@@ -48,11 +48,7 @@ class ReviewsPage extends GetView<ReviewsController> {
             color: SatorioColor.darkAccent,
             child: Column(
               children: [
-                SvgPicture.asset(
-                  'images/bg/gradient.svg',
-                  height: Get.height - 56,
-                  fit: BoxFit.cover,
-                ),
+                backgroundImage('images/bg/gradient.svg'),
               ],
             ),
           ),

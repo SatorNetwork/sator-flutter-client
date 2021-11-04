@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/web_controller.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -31,11 +31,7 @@ class WebPage extends GetView<WebController> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             constraints: BoxConstraints(
                 minHeight: Get.mediaQuery.size.height -
