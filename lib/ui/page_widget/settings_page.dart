@@ -49,7 +49,7 @@ class SettingsPage extends GetView<SettingsController> {
         children: [
           Container(
             color: SatorioColor.darkAccent,
-            child: backgroundImage,
+            child: backgroundImage('images/bg/gradient.svg'),
           ),
           Container(
             height: Get.height - 100,

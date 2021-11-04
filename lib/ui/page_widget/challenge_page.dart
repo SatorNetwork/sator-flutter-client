@@ -41,7 +41,7 @@ class ChallengePage extends GetView<ChallengeController> {
       body: Container(
         child: Stack(
           children: [
-            backgroundImage,
+            backgroundImage('images/bg/gradient.svg'),
             Container(
               width: Get.width,
               margin: EdgeInsets.only(

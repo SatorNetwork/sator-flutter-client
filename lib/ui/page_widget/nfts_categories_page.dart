@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
@@ -21,7 +20,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
       body: Stack(
         children: [
           Container(
-            child: backgroundImage,
+            child: backgroundImage('images/bg/gradient.svg'),
           ),
           Column(
             mainAxisSize: MainAxisSize.max,

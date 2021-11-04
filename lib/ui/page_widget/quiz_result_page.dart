@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_result_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_winner.dart';
@@ -16,7 +15,7 @@ class QuizResultPage extends GetView<QuizResultController> {
       body: Container(
         child: Stack(
           children: [
-            backgroundImage,
+            backgroundImage('images/bg/gradient.svg'),
             Container(
               width: Get.width,
               margin: EdgeInsets.only(top: 76),

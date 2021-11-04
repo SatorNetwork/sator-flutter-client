@@ -36,7 +36,7 @@ class HomePage extends GetView<HomeController> {
                 color: SatorioColor.darkAccent,
                 child: Stack(
                   children: [
-                    backgroundImage,
+                    backgroundImage('images/bg/gradient.svg'),
                     Padding(
                       padding:
                           const EdgeInsets.only(left: 20, top: 76, right: 20),

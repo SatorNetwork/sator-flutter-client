@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:satorio/controller/wallet_receive_controller.dart';
@@ -42,7 +41,7 @@ class WalletReceivePage extends GetView<WalletReceiveController> {
       ),
       body: Stack(
         children: [
-          backgroundImage,
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             constraints: BoxConstraints(
               minHeight: Get.mediaQuery.size.height -

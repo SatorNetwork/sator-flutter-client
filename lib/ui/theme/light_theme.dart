@@ -27,9 +27,11 @@ final double coefficient = Get.height / 812;
 
 final bool isMaxScreenWidth = Get.width > 580.0;
 
-final SvgPicture backgroundImage = SvgPicture.asset(
-  'images/bg/gradient.svg',
-  height: isMaxScreenWidth ? null : Get.height,
-  width: isMaxScreenWidth ? Get.width : null,
-  fit: BoxFit.cover,
-);
+Widget backgroundImage(String imagePath) {
+  return SvgPicture.asset(
+    imagePath,
+    height: isMaxScreenWidth ? null : Get.height,
+    width: isMaxScreenWidth ? Get.width : null,
+    fit: BoxFit.cover,
+  );
+}

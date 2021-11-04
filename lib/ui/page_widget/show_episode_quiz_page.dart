@@ -1,7 +1,6 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
@@ -14,8 +13,8 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
   static const double _margin = 20.0;
   static const double _itemSpacing = 12.0;
 
-  final double answersBlockSize = isMaxScreenWidth ? Get.height / 2 : Get.width - 2 * _margin;
-  final double answerSize = (Get.width - 2 * _margin - _itemSpacing) / 2;
+  final double answersBlockSize =
+      isMaxScreenWidth ? Get.width / 2 : Get.width - 2 * _margin;
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +23,7 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
       body: Container(
         child: Stack(
           children: [
-            SvgPicture.asset(
-              'images/bg/gradient_challenge_timer.svg',
-              height: isMaxScreenWidth ? null : Get.height,
-              width: isMaxScreenWidth ? Get.width : null,
-              fit: BoxFit.cover,
-            ),
+            backgroundImage('images/bg/gradient_challenge_timer.svg'),
             Container(
               margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top,
@@ -291,8 +285,6 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
         controller.selectAnswer(answerOption);
       },
       child: Container(
-        width: answerSize,
-        height: answerSize,
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),

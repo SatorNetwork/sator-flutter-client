@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
@@ -46,7 +45,7 @@ class NftListPage extends GetView<NftListController> {
       ),
       body: Stack(
         children: [
-          backgroundImage,
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),

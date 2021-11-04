@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/qr_result_show_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -16,7 +15,7 @@ class QrResultShowPage extends GetView<QrResultShowController> {
       body: Container(
         child: Stack(
           children: [
-            backgroundImage,
+            backgroundImage('images/bg/gradient.svg'),
             Container(
               width: Get.width,
               margin: EdgeInsets.only(top: 76 * coefficient),

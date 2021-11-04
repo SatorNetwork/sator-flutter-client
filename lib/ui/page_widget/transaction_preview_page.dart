@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/transaction_preview_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -40,7 +39,7 @@ class TransactionPreviewPage extends GetView<TransactionPreviewController> {
       ),
       body: Stack(
         children: [
-          backgroundImage,
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             width: Get.width,
             height: Get.mediaQuery.size.height -

@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -46,7 +45,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
       ),
       body: Stack(
         children: [
-          backgroundImage,
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),

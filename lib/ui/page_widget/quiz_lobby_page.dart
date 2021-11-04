@@ -44,7 +44,7 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
       body: Container(
         child: Stack(
           children: [
-            backgroundImage,
+            backgroundImage('images/bg/gradient.svg'),
             Container(
               width: Get.width,
               margin: EdgeInsets.only(

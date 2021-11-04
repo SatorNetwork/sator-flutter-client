@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:satorio/controller/wallet_controller.dart';
@@ -46,7 +45,7 @@ class WalletPage extends GetView<WalletController> {
     return SingleChildScrollView(
       child: Stack(
         children: [
-          backgroundImage,
+          backgroundImage('images/bg/gradient.svg'),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
