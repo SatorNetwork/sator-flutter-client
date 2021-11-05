@@ -136,25 +136,4 @@ class SplashController extends GetxController {
       arguments: OnBoardingArgument(deepLink),
     );
   }
-
-  void _toOnBoarding() {
-    precachePicture(
-      ExactAssetPicture(
-          SvgPicture.svgStringDecoder, 'images/bg/onboarding.svg'),
-      null,
-    );
-
-    onBoardings.forEach((data) {
-      precachePicture(
-        ExactAssetPicture(SvgPicture.svgStringDecoder, data.assetName),
-        null,
-      );
-    });
-
-    Get.offAll(
-      () => OnBoardingPage(),
-      binding: OnBoardingBinding(),
-      arguments: OnBoardingArgument(deepLink),
-    );
-  }
 }
