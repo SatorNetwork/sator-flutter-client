@@ -122,7 +122,7 @@ abstract class ApiDataSource {
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId);
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 

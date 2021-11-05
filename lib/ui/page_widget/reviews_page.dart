@@ -117,14 +117,14 @@ class ReviewsPage extends GetView<ReviewsController> {
 
 
   Widget _reviewItem(Review review) {
-    Rx<bool> isExpandedRx = Rx(false);
+    final RxBool isExpandedRx = false.obs;
     final int minStringLength = 45;
 
     return Obx(
         () => InkWell(
         onTap: () {
           if (review.review.length < 70) return;
-          isExpandedRx.value = !isExpandedRx.value;
+          isExpandedRx.toggle();
         },
         child: Container(
           padding: EdgeInsets.only(bottom: 16, top: 16),

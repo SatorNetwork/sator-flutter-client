@@ -151,7 +151,7 @@ abstract class SatorioRepository {
 
   Future<bool> confirmReferralCode(String referralCode);
 
-  Future<List<Review>> getReviews(String showId, String episodeId);
+  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
 
   Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
 
