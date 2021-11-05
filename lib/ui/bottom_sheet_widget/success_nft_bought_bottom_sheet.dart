@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
+import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -77,18 +78,26 @@ class SuccessNftBoughtBottomSheet extends StatelessWidget with BackToMainMixin {
             textColor: SatorioColor.interactive,
             borderColor: SatorioColor.interactive,
             borderWidth: 2,
-            onPressed: () {
-              if (Get.isRegistered<MainController>()) {
-                MainController mainController = Get.find();
-                mainController.selectedBottomTabIndex.value =
-                    MainController.TabProfile;
-              }
-              backToMain();
-            },
+            onPressed: () => _toMyNtfs(),
           ),
         ],
       ),
     );
+  }
+
+  void _toMyNtfs() {
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.selectedBottomTabIndex.value =
+          MainController.TabProfile;
+    }
+
+    if (Get.isRegistered<ProfileController>()) {
+      ProfileController profileController = Get.find();
+      profileController.refreshPage();
+    }
+
+    backToMain();
   }
 
   Widget _descriptionWidget() {
