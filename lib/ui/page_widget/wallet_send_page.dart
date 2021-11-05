@@ -39,24 +39,21 @@ class WalletSendPage extends GetView<WalletSendController> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(
-              Icons.info_outline_rounded,
-              color: SatorioColor.darkAccent,
-            ),
-            onPressed: () {
-              controller.toTransactingTipsDialog();
-            },
-          )
+          //TODO: uncomment
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.info_outline_rounded,
+          //     color: SatorioColor.darkAccent,
+          //   ),
+          //   onPressed: () {
+          //     controller.toTransactingTipsDialog();
+          //   },
+          // )
         ],
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             width: Get.width,
             height: Get.mediaQuery.size.height -

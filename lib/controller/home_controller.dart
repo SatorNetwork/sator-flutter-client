@@ -1,17 +1,23 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
+import 'package:satorio/domain/entities/nft_home.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/domain/show_category.dart';
+import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
@@ -22,7 +28,10 @@ class HomeController extends GetxController
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
 
+  late final Rx<NftHome?> nftHomeRx;
   final Rx<List<Show>> showsHighestRewardingRx = Rx([]);
+  final Rx<List<Show>> showsPopularMoviesRx = Rx([]);
+  final Rx<List<Show>> showsMusicRealmsRx = Rx([]);
   final Rx<List<Show>> showsMostSocializingRx = Rx([]);
   final Rx<List<Show>> showsNewestAddedRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
@@ -39,6 +48,13 @@ class HomeController extends GetxController
 
     this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
+
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      nftHomeRx = mainController.nftHomeRx;
+    } else {
+      nftHomeRx = Rx(null);
+    }
   }
 
   @override
@@ -62,6 +78,11 @@ class HomeController extends GetxController
   }
 
   void refreshHomePage() {
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.loadNftHome();
+    }
+
     _satorioRepository.updateProfile();
     _satorioRepository.updateWalletBalance();
     _loadAllShows();
@@ -94,13 +115,25 @@ class HomeController extends GetxController
         .then((List<Show> shows) {
       showsNewestAddedRx.value = shows;
     });
+
+    _satorioRepository
+        .showsFromCategory(ShowCategory.popularMovies)
+        .then((List<Show> shows) {
+      showsPopularMoviesRx.value = shows;
+    });
+
+    _satorioRepository
+        .showsFromCategory(ShowCategory.musicRealms)
+        .then((List<Show> shows) {
+      showsMusicRealmsRx.value = shows;
+    });
   }
 
   void toShowsCategory(String categoryName) {
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(categoryName),
+      arguments: ShowsCategoryArgument(categoryName, ShowsType.HomeAllShows),
     );
   }
 
@@ -109,6 +142,14 @@ class HomeController extends GetxController
       () => ShowDetailWithEpisodesPage(),
       binding: ShowDetailWithEpisodesBinding(),
       arguments: ShowDetailWithEpisodesArgument(show),
+    );
+  }
+
+  void toNftItem(final NftItem nftItem) {
+    Get.to(
+      () => NftItemPage(),
+      binding: NftItemBinding(),
+      arguments: NftItemArgument(nftItem),
     );
   }
 

@@ -1,9 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nft_category.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
+import 'package:satorio/domain/entities/nft_home.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
@@ -17,13 +22,23 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
+  Future<void> clearAllLocalData();
+
   Future<bool> isTokenValid();
 
   Future<bool> signIn(String email, String password);
 
   Future<bool> signUp(String email, String password, String username);
 
+  Future<bool> requestUpdateEmail(String email);
+
+  Future<bool> updateUsername(String username);
+
+  Future<bool> changePassword(String oldPassword, String newPassword);
+
   Future<bool> verifyAccount(String code);
+
+  Future<bool> verifyUpdateEmail(String email, String code);
 
   Future<bool> isVerified();
 
@@ -49,8 +64,11 @@ abstract class SatorioRepository {
 
   Future<void> updateWalletDetail(String detailPath);
 
-  Future<void> updateWalletTransactions(String transactionsPath,
-      {DateTime? from, DateTime? to});
+  Future<void> updateWalletTransactions(
+    String transactionsPath, {
+    DateTime? from,
+    DateTime? to,
+  });
 
   Future<Transfer> createTransfer(
     String fromWalletId,
@@ -120,7 +138,10 @@ abstract class SatorioRepository {
   Future<GetSocket> createQuizSocket(String socketUrl);
 
   Future<void> sendAnswer(
-      GetSocket? socket, String questionId, String answerId);
+    GetSocket? socket,
+    String questionId,
+    String answerId,
+  );
 
   Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
@@ -130,7 +151,29 @@ abstract class SatorioRepository {
 
   Future<bool> confirmReferralCode(String referralCode);
 
-  Future<List<Review>> getReviews(String showId, String episodeId);
+  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
+
+  Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
+
+  Future<List<ActivatedRealm>> getActivatedRealms({
+    int? page,
+    int? itemsPerPage,
+  });
+
+  Future<NftHome> nftHome();
+
+  Future<List<NftCategory>> nftCategories();
+
+  Future<List<NftItem>> nftItems(
+    NftFilterType filterType,
+    String objectId, {
+    int? page,
+    int? itemsPerPage,
+  });
+
+  Future<NftItem> nftItem(String nftItemId);
+
+  Future<bool> buyNftItem(String nftItemId);
 
   //
 

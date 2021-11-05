@@ -14,9 +14,11 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
     DateTime? releaseDate,
     double rating,
     int ratingsCount,
-    activeUsers,
-    userRewardsAmount,
-    totalRewardsAmount,
+    int activeUsers,
+    double userRewardsAmount,
+    double totalRewardsAmount,
+    String hint,
+    String watch,
   ) : super(
           id,
           showId,
@@ -31,6 +33,8 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
           activeUsers,
           userRewardsAmount,
           totalRewardsAmount,
+          hint,
+          watch,
         );
 
   factory ShowEpisodeModel.fromJson(Map json) => ShowEpisodeModel(
@@ -47,6 +51,8 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         json.parseValueAsInt('active_users'),
         json.parseValueAsDouble('user_rewards_amount'),
         json.parseValueAsDouble('total_rewards_amount'),
+        json.parseValueAsString('hint_text'),
+        json.parseValueAsString('watch'),
       );
 
   @override
@@ -64,5 +70,7 @@ class ShowEpisodeModel extends ShowEpisode implements ToJsonInterface {
         'active_users': activeUsers,
         'user_rewards_amount': userRewardsAmount,
         'total_rewards_amount': totalRewardsAmount,
+        'hint_text': hint,
+        'watch': watch,
       };
 }

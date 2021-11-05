@@ -13,6 +13,7 @@ import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/links.dart';
 
 class CreateAccountController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
@@ -57,16 +58,20 @@ class CreateAccountController extends GetxController with ValidationMixin {
       () => WebPage(),
       binding: WebBinding(),
       arguments: WebArgument(
-        'https://backoffice.sator.io/legal/terms-of-use',
+        linkTermsOfUse,
       ),
     );
   }
 
-  void toSignIn() {
-    Get.off(
-      () => LoginPage(),
-      binding: LoginBinding(),
-      arguments: LoginArgument(null),
+  void toLogin() {
+    _satorioRepository.clearAllLocalData().then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
+        );
+      },
     );
   }
 
@@ -97,7 +102,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
               Get.to(
                 () => EmailVerificationPage(),
                 binding: EmailVerificationBinding(),
-                arguments: EmailVerificationArgument(emailRx.value),
+                arguments: EmailVerificationArgument(emailRx.value, false),
               );
               ScaffoldMessenger.of(Get.context!).showSnackBar(
                 SnackBar(

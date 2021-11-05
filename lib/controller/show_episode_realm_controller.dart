@@ -5,17 +5,28 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
+import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/binding/video_youtube_binding.dart';
 import 'package:satorio/binding/write_review_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/nft_item_controller.dart';
+import 'package:satorio/controller/nft_list_controller.dart';
+import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
+import 'package:satorio/controller/video_youtube_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/last_seen.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -33,21 +44,32 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
+import 'package:satorio/ui/page_widget/nft_item_page.dart';
+import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
+import 'package:satorio/ui/page_widget/video_youtube_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
-    with NonWorkingFeatureMixin {
+    with BackToMainMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
+
+  final int _itemsPerPage = 10;
+  static const int _initialPage = 1;
 
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
   final Rx<List<Review>> reviewsRx = Rx([]);
+  final Rx<List<NftItem>> nftItemsRx = Rx([]);
+
+  final RxBool isRequestedForUnlock = false.obs;
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
@@ -58,14 +80,16 @@ class ShowEpisodeRealmController extends GetxController
 
   late ValueListenable<Box<Profile>> profileListenable;
   late Profile profile;
+  late bool isProfileRealm;
 
   late final DatabaseReference _messagesRef;
   late LastSeen lastSeen;
   DateTime? timestamp;
   late Rx<int> missedMessagesCountRx = Rx(0);
   late final DatabaseReference _timestampsRef;
+
   //TODO: refactor
-  static const String DATABASE_URL =
+  static const String _DATABASE_URL =
       'https://sator-f44d6-timestamp.firebaseio.com/';
 
   late Rx<bool> isMessagesRx = Rx(false);
@@ -80,28 +104,30 @@ class ShowEpisodeRealmController extends GetxController
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
 
+    isProfileRealm = argument.isProfileRealm;
+
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: DATABASE_URL)
+    _timestampsRef = FirebaseDatabase(databaseURL: _DATABASE_URL)
         .reference()
         .child(profile.id)
         .child(argument.showEpisode.id);
 
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child('prod')
+        .child('test')
         .child(argument.showEpisode.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
-      print(isMessagesRx.value);
     });
 
     _updateShowEpisode();
     _loadReviews();
+    _loadNftItems();
     lastSeenInit();
 
     _checkActivation();
@@ -109,6 +135,10 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void back() {
+    if (isProfileRealm) {
+      ProfileController profileController = Get.find();
+      profileController.refreshPage();
+    }
     Get.back();
   }
 
@@ -182,6 +212,7 @@ class ShowEpisodeRealmController extends GetxController
       arguments: ReviewsArgument(
         showDetailRx.value.id,
         showEpisodeRx.value.id,
+        true,
       ),
     );
   }
@@ -245,6 +276,43 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
+  void toNftsMarketplace() {
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.selectedBottomTabIndex.value = MainController.TabNfts;
+      backToMain();
+    }
+  }
+
+  void toNftList() {
+    Get.to(
+      () => NftListPage(),
+      binding: NftListBinding(),
+      arguments: NftListArgument(NftFilterType.Episode, showEpisodeRx.value.id),
+    );
+  }
+
+  void toNftItem(final NftItem nftItem) {
+    Get.to(
+      () => NftItemPage(),
+      binding: NftItemBinding(),
+      arguments: NftItemArgument(nftItem),
+    );
+  }
+
+  void watchVideo() async {
+    String url = showEpisodeRx.value.watch;
+    if (YoutubePlayer.convertUrlToId(url) != null) {
+      Get.to(
+        () => VideoYoutubePage(),
+        binding: VideoYoutubeBinding(),
+        arguments: VideoYoutubeArgument(url),
+      );
+    } else {
+      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+    }
+  }
+
   void activeTimeExpire() {
     _checkActivation();
     _updateShowEpisode();
@@ -269,11 +337,24 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _loadQuizQuestion() {
-    _satorioRepository
-        .showEpisodeQuizQuestion(showEpisodeRx.value.id)
+    Future.value(true)
+        .then((value) {
+          isRequestedForUnlock.value = true;
+          return value;
+        })
+        .then(
+          (value) => _satorioRepository
+              .showEpisodeQuizQuestion(showEpisodeRx.value.id),
+        )
         .then((PayloadQuestion payloadQuestion) {
-      _toEpisodeQuiz(payloadQuestion);
-    });
+          isRequestedForUnlock.value = false;
+          _toEpisodeQuiz(payloadQuestion);
+        })
+        .catchError(
+          (value) {
+            isRequestedForUnlock.value = false;
+          },
+        );
   }
 
   void _loadReviews() {
@@ -282,6 +363,22 @@ class ShowEpisodeRealmController extends GetxController
         .then((List<Review> reviews) {
       reviewsRx.value = reviews;
     });
+  }
+
+  void _loadNftItems() {
+    _satorioRepository
+        .nftItems(
+      NftFilterType.Episode,
+      showEpisodeRx.value.id,
+      page: _initialPage,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then(
+      (List<NftItem> nftItems) {
+        print('_loadNftItems ${nftItems.length}');
+        nftItemsRx.value = nftItems;
+      },
+    );
   }
 
   void _toEpisodeQuiz(PayloadQuestion payloadQuestion) async {
@@ -316,20 +413,32 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _paidUnlock(PaidOption paidOption) {
-    _satorioRepository
-        .paidUnlockEpisode(
-      showEpisodeRx.value.id,
-      paidOption.label,
-    )
+    Future.value(true)
+        .then((value) {
+          isRequestedForUnlock.value = true;
+          return value;
+        })
         .then(
-      (EpisodeActivation episodeActivation) {
-        activationRx.value = episodeActivation;
-        if (episodeActivation.isActive) {
-          _toUnlockBottomSheet();
-          _updateShowEpisode();
-        }
-      },
-    );
+          (value) => _satorioRepository.paidUnlockEpisode(
+            showEpisodeRx.value.id,
+            paidOption.label,
+          ),
+        )
+        .then(
+          (EpisodeActivation episodeActivation) {
+            isRequestedForUnlock.value = false;
+            activationRx.value = episodeActivation;
+            if (episodeActivation.isActive) {
+              _toUnlockBottomSheet();
+              _updateShowEpisode();
+            }
+          },
+        )
+        .catchError(
+          (value) {
+            isRequestedForUnlock.value = false;
+          },
+        );
   }
 
   void _toUnlockBottomSheet() {
@@ -387,10 +496,12 @@ class ShowEpisodeRealmArgument {
   final ShowDetail showDetail;
   final ShowSeason showSeason;
   final ShowEpisode showEpisode;
+  final bool isProfileRealm;
 
   const ShowEpisodeRealmArgument(
     this.showDetail,
     this.showSeason,
     this.showEpisode,
+    this.isProfileRealm,
   );
 }

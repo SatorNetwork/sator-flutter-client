@@ -38,4 +38,8 @@ class SatorioColor {
   static const Color razzle_dazzle_rose = Color(0xFFFF46ED);
   static const Color dodger_blue = Color(0xFF46A6FF);
   static const Color link_water = Color(0xFFCDCFD5);
+  static const Color charcoal = Color(0xFF454545);
+  static const Color geraldine = Color(0xFFE87373);
+  static const Color acadia = Color(0xFFC4C4C);
+  static const Color mischka = Color(0xFFA3A6B3);
 }

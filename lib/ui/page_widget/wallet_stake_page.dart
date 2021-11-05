@@ -34,11 +34,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             width: Get.width,
             margin: EdgeInsets.only(

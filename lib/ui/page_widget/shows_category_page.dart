@@ -1,14 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class ShowsCategoryPage extends GetView<ShowsCategoryController> {
+  static const double _threshHold = 100.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +22,9 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
         centerTitle: true,
         title: Obx(
           () => Text(
-            controller.titleRx.value,
+            controller.showsType == ShowsType.HomeAllShows
+                ? controller.titleRx.value
+                : 'txt_all_shows'.tr,
             style: textTheme.bodyText1!.copyWith(
               color: SatorioColor.darkAccent,
               fontSize: 17,
@@ -43,11 +47,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
       ),
       body: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
@@ -62,7 +62,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
               child: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification.metrics.pixels >=
-                      notification.metrics.maxScrollExtent - 100)
+                      notification.metrics.maxScrollExtent - _threshHold)
                     controller.loadShows();
                   return true;
                 },
@@ -96,7 +96,7 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
     final height = 168.0 * coefficient;
     return InkWell(
       onTap: () {
-        controller.toShowDetail(show);
+        _onShowTap(show);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
@@ -172,5 +172,18 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
         ),
       ),
     );
+  }
+
+  void _onShowTap(Show show) {
+    switch (controller.showsType) {
+      case ShowsType.NftsAllShows:
+        controller.toShowNfts(show);
+        break;
+      case ShowsType.HomeAllShows:
+        controller.toShowDetail(show);
+        break;
+      default:
+        controller.toShowDetail(show);
+    }
   }
 }

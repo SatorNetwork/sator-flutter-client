@@ -7,6 +7,7 @@ class BorderedButton extends StatelessWidget {
   const BorderedButton({
     this.text = '',
     this.textColor = SatorioColor.darkAccent,
+    this.backgroundColor = Colors.transparent,
     this.borderColor = SatorioColor.darkAccent,
     this.borderWidth = 1.0,
     this.icon,
@@ -15,6 +16,7 @@ class BorderedButton extends StatelessWidget {
 
   final String text;
   final Color textColor;
+  final Color backgroundColor;
   final Color borderColor;
   final double borderWidth;
   final VoidCallback? onPressed;
@@ -27,7 +29,7 @@ class BorderedButton extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        backgroundColor: Colors.transparent,
+        backgroundColor: backgroundColor,
         minimumSize: Size.fromHeight(minHeight),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(

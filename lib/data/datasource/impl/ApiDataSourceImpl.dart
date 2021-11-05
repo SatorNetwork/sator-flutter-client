@@ -7,11 +7,15 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nft_category_model.dart';
+import 'package:satorio/data/model/nft_home_model.dart';
+import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
@@ -29,6 +33,7 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/data/request/change_password_request.dart';
 import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
@@ -40,8 +45,11 @@ import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
+import 'package:satorio/data/request/update_email_request.dart';
+import 'package:satorio/data/request/update_username_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
 import 'package:satorio/data/request/verify_account_request.dart';
+import 'package:satorio/data/request/verify_update_email_request.dart';
 import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
 import 'package:satorio/data/response/attempts_left_response.dart';
@@ -50,6 +58,7 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
@@ -57,7 +66,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.sator.io/';
+    _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -226,6 +235,32 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<bool> requestUpdateEmail(String email) {
+    return _requestPost('auth/request-update-email', UpdateEmailRequest(email))
+        .then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> updateUsername(String username) {
+    return _requestPost('auth/update-username', UpdateUsernameRequest(username))
+        .then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> changePassword(String oldPassword, String newPassword) {
+    return _requestPost(
+        'auth/change-password',
+        ChangePasswordRequest(oldPassword, newPassword)
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
   Future<bool> apiLogout() {
     return _requestPost(
       'auth/logout',
@@ -240,6 +275,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'auth/verify-account',
       VerifyAccountRequest(code),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> verifyUpdateEmail(String email, String code) {
+    return _requestPost(
+      'auth/update-email',
+      VerifyUpdateEmailRequest(email, code),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -564,9 +609,64 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId) {
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
     return _requestGet(
       'shows/$showId/episodes/$episodeId/reviews',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ReviewModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<List<ActivatedRealmModel>> getActivatedRealms(
+      {int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+    return _requestGet(
+      'shows/episodes',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ActivatedRealmModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+    return _requestGet(
+      'shows/reviews',
+      query: query,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
@@ -765,6 +865,103 @@ class ApiDataSourceImpl implements ApiDataSource {
       EmptyRequest(),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  // endregion
+
+  // region NFT
+
+  @override
+  Future<NftHomeModel> nftHome() {
+    return _requestGet(
+      'nft/home',
+    ).then((Response response) {
+      return NftHomeModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<List<NftCategoryModel>> nftCategories() {
+    return _requestGet(
+      'nft/categories',
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftCategoryModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<List<NftItemModel>> nftItems(
+    NftFilterType filterType,
+    String objectId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    String pathParameter;
+    switch (filterType) {
+      case NftFilterType.NftCategory:
+        pathParameter = 'category';
+        break;
+      case NftFilterType.Show:
+        pathParameter = 'show';
+        break;
+      case NftFilterType.Episode:
+        pathParameter = 'episode';
+        break;
+      case NftFilterType.User:
+        pathParameter = 'user';
+        break;
+    }
+
+    return _requestGet(
+      'nft/filter/$pathParameter/$objectId',
+      query: query,
+    ).then(
+      (Response response) {
+        Map jsonData = json.decode(response.bodyString!);
+        if (jsonData['data'] is Iterable) {
+          return (jsonData['data'] as Iterable)
+              .map((element) => NftItemModel.fromJson(element))
+              .toList();
+        } else {
+          return [];
+        }
+      },
+    );
+  }
+
+  @override
+  Future<NftItemModel> nftItem(String nftItemId) {
+    return _requestGet(
+      'nft/$nftItemId',
+    ).then((Response response) {
+      return NftItemModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<bool> buyNftItem(String nftItemId) {
+    return _requestPost(
+      'nft/$nftItemId/buy',
+      EmptyRequest(),
+    ).then((Response response) {
+      return response.isOk;
+      // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 

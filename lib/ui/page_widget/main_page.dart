@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/page_widget/empty_page.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
-import 'package:satorio/ui/page_widget/nfts_page.dart';
+import 'package:satorio/ui/page_widget/nfts_categories_page.dart';
 import 'package:satorio/ui/page_widget/personal_profile_page.dart';
 import 'package:satorio/ui/page_widget/wallet_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -37,6 +38,12 @@ class MainPage extends GetView<MainController> {
                   WalletController walletController = Get.find();
                   walletController.resetPageToInitValue();
                   walletController.refreshAllWallets();
+                }
+                break;
+              case MainController.TabProfile:
+                if (Get.isRegistered<WalletController>()) {
+                  ProfileController profileController = Get.find();
+                  profileController.refreshPage();
                 }
                 break;
               default:
@@ -134,7 +141,7 @@ class MainPage extends GetView<MainController> {
   final List<Widget> _bodyContent = [
     HomePage(),
     EmptyPage(),
-    NFTsPage(),
+    NftCategoriesPage(),
     WalletPage(),
     PersonalProfilePage(),
   ];

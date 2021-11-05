@@ -12,6 +12,8 @@ class ShowEpisode {
   final int activeUsers;
   final double userRewardsAmount;
   final double totalRewardsAmount;
+  final String hint;
+  final String watch;
 
   const ShowEpisode(
     this.id,
@@ -27,5 +29,7 @@ class ShowEpisode {
     this.activeUsers,
     this.userRewardsAmount,
     this.totalRewardsAmount,
+    this.hint,
+    this.watch,
   );
 }

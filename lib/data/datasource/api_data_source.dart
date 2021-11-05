@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
+import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nft_category_model.dart';
+import 'package:satorio/data/model/nft_home_model.dart';
+import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
@@ -18,6 +22,7 @@ import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 abstract class ApiDataSource {
   // region Local Auth
@@ -34,9 +39,17 @@ abstract class ApiDataSource {
 
   Future<bool> signUp(String email, String password, String username);
 
+  Future<bool> requestUpdateEmail(String email);
+
+  Future<bool> updateUsername(String username);
+
+  Future<bool> changePassword(String oldPassword, String newPassword);
+
   Future<bool> apiLogout();
 
   Future<bool> verifyAccount(String code);
+
+  Future<bool> verifyUpdateEmail(String email, String code);
 
   Future<bool> isVerified();
 
@@ -109,8 +122,15 @@ abstract class ApiDataSource {
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId);
-  
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
+
+  Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
+
+  Future<List<ActivatedRealmModel>> getActivatedRealms({
+    int? page,
+    int? itemsPerPage,
+  });
+
   Future<bool> clapShow(String showId);
 
   // endregion
@@ -166,12 +186,34 @@ abstract class ApiDataSource {
 
   // endregion
 
+  // region NFT
+
+  Future<NftHomeModel> nftHome();
+
+  Future<List<NftCategoryModel>> nftCategories();
+
+  Future<List<NftItemModel>> nftItems(
+    NftFilterType filterType,
+    String id, {
+    int? page,
+    int? itemsPerPage,
+  });
+
+  Future<NftItemModel> nftItem(String nftItemId);
+
+  Future<bool> buyNftItem(String nftItemId);
+
+  // endregion
+
   // region Socket
 
   Future<GetSocket> createSocket(String url);
 
   Future<void> sendAnswer(
-      GetSocket? socket, String questionId, String answerId);
+    GetSocket? socket,
+    String questionId,
+    String answerId,
+  );
 
 // endregion
 

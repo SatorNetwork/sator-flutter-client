@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:satorio/controller/wallet_controller.dart';
@@ -17,7 +16,9 @@ import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class WalletPage extends GetView<WalletController> {
+  static const double _threshHold = 0.0;
   static const double _separatorSize = 6.0;
+
   late final double _viewportFraction =
       (Get.width - 2 * (8 + _separatorSize)) / Get.width;
 
@@ -44,11 +45,7 @@ class WalletPage extends GetView<WalletController> {
     return SingleChildScrollView(
       child: Stack(
         children: [
-          SvgPicture.asset(
-            'images/bg/gradient.svg',
-            height: Get.height,
-            fit: BoxFit.cover,
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -110,23 +107,30 @@ class WalletPage extends GetView<WalletController> {
               Container(
                 height: 90,
                 child: Obx(
-                  () => ListView.separated(
-                    shrinkWrap: true,
-                    separatorBuilder: (context, index) => SizedBox(
-                      width: 50,
-                    ),
-                    itemCount: controller.walletDetailsRx.value.length > 0
-                        ? controller.walletDetailsRx
-                            .value[controller.pageRx.value].actions.length
-                        : 0,
-                    itemBuilder: (context, index) {
-                      WalletDetail walletDetail = controller
-                          .walletDetailsRx.value[controller.pageRx.value];
-                      WalletAction walletAction = walletDetail.actions[index];
-                      return _walletActionItem(walletDetail, walletAction);
-                    },
-                    scrollDirection: Axis.horizontal,
-                  ),
+                  () => controller.isClaimLoadRx.value
+                      ? Center(
+                          child: CircularProgressIndicator(
+                          backgroundColor: SatorioColor.brand,
+                        ))
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) => SizedBox(
+                            width: 50,
+                          ),
+                          itemCount: controller.walletDetailsRx.value.length > 0
+                              ? controller.walletDetailsRx
+                                  .value[controller.pageRx.value].actions.length
+                              : 0,
+                          itemBuilder: (context, index) {
+                            WalletDetail walletDetail = controller
+                                .walletDetailsRx.value[controller.pageRx.value];
+                            WalletAction walletAction =
+                                walletDetail.actions[index];
+                            return _walletActionItem(
+                                walletDetail, walletAction);
+                          },
+                          scrollDirection: Axis.horizontal,
+                        ),
                 ),
               ),
             ],
@@ -148,10 +152,10 @@ class WalletPage extends GetView<WalletController> {
       maxChildSize: maxSize,
       expand: false,
       builder: (context, scrollController) =>
-          NotificationListener<OverscrollNotification>(
+          NotificationListener<ScrollNotification>(
         onNotification: (notification) {
-          if (notification.metrics.pixels ==
-              notification.metrics.maxScrollExtent)
+          if (notification.metrics.pixels >=
+              notification.metrics.maxScrollExtent - _threshHold)
             controller.loadMoreTransactions();
           return true;
         },

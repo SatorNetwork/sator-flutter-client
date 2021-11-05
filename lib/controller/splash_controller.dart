@@ -82,7 +82,7 @@ class SplashController extends GetxController {
         Get.offAll(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
-          arguments: EmailVerificationArgument('txt_your_email'.tr),
+          arguments: EmailVerificationArgument('txt_your_email'.tr, false),
         );
       }
     }).catchError(
@@ -105,10 +105,14 @@ class SplashController extends GetxController {
   }
 
   void _toLogin() {
-    Get.offAll(
-      () => LoginPage(),
-      binding: LoginBinding(),
-      arguments: LoginArgument(deepLink),
+    _satorioRepository.clearAllLocalData().then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(deepLink),
+        );
+      },
     );
   }
 

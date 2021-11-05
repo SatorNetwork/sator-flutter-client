@@ -212,7 +212,10 @@ class ShowDetailWithEpisodesPage
             height: 23.0 * coefficient,
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              controller.back();
+              controller.toNftTab();
+            },
             style: ElevatedButton.styleFrom(
               elevation: 0,
               primary: Colors.transparent,
@@ -233,7 +236,7 @@ class ShowDetailWithEpisodesPage
                   height: 6.0 * coefficient,
                 ),
                 Text(
-                  '325',
+                  'NFT',
                   style: textTheme.subtitle2!.copyWith(
                     color: Colors.white,
                     fontSize: 15.0 * coefficient,
