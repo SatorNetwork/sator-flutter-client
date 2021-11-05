@@ -66,7 +66,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.dev.sator.io/';
+    _getConnect.baseUrl = 'https://api.prod.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) {
       String? token = _authDataSource.getAuthToken();
@@ -252,10 +252,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> changePassword(String oldPassword, String newPassword) {
-    return _requestPost(
-        'auth/change-password',
-        ChangePasswordRequest(oldPassword, newPassword)
-    ).then((Response response) {
+    return _requestPost('auth/change-password',
+            ChangePasswordRequest(oldPassword, newPassword))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -609,7 +608,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
