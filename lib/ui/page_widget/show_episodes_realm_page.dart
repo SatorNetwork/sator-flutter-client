@@ -1339,13 +1339,13 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   Widget _reviewItem(Review review) {
     final double reviewContainerHeight = 190.0 * coefficient;
 
-    Rx<bool> isExpandedRx = Rx(false);
+    final RxBool isExpandedRx = false.obs;
 
     return Obx(
       () => InkWell(
         onTap: () {
-          if (review.review.length < 70) return;
-          isExpandedRx.value = !isExpandedRx.value;
+          if (review.review.length < 150) return;
+          isExpandedRx.toggle();
         },
         child: Container(
           margin: EdgeInsets.only(right: 12),

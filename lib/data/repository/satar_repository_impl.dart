@@ -478,9 +478,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Review>> getReviews(String showId, String episodeId) {
+  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .getReviews(showId, episodeId)
+        .getReviews(showId, episodeId, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 

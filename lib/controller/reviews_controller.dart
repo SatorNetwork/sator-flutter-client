@@ -31,14 +31,35 @@ class ReviewsController extends GetxController with NonWorkingFeatureMixin {
 
   void loadReviews() {
     if (_isAllReviews) {
-      _satorioRepository
-          .getReviews(_showDetailId, _showEpisodeId)
-          .then((List<Review> reviews) {
-        reviewsRx.value = reviews;
-      });
+      _loadAllReviews();
     } else {
       _loadUserReviews();
     }
+  }
+
+  void _loadAllReviews() {
+    if (_isAllLoadedRx.value) return;
+
+    if (_isLoadingRx.value) return;
+
+    _isLoadingRx.value = true;
+
+    _satorioRepository
+        .getReviews(
+      _showDetailId, _showEpisodeId,
+      page: _pageRx.value,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then((List<Review> reviews) {
+      reviewsRx.update((value) {
+        if (value != null) value.addAll(reviews);
+      });
+      _isAllLoadedRx.value = reviews.isEmpty;
+      _isLoadingRx.value = false;
+      _pageRx.value = _pageRx.value + 1;
+    }).catchError((value) {
+      _isLoadingRx.value = false;
+    });
   }
 
   void _loadUserReviews() {

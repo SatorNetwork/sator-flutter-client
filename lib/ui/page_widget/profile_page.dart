@@ -343,31 +343,7 @@ class ProfilePage extends GetView<ProfileController> {
                 onTap: () {
                   controller.toNftsMarketplace();
                 },
-                child: Container(
-                  width: Get.width,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.all(Radius.circular(17 * coefficient)),
-                    color: SatorioColor.alice_blue,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'txt_you_havent_nfts'.tr,
-                        style: textTheme.headline3!.copyWith(
-                          color: SatorioColor.darkAccent,
-                          fontSize: 15.0 * coefficient,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _emptyState('txt_you_havent_nfts'.tr),
               )
             : Container(
                 height: nftsLargestImageSize + 21 * coefficient,
@@ -596,10 +572,7 @@ class ProfilePage extends GetView<ProfileController> {
                   return _realmItem(realm!);
                 },
               )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: _emptyState('txt_null_realms'.tr),
-              ),
+            : _emptyState('txt_null_realms'.tr),
       ),
     );
   }
@@ -739,24 +712,27 @@ class ProfilePage extends GetView<ProfileController> {
   }
 
   Widget _emptyState(String message) {
-    return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
-            Radius.circular(13),
-          ),
-          color: SatorioColor.alice_blue,
-        ),
-        height: 60 * coefficient,
-        child: Center(
-          child: Text(
-            message,
-            style: textTheme.bodyText2!.copyWith(
-              color: SatorioColor.interactive,
-              fontSize: 14 * coefficient,
-              fontWeight: FontWeight.w400,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(13),
             ),
+            color: SatorioColor.alice_blue,
           ),
-        ));
+          height: 60 * coefficient,
+          child: Center(
+            child: Text(
+              message,
+              style: textTheme.bodyText2!.copyWith(
+                color: SatorioColor.interactive,
+                fontSize: 14 * coefficient,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          )),
+    );
   }
 
   Widget _reviews(List<Review?> reviews) {

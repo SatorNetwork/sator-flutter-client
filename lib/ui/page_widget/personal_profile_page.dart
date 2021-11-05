@@ -100,6 +100,8 @@ class PersonalProfilePage extends GetView<PersonalProfileController> {
             width: Get.width,
             child: TabBarView(
               controller: controller.tabController,
+              //TODO: remove physics
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 ProfilePage(),
                 ActivityPage(),
