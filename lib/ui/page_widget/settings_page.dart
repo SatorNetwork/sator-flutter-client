@@ -206,11 +206,11 @@ class SettingsPage extends GetView<SettingsController> {
         // SizedBox(
         //   height: 12,
         // ),
-        // _settingsButton('txt_help'.tr, 'images/settings/ico_help',
-        //     () => controller.toNonWorkingDialog()),
-        // SizedBox(
-        //   height: 12,
-        // ),
+        _settingsButton('txt_help'.tr, 'images/settings/ico_help',
+            () => controller.sendEmailToSupport()),
+        SizedBox(
+          height: 12,
+        ),
         _settingsButton('txt_about'.tr, 'images/settings/ico_document',
             () => controller.toAbout()),
       ],
