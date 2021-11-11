@@ -14,8 +14,11 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 import 'package:satorio/ui/page_widget/settings_about_page.dart';
 import 'package:satorio/ui/page_widget/settings_change_info_page.dart';
+import 'package:satorio/util/links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class SettingsController extends GetxController with NonWorkingFeatureMixin, BackToMainMixin {
+class SettingsController extends GetxController
+    with NonWorkingFeatureMixin, BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   void toNonWorkingDialog() {
@@ -35,12 +38,22 @@ class SettingsController extends GetxController with NonWorkingFeatureMixin, Bac
   }
 
   void toAbout() {
-    Get.to(() => SettingsAboutPage(),
-        binding: SettingsAboutBinding());
+    Get.to(() => SettingsAboutPage(), binding: SettingsAboutBinding());
   }
 
   void back() {
     Get.back();
+  }
+
+  void sendEmailToSupport() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: linkSupportEmail,
+    );
+    String url = params.toString();
+    await canLaunch(url)
+        ? await launch(url)
+        : throw 'Could not launch $url';
   }
 
   void toLogoutDialog() {
