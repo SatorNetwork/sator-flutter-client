@@ -1,5 +1,3 @@
-import 'dart:io' show Platform;
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -122,7 +120,7 @@ class LoginPage extends GetView<LoginController> {
                   padding: EdgeInsets.only(
                       right: 24.0,
                       left: 24.0,
-                      bottom: Platform.isAndroid ? 24.0 : 50.0,
+                      bottom: isAndroid ? 24.0 : 50.0,
                       top: 24.0),
                   child: RichText(
                     text: TextSpan(
