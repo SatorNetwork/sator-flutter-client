@@ -65,6 +65,7 @@ class NftItemController extends GetxController {
   }
 
   void buy() {
+    Profile? profile = _getProfile();
     Future.value(true)
         .then(
           (value) {
@@ -79,7 +80,7 @@ class NftItemController extends GetxController {
           (isSuccess) {
             if (isSuccess) {
               Get.bottomSheet(
-                SuccessNftBoughtBottomSheet(nftItemRx.value.name),
+                SuccessNftBoughtBottomSheet(nftItemRx.value.name, profile!.id),
               );
             }
             isBuyRequested.value = false;
@@ -100,13 +101,17 @@ class NftItemController extends GetxController {
   }
 
   void _checkOwner() {
-    Profile? profile = (_satorioRepository.profileListenable()
-            as ValueListenable<Box<Profile>>)
-        .value
-        .getAt(0);
+    Profile? profile = _getProfile();
     if (profile != null) {
       isOwner.value = nftItemRx.value.ownerId == profile.id;
     }
+  }
+
+  Profile? _getProfile() {
+    return (_satorioRepository.profileListenable()
+            as ValueListenable<Box<Profile>>)
+        .value
+        .getAt(0);
   }
 }
 
