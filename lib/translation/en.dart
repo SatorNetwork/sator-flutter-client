@@ -97,6 +97,7 @@ const Map<String, String> en = {
   'txt_unlock_quiz': 'Unlock with quiz',
   'txt_unlock_sao': 'Unlock with SAO',
   'txt_share_qr': 'Share QR',
+  'txt_share': 'Share',
   'txt_account_address': 'Account Address',
   'txt_copy_address': 'Copy address',
   'txt_done': 'Done!',
