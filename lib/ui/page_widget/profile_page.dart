@@ -899,6 +899,8 @@ class ProfilePage extends GetView<ProfileController> {
                     Expanded(
                       child: Text(
                         '${review.userName}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 15.0 * coefficient,
