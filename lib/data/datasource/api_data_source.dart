@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
@@ -122,7 +121,8 @@ abstract class ApiDataSource {
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage});
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 
@@ -202,18 +202,6 @@ abstract class ApiDataSource {
   Future<NftItemModel> nftItem(String nftItemId);
 
   Future<bool> buyNftItem(String nftItemId);
-
-  // endregion
-
-  // region Socket
-
-  Future<GetSocket> createSocket(String url);
-
-  Future<void> sendAnswer(
-    GetSocket? socket,
-    String questionId,
-    String answerId,
-  );
 
 // endregion
 

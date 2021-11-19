@@ -1,3 +1,4 @@
+import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
@@ -6,6 +7,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
+import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -37,8 +39,10 @@ import 'package:satorio/ui/page_widget/login_page.dart';
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
   final LocalDataSource _localDataSource;
+  final NatsDataSource _natsDataSource;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource) {
+  SatorioRepositoryImpl(
+      this._apiDataSource, this._localDataSource, this._natsDataSource) {
     _localDataSource.init();
   }
 
@@ -343,17 +347,22 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<GetSocket> createQuizSocket(String socketUrl) {
-    return _apiDataSource.createSocket(socketUrl);
+  Future<Subscription> subscribeNats(String subject) {
+    return _natsDataSource.subscribe(subject);
+  }
+
+  @override
+  Future<void> unsubscribeNats(Subscription subscription) {
+    return _natsDataSource.unsubscribe(subscription);
   }
 
   @override
   Future<void> sendAnswer(
-    GetSocket? socket,
+    String answerSubject,
     String questionId,
     String answerId,
   ) {
-    return _apiDataSource.sendAnswer(socket, questionId, answerId);
+    return _natsDataSource.sendAnswer(answerSubject, questionId, answerId);
   }
 
   @override
@@ -478,7 +487,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<Review>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .getReviews(showId, episodeId, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));

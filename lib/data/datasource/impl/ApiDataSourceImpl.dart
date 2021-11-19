@@ -253,10 +253,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> changePassword(String oldPassword, String newPassword) {
-    return _requestPost(
-        'auth/change-password',
-        ChangePasswordRequest(oldPassword, newPassword)
-    ).then((Response response) {
+    return _requestPost('auth/change-password',
+            ChangePasswordRequest(oldPassword, newPassword))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -610,7 +609,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
@@ -964,30 +964,6 @@ class ApiDataSourceImpl implements ApiDataSource {
       return response.isOk;
       // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
-  }
-
-  // endregion
-
-  // region Socket
-
-  @override
-  Future<GetSocket> createSocket(String url) async {
-    return GetConnect().socket(url);
-  }
-
-  @override
-  Future<void> sendAnswer(
-    GetSocket? socket,
-    String questionId,
-    String answerId,
-  ) async {
-    _sendViaSocket(
-      socket,
-      SocketMessageAnswerModel(
-        PayloadAnswerModel(questionId, answerId),
-      ),
-    );
-    return;
   }
 
 // endregion

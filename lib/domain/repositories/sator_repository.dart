@@ -1,5 +1,5 @@
+import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
@@ -135,10 +135,12 @@ abstract class SatorioRepository {
 
   Future<String> quizSocketUrl(String challengeId);
 
-  Future<GetSocket> createQuizSocket(String socketUrl);
+  Future<Subscription> subscribeNats(String subject);
+
+  Future<void> unsubscribeNats(Subscription subscription);
 
   Future<void> sendAnswer(
-    GetSocket? socket,
+    String answerSubject,
     String questionId,
     String answerId,
   );
@@ -151,7 +153,8 @@ abstract class SatorioRepository {
 
   Future<bool> confirmReferralCode(String referralCode);
 
-  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
+  Future<List<Review>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage});
 
   Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
 

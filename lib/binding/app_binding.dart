@@ -4,7 +4,9 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/impl/ApiDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/AuthDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/LocalDataSourceImpl.dart';
+import 'package:satorio/data/datasource/impl/nats_data_source_impl.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
+import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/repository/satar_repository_impl.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
@@ -14,8 +16,14 @@ class AppBinding extends Bindings {
     Get.put<LocalDataSource>(LocalDataSourceImpl(), permanent: true);
     Get.put<AuthDataSource>(AuthDataSourceImpl(), permanent: true);
     Get.put<ApiDataSource>(ApiDataSourceImpl(Get.find()), permanent: true);
+    Get.put<NatsDataSource>(NatsDataSourceImpl(), permanent: true);
 
-    Get.put<SatorioRepository>(SatorioRepositoryImpl(Get.find(), Get.find()),
+    Get.put<SatorioRepository>(
+        SatorioRepositoryImpl(
+          Get.find(),
+          Get.find(),
+          Get.find(),
+        ),
         permanent: true);
   }
 }

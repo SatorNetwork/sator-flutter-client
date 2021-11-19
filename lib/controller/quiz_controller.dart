@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
@@ -23,7 +24,7 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
-  GetSocket? _socket;
+  late final Subscription _subscription;
 
   final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
 
@@ -32,15 +33,13 @@ class QuizController extends GetxController {
   QuizController() {
     QuizArgument argument = Get.arguments as QuizArgument;
     challengeRx = Rx(argument.challenge);
+
     _initSocket(argument.socketUrl);
   }
 
   @override
   void onClose() {
-    if (_socket != null) {
-      _socket!.close();
-      _socket = null;
-    }
+    _satorioRepository.unsubscribeNats(_subscription);
     super.onClose();
   }
 
@@ -57,54 +56,89 @@ class QuizController extends GetxController {
   }
 
   Future<void> sendAnswer(String questionId, String answerId) {
-    return _satorioRepository.sendAnswer(_socket, questionId, answerId);
+    return _satorioRepository.sendAnswer('???', questionId, answerId);
   }
 
   void _initSocket(String socketUrl) async {
-    _socket = await _satorioRepository.createQuizSocket(socketUrl);
+    _subscription = await _satorioRepository.subscribeNats('???');
 
-    _socket?.onOpen(() {
-      print('Socket onOpen ${_socket?.url}');
-    });
-    _socket?.onClose((close) {
-      print('Socket onClose $close');
-    });
-    _socket?.onError((e) {
-      print('Socket onError $e');
-    });
-    _socket?.onMessage((data) {
+    _subscription.stream?.listen((Message message) {
+      String data = message.string;
       print('onMessage $data');
-      if (data is String) {
-        SocketMessage socketMessage =
-            SocketMessageModelFactory.createSocketMessage(json.decode(data));
-        switch (socketMessage.type) {
-          case Type.player_connected:
-            _handlePayloadUser(socketMessage.payload as PayloadUser, true);
-            break;
-          case Type.player_disconnected:
-            _handlePayloadUser(socketMessage.payload as PayloadUser, false);
-            break;
-          case Type.countdown:
-            _handlePayloadCountdown(socketMessage.payload as PayloadCountdown);
-            break;
-          case Type.question:
-            _handlePayloadQuestion(socketMessage.payload as PayloadQuestion);
-            break;
-          case Type.question_result:
-            _handlePayloadQuestionResult(
-                socketMessage.payload as PayloadQuestionResult);
-            break;
-          case Type.challenge_result:
-            _handlePayloadChallengeResult(
-                socketMessage.payload as PayloadChallengeResult);
-            break;
-          case Type.time_out:
-            _handleTimeOut(socketMessage.payload as PayloadTimeOut);
-            break;
-        }
+
+      SocketMessage socketMessage =
+          SocketMessageModelFactory.createSocketMessage(json.decode(data));
+      switch (socketMessage.type) {
+        case Type.player_connected:
+          _handlePayloadUser(socketMessage.payload as PayloadUser, true);
+          break;
+        case Type.player_disconnected:
+          _handlePayloadUser(socketMessage.payload as PayloadUser, false);
+          break;
+        case Type.countdown:
+          _handlePayloadCountdown(socketMessage.payload as PayloadCountdown);
+          break;
+        case Type.question:
+          _handlePayloadQuestion(socketMessage.payload as PayloadQuestion);
+          break;
+        case Type.question_result:
+          _handlePayloadQuestionResult(
+              socketMessage.payload as PayloadQuestionResult);
+          break;
+        case Type.challenge_result:
+          _handlePayloadChallengeResult(
+              socketMessage.payload as PayloadChallengeResult);
+          break;
+        case Type.time_out:
+          _handleTimeOut(socketMessage.payload as PayloadTimeOut);
+          break;
       }
     });
-    _socket?.connect();
+
+    // _socket = await _satorioRepository.createQuizSocket(socketUrl);
+    //
+    // _socket?.onOpen(() {
+    //   print('Socket onOpen ${_socket?.url}');
+    // });
+    // _socket?.onClose((close) {
+    //   print('Socket onClose $close');
+    // });
+    // _socket?.onError((e) {
+    //   print('Socket onError $e');
+    // });
+    // _socket?.onMessage((data) {
+    //   print('onMessage $data');
+    //   if (data is String) {
+    //     SocketMessage socketMessage =
+    //         SocketMessageModelFactory.createSocketMessage(json.decode(data));
+    //     switch (socketMessage.type) {
+    //       case Type.player_connected:
+    //         _handlePayloadUser(socketMessage.payload as PayloadUser, true);
+    //         break;
+    //       case Type.player_disconnected:
+    //         _handlePayloadUser(socketMessage.payload as PayloadUser, false);
+    //         break;
+    //       case Type.countdown:
+    //         _handlePayloadCountdown(socketMessage.payload as PayloadCountdown);
+    //         break;
+    //       case Type.question:
+    //         _handlePayloadQuestion(socketMessage.payload as PayloadQuestion);
+    //         break;
+    //       case Type.question_result:
+    //         _handlePayloadQuestionResult(
+    //             socketMessage.payload as PayloadQuestionResult);
+    //         break;
+    //       case Type.challenge_result:
+    //         _handlePayloadChallengeResult(
+    //             socketMessage.payload as PayloadChallengeResult);
+    //         break;
+    //       case Type.time_out:
+    //         _handleTimeOut(socketMessage.payload as PayloadTimeOut);
+    //         break;
+    //     }
+    //   }
+    // });
+    // _socket?.connect();
   }
 
   void _handlePayloadUser(PayloadUser payloadUser, bool isAdd) {
