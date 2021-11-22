@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_nats/dart_nats.dart';
+import 'package:flutter/foundation.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
@@ -12,9 +13,11 @@ class NatsDataSourceImpl implements NatsDataSource {
   final Client _client = Client();
 
   NatsDataSourceImpl() {
-    _client.statusStream.listen((Status status) {
-      print('NATS status - $status');
-    });
+    if (kDebugMode) {
+      _client.statusStream.listen((Status status) {
+        print('NATS status - $status');
+      });
+    }
   }
 
   Future<void> _sendViaClient(

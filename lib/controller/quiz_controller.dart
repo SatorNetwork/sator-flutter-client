@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_nats/dart_nats.dart';
@@ -24,7 +25,9 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
+
   late final Subscription _subscription;
+  late final StreamSubscription<Message>? _streamSubscription;
 
   final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
 
@@ -39,7 +42,9 @@ class QuizController extends GetxController {
 
   @override
   void onClose() {
+    _streamSubscription?.cancel();
     _satorioRepository.unsubscribeNats(_subscription);
+
     super.onClose();
   }
 
@@ -62,7 +67,7 @@ class QuizController extends GetxController {
   void _initSocket(String socketUrl) async {
     _subscription = await _satorioRepository.subscribeNats('???');
 
-    _subscription.stream?.listen((Message message) {
+    _streamSubscription = _subscription.stream?.listen((Message message) {
       String data = message.string;
       print('onMessage $data');
 
