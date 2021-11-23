@@ -70,14 +70,14 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-      //TODO: refactor to firebase data source
+      //TODO: refactor firebase data source
       String? fcmToken = await FirebaseMessaging.instance.getToken();
       String? deviceId = fcmToken?.split(':')[0];
       if (deviceId != null && deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
 
       String? token = _authDataSource.getAuthToken();
-      ?if (token != null && token.isNotEmpty)
+      if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';
       return request;
     });
