@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
@@ -68,7 +69,13 @@ class ApiDataSourceImpl implements ApiDataSource {
     // TODO: move this option into environment variable
     _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
-    _getConnect.httpClient.addRequestModifier<Object?>((request) {
+    _getConnect.httpClient.addRequestModifier<Object?>((request) async {
+      //TODO: refactor firebase data source
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      String? deviceId = fcmToken?.split(':')[0];
+      if (deviceId != null && deviceId.isNotEmpty)
+        request.headers['Device-ID'] = deviceId;
+
       String? token = _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';
@@ -252,10 +259,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> changePassword(String oldPassword, String newPassword) {
-    return _requestPost(
-        'auth/change-password',
-        ChangePasswordRequest(oldPassword, newPassword)
-    ).then((Response response) {
+    return _requestPost('auth/change-password',
+            ChangePasswordRequest(oldPassword, newPassword))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -609,7 +615,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
