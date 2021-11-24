@@ -191,12 +191,16 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
                 width: 24 * coefficient,
               ),
               Obx(
-                () => Text(
-                  controller.profileRx.value?.displayedName ?? '',
-                  style: textTheme.bodyText1!.copyWith(
-                      color: Colors.black,
-                      fontSize: 18.0 * coefficient,
-                      fontWeight: FontWeight.w400),
+                () => Expanded(
+                  child: Text(
+                    controller.profileRx.value?.displayedName ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.bodyText1!.copyWith(
+                        color: Colors.black,
+                        fontSize: 18.0 * coefficient,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
               ),
             ],

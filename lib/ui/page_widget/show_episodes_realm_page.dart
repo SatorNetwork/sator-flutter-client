@@ -1442,17 +1442,18 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     SizedBox(
                       width: 6,
                     ),
-                    Text(
-                      review.userName,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w600,
+                    Expanded(
+                      child: Text(
+                        review.userName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
-                    Spacer(flex: 5),
                     //TODO: uncomment
                     // SvgPicture.asset(
                     //   'images/like_icon.svg',
