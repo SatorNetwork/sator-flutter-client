@@ -35,7 +35,6 @@ class SplashController extends GetxController {
     void _handleDeepLink(PendingDynamicLinkData? data) {
       if (data == null) return;
       deepLink = data.link;
-      print('_handleDeepLink | deeplink: $deepLink');
     }
 
     _handleDeepLink(data);
@@ -44,7 +43,6 @@ class SplashController extends GetxController {
         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
       _handleDeepLink(dynamicLink!);
     }, onError: (OnLinkErrorException e) async {
-      print('Link Failed: ${e.message}');
     });
   }
 

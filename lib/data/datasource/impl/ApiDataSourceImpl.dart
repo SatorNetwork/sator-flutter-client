@@ -68,8 +68,8 @@ class ApiDataSourceImpl implements ApiDataSource {
     // TODO: move this option into environment variable
     _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
-    _getConnect.httpClient.addRequestModifier<Object?>((request) {
-      String? token = _authDataSource.getAuthToken();
+    _getConnect.httpClient.addRequestModifier<Object?>((request) async {
+      String? token = await _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';
       return request;
@@ -194,13 +194,14 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> isTokenExist() async {
-    String? token = _authDataSource.getAuthToken();
+    String? token = await _authDataSource.getAuthToken();
     return token != null && token.isNotEmpty;
   }
 
   @override
   Future<void> authLogout() async {
-    _authDataSource.clearAll();
+    _authDataSource.clearToken();
+    _authDataSource.clearRefreshToken();
     return;
   }
 
