@@ -78,7 +78,6 @@ class LoginController extends GetxController with ValidationMixin {
       )
           .then((value) {
         if (value) {
-          print(value);
           _satorioRepository.signInViaRefreshToken().then((isTokenValid) {
             if (isTokenValid) {
               _checkIsVerified();
