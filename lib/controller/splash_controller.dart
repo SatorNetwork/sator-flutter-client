@@ -52,7 +52,7 @@ class SplashController extends GetxController {
     Future.delayed(
       Duration(milliseconds: 1000),
       () {
-        _satorioRepository.isTokenValid().then(
+        _satorioRepository.validateToken().then(
           (bool isTokenValid) {
             if (isTokenValid) {
               _checkIsVerified();

@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
@@ -18,11 +20,14 @@ class LoginController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  final LocalAuthentication _localAuth = LocalAuthentication();
+
   final RxString emailRx = ''.obs;
   final RxString passwordRx = ''.obs;
 
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
+  final RxBool isBiometric = true.obs;
 
   final SatorioRepository _satorioRepository = Get.find();
 
@@ -30,7 +35,6 @@ class LoginController extends GetxController with ValidationMixin {
 
   LoginController() {
     LoginArgument argument = Get.arguments as LoginArgument;
-    print(argument.deepLink);
     deepLink = argument.deepLink;
   }
 
@@ -46,6 +50,49 @@ class LoginController extends GetxController with ValidationMixin {
     emailController.removeListener(_emailListener);
     passwordController.removeListener(_passwordListener);
     super.onClose();
+  }
+
+  Future<void> checkingForBioMetrics() async {
+    await _localAuth.canCheckBiometrics.then((canCheckBiometrics) {
+      if (canCheckBiometrics) {
+        _authWithBiometric();
+      } else {
+        isBiometric.value = false;
+        Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+      }
+    });
+  }
+
+  void _authWithBiometric() {
+    Future.value(true).then(
+      (value) {
+        isRequested.value = true;
+        return value;
+      },
+    ).then((value) {
+      _localAuth
+          .authenticate(
+        localizedReason: "Authenticate for SATOR",
+        useErrorDialogs: true,
+        stickyAuth: true,
+      )
+          .then((value) {
+        if (value) {
+          print(value);
+          _satorioRepository.signInViaRefreshToken().then((isTokenValid) {
+            if (isTokenValid) {
+              _checkIsVerified();
+            } else {
+              Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+              isRequested.value = false;
+            }
+          });
+        } else {
+          Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+          isRequested.value = false;
+        }
+      });
+    });
   }
 
   void toCreateAccount() {

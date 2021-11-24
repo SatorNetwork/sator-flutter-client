@@ -29,6 +29,8 @@ abstract class ApiDataSource {
 
   Future<bool> isTokenExist();
 
+  Future<bool> isRefreshTokenExist();
+
   Future<void> authLogout();
 
   // endregion
@@ -58,6 +60,10 @@ abstract class ApiDataSource {
   Future<bool> resendCode();
 
   Future<bool> refreshToken();
+
+  Future<bool> signInViaRefreshToken();
+
+  Future<bool> validateToken();
 
   Future<bool> forgotPassword(String email);
 

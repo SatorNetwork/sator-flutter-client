@@ -56,6 +56,7 @@ import 'package:satorio/data/response/attempts_left_response.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
+import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
@@ -105,6 +106,14 @@ class ApiDataSourceImpl implements ApiDataSource {
     return await _getConnect.put(path, request.toJson(), query: query).then(
           (Response response) => _processResponse(response),
         );
+  }
+
+  Future<Response> _requestRefreshToken() async {
+    String? refreshToken = await _authDataSource.getAuthRefreshToken();
+    return _getConnect.request('auth/refresh-token', 'GET',
+        headers: {'Authorization': 'Bearer $refreshToken'}).then(
+          (Response response) => _processResponse(response),
+    );
   }
 
   Future<Response> _requestPatch(
@@ -199,6 +208,12 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<bool> isRefreshTokenExist() async {
+    String? token = await _authDataSource.getAuthRefreshToken();
+    return token != null && token.isNotEmpty;
+  }
+
+  @override
   Future<void> authLogout() async {
     _authDataSource.clearToken();
     _authDataSource.clearRefreshToken();
@@ -218,6 +233,24 @@ class ApiDataSourceImpl implements ApiDataSource {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
+      String refreshToken =
+          RefreshResponse.fromJson(json.decode(response.bodyString!))
+              .refreshToken;
+      _authDataSource.storeRefreshToken(refreshToken);
+      return token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> signInViaRefreshToken() {
+    return _requestRefreshToken().then((Response response) {
+      String token =
+          AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
+      _authDataSource.storeAuthToken(token);
+      String refreshToken =
+          RefreshResponse.fromJson(json.decode(response.bodyString!))
+              .refreshToken;
+      _authDataSource.storeRefreshToken(refreshToken);
       return token.isNotEmpty;
     });
   }
@@ -253,10 +286,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> changePassword(String oldPassword, String newPassword) {
-    return _requestPost(
-        'auth/change-password',
-        ChangePasswordRequest(oldPassword, newPassword)
-    ).then((Response response) {
+    return _requestPost('auth/change-password',
+            ChangePasswordRequest(oldPassword, newPassword))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -329,6 +361,15 @@ class ApiDataSourceImpl implements ApiDataSource {
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
       return token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> validateToken() {
+    return _requestGet(
+      'auth',
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
@@ -610,7 +651,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};

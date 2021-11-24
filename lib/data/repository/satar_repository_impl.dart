@@ -87,6 +87,25 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> signInViaRefreshToken() {
+    return _apiDataSource.isRefreshTokenExist().then((isExist) {
+      if (isExist)
+        return _apiDataSource.signInViaRefreshToken().catchError((error) => _handleException(error));
+      else return isExist;
+    });
+  }
+
+  @override
+  Future<bool> validateToken() {
+    return _apiDataSource.validateToken().catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> isRefreshTokenExist() {
+    return _apiDataSource.isRefreshTokenExist().catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<bool> signIn(String email, String password) {
     return _apiDataSource
         .signIn(email, password)

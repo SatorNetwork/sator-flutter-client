@@ -23,6 +23,11 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
+  Future<String?> getAuthRefreshToken() async {
+    return await _secureStorage.read(key: _refreshToken);
+  }
+
+  @override
   Future<void> storeRefreshToken(String refreshToken) async {
     await _secureStorage.write(key: _refreshToken, value: refreshToken);
   }

@@ -26,6 +26,8 @@ abstract class SatorioRepository {
 
   Future<bool> isTokenValid();
 
+  Future<bool> isRefreshTokenExist();
+
   Future<bool> signIn(String email, String password);
 
   Future<bool> signUp(String email, String password, String username);
@@ -41,6 +43,10 @@ abstract class SatorioRepository {
   Future<bool> verifyUpdateEmail(String email, String code);
 
   Future<bool> isVerified();
+
+  Future<bool> validateToken();
+
+  Future<bool> signInViaRefreshToken();
 
   Future<bool> isOnBoarded();
 

@@ -18,6 +18,8 @@ const Map<String, String> en = {
   'txt_sign_in': 'Sign In',
   'txt_sign_out': 'Sign out',
   'txt_login': 'Login',
+  'txt_login_refresh_error': 'Please login with email and password',
+  'txt_login_biometric': 'Login with Face/Touch ID',
   'txt_forgot_password': 'Forgot password?',
   'txt_not_member': 'Not a member? ',
   'txt_password_recovery': 'Password recovery',
