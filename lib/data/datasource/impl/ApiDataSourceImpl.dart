@@ -77,7 +77,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (deviceId != null && deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
 
-      String? token = _authDataSource.getAuthToken();
+      String? token = await _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';
       return request;
