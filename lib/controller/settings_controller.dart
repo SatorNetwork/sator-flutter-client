@@ -21,6 +21,23 @@ class SettingsController extends GetxController
     with NonWorkingFeatureMixin, BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
+  final RxBool isBiometric = false.obs;
+
+  SettingsController() {
+    _getBiometric();
+  }
+
+  Future<void> _getBiometric() async {
+    await _satorioRepository.isBiometricEnabled().then((value) {
+      isBiometric.value = value;
+    });
+  }
+
+  void toggleBiometric(bool value) {
+    isBiometric.value = value;
+    _satorioRepository.markIsBiometricEnabled(isBiometric.value);
+  }
+
   void toNonWorkingDialog() {
     toNonWorkingFeatureDialog();
   }

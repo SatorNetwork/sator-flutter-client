@@ -11,6 +11,7 @@ import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/create_account_page.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/forgot_password_page.dart';
@@ -27,7 +28,8 @@ class LoginController extends GetxController with ValidationMixin {
 
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
-  final RxBool isBiometric = true.obs;
+  final RxBool isBiometric = false.obs;
+  final RxBool isRefreshTokenExist = false.obs;
 
   final SatorioRepository _satorioRepository = Get.find();
 
@@ -36,6 +38,9 @@ class LoginController extends GetxController with ValidationMixin {
   LoginController() {
     LoginArgument argument = Get.arguments as LoginArgument;
     deepLink = argument.deepLink;
+
+    _getRefreshToken();
+    _getBiometric();
   }
 
   @override
@@ -52,12 +57,28 @@ class LoginController extends GetxController with ValidationMixin {
     super.onClose();
   }
 
+  Future<void> _getRefreshToken() async {
+    await _satorioRepository.isRefreshTokenExist().then((value) {
+      isRefreshTokenExist.value = value;
+    });
+  }
+
+  Future<void> _getBiometric() async {
+    await _satorioRepository.isBiometricEnabled().then((value) {
+      isBiometric.value = value;
+      if (isBiometric.value && isRefreshTokenExist.value) {
+        _satorioRepository.removeTokenIsBiometricEnabled().then((value) {
+          checkingForBioMetrics();
+        });
+      }
+    });
+  }
+
   Future<void> checkingForBioMetrics() async {
     await _localAuth.canCheckBiometrics.then((canCheckBiometrics) {
       if (canCheckBiometrics) {
         _authWithBiometric();
       } else {
-        isBiometric.value = false;
         Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
       }
     });
@@ -120,7 +141,15 @@ class LoginController extends GetxController with ValidationMixin {
         .then(
           (isSuccess) {
             if (isSuccess) {
-              _checkIsVerified();
+              _satorioRepository
+                  .isBiometricEnabled()
+                  .then((isBiometricEnabled) {
+                if (!isBiometricEnabled) {
+                  _toEnableBiometricDialog();
+                } else {
+                  _checkIsVerified();
+                }
+              });
             } else {
               isRequested.value = false;
             }
@@ -132,6 +161,31 @@ class LoginController extends GetxController with ValidationMixin {
             handleValidationException(value);
           },
         );
+  }
+
+  Future<bool> _checkBiometric() async {
+    await _localAuth.canCheckBiometrics.then((value) {
+      if (value) {
+        return value;
+      }
+    });
+    return false;
+  }
+
+  void _toEnableBiometricDialog() {
+    Get.dialog(
+      DefaultDialog('txt_login_biometric_title'.tr, 'txt_login_biometric_q'.tr, 'txt_yes'.tr,
+          icon: Icons.fingerprint,
+          onButtonPressed: () {
+            _satorioRepository.markIsBiometricEnabled(true).then((value) {
+              _authWithBiometric();
+            });
+          },
+          secondaryButtonText: 'txt_no'.tr,
+          onSecondaryButtonPressed: () {
+            _checkIsVerified();
+          }),
+    );
   }
 
   void _checkIsVerified() {

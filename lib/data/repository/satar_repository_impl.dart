@@ -75,6 +75,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<void> removeTokenIsBiometricEnabled() {
+    return _apiDataSource.removeTokenIsBiometricEnabled();
+  }
+
+  @override
   Future<bool> isTokenValid() {
     return _apiDataSource.isTokenExist().then((isTokenExist) {
       if (isTokenExist)
@@ -167,6 +172,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<void> markOnBoarded() {
     return _localDataSource.markOnBoarded();
+  }
+
+  @override
+  Future<bool> isBiometricEnabled() {
+    return _localDataSource.isBiometricEnabled();
+  }
+
+  @override
+  Future<void> markIsBiometricEnabled(bool isBiometricEnabled) {
+    return _localDataSource.markIsBiometricEnabled(isBiometricEnabled);
   }
 
   @override

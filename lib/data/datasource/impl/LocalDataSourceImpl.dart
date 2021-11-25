@@ -24,6 +24,8 @@ class LocalDataSourceImpl implements LocalDataSource {
   static const _walletDetailBox = 'walletDetail';
   static const _transactionBox = 'transaction';
 
+  static const _isBiometricEnabled = 'isBiometricEnabled';
+
   static const _onBoarded = 'onBoarded';
 
   GetStorage _storage = GetStorage('LocalDataSource');
@@ -70,6 +72,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     await Hive.box<Wallet>(_walletBox).clear();
     await Hive.box<WalletDetail>(_walletDetailBox).clear();
     await Hive.box<Transaction>(_transactionBox).clear();
+    await markIsBiometricEnabled(false);
   }
 
   @override
@@ -78,9 +81,20 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  Future<void> markIsBiometricEnabled(bool isBiometricEnabled) async {
+    return _storage.write(_isBiometricEnabled, isBiometricEnabled);
+  }
+
+  @override
   Future<bool> isOnBoarded() async {
     dynamic tmp = _storage.read(_onBoarded);
     final bool result = tmp != null && tmp is bool ? tmp : false;
+    return result;
+  }
+
+  @override
+  Future<bool> isBiometricEnabled() async {
+    bool result = _storage.read(_isBiometricEnabled);
     return result;
   }
 

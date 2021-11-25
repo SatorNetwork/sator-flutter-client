@@ -12,7 +12,11 @@ abstract class LocalDataSource {
 
   Future<void> markOnBoarded();
 
+  Future<void> markIsBiometricEnabled(bool isBiometricEnabled);
+
   Future<bool> isOnBoarded();
+
+  Future<bool> isBiometricEnabled();
 
   Future<void> saveProfile(Profile profile);
 

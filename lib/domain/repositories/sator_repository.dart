@@ -24,6 +24,8 @@ import 'package:satorio/domain/entities/wallet_stake.dart';
 abstract class SatorioRepository {
   Future<void> clearAllLocalData();
 
+  Future<void> removeTokenIsBiometricEnabled();
+
   Future<bool> isTokenValid();
 
   Future<bool> isRefreshTokenExist();
@@ -51,6 +53,10 @@ abstract class SatorioRepository {
   Future<bool> isOnBoarded();
 
   Future<void> markOnBoarded();
+
+  Future<bool> isBiometricEnabled();
+
+  Future<void> markIsBiometricEnabled(bool isBiometricEnabled);
 
   Future<bool> selectAvatar(String avatarPath);
 

@@ -33,6 +33,8 @@ abstract class ApiDataSource {
 
   Future<void> authLogout();
 
+  Future<void> removeTokenIsBiometricEnabled();
+
   // endregion
 
   // region Auth

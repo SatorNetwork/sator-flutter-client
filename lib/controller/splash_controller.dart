@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
-import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/binding/onboarding_binding.dart';
 import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
@@ -12,7 +11,6 @@ import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dar
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
-import 'package:satorio/ui/page_widget/main_page.dart';
 import 'package:satorio/ui/page_widget/onboardinga_page.dart';
 import 'package:satorio/util/onboarding_list.dart';
 
@@ -62,7 +60,7 @@ class SplashController extends GetxController {
           },
         ).catchError(
           (value) {
-            if (!(value is ApiUnauthorizedException)) _checkIsOnBoarding();
+            if (!(value is ApiUnauthorizedException)) _toLogin();
           },
         );
       },
@@ -72,10 +70,7 @@ class SplashController extends GetxController {
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {
       if (isVerified) {
-        Get.offAll(
-          () => MainPage(),
-          binding: MainBinding(),
-        );
+        _toLogin();
       } else {
         Get.offAll(
           () => EmailVerificationPage(),

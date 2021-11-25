@@ -54,6 +54,7 @@ dependencies:
   better_player: ^0.0.77
   flutter_secure_storage: ^5.0.2
   local_auth: ^1.1.8
+  flutter_switch: ^0.3.1
 
 dev_dependencies:
   flutter_test:

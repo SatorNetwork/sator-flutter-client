@@ -227,6 +227,12 @@ class ApiDataSourceImpl implements ApiDataSource {
     return;
   }
 
+  @override
+  Future<void> removeTokenIsBiometricEnabled() async {
+    _authDataSource.clearToken();
+    return;
+  }
+
   // endregion
 
   // region Auth

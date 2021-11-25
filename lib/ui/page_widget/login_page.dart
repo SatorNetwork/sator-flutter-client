@@ -111,20 +111,33 @@ class LoginPage extends GetView<LoginController> {
                         ),
                       ),
                       Obx(
-                          () => controller.isBiometric.value ? InkWell(
-                          onTap: () => {controller.checkingForBioMetrics()},
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Text(
-                              'txt_login_biometric'.tr,
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.interactive,
-                                fontSize: 14 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ) : Container(),
+                        () => controller.isBiometric.value && controller.isRefreshTokenExist.value
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.fingerprint,
+                                      size: 40,
+                                      color: SatorioColor.interactive,
+                                    ),
+                                    InkWell(
+                                      onTap: () =>
+                                          {controller.checkingForBioMetrics()},
+                                      child: Text(
+                                        'txt_login_biometric'.tr,
+                                        style: textTheme.bodyText1!.copyWith(
+                                          color: SatorioColor.interactive,
+                                          fontSize: 14 * coefficient,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
                       )
                     ],
                   ),
