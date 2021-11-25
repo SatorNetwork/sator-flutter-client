@@ -188,10 +188,10 @@ class SettingsPage extends GetView<SettingsController> {
               Obx(
                 () => FlutterSwitch(
                   value: controller.isBiometric.value,
-                  height: 26,
-                  width: 52,
-                  padding: 2,
-                  toggleSize: 28,
+                  height: 24,
+                  width: 46,
+                  padding: 1,
+                  toggleSize: 24,
                   duration: Duration(milliseconds: 0),
                   activeColor: SatorioColor.brand,
                   inactiveColor: SatorioColor.alice_blue2,
