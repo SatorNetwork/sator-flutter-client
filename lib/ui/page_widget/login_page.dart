@@ -111,7 +111,7 @@ class LoginPage extends GetView<LoginController> {
                         ),
                       ),
                       Obx(
-                        () => controller.isBiometric.value && controller.isRefreshTokenExist.value
+                        () => controller.isBiometric.value
                             ? Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 20),

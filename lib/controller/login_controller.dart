@@ -29,7 +29,6 @@ class LoginController extends GetxController with ValidationMixin {
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
   final RxBool isBiometric = false.obs;
-  final RxBool isRefreshTokenExist = false.obs;
 
   final SatorioRepository _satorioRepository = Get.find();
 
@@ -39,7 +38,6 @@ class LoginController extends GetxController with ValidationMixin {
     LoginArgument argument = Get.arguments as LoginArgument;
     deepLink = argument.deepLink;
 
-    _getRefreshToken();
     _getBiometric();
   }
 
@@ -57,18 +55,12 @@ class LoginController extends GetxController with ValidationMixin {
     super.onClose();
   }
 
-  Future<void> _getRefreshToken() async {
-    await _satorioRepository.isRefreshTokenExist().then((value) {
-      isRefreshTokenExist.value = value;
-    });
-  }
-
-  Future<void> _getBiometric() async {
-    await _satorioRepository.isBiometricEnabled().then((value) {
+  void _getBiometric() {
+    _satorioRepository.isBiometricEnabled().then((value) {
       isBiometric.value = value;
-      if (isBiometric.value && isRefreshTokenExist.value) {
+      if (isBiometric.value) {
         _satorioRepository.removeTokenIsBiometricEnabled().then((value) {
-          checkingForBioMetrics();
+          _authWithBiometric();
         });
       }
     });
@@ -93,7 +85,7 @@ class LoginController extends GetxController with ValidationMixin {
     ).then((value) {
       _localAuth
           .authenticate(
-        localizedReason: "Authenticate for SATOR",
+        localizedReason: "Unlock your device",
         useErrorDialogs: true,
         stickyAuth: true,
       )
@@ -163,18 +155,10 @@ class LoginController extends GetxController with ValidationMixin {
         );
   }
 
-  Future<bool> _checkBiometric() async {
-    await _localAuth.canCheckBiometrics.then((value) {
-      if (value) {
-        return value;
-      }
-    });
-    return false;
-  }
-
   void _toEnableBiometricDialog() {
     Get.dialog(
-      DefaultDialog('txt_login_biometric_title'.tr, 'txt_login_biometric_q'.tr, 'txt_yes'.tr,
+      DefaultDialog('txt_login_biometric_title'.tr, 'txt_login_biometric_q'.tr,
+          'txt_yes'.tr,
           icon: Icons.fingerprint,
           onButtonPressed: () {
             _satorioRepository.markIsBiometricEnabled(true).then((value) {

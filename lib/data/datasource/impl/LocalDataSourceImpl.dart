@@ -72,7 +72,6 @@ class LocalDataSourceImpl implements LocalDataSource {
     await Hive.box<Wallet>(_walletBox).clear();
     await Hive.box<WalletDetail>(_walletDetailBox).clear();
     await Hive.box<Transaction>(_transactionBox).clear();
-    await markIsBiometricEnabled(false);
   }
 
   @override
@@ -94,8 +93,11 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<bool> isBiometricEnabled() async {
-    bool result = _storage.read(_isBiometricEnabled);
-    return result;
+    dynamic isBiometricEnabled = _storage.read(_isBiometricEnabled);
+    if (isBiometricEnabled != null)
+      return isBiometricEnabled;
+    else
+      return false;
   }
 
   @override

@@ -223,7 +223,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<void> authLogout() async {
     _authDataSource.clearToken();
-    _authDataSource.clearRefreshToken();
+    //TODO: refactor
+    // _authDataSource.clearRefreshToken();
     return;
   }
 
