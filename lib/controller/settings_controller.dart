@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
 import 'package:satorio/binding/settings_about_binding.dart';
 import 'package:satorio/binding/settings_change_info_binding.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
+import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/controller/settings_change_info_controller.dart';
 import 'package:satorio/domain/entities/change_info_type.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 import 'package:satorio/ui/page_widget/settings_about_page.dart';
@@ -24,8 +23,6 @@ class SettingsController extends GetxController
 
   final RxBool isBiometric = false.obs;
 
-  final LocalAuthentication _localAuth = LocalAuthentication();
-
   SettingsController() {
     _getBiometric();
   }
@@ -38,17 +35,8 @@ class SettingsController extends GetxController
 
   void toggleBiometric(bool value) {
     isBiometric.value = value;
-    _localAuth
-        .authenticate(
-      localizedReason: "Unlock your device",
-      useErrorDialogs: true,
-      stickyAuth: true,
-    )
-        .then((value) {
-      if (value) {
-        _satorioRepository.markIsBiometricEnabled(isBiometric.value);
-      }
-    });
+
+    _satorioRepository.markIsBiometricEnabled(isBiometric.value);
   }
 
   void toNonWorkingDialog() {
