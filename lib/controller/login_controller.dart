@@ -133,11 +133,18 @@ class LoginController extends GetxController with ValidationMixin {
         .then(
           (isSuccess) {
             if (isSuccess) {
-              _satorioRepository
-                  .isBiometricEnabled()
-                  .then((isBiometricEnabled) {
-                if (!isBiometricEnabled) {
-                  _toEnableBiometricDialog();
+              _satorioRepository.isBiometricUserDisabled().then((isBiometricUserDisabled) {
+                print(isBiometricUserDisabled);
+                if (isBiometricUserDisabled == null) {
+                  _satorioRepository
+                      .isBiometricEnabled()
+                      .then((isBiometricEnabled) {
+                    if (!isBiometricEnabled) {
+                      _toEnableBiometricDialog();
+                    } else {
+                      _checkIsVerified();
+                    }
+                  });
                 } else {
                   _checkIsVerified();
                 }
@@ -155,7 +162,7 @@ class LoginController extends GetxController with ValidationMixin {
         );
   }
 
-  void _toEnableBiometricDialog() {
+  Future<void> _toEnableBiometricDialog() async {
     Get.dialog(
       DefaultDialog('txt_login_biometric_title'.tr, 'txt_login_biometric_q'.tr,
           'txt_yes'.tr,
@@ -167,9 +174,13 @@ class LoginController extends GetxController with ValidationMixin {
           },
           secondaryButtonText: 'txt_no'.tr,
           onSecondaryButtonPressed: () {
+            _satorioRepository.markIsBiometricUserDisabled();
             _checkIsVerified();
           }),
-    );
+    ).then((value) {
+      _satorioRepository.markIsBiometricUserDisabled();
+      isRequested.value = false;
+    });
   }
 
   void _checkIsVerified() {

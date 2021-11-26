@@ -112,20 +112,20 @@ class LoginPage extends GetView<LoginController> {
                       ),
                       Obx(
                         () => controller.isBiometric.value
-                            ? Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      Icons.fingerprint,
-                                      size: 40,
-                                      color: SatorioColor.interactive,
-                                    ),
-                                    InkWell(
-                                      onTap: () =>
-                                          {controller.checkingForBioMetrics()},
-                                      child: Text(
+                            ? InkWell(
+                                onTap: () =>
+                                    {controller.checkingForBioMetrics()},
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.fingerprint,
+                                        size: 40,
+                                        color: SatorioColor.interactive,
+                                      ),
+                                      Text(
                                         'txt_login_biometric'.tr,
                                         style: textTheme.bodyText1!.copyWith(
                                           color: SatorioColor.interactive,
@@ -133,8 +133,8 @@ class LoginPage extends GetView<LoginController> {
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               )
                             : Container(),

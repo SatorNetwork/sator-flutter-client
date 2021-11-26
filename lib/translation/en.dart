@@ -18,7 +18,7 @@ const Map<String, String> en = {
   'txt_sign_in': 'Sign In',
   'txt_sign_out': 'Sign out',
   'txt_login': 'Login',
-  'txt_login_refresh_error': 'Please login with email and password',
+  'txt_login_refresh_error': 'Please login with email and password or try again',
   'txt_login_biometric': 'Login with biometric',
   'txt_login_biometric_title': 'Biometric',
   'txt_login_biometric_q': 'Do you want turn on biometric?',

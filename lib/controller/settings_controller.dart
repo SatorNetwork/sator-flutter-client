@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
 import 'package:satorio/binding/settings_about_binding.dart';
 import 'package:satorio/binding/settings_change_info_binding.dart';
@@ -23,6 +24,8 @@ class SettingsController extends GetxController
 
   final RxBool isBiometric = false.obs;
 
+  final LocalAuthentication _localAuth = LocalAuthentication();
+
   SettingsController() {
     _getBiometric();
   }
@@ -35,7 +38,17 @@ class SettingsController extends GetxController
 
   void toggleBiometric(bool value) {
     isBiometric.value = value;
-    _satorioRepository.markIsBiometricEnabled(isBiometric.value);
+    _localAuth
+        .authenticate(
+      localizedReason: "Unlock your device",
+      useErrorDialogs: true,
+      stickyAuth: true,
+    )
+        .then((value) {
+      if (value) {
+        _satorioRepository.markIsBiometricEnabled(isBiometric.value);
+      }
+    });
   }
 
   void toNonWorkingDialog() {
@@ -68,9 +81,7 @@ class SettingsController extends GetxController
       path: linkSupportEmail,
     );
     String url = params.toString();
-    await canLaunch(url)
-        ? await launch(url)
-        : throw 'Could not launch $url';
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
 
   void toLogoutDialog() {

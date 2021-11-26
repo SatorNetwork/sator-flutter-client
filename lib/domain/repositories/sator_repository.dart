@@ -58,6 +58,10 @@ abstract class SatorioRepository {
 
   Future<void> markIsBiometricEnabled(bool isBiometricEnabled);
 
+  Future<void> markIsBiometricUserDisabled();
+
+  Future<bool?> isBiometricUserDisabled();
+
   Future<bool> selectAvatar(String avatarPath);
 
   Future<bool> resendCode();

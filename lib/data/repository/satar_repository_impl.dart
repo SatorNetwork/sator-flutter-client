@@ -185,6 +185,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<void> markIsBiometricUserDisabled() {
+    return _localDataSource.markIsBiometricUserDisabled();
+  }
+
+  @override
+  Future<bool?> isBiometricUserDisabled() {
+    return _localDataSource.isBiometricUserDisabled();
+  }
+
+  @override
   Future<bool> selectAvatar(String avatarPath) {
     return _apiDataSource
         .selectAvatar(avatarPath)

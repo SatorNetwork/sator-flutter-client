@@ -25,6 +25,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   static const _transactionBox = 'transaction';
 
   static const _isBiometricEnabled = 'isBiometricEnabled';
+  static const _isBiometricUserDisabled = 'isBiometricUserDisabled';
 
   static const _onBoarded = 'onBoarded';
 
@@ -85,6 +86,11 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  Future<void> markIsBiometricUserDisabled() async {
+    return _storage.write(_isBiometricUserDisabled, false);
+  }
+
+  @override
   Future<bool> isOnBoarded() async {
     dynamic tmp = _storage.read(_onBoarded);
     final bool result = tmp != null && tmp is bool ? tmp : false;
@@ -98,6 +104,15 @@ class LocalDataSourceImpl implements LocalDataSource {
       return isBiometricEnabled;
     else
       return false;
+  }
+
+  @override
+  Future<bool?> isBiometricUserDisabled() async {
+    dynamic isBiometricUserDisabled = _storage.read(_isBiometricUserDisabled);
+    if (isBiometricUserDisabled != null)
+      return isBiometricUserDisabled;
+    else
+      return null;
   }
 
   @override
