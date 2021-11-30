@@ -138,7 +138,6 @@ class LoginController extends GetxController with ValidationMixin {
           (isSuccess) {
             if (isSuccess) {
               _satorioRepository.isBiometricUserDisabled().then((isBiometricUserDisabled) {
-                print(isBiometricUserDisabled);
                 if (isBiometricUserDisabled == null) {
                   _satorioRepository
                       .isBiometricEnabled()

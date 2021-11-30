@@ -244,9 +244,11 @@ class ApiDataSourceImpl implements ApiDataSource {
       'auth/login',
       SignInRequest(email, password),
     ).then((Response response) {
+      //for future separation on backend
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
+      //for future separation on backend
       String refreshToken =
           RefreshResponse.fromJson(json.decode(response.bodyString!))
               .refreshToken;
@@ -258,9 +260,11 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<bool> signInViaRefreshToken() {
     return _requestRefreshToken().then((Response response) {
+      //for future separation on backend
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
+      //for future separation on backend
       String refreshToken =
           RefreshResponse.fromJson(json.decode(response.bodyString!))
               .refreshToken;
