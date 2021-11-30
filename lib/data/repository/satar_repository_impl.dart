@@ -75,6 +75,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<void> removeTokenIsBiometricEnabled() {
+    return _apiDataSource.removeTokenIsBiometricEnabled();
+  }
+
+  @override
   Future<bool> isTokenValid() {
     return _apiDataSource.isTokenExist().then((isTokenExist) {
       if (isTokenExist)
@@ -84,6 +89,25 @@ class SatorioRepositoryImpl implements SatorioRepository {
       else
         return isTokenExist;
     });
+  }
+
+  @override
+  Future<bool> signInViaRefreshToken() {
+    return _apiDataSource.isRefreshTokenExist().then((isExist) {
+      if (isExist)
+        return _apiDataSource.signInViaRefreshToken().catchError((error) => _handleException(error));
+      else return isExist;
+    });
+  }
+
+  @override
+  Future<bool> validateToken() {
+    return _apiDataSource.validateToken().catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> isRefreshTokenExist() {
+    return _apiDataSource.isRefreshTokenExist().catchError((value) => _handleException(value));
   }
 
   @override
@@ -148,6 +172,26 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<void> markOnBoarded() {
     return _localDataSource.markOnBoarded();
+  }
+
+  @override
+  Future<bool> isBiometricEnabled() {
+    return _localDataSource.isBiometricEnabled();
+  }
+
+  @override
+  Future<void> markIsBiometricEnabled(bool isBiometricEnabled) {
+    return _localDataSource.markIsBiometricEnabled(isBiometricEnabled);
+  }
+
+  @override
+  Future<void> markIsBiometricUserDisabled() {
+    return _localDataSource.markIsBiometricUserDisabled();
+  }
+
+  @override
+  Future<bool?> isBiometricUserDisabled() {
+    return _localDataSource.isBiometricUserDisabled();
   }
 
   @override

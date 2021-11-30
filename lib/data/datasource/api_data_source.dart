@@ -29,7 +29,11 @@ abstract class ApiDataSource {
 
   Future<bool> isTokenExist();
 
+  Future<bool> isRefreshTokenExist();
+
   Future<void> authLogout();
+
+  Future<void> removeTokenIsBiometricEnabled();
 
   // endregion
 
@@ -58,6 +62,10 @@ abstract class ApiDataSource {
   Future<bool> resendCode();
 
   Future<bool> refreshToken();
+
+  Future<bool> signInViaRefreshToken();
+
+  Future<bool> validateToken();
 
   Future<bool> forgotPassword(String email);
 
