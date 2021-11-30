@@ -22,6 +22,7 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
+
   Future<void> clearDBandAccessToken();
 
   Future<void> clearDBandAllTokens();

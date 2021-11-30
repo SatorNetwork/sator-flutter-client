@@ -16,6 +16,7 @@ import 'package:satorio/ui/page_widget/web_page.dart';
 import 'package:satorio/util/links.dart';
 
 class NftItemController extends GetxController with NonWorkingFeatureMixin {
+
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<NftItem> nftItemRx;

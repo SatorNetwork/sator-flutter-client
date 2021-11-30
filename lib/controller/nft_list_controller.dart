@@ -15,6 +15,7 @@ import 'package:satorio/util/extension.dart';
 import 'nft_item_controller.dart';
 
 class NftListController extends GetxController with BackToMainMixin {
+
   final SatorioRepository _satorioRepository = Get.find();
 
   late final String _objectId;

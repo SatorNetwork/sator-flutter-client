@@ -37,3 +37,4 @@ Widget backgroundImage(String imagePath) {
 }
 
 final bool isAndroid = GetPlatform.isAndroid;
+
