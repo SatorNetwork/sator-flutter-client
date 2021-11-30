@@ -107,11 +107,13 @@ class LoginController extends GetxController with ValidationMixin {
           });
         } else {
           Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+          isBiometric.value = false;
           isRequested.value = false;
         }
       }).catchError((error) {
         Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
         _satorioRepository.markIsBiometricUserDisabled();
+        isBiometric.value = false;
         isRequested.value = false;
       });
     });
