@@ -52,7 +52,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         ),
       );
     } else if (exception is ApiUnauthorizedException) {
-      clearAllLocalData().then(
+      clearDBandAccessToken().then(
         (value) {
           Get.offAll(
             () => LoginPage(),
@@ -68,15 +68,27 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> clearAllLocalData() {
+  Future<void> clearDBandAccessToken() {
     return _localDataSource
         .clear()
-        .then((value) => _apiDataSource.authLogout());
+        .then((value) => _apiDataSource.removeAuthToken());
+  }
+
+  @override
+  Future<void> clearDBandAllTokens() {
+    return _localDataSource
+        .clear()
+        .then((value) => _apiDataSource.removeAllTokens());
+  }
+
+  @override
+  Future<void> clearAllTokens() {
+    return _apiDataSource.removeAllTokens();
   }
 
   @override
   Future<void> removeTokenIsBiometricEnabled() {
-    return _apiDataSource.removeTokenIsBiometricEnabled();
+    return _apiDataSource.removeAuthToken();
   }
 
   @override
@@ -301,7 +313,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _apiDataSource
         .apiLogout()
         .then(
-          (value) => clearAllLocalData(),
+          (value) => clearDBandAllTokens(),
         )
         .then(
       (value) {

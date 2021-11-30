@@ -31,9 +31,9 @@ abstract class ApiDataSource {
 
   Future<bool> isRefreshTokenExist();
 
-  Future<void> authLogout();
+  Future<void> removeAllTokens();
 
-  Future<void> removeTokenIsBiometricEnabled();
+  Future<void> removeAuthToken();
 
   // endregion
 

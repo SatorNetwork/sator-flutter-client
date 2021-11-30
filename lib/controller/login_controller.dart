@@ -29,6 +29,7 @@ class LoginController extends GetxController with ValidationMixin {
   final RxBool passwordObscured = true.obs;
   final RxBool isRequested = false.obs;
   final RxBool isBiometric = false.obs;
+  final RxBool isRefreshTokenExist = false.obs;
 
   final SatorioRepository _satorioRepository = Get.find();
 
@@ -59,8 +60,13 @@ class LoginController extends GetxController with ValidationMixin {
     _satorioRepository.isBiometricEnabled().then((value) {
       isBiometric.value = value;
       if (isBiometric.value) {
-        _satorioRepository.removeTokenIsBiometricEnabled().then((value) {
-          _authWithBiometric();
+        _satorioRepository.isRefreshTokenExist().then((isRefreshToken) {
+          isRefreshTokenExist.value = isRefreshToken;
+          if (isRefreshToken) {
+            _satorioRepository.removeTokenIsBiometricEnabled().then((value) {
+              _authWithBiometric();
+            });
+          }
         });
       }
     });
@@ -101,11 +107,13 @@ class LoginController extends GetxController with ValidationMixin {
           });
         } else {
           Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+          isBiometric.value = false;
           isRequested.value = false;
         }
       }).catchError((error) {
         Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
         _satorioRepository.markIsBiometricUserDisabled();
+        isBiometric.value = false;
         isRequested.value = false;
       });
     });
