@@ -119,7 +119,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     String? refreshToken = await _authDataSource.getAuthRefreshToken();
     return _getConnect.request('auth/refresh-token', 'GET',
         headers: {'Authorization': 'Bearer $refreshToken'}).then(
-          (Response response) => _processResponse(response),
+      (Response response) => _processResponse(response),
     );
   }
 
@@ -221,17 +221,16 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<void> authLogout() async {
-    _authDataSource.clearToken();
-    //TODO: refactor
-    // _authDataSource.clearRefreshToken();
+  Future<void> removeAllTokens() async {
+    await _authDataSource.clearToken();
+    await _authDataSource.clearRefreshToken();
+
     return;
   }
 
   @override
-  Future<void> removeTokenIsBiometricEnabled() async {
-    _authDataSource.clearToken();
-    return;
+  Future<void> removeAuthToken() {
+    return _authDataSource.clearToken();
   }
 
   // endregion
@@ -304,10 +303,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> changePassword(String oldPassword, String newPassword) {
-    return _requestPost(
-        'auth/change-password',
-        ChangePasswordRequest(oldPassword, newPassword)
-    ).then((Response response) {
+    return _requestPost('auth/change-password',
+            ChangePasswordRequest(oldPassword, newPassword))
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -670,7 +668,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};

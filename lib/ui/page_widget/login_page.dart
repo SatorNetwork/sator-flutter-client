@@ -111,7 +111,7 @@ class LoginPage extends GetView<LoginController> {
                         ),
                       ),
                       Obx(
-                        () => controller.isBiometric.value
+                        () => controller.isBiometric.value && controller.isRefreshTokenExist.value
                             ? InkWell(
                                 onTap: () =>
                                     {controller.checkingForBioMetrics()},

@@ -98,7 +98,7 @@ class SplashController extends GetxController {
   }
 
   void _toLogin() {
-    _satorioRepository.clearAllLocalData().then(
+    _satorioRepository.clearDBandAccessToken().then(
       (value) {
         Get.offAll(
           () => LoginPage(),
