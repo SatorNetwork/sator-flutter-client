@@ -39,9 +39,9 @@ class SplashController extends GetxController {
 
     FirebaseDynamicLinks.instance.onLink(
         onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-      _handleDeepLink(dynamicLink!);
-    }, onError: (OnLinkErrorException e) async {
-    });
+          _handleDeepLink(dynamicLink!);
+        },
+        onError: (OnLinkErrorException e) async {});
   }
 
   void dummy() {}
@@ -60,7 +60,7 @@ class SplashController extends GetxController {
           },
         ).catchError(
           (value) {
-            if (!(value is ApiUnauthorizedException)) _toLogin();
+            _checkIsOnBoarding();
           },
         );
       },
