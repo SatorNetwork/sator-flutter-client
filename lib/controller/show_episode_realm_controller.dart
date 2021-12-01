@@ -35,6 +35,7 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/environment.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
@@ -88,10 +89,6 @@ class ShowEpisodeRealmController extends GetxController
   late Rx<int> missedMessagesCountRx = Rx(0);
   late final DatabaseReference _timestampsRef;
 
-  //TODO: refactor
-  static const String _DATABASE_URL =
-      'https://sator-f44d6-timestamp.firebaseio.com/';
-
   late Rx<bool> isMessagesRx = Rx(false);
 
   Query getMessageQuery() {
@@ -111,14 +108,14 @@ class ShowEpisodeRealmController extends GetxController
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: _DATABASE_URL)
+    _timestampsRef = FirebaseDatabase(databaseURL: Environment.firebaseUrl)
         .reference()
         .child(profile.id)
         .child(argument.showEpisode.id);
 
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child('production')
+        .child(Environment.firebaseChild)
         .child(argument.showEpisode.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {

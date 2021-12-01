@@ -61,14 +61,14 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
+import 'package:satorio/environment.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   GetConnect _getConnect = GetConnect();
   AuthDataSource _authDataSource;
 
   ApiDataSourceImpl(this._authDataSource) {
-    // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.prod.sator.io/';
+    _getConnect.baseUrl = Environment.baseUrl;
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
       //TODO: refactor firebase data source
