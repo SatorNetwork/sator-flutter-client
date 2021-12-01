@@ -13,6 +13,7 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/environment.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class ChatController extends GetxController with BackToMainMixin {
@@ -34,10 +35,6 @@ class ChatController extends GetxController with BackToMainMixin {
   late LastSeen lastSeen;
   DateTime? timestamp;
   late int scrollIndex;
-
-  //TODO: refactor
-  static const String _DATABASE_URL =
-      'https://sator-f44d6-timestamp.firebaseio.com/';
 
   bool canSendMessage() => messageController.text.length > 0;
 
@@ -65,7 +62,7 @@ class ChatController extends GetxController with BackToMainMixin {
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: _DATABASE_URL)
+    _timestampsRef = FirebaseDatabase(databaseURL: Environment.firebaseUrl)
         .reference()
         .child(profile.id)
         .child(argument.showEpisode.id);
