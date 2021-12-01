@@ -68,7 +68,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   ApiDataSourceImpl(this._authDataSource) {
     // TODO: move this option into environment variable
-    _getConnect.baseUrl = 'https://api.prod.sator.io/';
+    _getConnect.baseUrl = 'https://api.dev.sator.io/';
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
       //TODO: refactor firebase data source

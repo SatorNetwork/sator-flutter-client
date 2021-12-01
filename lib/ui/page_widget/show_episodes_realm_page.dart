@@ -1159,36 +1159,37 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ),
                       Row(
                         children: [
-                          Container(
-                            height: 20,
-                            width: 20,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                  SatorioColor.yellow_orange,
-                                  SatorioColor.tomato,
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 6,
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Joe',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: textTheme.bodyText2!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 15 * coefficient,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+                          //TODO: uncomment
+                          // Container(
+                          //   height: 20,
+                          //   width: 20,
+                          //   decoration: BoxDecoration(
+                          //     shape: BoxShape.circle,
+                          //     gradient: LinearGradient(
+                          //       begin: Alignment.topRight,
+                          //       end: Alignment.bottomLeft,
+                          //       colors: [
+                          //         SatorioColor.yellow_orange,
+                          //         SatorioColor.tomato,
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   width: 6,
+                          // ),
+                          // Expanded(
+                          //   child: Text(
+                          //     'Joe',
+                          //     maxLines: 1,
+                          //     overflow: TextOverflow.ellipsis,
+                          //     style: textTheme.bodyText2!.copyWith(
+                          //       color: SatorioColor.textBlack,
+                          //       fontSize: 15 * coefficient,
+                          //       fontWeight: FontWeight.w600,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ],
