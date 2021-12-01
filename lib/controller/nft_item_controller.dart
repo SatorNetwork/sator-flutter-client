@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/video_network_binding.dart';
 import 'package:satorio/binding/web_binding.dart';
+import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/video_network_controller.dart';
 import 'package:satorio/controller/web_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
@@ -14,7 +15,8 @@ import 'package:satorio/ui/page_widget/video_network_page.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
 import 'package:satorio/util/links.dart';
 
-class NftItemController extends GetxController {
+class NftItemController extends GetxController with NonWorkingFeatureMixin {
+
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<NftItem> nftItemRx;
@@ -65,6 +67,7 @@ class NftItemController extends GetxController {
   }
 
   void buy() {
+    Profile? profile = _getProfile();
     Future.value(true)
         .then(
           (value) {
@@ -79,7 +82,7 @@ class NftItemController extends GetxController {
           (isSuccess) {
             if (isSuccess) {
               Get.bottomSheet(
-                SuccessNftBoughtBottomSheet(nftItemRx.value.name),
+                SuccessNftBoughtBottomSheet(nftItemRx.value.name, profile!.id),
               );
             }
             isBuyRequested.value = false;
@@ -100,13 +103,17 @@ class NftItemController extends GetxController {
   }
 
   void _checkOwner() {
-    Profile? profile = (_satorioRepository.profileListenable()
-            as ValueListenable<Box<Profile>>)
-        .value
-        .getAt(0);
+    Profile? profile = _getProfile();
     if (profile != null) {
       isOwner.value = nftItemRx.value.ownerId == profile.id;
     }
+  }
+
+  Profile? _getProfile() {
+    return (_satorioRepository.profileListenable()
+            as ValueListenable<Box<Profile>>)
+        .value
+        .getAt(0);
   }
 }
 

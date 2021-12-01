@@ -64,7 +64,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
   }
 
   void toLogin() {
-    _satorioRepository.clearAllLocalData().then(
+    _satorioRepository.clearDBandAccessToken().then(
       (value) {
         Get.offAll(
           () => LoginPage(),

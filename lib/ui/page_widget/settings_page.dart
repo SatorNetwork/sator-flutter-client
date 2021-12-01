@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/settings_controller.dart';
 import 'package:satorio/domain/entities/change_info_type.dart';
@@ -154,6 +155,54 @@ class SettingsPage extends GetView<SettingsController> {
             'txt_password'.tr,
             'images/settings/ico_pass',
                 () => controller.toChangeInfo(ChangeInfoType.password)),
+        SizedBox(
+          height: 12,
+        ),
+        Container(
+          height: 56,
+          width: Get.width,
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
+            color: SatorioColor.alice_blue,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.fingerprint, color: SatorioColor.darkAccent),
+              SizedBox(
+                width: 16,
+              ),
+              Expanded(
+                child: Text(
+                  'txt_login_biometric_title'.tr,
+                  style: textTheme.bodyText1!.copyWith(
+                    color: Colors.black,
+                    fontSize: 16 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              Obx(
+                () => FlutterSwitch(
+                  value: controller.isBiometric.value,
+                  height: 24,
+                  width: 46,
+                  padding: 1,
+                  toggleSize: 24,
+                  duration: Duration(milliseconds: 0),
+                  activeColor: SatorioColor.brand,
+                  inactiveColor: SatorioColor.alice_blue2,
+                  onToggle: (bool value) {
+                    controller.toggleBiometric(value);
+                  },
+                ),
+              )
+            ],
+          ),
+        )
       ],
     );
   }
@@ -206,11 +255,11 @@ class SettingsPage extends GetView<SettingsController> {
         // SizedBox(
         //   height: 12,
         // ),
-        // _settingsButton('txt_help'.tr, 'images/settings/ico_help',
-        //     () => controller.toNonWorkingDialog()),
-        // SizedBox(
-        //   height: 12,
-        // ),
+        _settingsButton('txt_help'.tr, 'images/settings/ico_help',
+            () => controller.sendEmailToSupport()),
+        SizedBox(
+          height: 12,
+        ),
         _settingsButton('txt_about'.tr, 'images/settings/ico_document',
             () => controller.toAbout()),
       ],

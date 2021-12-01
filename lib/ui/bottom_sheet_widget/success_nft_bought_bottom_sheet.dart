@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
-import 'package:satorio/controller/profile_controller.dart';
+import 'package:satorio/controller/nft_list_controller.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
+import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -13,9 +15,11 @@ import 'package:satorio/util/extension.dart';
 
 class SuccessNftBoughtBottomSheet extends StatelessWidget with BackToMainMixin {
   final String nftItemName;
+  final String profileId;
 
   const SuccessNftBoughtBottomSheet(
-    this.nftItemName, {
+    this.nftItemName,
+    this.profileId, {
     Key? key,
   }) : super(key: key);
 
@@ -86,18 +90,11 @@ class SuccessNftBoughtBottomSheet extends StatelessWidget with BackToMainMixin {
   }
 
   void _toMyNtfs() {
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      mainController.selectedBottomTabIndex.value =
-          MainController.TabProfile;
-    }
-
-    if (Get.isRegistered<ProfileController>()) {
-      ProfileController profileController = Get.find();
-      profileController.refreshPage();
-    }
-
-    backToMain();
+    Get.to(
+      () => NftListPage(),
+      binding: NftListBinding(),
+      arguments: NftListArgument(NftFilterType.User, profileId),
+    );
   }
 
   Widget _descriptionWidget() {

@@ -213,8 +213,7 @@ class ShowDetailWithEpisodesPage
           ),
           ElevatedButton(
             onPressed: () {
-              controller.back();
-              controller.toNftTab();
+              controller.toShowNfts();
             },
             style: ElevatedButton.styleFrom(
               elevation: 0,
