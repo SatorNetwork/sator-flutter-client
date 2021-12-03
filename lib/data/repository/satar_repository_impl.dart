@@ -1,9 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
@@ -42,11 +46,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
     _localDataSource.init();
   }
 
-  void _handleException(Exception exception) {
+  _handleException(Exception exception) {
     if (exception is ApiErrorException) {
       _handleApiErrorException(exception);
     } else if (exception is ApiUnauthorizedException) {
       _handleApiUnauthorizedException(exception);
+    } else if (exception is ApiKycException) {
+      _handleApiKycException();
     } else {
       throw exception;
     }
@@ -64,15 +70,32 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   void _handleApiUnauthorizedException(ApiUnauthorizedException exception) {
     clearDBandAccessToken().then(
-          (value) {
+      (value) {
         Get.offAll(
-              () => LoginPage(),
+          () => LoginPage(),
           binding: LoginBinding(),
           arguments: LoginArgument(null),
         );
         Get.snackbar('txt_oops'.tr, exception.errorMessage);
       },
     );
+  }
+
+  void _handleApiKycException() {
+    _apiDataSource.kycToken().then((String kycToken) {
+      print('KYC token = $kycToken');
+
+      SNSMobileSDK.init(
+        kycToken,
+        () => _apiDataSource.kycToken(),
+      )
+          .withLocale(
+            Locale('en'),
+          )
+          .withDebug(kDebugMode)
+          .build()
+          .launch();
+    });
   }
 
   @override

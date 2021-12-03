@@ -180,6 +180,7 @@ class ApiDataSourceImpl implements ApiDataSource {
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
           throw ApiUnauthorizedException(errorResponse.error);
+        // 407
         case HttpStatus.proxyAuthenticationRequired:
           throw ApiKycException();
         default:
@@ -423,6 +424,18 @@ class ApiDataSourceImpl implements ApiDataSource {
       ResetPasswordRequest(email, code, newPassword),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  // endregion
+
+  // region KYC
+
+  Future<String> kycToken() {
+    return _requestGet(
+      'auth/kyc/access_token',
+    ).then((Response response) {
+      return json.decode(response.bodyString!)['data'];
     });
   }
 
