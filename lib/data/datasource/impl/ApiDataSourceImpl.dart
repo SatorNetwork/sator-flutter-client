@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
@@ -167,15 +169,19 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
-        case 422:
+        // 422
+        case HttpStatus.unprocessableEntity:
           ErrorValidationResponse errorValidationResponse =
               ErrorValidationResponse.fromJson(
                   json.decode(utf8Response.bodyString!));
           throw ApiValidationException(errorValidationResponse.validation);
-        case 401:
+        // 401
+        case HttpStatus.unauthorized:
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
           throw ApiUnauthorizedException(errorResponse.error);
+        case HttpStatus.proxyAuthenticationRequired:
+          throw ApiKycException();
         default:
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));

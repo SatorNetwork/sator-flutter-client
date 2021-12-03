@@ -42,29 +42,37 @@ class SatorioRepositoryImpl implements SatorioRepository {
     _localDataSource.init();
   }
 
-  _handleException(Exception exception) {
+  void _handleException(Exception exception) {
     if (exception is ApiErrorException) {
-      Get.dialog(
-        DefaultDialog(
-          'txt_oops'.tr,
-          exception.errorMessage,
-          'txt_ok'.tr,
-        ),
-      );
+      _handleApiErrorException(exception);
     } else if (exception is ApiUnauthorizedException) {
-      clearDBandAccessToken().then(
-        (value) {
-          Get.offAll(
-            () => LoginPage(),
-            binding: LoginBinding(),
-            arguments: LoginArgument(null),
-          );
-          Get.snackbar('txt_oops'.tr, exception.errorMessage);
-        },
-      );
+      _handleApiUnauthorizedException(exception);
     } else {
       throw exception;
     }
+  }
+
+  void _handleApiErrorException(ApiErrorException exception) {
+    Get.dialog(
+      DefaultDialog(
+        'txt_oops'.tr,
+        exception.errorMessage,
+        'txt_ok'.tr,
+      ),
+    );
+  }
+
+  void _handleApiUnauthorizedException(ApiUnauthorizedException exception) {
+    clearDBandAccessToken().then(
+          (value) {
+        Get.offAll(
+              () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
+        );
+        Get.snackbar('txt_oops'.tr, exception.errorMessage);
+      },
+    );
   }
 
   @override
@@ -107,19 +115,26 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> signInViaRefreshToken() {
     return _apiDataSource.isRefreshTokenExist().then((isExist) {
       if (isExist)
-        return _apiDataSource.signInViaRefreshToken().catchError((error) => _handleException(error));
-      else return isExist;
+        return _apiDataSource
+            .signInViaRefreshToken()
+            .catchError((error) => _handleException(error));
+      else
+        return isExist;
     });
   }
 
   @override
   Future<bool> validateToken() {
-    return _apiDataSource.validateToken().catchError((value) => _handleException(value));
+    return _apiDataSource
+        .validateToken()
+        .catchError((value) => _handleException(value));
   }
 
   @override
   Future<bool> isRefreshTokenExist() {
-    return _apiDataSource.isRefreshTokenExist().catchError((value) => _handleException(value));
+    return _apiDataSource
+        .isRefreshTokenExist()
+        .catchError((value) => _handleException(value));
   }
 
   @override
@@ -534,7 +549,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<Review>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .getReviews(showId, episodeId, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
