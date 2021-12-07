@@ -61,14 +61,22 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/environment.dart';
+
+import '../firebase_data_source.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
-  GetConnect _getConnect = GetConnect();
-  AuthDataSource _authDataSource;
+  final GetConnect _getConnect = GetConnect();
+  final AuthDataSource _authDataSource;
+  final FirebaseDataSource _firebaseDataSource;
 
-  ApiDataSourceImpl(this._authDataSource) {
-    _getConnect.baseUrl = Environment.baseUrl;
+  ApiDataSourceImpl(this._authDataSource, this._firebaseDataSource);
+
+  @override
+  Future<void> init() async {
+    await _firebaseDataSource.initRemoteConfig();
+    String baseUrl = await _firebaseDataSource.apiBaseUrl();
+
+    _getConnect.baseUrl = baseUrl;
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
       //TODO: refactor firebase data source
