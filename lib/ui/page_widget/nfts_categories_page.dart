@@ -171,7 +171,9 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           ),
           RichText(
             text: TextSpan(
-              text: '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+              text: isAndroid
+                  ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
+                  : '',
               style: TextStyle(
                 color: SatorioColor.textBlack,
                 fontSize: 12.0 * coefficient,
@@ -387,31 +389,34 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           SizedBox(
             height: 8 * coefficient,
           ),
-          RichText(
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              text: nftItem.buyNowPrice.toStringAsFixed(2),
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 14.0 * coefficient,
-                fontWeight: FontWeight.w500,
-                backgroundColor: Colors.transparent,
-              ),
-              children: <TextSpan>[
-                TextSpan(text: ' '),
-                TextSpan(
-                  text: 'SAO',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.0 * coefficient,
-                    fontWeight: FontWeight.w500,
-                    backgroundColor: Colors.transparent,
-                  ),
+          if (isAndroid)
+            RichText(
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(
+                text: isAndroid
+                    ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
+                    : '',
+                style: TextStyle(
+                  color: SatorioColor.textBlack,
+                  fontSize: 12.0 * coefficient,
+                  fontWeight: FontWeight.w500,
+                  backgroundColor: Colors.transparent,
                 ),
-              ],
+                // children: <TextSpan>[
+                //   TextSpan(text: ' '),
+                //   TextSpan(
+                //     text: 'SAO',
+                //     style: TextStyle(
+                //       color: Colors.black,
+                //       fontSize: 14.0 * coefficient,
+                //       fontWeight: FontWeight.w500,
+                //       backgroundColor: Colors.transparent,
+                //     ),
+                //   ),
+                // ],
+              ),
             ),
-          ),
         ],
       ),
     );

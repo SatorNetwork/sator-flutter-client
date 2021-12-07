@@ -130,7 +130,9 @@ class NftListPage extends GetView<NftListController> {
           ),
           RichText(
             text: TextSpan(
-              text: '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+              text: isAndroid
+                  ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
+                  : '',
               style: TextStyle(
                 color: SatorioColor.textBlack,
                 fontSize: 12.0 * coefficient,

@@ -561,7 +561,9 @@ class HomePage extends GetView<HomeController> {
                   ),
                   Expanded(
                     child: Text(
-                      '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+                      isAndroid
+                          ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
+                          : '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.bodyText2!.copyWith(

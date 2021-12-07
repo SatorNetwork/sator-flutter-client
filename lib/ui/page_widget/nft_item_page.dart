@@ -305,7 +305,9 @@ class NftItemPage extends GetView<NftItemController> {
                           ),
                           Obx(
                             () => Text(
-                              '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
+                              isAndroid
+                                  ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
+                                  : '',
                               style: textTheme.bodyText2!.copyWith(
                                 color: SatorioColor.textBlack,
                                 fontSize: 15 * coefficient,
@@ -335,7 +337,9 @@ class NftItemPage extends GetView<NftItemController> {
                     ),
                     Obx(
                       () => Text(
-                        '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
+                        isAndroid
+                            ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
+                            : '',
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 15 * coefficient,
