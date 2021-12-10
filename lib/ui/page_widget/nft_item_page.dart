@@ -290,8 +290,7 @@ class NftItemPage extends GetView<NftItemController> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                isAndroid
-                    ? Column(
+                Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -314,13 +313,10 @@ class NftItemPage extends GetView<NftItemController> {
                             ),
                           ),
                         ],
-                      )
-                    : Container(),
-                isAndroid
-                    ? SizedBox(
+                      ),
+                SizedBox(
                         width: 36 * coefficient,
-                      )
-                    : Container(),
+                      ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,11 +349,9 @@ class NftItemPage extends GetView<NftItemController> {
                     () => controller.isOwner.value
                         ? Container()
                         : ElevatedGradientButton(
-                            text: isAndroid ? 'txt_buy'.tr : 'txt_share'.tr,
+                            text: 'txt_buy'.tr,
                             onPressed: () {
-                              isAndroid
-                                  ? controller.toCheckout()
-                                  : controller.toNonWorkingFeatureDialog();
+                              controller.toCheckout();
                             },
                           ),
                   ),
