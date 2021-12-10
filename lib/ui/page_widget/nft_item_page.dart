@@ -317,33 +317,6 @@ class NftItemPage extends GetView<NftItemController> {
                 SizedBox(
                         width: 36 * coefficient,
                       ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'txt_current_price'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.charcoal,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Obx(
-                      () => Text(
-                        '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 36 * coefficient,
-                ),
                 Expanded(
                   child: Obx(
                     () => controller.isOwner.value
