@@ -40,7 +40,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource, this._firebaseDataSource) {
+  SatorioRepositoryImpl(
+      this._apiDataSource, this._localDataSource, this._firebaseDataSource) {
     _localDataSource.init();
     _apiDataSource.init();
   }
@@ -72,17 +73,23 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> initRemoteConfig() {
-    return _firebaseDataSource.initRemoteConfig().catchError((value) => _handleException(value));
+    return _firebaseDataSource
+        .initRemoteConfig()
+        .catchError((value) => _handleException(value));
   }
 
   @override
   Future<String> firebaseChatChild() {
-    return _firebaseDataSource.firebaseChatChild().catchError((value) => _handleException(value));
+    return _firebaseDataSource
+        .firebaseChatChild()
+        .catchError((value) => _handleException(value));
   }
 
   @override
   Future<String> firebaseUrl() {
-    return _firebaseDataSource.firebaseUrl().catchError((value) => _handleException(value));
+    return _firebaseDataSource
+        .firebaseUrl()
+        .catchError((value) => _handleException(value));
   }
 
   @override
@@ -125,8 +132,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> signInViaRefreshToken() {
     return _apiDataSource.isRefreshTokenExist().then((isExist) {
       if (isExist)
-        return _apiDataSource.signInViaRefreshToken().catchError((error) => _handleException(error));
-      else return isExist;
+        return _apiDataSource
+            .signInViaRefreshToken()
+            .catchError((error) => _handleException(error));
+      else
+        return isExist;
     });
   }
 
@@ -137,7 +147,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<bool> isRefreshTokenExist() {
-    return _apiDataSource.isRefreshTokenExist().catchError((value) => _handleException(value));
+    return _apiDataSource
+        .isRefreshTokenExist()
+        .catchError((value) => _handleException(value));
   }
 
   @override
@@ -552,7 +564,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<Review>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .getReviews(showId, episodeId, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));

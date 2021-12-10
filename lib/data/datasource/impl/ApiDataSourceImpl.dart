@@ -61,6 +61,7 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
+import 'package:satorio/environment.dart';
 
 import '../firebase_data_source.dart';
 
@@ -397,11 +398,11 @@ class ApiDataSourceImpl implements ApiDataSource {
       'auth',
     ).then((Response response) {
       if (response.isOk) {
-        return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+        return ResultResponse.fromJson(json.decode(response.bodyString!))
+            .result;
       } else {
         return false;
       }
-
     });
   }
 

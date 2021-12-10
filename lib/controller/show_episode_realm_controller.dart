@@ -107,7 +107,6 @@ class ShowEpisodeRealmController extends GetxController
     _loadReviews();
     _loadNftItems();
 
-
     _checkActivation();
     _updateLeftAttempts();
   }
@@ -120,7 +119,7 @@ class ShowEpisodeRealmController extends GetxController
     final String firebaseUrl = await _satorioRepository.firebaseUrl();
 
     this.profileListenable =
-    _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
     profile = profileListenable.value.getAt(0)!;
 

@@ -65,7 +65,7 @@ class ChatController extends GetxController with BackToMainMixin {
     scrollIndex = 0;
 
     this.profileListenable =
-    _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
     profile = profileListenable.value.getAt(0)!;
 
