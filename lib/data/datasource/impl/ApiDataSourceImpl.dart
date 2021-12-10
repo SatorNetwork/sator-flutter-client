@@ -65,7 +65,7 @@ import 'package:satorio/domain/entities/nft_filter_type.dart';
 import '../firebase_data_source.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
-  final GetConnect _getConnect = GetConnect();
+  late final GetConnect _getConnect;
   final AuthDataSource _authDataSource;
   final FirebaseDataSource _firebaseDataSource;
 
@@ -75,6 +75,8 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<void> init() async {
     await _firebaseDataSource.initRemoteConfig();
     String baseUrl = await _firebaseDataSource.apiBaseUrl();
+
+    _getConnect = GetConnect();
 
     _getConnect.baseUrl = baseUrl;
 
