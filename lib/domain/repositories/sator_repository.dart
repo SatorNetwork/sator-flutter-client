@@ -23,6 +23,12 @@ import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
 
+  Future<void> initRemoteConfig();
+
+  Future<String> firebaseChatChild();
+
+  Future<String> firebaseUrl();
+
   Future<void> clearDBandAccessToken();
 
   Future<void> clearDBandAllTokens();

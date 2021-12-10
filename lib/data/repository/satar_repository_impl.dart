@@ -5,6 +5,7 @@ import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
@@ -36,10 +37,12 @@ import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
+  final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource) {
+  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource, this._firebaseDataSource) {
     _localDataSource.init();
+    _apiDataSource.init();
   }
 
   _handleException(Exception exception) {
@@ -65,6 +68,21 @@ class SatorioRepositoryImpl implements SatorioRepository {
     } else {
       throw exception;
     }
+  }
+
+  @override
+  Future<void> initRemoteConfig() {
+    return _firebaseDataSource.initRemoteConfig().catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseChatChild() {
+    return _firebaseDataSource.firebaseChatChild().catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseUrl() {
+    return _firebaseDataSource.firebaseUrl().catchError((value) => _handleException(value));
   }
 
   @override

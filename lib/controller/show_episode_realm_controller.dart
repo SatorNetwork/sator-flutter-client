@@ -103,32 +103,42 @@ class ShowEpisodeRealmController extends GetxController
 
     isProfileRealm = argument.isProfileRealm;
 
+    _updateShowEpisode();
+    _loadReviews();
+    _loadNftItems();
+
+
+    _checkActivation();
+    _updateLeftAttempts();
+  }
+
+  @override
+  void onInit() async {
+    super.onInit();
+    await _satorioRepository.initRemoteConfig();
+    final String firebaseChild = await _satorioRepository.firebaseChatChild();
+    final String firebaseUrl = await _satorioRepository.firebaseUrl();
+
     this.profileListenable =
-        _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+    _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: Environment.firebaseUrl)
+    _timestampsRef = FirebaseDatabase(databaseURL: firebaseUrl)
         .reference()
         .child(profile.id)
-        .child(argument.showEpisode.id);
+        .child(showEpisodeRx.value.id);
 
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child(Environment.firebaseChild)
-        .child(argument.showEpisode.id);
+        .child(firebaseChild)
+        .child(showEpisodeRx.value.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
     });
 
-    _updateShowEpisode();
-    _loadReviews();
-    _loadNftItems();
     lastSeenInit();
-
-    _checkActivation();
-    _updateLeftAttempts();
   }
 
   void back() {
