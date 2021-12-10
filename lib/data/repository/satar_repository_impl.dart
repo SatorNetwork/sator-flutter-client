@@ -132,7 +132,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<bool> validateToken() {
-    return _apiDataSource.validateToken().catchError((value) => _handleException(value));
+    return _apiDataSource.validateToken();
   }
 
   @override

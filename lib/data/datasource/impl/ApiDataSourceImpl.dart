@@ -396,7 +396,12 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestGet(
       'auth',
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      if (response.isOk) {
+        return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      } else {
+        return false;
+      }
+
     });
   }
 
