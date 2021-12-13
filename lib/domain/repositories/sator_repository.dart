@@ -22,6 +22,11 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
+  Future<void> initRemoteConfig();
+
+  Future<String> firebaseChatChild();
+
+  Future<String> firebaseUrl();
 
   Future<void> clearDBandAccessToken();
 
@@ -172,7 +177,8 @@ abstract class SatorioRepository {
 
   Future<bool> confirmReferralCode(String referralCode);
 
-  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
+  Future<List<Review>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage});
 
   Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
 

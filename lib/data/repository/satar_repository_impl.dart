@@ -9,6 +9,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
@@ -40,10 +41,13 @@ import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
+  final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource) {
+  SatorioRepositoryImpl(
+      this._apiDataSource, this._localDataSource, this._firebaseDataSource) {
     _localDataSource.init();
+    _apiDataSource.init();
   }
 
   _handleException(Exception exception) {
@@ -70,9 +74,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   void _handleApiUnauthorizedException(ApiUnauthorizedException exception) {
     clearDBandAccessToken().then(
-      (value) {
+          (value) {
         Get.offAll(
-          () => LoginPage(),
+              () => LoginPage(),
           binding: LoginBinding(),
           arguments: LoginArgument(null),
         );
@@ -87,15 +91,36 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
       SNSMobileSDK.init(
         kycToken,
-        () => _apiDataSource.kycToken(),
+            () => _apiDataSource.kycToken(),
       )
           .withLocale(
-            Locale('en'),
-          )
+        Locale('en'),
+      )
           .withDebug(kDebugMode)
           .build()
           .launch();
     });
+  }
+
+  @override
+  Future<void> initRemoteConfig() {
+    return _firebaseDataSource
+        .initRemoteConfig()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseChatChild() {
+    return _firebaseDataSource
+        .firebaseChatChild()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseUrl() {
+    return _firebaseDataSource
+        .firebaseUrl()
+        .catchError((value) => _handleException(value));
   }
 
   @override
@@ -148,9 +173,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<bool> validateToken() {
-    return _apiDataSource
-        .validateToken()
-        .catchError((value) => _handleException(value));
+    return _apiDataSource.validateToken();
   }
 
   @override
