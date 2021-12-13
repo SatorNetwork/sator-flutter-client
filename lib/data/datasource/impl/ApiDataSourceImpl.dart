@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
@@ -56,21 +57,38 @@ import 'package:satorio/data/response/attempts_left_response.dart';
 import 'package:satorio/data/response/auth_response.dart';
 import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
+import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/environment.dart';
 
+import '../firebase_data_source.dart';
+
 class ApiDataSourceImpl implements ApiDataSource {
-  GetConnect _getConnect = GetConnect();
-  AuthDataSource _authDataSource;
+  late final GetConnect _getConnect;
+  final AuthDataSource _authDataSource;
+  final FirebaseDataSource _firebaseDataSource;
 
-  ApiDataSourceImpl(this._authDataSource) {
-    // TODO: move this option into environment variable
-    _getConnect.baseUrl = Environment.baseUrl;
+  ApiDataSourceImpl(this._authDataSource, this._firebaseDataSource);
 
-    _getConnect.httpClient.addRequestModifier<Object?>((request) {
-      String? token = _authDataSource.getAuthToken();
+  @override
+  Future<void> init() async {
+    await _firebaseDataSource.initRemoteConfig();
+    String baseUrl = await _firebaseDataSource.apiBaseUrl();
+
+    _getConnect = GetConnect();
+
+    _getConnect.baseUrl = baseUrl;
+
+    _getConnect.httpClient.addRequestModifier<Object?>((request) async {
+      //TODO: refactor firebase data source
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      String? deviceId = fcmToken?.split(':')[0];
+      if (deviceId != null && deviceId.isNotEmpty)
+        request.headers['Device-ID'] = deviceId;
+
+      String? token = await _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
         request.headers['Authorization'] = 'Bearer $token';
       return request;
@@ -106,6 +124,14 @@ class ApiDataSourceImpl implements ApiDataSource {
     return await _getConnect.put(path, request.toJson(), query: query).then(
           (Response response) => _processResponse(response),
         );
+  }
+
+  Future<Response> _requestRefreshToken() async {
+    String? refreshToken = await _authDataSource.getAuthRefreshToken();
+    return _getConnect.request('auth/refresh-token', 'GET',
+        headers: {'Authorization': 'Bearer $refreshToken'}).then(
+      (Response response) => _processResponse(response),
+    );
   }
 
   Future<Response> _requestPatch(
@@ -195,14 +221,27 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> isTokenExist() async {
-    String? token = _authDataSource.getAuthToken();
+    String? token = await _authDataSource.getAuthToken();
     return token != null && token.isNotEmpty;
   }
 
   @override
-  Future<void> authLogout() async {
-    _authDataSource.clearAll();
+  Future<bool> isRefreshTokenExist() async {
+    String? token = await _authDataSource.getAuthRefreshToken();
+    return token != null && token.isNotEmpty;
+  }
+
+  @override
+  Future<void> removeAllTokens() async {
+    await _authDataSource.clearToken();
+    await _authDataSource.clearRefreshToken();
+
     return;
+  }
+
+  @override
+  Future<void> removeAuthToken() {
+    return _authDataSource.clearToken();
   }
 
   // endregion
@@ -215,9 +254,31 @@ class ApiDataSourceImpl implements ApiDataSource {
       'auth/login',
       SignInRequest(email, password),
     ).then((Response response) {
+      //for future separation on backend
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
+      //for future separation on backend
+      String refreshToken =
+          RefreshResponse.fromJson(json.decode(response.bodyString!))
+              .refreshToken;
+      _authDataSource.storeRefreshToken(refreshToken);
+      return token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> signInViaRefreshToken() {
+    return _requestRefreshToken().then((Response response) {
+      //for future separation on backend
+      String token =
+          AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
+      _authDataSource.storeAuthToken(token);
+      //for future separation on backend
+      String refreshToken =
+          RefreshResponse.fromJson(json.decode(response.bodyString!))
+              .refreshToken;
+      _authDataSource.storeRefreshToken(refreshToken);
       return token.isNotEmpty;
     });
   }
@@ -328,6 +389,20 @@ class ApiDataSourceImpl implements ApiDataSource {
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
       return token.isNotEmpty;
+    });
+  }
+
+  @override
+  Future<bool> validateToken() {
+    return _requestGet(
+      'auth',
+    ).then((Response response) {
+      if (response.isOk) {
+        return ResultResponse.fromJson(json.decode(response.bodyString!))
+            .result;
+      } else {
+        return false;
+      }
     });
   }
 

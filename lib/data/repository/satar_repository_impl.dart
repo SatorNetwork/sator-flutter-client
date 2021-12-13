@@ -6,6 +6,7 @@ import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
@@ -38,12 +39,14 @@ import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
+  final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
 
   SatorioRepositoryImpl(
-      this._apiDataSource, this._localDataSource, this._natsDataSource) {
+      this._apiDataSource, this._localDataSource, this._firebaseDataSource, this._natsDataSource) {
     _localDataSource.init();
+    _apiDataSource.init();
   }
 
   _handleException(Exception exception) {
@@ -56,7 +59,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         ),
       );
     } else if (exception is ApiUnauthorizedException) {
-      clearAllLocalData().then(
+      clearDBandAccessToken().then(
         (value) {
           Get.offAll(
             () => LoginPage(),
@@ -72,10 +75,48 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> clearAllLocalData() {
+  Future<void> initRemoteConfig() {
+    return _firebaseDataSource
+        .initRemoteConfig()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseChatChild() {
+    return _firebaseDataSource
+        .firebaseChatChild()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseUrl() {
+    return _firebaseDataSource
+        .firebaseUrl()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> clearDBandAccessToken() {
     return _localDataSource
         .clear()
-        .then((value) => _apiDataSource.authLogout());
+        .then((value) => _apiDataSource.removeAuthToken());
+  }
+
+  @override
+  Future<void> clearDBandAllTokens() {
+    return _localDataSource
+        .clear()
+        .then((value) => _apiDataSource.removeAllTokens());
+  }
+
+  @override
+  Future<void> clearAllTokens() {
+    return _apiDataSource.removeAllTokens();
+  }
+
+  @override
+  Future<void> removeTokenIsBiometricEnabled() {
+    return _apiDataSource.removeAuthToken();
   }
 
   @override
@@ -88,6 +129,30 @@ class SatorioRepositoryImpl implements SatorioRepository {
       else
         return isTokenExist;
     });
+  }
+
+  @override
+  Future<bool> signInViaRefreshToken() {
+    return _apiDataSource.isRefreshTokenExist().then((isExist) {
+      if (isExist)
+        return _apiDataSource
+            .signInViaRefreshToken()
+            .catchError((error) => _handleException(error));
+      else
+        return isExist;
+    });
+  }
+
+  @override
+  Future<bool> validateToken() {
+    return _apiDataSource.validateToken();
+  }
+
+  @override
+  Future<bool> isRefreshTokenExist() {
+    return _apiDataSource
+        .isRefreshTokenExist()
+        .catchError((value) => _handleException(value));
   }
 
   @override
@@ -152,6 +217,26 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<void> markOnBoarded() {
     return _localDataSource.markOnBoarded();
+  }
+
+  @override
+  Future<bool> isBiometricEnabled() {
+    return _localDataSource.isBiometricEnabled();
+  }
+
+  @override
+  Future<void> markIsBiometricEnabled(bool isBiometricEnabled) {
+    return _localDataSource.markIsBiometricEnabled(isBiometricEnabled);
+  }
+
+  @override
+  Future<void> markIsBiometricUserDisabled() {
+    return _localDataSource.markIsBiometricUserDisabled();
+  }
+
+  @override
+  Future<bool?> isBiometricUserDisabled() {
+    return _localDataSource.isBiometricUserDisabled();
   }
 
   @override
@@ -261,7 +346,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _apiDataSource
         .apiLogout()
         .then(
-          (value) => clearAllLocalData(),
+          (value) => clearDBandAllTokens(),
         )
         .then(
       (value) {

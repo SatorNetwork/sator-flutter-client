@@ -24,11 +24,21 @@ import 'package:satorio/data/model/wallet_stake_model.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 abstract class ApiDataSource {
+  // region Firebase
+
+  Future<void> init();
+
+  // endregion
+
   // region Local Auth
 
   Future<bool> isTokenExist();
 
-  Future<void> authLogout();
+  Future<bool> isRefreshTokenExist();
+
+  Future<void> removeAllTokens();
+
+  Future<void> removeAuthToken();
 
   // endregion
 
@@ -57,6 +67,10 @@ abstract class ApiDataSource {
   Future<bool> resendCode();
 
   Future<bool> refreshToken();
+
+  Future<bool> signInViaRefreshToken();
+
+  Future<bool> validateToken();
 
   Future<bool> forgotPassword(String email);
 

@@ -35,3 +35,6 @@ Widget backgroundImage(String imagePath) {
     fit: BoxFit.cover,
   );
 }
+
+final bool isAndroid = GetPlatform.isAndroid;
+

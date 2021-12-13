@@ -1,7 +1,13 @@
 abstract class AuthDataSource {
-  String? getAuthToken();
+  Future<String?> getAuthToken();
+
+  Future<String?> getAuthRefreshToken();
 
   storeAuthToken(String token);
 
-  clearAll();
+  storeRefreshToken(String refreshToken);
+
+  clearToken();
+
+  clearRefreshToken();
 }

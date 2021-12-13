@@ -112,6 +112,35 @@ class LoginPage extends GetView<LoginController> {
                           },
                         ),
                       ),
+                      Obx(
+                        () => controller.isBiometric.value && controller.isRefreshTokenExist.value
+                            ? InkWell(
+                                onTap: () =>
+                                    {controller.checkingForBioMetrics()},
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.fingerprint,
+                                        size: 40,
+                                        color: SatorioColor.interactive,
+                                      ),
+                                      Text(
+                                        'txt_login_biometric'.tr,
+                                        style: textTheme.bodyText1!.copyWith(
+                                          color: SatorioColor.interactive,
+                                          fontSize: 14 * coefficient,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      )
                     ],
                   ),
                 ),
@@ -122,7 +151,7 @@ class LoginPage extends GetView<LoginController> {
                   padding: EdgeInsets.only(
                       right: 24.0,
                       left: 24.0,
-                      bottom: Platform.isAndroid ? 24.0 : 50.0,
+                      bottom: isAndroid ? 24.0 : 50.0,
                       top: 24.0),
                   child: RichText(
                     text: TextSpan(

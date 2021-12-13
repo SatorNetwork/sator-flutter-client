@@ -89,9 +89,6 @@ class ShowEpisodeRealmController extends GetxController
   late Rx<int> missedMessagesCountRx = Rx(0);
   late final DatabaseReference _timestampsRef;
 
-  //TODO: refactor
-  static const String _DATABASE_URL = Environment.firebaseUrl;
-
   late Rx<bool> isMessagesRx = Rx(false);
 
   Query getMessageQuery() {
@@ -106,32 +103,41 @@ class ShowEpisodeRealmController extends GetxController
 
     isProfileRealm = argument.isProfileRealm;
 
+    _updateShowEpisode();
+    _loadReviews();
+    _loadNftItems();
+
+    _checkActivation();
+    _updateLeftAttempts();
+  }
+
+  @override
+  void onInit() async {
+    super.onInit();
+    await _satorioRepository.initRemoteConfig();
+    final String firebaseChild = await _satorioRepository.firebaseChatChild();
+    final String firebaseUrl = await _satorioRepository.firebaseUrl();
+
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: _DATABASE_URL)
+    _timestampsRef = FirebaseDatabase(databaseURL: firebaseUrl)
         .reference()
         .child(profile.id)
-        .child(argument.showEpisode.id);
+        .child(showEpisodeRx.value.id);
 
     _messagesRef = FirebaseDatabase.instance
         .reference()
-        .child('test')
-        .child(argument.showEpisode.id);
+        .child(firebaseChild)
+        .child(showEpisodeRx.value.id);
 
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
     });
 
-    _updateShowEpisode();
-    _loadReviews();
-    _loadNftItems();
     lastSeenInit();
-
-    _checkActivation();
-    _updateLeftAttempts();
   }
 
   void back() {

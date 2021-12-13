@@ -36,9 +36,6 @@ class ChatController extends GetxController with BackToMainMixin {
   DateTime? timestamp;
   late int scrollIndex;
 
-  //TODO: refactor
-  static const String _DATABASE_URL = Environment.firebaseUrl;
-
   bool canSendMessage() => messageController.text.length > 0;
 
   void _saveMessage(MessageModel message) {
@@ -57,6 +54,13 @@ class ChatController extends GetxController with BackToMainMixin {
     showSeasonRx = Rx(argument.showSeason);
     showEpisodeRx = Rx(argument.showEpisode);
     _messagesRef = argument.messagesRef;
+  }
+
+  @override
+  void onInit() async {
+    super.onInit();
+    await _satorioRepository.initRemoteConfig();
+    final String firebaseUrl = await _satorioRepository.firebaseUrl();
 
     scrollIndex = 0;
 
@@ -65,10 +69,10 @@ class ChatController extends GetxController with BackToMainMixin {
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: _DATABASE_URL)
+    _timestampsRef = FirebaseDatabase(databaseURL: firebaseUrl)
         .reference()
         .child(profile.id)
-        .child(argument.showEpisode.id);
+        .child(showEpisodeRx.value.id);
 
     _scrollToMissedMessages();
 

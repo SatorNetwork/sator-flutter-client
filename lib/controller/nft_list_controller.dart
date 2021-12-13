@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
+import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -11,7 +14,8 @@ import 'package:satorio/util/extension.dart';
 
 import 'nft_item_controller.dart';
 
-class NftListController extends GetxController {
+class NftListController extends GetxController with BackToMainMixin {
+
   final SatorioRepository _satorioRepository = Get.find();
 
   late final String _objectId;
@@ -37,7 +41,25 @@ class NftListController extends GetxController {
   }
 
   void back() {
+    if (_filterType == NftFilterType.User) {
+      _toProfile();
+      return;
+    }
+
     Get.back();
+  }
+
+  void _toProfile() {
+    if (Get.isRegistered<MainController>()) {
+      MainController mainController = Get.find();
+      mainController.selectedBottomTabIndex.value = MainController.TabProfile;
+      backToMain();
+    }
+
+    if (Get.isRegistered<ProfileController>()) {
+      ProfileController profileController = Get.find();
+      profileController.refreshPage();
+    }
   }
 
   void toNftItem(final NftItem nftItem) {
