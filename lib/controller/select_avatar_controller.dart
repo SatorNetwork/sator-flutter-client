@@ -8,8 +8,7 @@ import 'package:satorio/domain/entities/select_avatar_type.dart';
 
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
-
-import '../util/avatar_list.dart';
+import 'package:satorio/util/avatar_list.dart';
 
 class SelectAvatarController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();

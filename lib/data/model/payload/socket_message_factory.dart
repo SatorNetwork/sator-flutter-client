@@ -13,19 +13,22 @@ class SocketMessagePlayerConnectedModel extends SocketMessagePlayerConnected
   SocketMessagePlayerConnectedModel(PayloadUserModel payload) : super(payload);
 
   @override
-  Map toJson() => {
+  Map toJson() =>
+      {
         'type': type,
         'payload': (payload as ToJsonInterface).toJson(),
       };
 }
 
 class SocketMessagePlayerDisconnectedModel
-    extends SocketMessagePlayerDisconnected implements ToJsonInterface {
+    extends SocketMessagePlayerDisconnected
+    implements ToJsonInterface {
   SocketMessagePlayerDisconnectedModel(PayloadUserModel payload)
       : super(payload);
 
   @override
-  Map toJson() => {
+  Map toJson() =>
+      {
         'type': type,
         'payload': (payload as ToJsonInterface).toJson(),
       };
@@ -36,7 +39,8 @@ class SocketMessageCountdownModel extends SocketMessageCountdown
   SocketMessageCountdownModel(PayloadCountdownModel payload) : super(payload);
 
   @override
-  Map toJson() => {
+  Map toJson() =>
+      {
         'type': type,
         'payload': (payload as ToJsonInterface).toJson(),
       };
@@ -47,7 +51,8 @@ class SocketMessageQuestionModel extends SocketMessageQuestion
   SocketMessageQuestionModel(PayloadQuestionModel payload) : super(payload);
 
   @override
-  Map toJson() => {
+  Map toJson() =>
+      {
         'type': type,
         'payload': (payload as ToJsonInterface).toJson(),
       };
@@ -59,7 +64,8 @@ class SocketMessageQuestionResultModel extends SocketMessageQuestionResult
       : super(payload);
 
   @override
-  Map toJson() => {
+  Map toJson() =>
+      {
         'type': type,
         'payload': (payload as ToJsonInterface).toJson(),
       };
@@ -71,7 +77,8 @@ class SocketMessageChallengeResultModel extends SocketMessageChallengeResult
       : super(payload);
 
   @override
-  Map toJson() => {
+  Map toJson() =>
+      {
         'type': type,
         'payload': (payload as ToJsonInterface).toJson(),
       };
@@ -82,7 +89,8 @@ class SocketMessageAnswerModel extends SocketMessageAnswer
   SocketMessageAnswerModel(PayloadAnswerModel payload) : super(payload);
 
   @override
-  Map toJson() => {
+  Map toJson() =>
+      {
         'type': type,
         'payload': (payload as ToJsonInterface).toJson(),
       };
@@ -90,7 +98,11 @@ class SocketMessageAnswerModel extends SocketMessageAnswer
 
 class SocketMessageModelFactory {
   static SocketMessage createSocketMessage(Map json) {
-    String type = json['type'];
+    String type = json['type'] == null
+        ? ''
+        : (json['type'] is int
+        ? Type.fromInt(json['type'] as int)
+        : json['type'] as String);
     Map payloadJson = json['payload'];
     switch (type) {
       case Type.player_connected:

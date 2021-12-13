@@ -1,7 +1,7 @@
 import 'package:dart_nats/dart_nats.dart';
 
 abstract class NatsDataSource {
-  Future<Subscription> subscribe(String subject);
+  Future<Subscription> subscribe(String url, String subject);
 
   Future<void> unsubscribe(Subscription subscription);
 

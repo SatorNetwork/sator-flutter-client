@@ -11,6 +11,7 @@ import 'package:satorio/controller/quiz_result_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/domain/entities/challenge.dart';
+import 'package:satorio/domain/entities/nats_config.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/payload/payload_countdown.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
@@ -25,6 +26,7 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
+  late final NatsConfig natsConfig;
 
   late final Subscription _subscription;
   late final StreamSubscription<Message>? _streamSubscription;
@@ -36,8 +38,9 @@ class QuizController extends GetxController {
   QuizController() {
     QuizArgument argument = Get.arguments as QuizArgument;
     challengeRx = Rx(argument.challenge);
+    natsConfig = argument.natsConfig;
 
-    _initSocket(argument.socketUrl);
+    _initConnection();
   }
 
   @override
@@ -61,11 +64,11 @@ class QuizController extends GetxController {
   }
 
   Future<void> sendAnswer(String questionId, String answerId) {
-    return _satorioRepository.sendAnswer('???', questionId, answerId);
+    return _satorioRepository.sendAnswer(natsConfig.sendSubj, questionId, answerId);
   }
 
-  void _initSocket(String socketUrl) async {
-    _subscription = await _satorioRepository.subscribeNats('???');
+  void _initConnection() async {
+    _subscription = await _satorioRepository.subscribeNats(natsConfig.baseQuizUrl, natsConfig.receiveSubj);
 
     _streamSubscription = _subscription.stream?.listen((Message message) {
       String data = message.string;
@@ -241,7 +244,7 @@ class QuizController extends GetxController {
 
 class QuizArgument {
   final Challenge challenge;
-  final String socketUrl;
+  final NatsConfig natsConfig;
 
-  const QuizArgument(this.challenge, this.socketUrl);
+  const QuizArgument(this.challenge, this.natsConfig);
 }

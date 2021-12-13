@@ -23,6 +23,25 @@ class Type {
   static const challenge_result = 'challenge_result';
   static const answer = 'answer';
   static const time_out = 'time_out';
+
+  static String fromInt(int typeInt) {
+    switch (typeInt) {
+      case 0:
+        return player_connected;
+      case 1:
+        return countdown;
+      case 2:
+        return question;
+      case 3:
+        return answer;
+      case 4:
+        return question_result;
+      case 5:
+        return challenge_result;
+      default:
+        return '';
+    }
+  }
 }
 
 class SocketMessagePlayerConnected extends SocketMessage<PayloadUser> {

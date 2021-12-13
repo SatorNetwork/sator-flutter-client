@@ -5,6 +5,7 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nats_config.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
@@ -159,9 +160,9 @@ abstract class SatorioRepository {
 
   Future<void> logout();
 
-  Future<String> quizSocketUrl(String challengeId);
+  Future<NatsConfig> quizNats(String challengeId);
 
-  Future<Subscription> subscribeNats(String subject);
+  Future<Subscription> subscribeNats(String url, String subject);
 
   Future<void> unsubscribeNats(Subscription subscription);
 

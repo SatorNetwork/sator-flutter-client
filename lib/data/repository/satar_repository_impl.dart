@@ -15,6 +15,7 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nats_config.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
@@ -43,8 +44,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
 
-  SatorioRepositoryImpl(
-      this._apiDataSource, this._localDataSource, this._firebaseDataSource, this._natsDataSource) {
+  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource,
+      this._firebaseDataSource, this._natsDataSource) {
     _localDataSource.init();
     _apiDataSource.init();
   }
@@ -425,15 +426,15 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<String> quizSocketUrl(String challengeId) {
+  Future<NatsConfig> quizNats(String challengeId) {
     return _apiDataSource
-        .quizSocketUrl(challengeId)
+        .quizNats(challengeId)
         .catchError((value) => _handleException(value));
   }
 
   @override
-  Future<Subscription> subscribeNats(String subject) {
-    return _natsDataSource.subscribe(subject);
+  Future<Subscription> subscribeNats(String url, String subject) {
+    return _natsDataSource.subscribe(url, subject);
   }
 
   @override

@@ -8,18 +8,18 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nats_config_model.dart';
 import 'package:satorio/data/model/nft_category_model.dart';
 import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
-import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
-import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
@@ -59,11 +59,7 @@ import 'package:satorio/data/response/error_response.dart';
 import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
-import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/environment.dart';
-
-import '../firebase_data_source.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
@@ -882,13 +878,12 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Quiz
 
   @override
-  Future<String> quizSocketUrl(String challengeId) {
+  Future<NatsConfigModel> quizNats(String challengeId) {
     return _requestGet(
-      'quiz/$challengeId/play',
+      'quiz_v2/$challengeId/play',
     ).then((Response response) {
-      return SocketUrlResponse.fromJson(
-              json.decode(response.bodyString!)['data'])
-          .playUrl;
+      return NatsConfigModel.fromJson(
+          json.decode(response.bodyString!)['data']);
     });
   }
 

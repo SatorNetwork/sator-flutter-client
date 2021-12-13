@@ -35,7 +35,6 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/environment.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';

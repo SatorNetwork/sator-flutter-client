@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/quiz_binding.dart';
 import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
+import 'package:satorio/domain/entities/nats_config.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/quiz_page.dart';
 
@@ -29,12 +30,12 @@ class ChallengeController extends GetxController {
           return value;
         })
         .then(
-          (value) => _satorioRepository.quizSocketUrl(challengeRx.value!.id),
+          (value) => _satorioRepository.quizNats(challengeRx.value!.id),
         )
         .then(
-          (socketUrl) {
+          (natsConfig ) {
             isRequested.value = false;
-            _toQuiz(socketUrl);
+            _toQuiz(natsConfig);
           },
         )
         .catchError((value) {
@@ -48,13 +49,13 @@ class ChallengeController extends GetxController {
     });
   }
 
-  void _toQuiz(String socketUrl) async {
+  void _toQuiz(NatsConfig natsConfig) async {
     final result = await Get.to(
       () => QuizPage(),
       binding: QuizBinding(),
       arguments: QuizArgument(
         challengeRx.value!,
-        socketUrl,
+        natsConfig,
       ),
     );
     if (challengeRx.value != null) {

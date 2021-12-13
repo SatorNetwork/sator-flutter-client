@@ -7,7 +7,6 @@ import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/environment.dart';
 
 class NatsDataSourceImpl implements NatsDataSource {
   final Client _client = Client();
@@ -30,11 +29,10 @@ class NatsDataSourceImpl implements NatsDataSource {
   }
 
   @override
-  Future<Subscription> subscribe(String subject) {
-    return _client.connect(Uri.parse(Environment.baseUrl)).then(
-      (value) {
-        return _client.sub(subject);
-      },
+  Future<Subscription> subscribe(String url, String subject) {
+    //TODO
+    return _client.connect(Uri.parse('ws://147.182.182.195:8080')).then(
+      (value) => _client.sub(subject),
     );
   }
 

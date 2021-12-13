@@ -5,13 +5,11 @@ import 'package:get/get.dart';
 
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/avatar_list.dart';
-import '../../util/avatar_list.dart';
-import '../theme/light_theme.dart';
-import '../theme/sator_color.dart';
-import '../theme/text_theme.dart';
 
 class SelectAvatarPage extends GetView<SelectAvatarController> {
   @override
