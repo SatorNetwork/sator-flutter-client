@@ -6,4 +6,8 @@ abstract class FirebaseDataSource {
   Future<String> apiBaseUrl();
 
   Future<String> firebaseUrl();
+
+  Future<String?> fcmToken();
+
+  Future<void> initNotifications();
 }

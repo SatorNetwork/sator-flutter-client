@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
@@ -75,6 +74,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<void> init() async {
     await _firebaseDataSource.initRemoteConfig();
+    await _firebaseDataSource.initNotifications();
     String baseUrl = await _firebaseDataSource.apiBaseUrl();
 
     _getConnect = GetConnect();
@@ -82,8 +82,8 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect.baseUrl = baseUrl;
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-      //TODO: refactor firebase data source
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      String? fcmToken = await _firebaseDataSource.fcmToken();
+
       String? deviceId = fcmToken?.split(':')[0];
       if (deviceId != null && deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
