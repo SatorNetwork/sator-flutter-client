@@ -7,6 +7,7 @@ import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
@@ -60,9 +61,6 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/environment.dart';
-
-import '../firebase_data_source.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
