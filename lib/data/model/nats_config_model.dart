@@ -4,11 +4,13 @@ import 'package:satorio/domain/entities/nats_config.dart';
 class NatsConfigModel extends NatsConfig implements ToJsonInterface {
   const NatsConfigModel(
     String baseQuizUrl,
+    String baseQuizWsUrl,
     String receiveSubj,
     String sendSubj,
     String userId,
   ) : super(
           baseQuizUrl,
+          baseQuizWsUrl,
           receiveSubj,
           sendSubj,
           userId,
@@ -16,6 +18,7 @@ class NatsConfigModel extends NatsConfig implements ToJsonInterface {
 
   factory NatsConfigModel.fromJson(Map json) => NatsConfigModel(
         json['base_quiz_url'] == null ? '' : json['base_quiz_url'],
+        json['base_quiz_url'] == null ? '' : json['base_quiz_ws_url'],
         json['recv_message_subj'] == null ? '' : json['recv_message_subj'],
         json['send_message_subj'] == null ? '' : json['send_message_subj'],
         json['user_id'] == null ? '' : json['user_id'],

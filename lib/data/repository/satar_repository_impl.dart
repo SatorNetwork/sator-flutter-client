@@ -452,6 +452,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<void> sendPing(String subject) {
+    return _natsDataSource.sendPing(subject);
+  }
+
+  @override
   Future<ClaimReward> claimReward([String? claimRewardsPath]) {
     return _apiDataSource
         .claimReward(claimRewardsPath)

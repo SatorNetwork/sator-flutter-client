@@ -5,6 +5,7 @@ import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
+import 'package:satorio/data/model/payload/payload_empty_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 
@@ -30,10 +31,13 @@ class NatsDataSourceImpl implements NatsDataSource {
 
   @override
   Future<Subscription> subscribe(String url, String subject) {
-    //TODO
-    return _client.connect(Uri.parse('ws://147.182.182.195:8080')).then(
-      (value) => _client.sub(subject),
-    );
+    return _client
+        .connect(
+          Uri.parse(url),
+        )
+        .then(
+          (value) => _client.sub(subject),
+        );
   }
 
   @override
@@ -53,5 +57,13 @@ class NatsDataSourceImpl implements NatsDataSource {
     );
 
     return _sendViaClient(answerSubject, message);
+  }
+
+  @override
+  Future<void> sendPing(String subject) {
+    SocketMessagePlayerIsActiveModel message = SocketMessagePlayerIsActiveModel(
+      PayloadEmptyModel(),
+    );
+    return _sendViaClient(subject, message);
   }
 }

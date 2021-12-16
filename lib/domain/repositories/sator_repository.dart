@@ -172,6 +172,8 @@ abstract class SatorioRepository {
     String answerId,
   );
 
+  Future<void> sendPing(String subject);
+
   Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
   Future<bool> sendInvite(String email);

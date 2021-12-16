@@ -10,4 +10,6 @@ abstract class NatsDataSource {
     String questionId,
     String answerId,
   );
+
+  Future<void> sendPing(String subject);
 }

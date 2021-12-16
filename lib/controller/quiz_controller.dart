@@ -30,6 +30,7 @@ class QuizController extends GetxController {
 
   late final Subscription _subscription;
   late final StreamSubscription<Message>? _streamSubscription;
+  late final Timer _pingTimer;
 
   final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
 
@@ -45,6 +46,7 @@ class QuizController extends GetxController {
 
   @override
   void onClose() {
+    _pingTimer.cancel();
     _streamSubscription?.cancel();
     _satorioRepository.unsubscribeNats(_subscription);
 
@@ -68,7 +70,10 @@ class QuizController extends GetxController {
   }
 
   void _initConnection() async {
-    _subscription = await _satorioRepository.subscribeNats(natsConfig.baseQuizUrl, natsConfig.receiveSubj);
+    _subscription = await _satorioRepository.subscribeNats(natsConfig.baseQuizWsUrl, natsConfig.receiveSubj);
+    _pingTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _satorioRepository.sendPing(natsConfig.sendSubj);
+    });
 
     _streamSubscription = _subscription.stream?.listen((Message message) {
       String data = message.string;
