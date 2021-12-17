@@ -879,7 +879,7 @@ class ProfilePage extends GetView<ProfileController> {
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  // mainAxisSize: MainAxisSize.max,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     ClipOval(
                         child: SvgPicture.asset(
