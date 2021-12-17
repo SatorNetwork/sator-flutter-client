@@ -8,10 +8,10 @@ import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/util/avatar_list.dart';
 import 'package:satorio/util/smile_list.dart';
 
 class ReviewsPage extends GetView<ReviewsController> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +62,7 @@ class ReviewsPage extends GetView<ReviewsController> {
               color: Colors.white,
             ),
             child: ClipRRect(
-                borderRadius:
-                BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 child: Stack(children: [
                   NotificationListener<ScrollNotification>(
                     onNotification: (notification) {
@@ -101,27 +100,29 @@ class ReviewsPage extends GetView<ReviewsController> {
 
   Widget _reviews() {
     return Obx(
-    () => ListView.separated(
+      () => ListView.separated(
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           itemCount: controller.reviewsRx.value.length,
           shrinkWrap: true,
           separatorBuilder: (context, index) => SizedBox(
-            height: 16,
-          ),
+                height: 16,
+              ),
           itemBuilder: (context, index) {
             return _reviewItem(controller.reviewsRx.value[index]);
           }),
     );
   }
 
-
   Widget _reviewItem(Review review) {
     final RxBool isExpandedRx = false.obs;
     final int minStringLength = 45;
 
+    String avatarAsset =
+        review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
+
     return Obx(
-        () => InkWell(
+      () => InkWell(
         onTap: () {
           if (review.review.length < 70) return;
           isExpandedRx.toggle();
@@ -169,10 +170,15 @@ class ReviewsPage extends GetView<ReviewsController> {
                 height: 8,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                 child: Text(
                   review.review,
-                  maxLines: isExpandedRx.value ? 1000 : review.review.length < minStringLength ? 1 : 4,
+                  maxLines: isExpandedRx.value
+                      ? 1000
+                      : review.review.length < minStringLength
+                          ? 1
+                          : 4,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(
                     color: SatorioColor.textBlack,
@@ -198,21 +204,12 @@ class ReviewsPage extends GetView<ReviewsController> {
                     Expanded(
                       child: Row(
                         children: [
-                          Container(
+                          ClipOval(
+                              child: SvgPicture.asset(
+                            avatarAsset,
                             height: 20,
                             width: 20,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                  SatorioColor.yellow_orange,
-                                  SatorioColor.tomato,
-                                ],
-                              ),
-                            ),
-                          ),
+                          )),
                           SizedBox(
                             width: 6,
                           ),

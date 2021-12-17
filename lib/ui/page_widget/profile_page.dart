@@ -12,6 +12,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/util/avatar_list.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   final double nftsLargestImageSize =
@@ -759,13 +760,15 @@ class ProfilePage extends GetView<ProfileController> {
     final EdgeInsets padding =
         EdgeInsets.symmetric(horizontal: 16 * coefficient, vertical: 2);
     final formatter = DateFormat('dd MMMM yyyy');
+    String avatarAsset =
+        review!.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
 
     Rx<bool> isExpandedRx = Rx(false);
 
     return Obx(
       () => InkWell(
         onTap: () {
-          if (review!.review.length < 70) return;
+          if (review.review.length < 70) return;
           isExpandedRx.value = !isExpandedRx.value;
         },
         child: Container(
@@ -806,7 +809,7 @@ class ProfilePage extends GetView<ProfileController> {
                         width: 4 * coefficient,
                       ),
                       Text(
-                        '${review!.rating}',
+                        '${review.rating}',
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 12.0 * coefficient,
@@ -876,23 +879,14 @@ class ProfilePage extends GetView<ProfileController> {
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
+                  // mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(
-                      width: 20 * coefficient,
-                      height: 20 * coefficient,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            SatorioColor.yellow_orange,
-                            SatorioColor.tomato,
-                          ],
-                        ),
-                      ),
-                    ),
+                    ClipOval(
+                        child: SvgPicture.asset(
+                      avatarAsset,
+                      height: 20,
+                      width: 20,
+                    )),
                     SizedBox(
                       width: 6 * coefficient,
                     ),
