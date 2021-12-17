@@ -93,6 +93,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<String> claimRewardsText() {
+    return _firebaseDataSource
+        .claimRewardText()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> clearDBandAccessToken() {
     return _localDataSource
         .clear()

@@ -25,4 +25,8 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   Future<String> firebaseUrl() async {
     return _remoteConfig.getString(isProduction ? 'firebase_url' : 'firebase_url');
   }
+
+  Future<String> claimRewardText() async {
+    return _remoteConfig.getString('claim_reward_text');
+  }
 }
