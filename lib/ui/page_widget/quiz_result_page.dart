@@ -107,12 +107,14 @@ class QuizResultPage extends GetView<QuizResultController> {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Obx(
-                      () => ElevatedGradientButton(
-                        text: 'txt_claim_rewards'.tr,
-                        isInProgress: controller.isRequested.value,
-                        onPressed: () {
-                          controller.claimRewards();
-                        },
+                      () => Text(
+                        controller.claimText.value,
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: SatorioColor.darkAccent,
+                          fontSize: 18.0 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ),

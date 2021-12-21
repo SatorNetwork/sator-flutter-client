@@ -36,8 +36,12 @@ class LoginController extends GetxController with ValidationMixin {
   late final Uri? deepLink;
 
   LoginController() {
-    LoginArgument argument = Get.arguments as LoginArgument;
-    deepLink = argument.deepLink;
+    if (Get.arguments == null) {
+      deepLink = null;
+    } else {
+      LoginArgument argument = Get.arguments as LoginArgument;
+      deepLink = argument.deepLink;
+    }
 
     _getBiometric();
   }
@@ -145,7 +149,9 @@ class LoginController extends GetxController with ValidationMixin {
         .then(
           (isSuccess) {
             if (isSuccess) {
-              _satorioRepository.isBiometricUserDisabled().then((isBiometricUserDisabled) {
+              _satorioRepository
+                  .isBiometricUserDisabled()
+                  .then((isBiometricUserDisabled) {
                 if (isBiometricUserDisabled == null) {
                   _satorioRepository
                       .isBiometricEnabled()

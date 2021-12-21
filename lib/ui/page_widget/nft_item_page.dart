@@ -37,7 +37,7 @@ class NftItemPage extends GetView<NftItemController> {
         children: [
           Expanded(
             child: Stack(
-              fit: StackFit.expand,
+              alignment: Alignment.center,
               children: [
                 Column(
                   mainAxisSize: MainAxisSize.max,
@@ -89,7 +89,7 @@ class NftItemPage extends GetView<NftItemController> {
                     child: Obx(
                       () => Image.network(
                         controller.nftItemRx.value.imageLink,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                         color: SatorioColor.acadia,
                         colorBlendMode: BlendMode.plus,
                       ),

@@ -16,6 +16,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/avatar_list.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/smile_list.dart';
 import 'package:timer_count_down/timer_count_down.dart';
@@ -1340,6 +1341,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   Widget _reviewItem(Review review) {
     final double reviewContainerHeight = 190.0 * coefficient;
 
+    String avatarAsset = review.userAvatar.isNotEmpty
+        ? review.userAvatar
+        : avatars[0];
+
     final RxBool isExpandedRx = false.obs;
 
     return Obx(
@@ -1425,21 +1430,12 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
+                    ClipOval(
+                        child: SvgPicture.asset(
+                      avatarAsset,
                       height: 20,
                       width: 20,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [
-                            SatorioColor.yellow_orange,
-                            SatorioColor.tomato,
-                          ],
-                        ),
-                      ),
-                    ),
+                    )),
                     SizedBox(
                       width: 6,
                     ),

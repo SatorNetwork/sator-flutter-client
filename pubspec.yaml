@@ -43,6 +43,7 @@ dependencies:
   firebase_database: ^7.1.2
   firebase_dynamic_links: ^2.0.7
   firebase_messaging: ^10.0.4
+  firebase_remote_config: ^0.11.0+2
   grouped_list: ^4.1.0
   webview_flutter: ^2.0.12
   cached_network_image: ^3.1.0
@@ -55,6 +56,7 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   local_auth: ^1.1.8
   flutter_switch: ^0.3.1
+  flutter_idensic_mobile_sdk_plugin: ^1.18.2
 
 dev_dependencies:
   flutter_test:

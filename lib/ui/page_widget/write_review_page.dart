@@ -13,6 +13,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
+import 'package:satorio/util/avatar_list.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/smile_list.dart';
 
@@ -306,6 +307,10 @@ class WriteReviewPage extends GetView<WriteReviewController> {
   }
 
   Widget _previewWidget() {
+    String avatarAsset = controller.profileRx.value!.avatarPath.isNotEmpty
+        ? controller.profileRx.value!.avatarPath
+        : avatars[0];
+
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -461,21 +466,12 @@ class WriteReviewPage extends GetView<WriteReviewController> {
                       ),
                       child: Row(
                         children: [
-                          Container(
+                          ClipOval(
+                              child: SvgPicture.asset(
+                            avatarAsset,
                             height: 20,
                             width: 20,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                  SatorioColor.yellow_orange,
-                                  SatorioColor.tomato,
-                                ],
-                              ),
-                            ),
-                          ),
+                          )),
                           SizedBox(
                             width: 6 * coefficient,
                           ),

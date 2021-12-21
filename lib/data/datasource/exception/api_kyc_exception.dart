@@ -1,0 +1,3 @@
+class ApiKycException implements Exception {
+
+}

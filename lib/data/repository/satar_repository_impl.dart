@@ -1,10 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
@@ -36,35 +41,93 @@ import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
+  final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource) {
+  SatorioRepositoryImpl(
+      this._apiDataSource, this._localDataSource, this._firebaseDataSource) {
     _localDataSource.init();
+    _apiDataSource.init();
   }
 
   _handleException(Exception exception) {
     if (exception is ApiErrorException) {
-      Get.dialog(
-        DefaultDialog(
-          'txt_oops'.tr,
-          exception.errorMessage,
-          'txt_ok'.tr,
-        ),
-      );
+      _handleApiErrorException(exception);
     } else if (exception is ApiUnauthorizedException) {
-      clearDBandAccessToken().then(
-        (value) {
-          Get.offAll(
-            () => LoginPage(),
-            binding: LoginBinding(),
-            arguments: LoginArgument(null),
-          );
-          Get.snackbar('txt_oops'.tr, exception.errorMessage);
-        },
-      );
+      _handleApiUnauthorizedException(exception);
+    } else if (exception is ApiKycException) {
+      _handleApiKycException();
     } else {
       throw exception;
     }
+  }
+
+  void _handleApiErrorException(ApiErrorException exception) {
+    Get.dialog(
+      DefaultDialog(
+        'txt_oops'.tr,
+        exception.errorMessage,
+        'txt_ok'.tr,
+      ),
+    );
+  }
+
+  void _handleApiUnauthorizedException(ApiUnauthorizedException exception) {
+    clearDBandAccessToken().then(
+          (value) {
+        Get.offAll(
+              () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
+        );
+        Get.snackbar('txt_oops'.tr, exception.errorMessage);
+      },
+    );
+  }
+
+  void _handleApiKycException() {
+    _apiDataSource.kycToken().then((String kycToken) {
+      print('KYC token = $kycToken');
+
+      SNSMobileSDK.init(
+        kycToken,
+            () => _apiDataSource.kycToken(),
+      )
+          .withLocale(
+        Locale('en'),
+      )
+          .withDebug(kDebugMode)
+          .build()
+          .launch();
+    });
+  }
+
+  @override
+  Future<void> initRemoteConfig() {
+    return _firebaseDataSource
+        .initRemoteConfig()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseChatChild() {
+    return _firebaseDataSource
+        .firebaseChatChild()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> firebaseUrl() {
+    return _firebaseDataSource
+        .firebaseUrl()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> claimRewardsText() {
+    return _firebaseDataSource
+        .claimRewardText()
+        .catchError((value) => _handleException(value));
   }
 
   @override
@@ -107,19 +170,24 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> signInViaRefreshToken() {
     return _apiDataSource.isRefreshTokenExist().then((isExist) {
       if (isExist)
-        return _apiDataSource.signInViaRefreshToken().catchError((error) => _handleException(error));
-      else return isExist;
+        return _apiDataSource
+            .signInViaRefreshToken()
+            .catchError((error) => _handleException(error));
+      else
+        return isExist;
     });
   }
 
   @override
   Future<bool> validateToken() {
-    return _apiDataSource.validateToken().catchError((value) => _handleException(value));
+    return _apiDataSource.validateToken();
   }
 
   @override
   Future<bool> isRefreshTokenExist() {
-    return _apiDataSource.isRefreshTokenExist().catchError((value) => _handleException(value));
+    return _apiDataSource
+        .isRefreshTokenExist()
+        .catchError((value) => _handleException(value));
   }
 
   @override
@@ -534,7 +602,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Review>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage}) {
+  Future<List<Review>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .getReviews(showId, episodeId, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));

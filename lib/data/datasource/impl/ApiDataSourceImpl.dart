@@ -1,13 +1,15 @@
 import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
@@ -61,18 +63,27 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/environment.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
-  GetConnect _getConnect = GetConnect();
-  AuthDataSource _authDataSource;
+  late final GetConnect _getConnect;
+  final AuthDataSource _authDataSource;
+  final FirebaseDataSource _firebaseDataSource;
 
-  ApiDataSourceImpl(this._authDataSource) {
-    _getConnect.baseUrl = Environment.baseUrl;
+  ApiDataSourceImpl(this._authDataSource, this._firebaseDataSource);
+
+  @override
+  Future<void> init() async {
+    await _firebaseDataSource.initRemoteConfig();
+    await _firebaseDataSource.initNotifications();
+    String baseUrl = await _firebaseDataSource.apiBaseUrl();
+
+    _getConnect = GetConnect();
+
+    _getConnect.baseUrl = baseUrl;
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-      //TODO: refactor firebase data source
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      String? fcmToken = await _firebaseDataSource.fcmToken();
+
       String? deviceId = fcmToken?.split(':')[0];
       if (deviceId != null && deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
@@ -167,15 +178,20 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
-        case 422:
+        // 422
+        case HttpStatus.unprocessableEntity:
           ErrorValidationResponse errorValidationResponse =
               ErrorValidationResponse.fromJson(
                   json.decode(utf8Response.bodyString!));
           throw ApiValidationException(errorValidationResponse.validation);
-        case 401:
+        // 401
+        case HttpStatus.unauthorized:
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
           throw ApiUnauthorizedException(errorResponse.error);
+        // 407
+        case HttpStatus.proxyAuthenticationRequired:
+          throw ApiKycException();
         default:
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
@@ -386,7 +402,12 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestGet(
       'auth',
     ).then((Response response) {
-      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+      if (response.isOk) {
+        return ResultResponse.fromJson(json.decode(response.bodyString!))
+            .result;
+      } else {
+        return false;
+      }
     });
   }
 
@@ -417,6 +438,18 @@ class ApiDataSourceImpl implements ApiDataSource {
       ResetPasswordRequest(email, code, newPassword),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  // endregion
+
+  // region KYC
+
+  Future<String> kycToken() {
+    return _requestGet(
+      'auth/kyc/access_token',
+    ).then((Response response) {
+      return json.decode(response.bodyString!)['data'];
     });
   }
 
