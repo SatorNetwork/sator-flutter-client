@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:get/get_connect/http/src/status/http_status.dart';
@@ -10,6 +9,7 @@ import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
@@ -63,9 +63,6 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/environment.dart';
-
-import '../firebase_data_source.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
@@ -77,6 +74,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<void> init() async {
     await _firebaseDataSource.initRemoteConfig();
+    await _firebaseDataSource.initNotifications();
     String baseUrl = await _firebaseDataSource.apiBaseUrl();
 
     _getConnect = GetConnect();
@@ -84,8 +82,8 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect.baseUrl = baseUrl;
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-      //TODO: refactor firebase data source
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      String? fcmToken = await _firebaseDataSource.fcmToken();
+
       String? deviceId = fcmToken?.split(':')[0];
       if (deviceId != null && deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
