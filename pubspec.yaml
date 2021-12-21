@@ -56,6 +56,7 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   local_auth: ^1.1.8
   flutter_switch: ^0.3.1
+  flutter_idensic_mobile_sdk_plugin: ^1.18.2
 
 dev_dependencies:
   flutter_test:

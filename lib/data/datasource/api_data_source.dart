@@ -81,6 +81,12 @@ abstract class ApiDataSource {
 
   // endregion
 
+  // region KYC
+
+  Future<String> kycToken();
+
+  // endregion
+
   // region Profile
 
   Future<ProfileModel> profile();
