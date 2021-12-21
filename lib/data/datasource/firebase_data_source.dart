@@ -7,6 +7,8 @@ abstract class FirebaseDataSource {
 
   Future<String> firebaseUrl();
 
+  Future<String> claimRewardText();
+
   Future<String?> fcmToken();
 
   Future<void> initNotifications();

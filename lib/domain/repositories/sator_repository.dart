@@ -28,6 +28,8 @@ abstract class SatorioRepository {
 
   Future<String> firebaseUrl();
 
+  Future<String> claimRewardsText();
+
   Future<void> clearDBandAccessToken();
 
   Future<void> clearDBandAllTokens();

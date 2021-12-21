@@ -34,7 +34,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
       print("onMessageOpenedApp: ${message.notification}");
     });
   }
-  
+
   Future<String> firebaseChatChild() async {
     return _remoteConfig.getString(isProduction ? 'firebase_prod_chat_child' : 'firebase_test_chat_child');
   }
@@ -45,6 +45,10 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   Future<String> firebaseUrl() async {
     return _remoteConfig.getString(isProduction ? 'firebase_url' : 'firebase_url');
+  }
+
+  Future<String> claimRewardText() async {
+    return _remoteConfig.getString('claim_reward_text');
   }
 
   Future<String?> fcmToken() async {

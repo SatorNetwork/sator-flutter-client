@@ -272,7 +272,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
                   onTap: () {
                     controller.toAllShows();
                   },
-                  textCode: 'txt_all_shows'.tr,
+                  textCode: 'txt_realm_nft'.tr,
                   fontSize: 24.0 * coefficient,
                   fontWeight: FontWeight.w700,
                   buttonText: 'View',

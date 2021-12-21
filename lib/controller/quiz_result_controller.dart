@@ -12,6 +12,14 @@ class QuizResultController extends GetxController {
   QuizController quizController = Get.find();
   SatorioRepository _satorioRepository = Get.find();
 
+  final RxString claimText = ''.obs;
+
+  QuizResultController() {
+    _satorioRepository.claimRewardsText().then((value) {
+      claimText.value = value;
+    });
+  }
+
   void claimRewards() {
     Future.value(true)
         .then(
