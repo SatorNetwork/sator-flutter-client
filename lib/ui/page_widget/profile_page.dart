@@ -12,6 +12,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/util/avatar_list.dart';
 
 class ProfilePage extends GetView<ProfileController> {
@@ -47,14 +48,11 @@ class ProfilePage extends GetView<ProfileController> {
                           child: ClipRRect(
                             borderRadius:
                                 BorderRadius.circular(16 * coefficient),
-                            child: Obx(
-                              () => SvgPicture.asset(
-                                controller.profileRx.value?.avatarPath ?? '',
-                                width: 72 * coefficient,
-                                height: 72 * coefficient,
-                                fit: BoxFit.fitWidth,
-                              ),
-                            ),
+                            child: Obx(() => AvatarImage(
+                                  controller.profileRx.value?.avatarPath,
+                                  width: 72,
+                                  height: 72,
+                                )),
                           ),
                         ),
                       ),
@@ -882,10 +880,10 @@ class ProfilePage extends GetView<ProfileController> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     ClipOval(
-                        child: SvgPicture.asset(
+                        child: AvatarImage(
                       avatarAsset,
-                      height: 20,
                       width: 20,
+                      height: 20,
                     )),
                     SizedBox(
                       width: 6 * coefficient,
