@@ -30,6 +30,8 @@ abstract class SatorioRepository {
 
   Future<String> claimRewardsText();
 
+  Future<int> appVersion();
+
   Future<void> clearDBandAccessToken();
 
   Future<void> clearDBandAllTokens();

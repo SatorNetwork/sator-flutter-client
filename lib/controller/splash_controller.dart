@@ -1,6 +1,8 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/onboarding_binding.dart';
@@ -9,15 +11,30 @@ import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/onboardinga_page.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
+import 'package:satorio/util/links.dart';
 import 'package:satorio/util/onboarding_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SplashController extends GetxController {
   SatorioRepository _satorioRepository = Get.find();
 
   Uri? deepLink;
+
+  late int _installedAppVersion;
+  late int _minAppVersion;
+
+  @override
+  void onInit() async {
+    super.onInit();
+
+    _getInstalledAppVersion();
+    _getMinAppVersion();
+  }
 
   @override
   void onReady() {
@@ -44,28 +61,79 @@ class SplashController extends GetxController {
         onError: (OnLinkErrorException e) async {});
   }
 
+  void _getInstalledAppVersion() async {
+    await PackageInfo.fromPlatform().then((value) {
+      _installedAppVersion = int.parse(value.buildNumber);
+    });
+  }
+
+  void _getMinAppVersion() async {
+    await _satorioRepository.appVersion().then((value) {
+      _minAppVersion = value;
+    });
+  }
+
   void dummy() {}
 
-  void _checkToken() {
+  void _checkToken() async {
     Future.delayed(
       Duration(milliseconds: 1000),
       () {
-        _satorioRepository.validateToken().then(
-          (bool isTokenValid) {
-            if (isTokenValid) {
-              _checkIsVerified();
-            } else {
+        if (_installedAppVersion >= _minAppVersion) {
+          _satorioRepository.validateToken().then(
+                (bool isTokenValid) {
+              if (isTokenValid) {
+                _checkIsVerified();
+              } else {
+                _checkIsOnBoarding();
+              }
+            },
+          ).catchError(
+                (value) {
               _checkIsOnBoarding();
-            }
-          },
-        ).catchError(
-          (value) {
-            _checkIsOnBoarding();
-          },
-        );
+            },
+          );
+        } else {
+          _toUpdateAppDialog();
+        }
       },
     );
   }
+
+  void _toUpdateAppDialog() {
+    Get.dialog(
+      WillPopScope(
+        onWillPop: () async {
+          if (_installedAppVersion >= _minAppVersion) {
+            Get.back(closeOverlays: true);
+            return true;
+          } else {
+            return false;
+          }
+        },
+        child: DefaultDialog(
+          'txt_update_app'.tr,
+          'txt_update_app_text'.tr,
+          'txt_update'.tr,
+          icon: Icons.logout,
+          isBack: false,
+          onButtonPressed: () {
+            _launchURL();
+          },
+        ),
+      ),
+      barrierDismissible: false
+    );
+  }
+
+  void _launchURL() async {
+    if (isAndroid) {
+      await canLaunch(linkPlayMarket) ? await launch(linkPlayMarket) : throw 'Could not launch $linkPlayMarket';
+    } else {
+      await canLaunch(linkTestFlight) ? await launch(linkTestFlight) : throw 'Could not launch $linkTestFlight';
+    }
+  }
+
 
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {

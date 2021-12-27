@@ -268,4 +268,7 @@ const Map<String, String> en = {
   'txt_you_havent_nfts': 'You have no NFTs yet.',
   'txt_featured_nfts': 'Featured NFTs',
   'txt_null_nfts': 'This episode has no NFTs yet.\nGo to NFT marketplace',
+  'txt_update_app': 'Please, update app',
+  'txt_update_app_text': 'Your application version is outdated, please update',
+  'txt_update': 'Update',
 };

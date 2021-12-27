@@ -12,4 +12,6 @@ abstract class FirebaseDataSource {
   Future<String?> fcmToken();
 
   Future<void> initNotifications();
+
+  Future<int> appVersion();
 }

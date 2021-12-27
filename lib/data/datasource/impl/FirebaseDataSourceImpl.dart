@@ -54,4 +54,8 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   Future<String?> fcmToken() async {
     return _firebaseMessaging.getToken();
   }
+
+  Future<int> appVersion() async {
+    return _remoteConfig.getInt('min_app_version');
+  }
 }
