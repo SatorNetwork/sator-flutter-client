@@ -118,7 +118,7 @@ class SplashController extends GetxController {
           icon: Icons.logout,
           isBack: false,
           onButtonPressed: () {
-            _launchURL();
+            _updateApp();
           },
         ),
       ),
@@ -126,12 +126,16 @@ class SplashController extends GetxController {
     );
   }
 
-  void _launchURL() async {
+  void _updateApp() async {
     if (isAndroid) {
-      await canLaunch(linkPlayMarket) ? await launch(linkPlayMarket) : throw 'Could not launch $linkPlayMarket';
+      _launchURL(linkPlayMarket);
     } else {
-      await canLaunch(linkTestFlight) ? await launch(linkTestFlight) : throw 'Could not launch $linkTestFlight';
+      _launchURL(linkTestFlight);
     }
+  }
+
+  void _launchURL(String url) async {
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
 
 
