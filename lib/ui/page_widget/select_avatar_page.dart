@@ -16,8 +16,6 @@ import 'package:satorio/util/links.dart';
 class SelectAvatarPage extends GetView<SelectAvatarController> {
   @override
   Widget build(BuildContext context) {
-    const double topPanelHeight = 240.0;
-    const double bottomPanelHeight = 114.0;
     return Scaffold(
       backgroundColor: SatorioColor.alice_blue,
       extendBodyBehindAppBar: true,
@@ -69,18 +67,13 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
               toolbarHeight: 0,
               backgroundColor: Colors.transparent,
             ),
-      body: Stack(
+      body: Column(
         children: [
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _bottomButton(),
-          ),
           _topPanel(),
-          Container(
-              padding: EdgeInsets.only(
-                  top: topPanelHeight * coefficient,
-                  bottom: bottomPanelHeight * coefficient),
-              child: SingleChildScrollView(child: _avatars()))
+          Expanded(
+            child: _avatars(),
+          ),
+          _bottomButton()
         ],
       ),
     );
@@ -100,10 +93,8 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
   }
 
   Widget _bottomButton() {
-    const double bottomPanelHeight = 114.0;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 32),
-      height: bottomPanelHeight * coefficient,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(32)),
           color: Colors.white),
@@ -123,19 +114,18 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
 
   Widget _nftsList() {
     ScrollController _controller = ScrollController();
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: controller.nftItemsRx.value.length != 0
-            ? GridView.builder(
-                controller: _controller,
-                scrollDirection: Axis.vertical,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 6),
-                shrinkWrap: true,
-                itemCount: controller.nftItemsRx.value.length,
-                itemBuilder: (_, index) => _nftAvatar(index),
-              )
-            : _emptyNftsState());
+    return controller.nftItemsRx.value.length != 0
+        ? GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            controller: _controller,
+            scrollDirection: Axis.vertical,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 6),
+            shrinkWrap: true,
+            itemCount: controller.nftItemsRx.value.length,
+            itemBuilder: (_, index) => _nftAvatar(index),
+          )
+        : _emptyNftsState();
   }
 
   Widget _emptyNftsState() {
@@ -164,17 +154,15 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
 
   Widget _avatarsList() {
     ScrollController _controller = ScrollController();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        controller: _controller,
-        scrollDirection: Axis.vertical,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
-        shrinkWrap: true,
-        itemCount: avatars.length,
-        itemBuilder: (_, index) => _avatar(index),
-      ),
+    return GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      controller: _controller,
+      scrollDirection: Axis.vertical,
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
+      shrinkWrap: true,
+      itemCount: avatars.length,
+      itemBuilder: (_, index) => _avatar(index),
     );
   }
 
