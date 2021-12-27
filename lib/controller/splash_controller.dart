@@ -115,7 +115,7 @@ class SplashController extends GetxController {
           'txt_update_app'.tr,
           'txt_update_app_text'.tr,
           'txt_update'.tr,
-          icon: Icons.logout,
+          icon: Icons.update,
           isBack: false,
           onButtonPressed: () {
             _updateApp();
