@@ -126,7 +126,7 @@ class SplashController extends GetxController {
     );
   }
 
-  void _updateApp() async {
+  void _updateApp() {
     if (isAndroid) {
       _launchURL(linkPlayMarket);
     } else {
