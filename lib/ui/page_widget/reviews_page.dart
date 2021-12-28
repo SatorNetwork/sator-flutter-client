@@ -8,6 +8,7 @@ import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/util/avatar_list.dart';
 import 'package:satorio/util/smile_list.dart';
 
@@ -205,10 +206,10 @@ class ReviewsPage extends GetView<ReviewsController> {
                       child: Row(
                         children: [
                           ClipOval(
-                              child: SvgPicture.asset(
+                              child: AvatarImage(
                             avatarAsset,
-                            height: 20,
                             width: 20,
+                            height: 20,
                           )),
                           SizedBox(
                             width: 6,

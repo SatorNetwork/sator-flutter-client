@@ -10,6 +10,7 @@ import 'package:satorio/controller/write_review_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
@@ -467,10 +468,10 @@ class WriteReviewPage extends GetView<WriteReviewController> {
                       child: Row(
                         children: [
                           ClipOval(
-                              child: SvgPicture.asset(
+                              child: AvatarImage(
                             avatarAsset,
-                            height: 20,
                             width: 20,
+                            height: 20,
                           )),
                           SizedBox(
                             width: 6 * coefficient,

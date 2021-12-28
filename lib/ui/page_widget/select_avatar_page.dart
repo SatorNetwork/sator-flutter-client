@@ -5,19 +5,17 @@ import 'package:get/get.dart';
 
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/avatar_list.dart';
-import '../../util/avatar_list.dart';
-import '../theme/light_theme.dart';
-import '../theme/sator_color.dart';
-import '../theme/text_theme.dart';
+import 'package:satorio/util/links.dart';
 
 class SelectAvatarPage extends GetView<SelectAvatarController> {
   @override
   Widget build(BuildContext context) {
-    const double topPanelHeight = 240.0;
-    const double bottomPanelHeight = 114.0;
     return Scaffold(
       backgroundColor: SatorioColor.alice_blue,
       extendBodyBehindAppBar: true,
@@ -69,28 +67,34 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
               toolbarHeight: 0,
               backgroundColor: Colors.transparent,
             ),
-      body: Stack(
+      body: Column(
         children: [
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _bottomButton(),
-          ),
           _topPanel(),
-          Container(
-              padding: EdgeInsets.only(
-                  top: topPanelHeight * coefficient,
-                  bottom: bottomPanelHeight * coefficient),
-              child: SingleChildScrollView(child: _avatarsList()))
+          Expanded(
+            child: _avatars(),
+          ),
+          _bottomButton()
         ],
       ),
     );
   }
 
+  Widget _avatarsContent(AvatarsListType avatarsListType) {
+    switch (avatarsListType) {
+      case AvatarsListType.local:
+        return _avatarsList();
+      case AvatarsListType.nfts:
+        return _nftsList();
+    }
+  }
+
+  Widget _avatars() {
+    return Obx(() => _avatarsContent(controller.avatarsListType.value));
+  }
+
   Widget _bottomButton() {
-    const double bottomPanelHeight = 114.0;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 40, vertical: 32),
-      height: bottomPanelHeight * coefficient,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(32)),
           color: Colors.white),
@@ -108,19 +112,57 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
     );
   }
 
+  Widget _nftsList() {
+    ScrollController _controller = ScrollController();
+    return controller.nftItemsRx.value.length != 0
+        ? GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            controller: _controller,
+            scrollDirection: Axis.vertical,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 6),
+            shrinkWrap: true,
+            itemCount: controller.nftItemsRx.value.length,
+            itemBuilder: (_, index) => _nftAvatar(index),
+          )
+        : _emptyNftsState();
+  }
+
+  Widget _emptyNftsState() {
+    const double bottomPanelHeight = 114.0;
+    const double topPanelHeight = 240.0;
+
+    return InkWell(
+      onTap: () {
+        controller.backToMain();
+        controller.toNfts();
+      },
+      child: Container(
+        height: (Get.height - bottomPanelHeight - topPanelHeight) * coefficient,
+        child: Center(
+            child: Text(
+          'txt_buy_nfts'.tr,
+          style: textTheme.bodyText2!.copyWith(
+            color: SatorioColor.interactive,
+            fontSize: 17.0 * coefficient,
+            fontWeight: FontWeight.w600,
+          ),
+        )),
+      ),
+    );
+  }
+
   Widget _avatarsList() {
     ScrollController _controller = ScrollController();
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        controller: _controller,
-        scrollDirection: Axis.vertical,
-        gridDelegate:
-            SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
-        shrinkWrap: true,
-        itemCount: avatars.length,
-        itemBuilder: (_, index) => _avatar(index),
-      ),
+    return GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      controller: _controller,
+      scrollDirection: Axis.vertical,
+      gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
+      shrinkWrap: true,
+      itemCount: avatars.length,
+      itemBuilder: (_, index) => _avatar(index),
     );
   }
 
@@ -136,6 +178,20 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
               width: 51,
               child: SvgPicture.asset(avatars[index], fit: BoxFit.cover))),
     );
+  }
+
+  Widget _nftAvatar(int index) {
+    return Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: InkWell(
+            onTap: () {
+              controller.setAvatar(index);
+            },
+            child: Container(
+                height: 51,
+                width: 51,
+                child: Image.network(
+                    controller.nftItemsRx.value[index].imageLink))));
   }
 
   Widget _topPanel() {
@@ -169,17 +225,12 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
                     borderRadius: BorderRadius.circular(12.0),
                     child: Center(
                       child: controller.avatarRx.value != null
-                          ? SvgPicture.asset(
-                              controller.avatarRx.value!,
-                              height: 64 * coefficient,
-                              width: 64 * coefficient,
-                            )
+                          ? _avatarImage()
                           : controller.type == SelectAvatarType.settings
-                              ? SvgPicture.asset(
-                                  controller.profileRx.value?.avatarPath ?? '',
-                                  height: 64 * coefficient,
-                                  width: 64 * coefficient,
-                                )
+                              ? AvatarImage(
+                                  controller.profileRx.value?.avatarPath,
+                                  width: 64,
+                                  height: 64)
                               : Image.asset(
                                   'images/null_avatar.png',
                                   height: 64 * coefficient,
@@ -205,8 +256,102 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
               ),
             ],
           ),
+          SizedBox(
+            height: controller.type == SelectAvatarType.settings ? 32 : 0,
+          ),
+          controller.type == SelectAvatarType.settings
+              ? Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _radioButton('txt_bitys'.tr, AvatarsListType.local),
+                      _radioButton('txt_nfts'.tr, AvatarsListType.nfts),
+                    ],
+                  ),
+                )
+              : Container()
         ],
       ),
     );
+  }
+
+  Widget _radioButton(String title, AvatarsListType avatarsListType) {
+    return InkWell(
+      onTap: () {
+        controller.avatarRx.value = null;
+        controller.toggle(avatarsListType);
+      },
+      child: Row(
+        children: [
+          ClipOval(
+            child: Container(
+              height: 24,
+              width: 24,
+              decoration: BoxDecoration(
+                color: SatorioColor.alice_blue,
+                border: Border(
+                    bottom: BorderSide(
+                  color: SatorioColor.alice_blue2,
+                  width: 1 * coefficient,
+                )),
+              ),
+              child: Center(
+                child: ClipOval(
+                  child: Container(
+                    height: 12,
+                    width: 12,
+                    color: controller.avatarsListType.value == avatarsListType
+                        ? SatorioColor.brand
+                        : Colors.transparent,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            title,
+            style: textTheme.bodyText1!.copyWith(
+                color: Colors.black,
+                fontSize: 15.0 * coefficient,
+                fontWeight: FontWeight.w600),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _avatarImage() {
+    RegExpMatch? match = new RegExp(urlPattern, caseSensitive: false)
+        .firstMatch(controller.avatarRx.value!);
+
+    switch (controller.avatarsListType.value) {
+      case AvatarsListType.local:
+        return controller.avatarRx.value != null && match == null
+            ? SvgPicture.asset(
+                controller.avatarRx.value!,
+                height: 64 * coefficient,
+                width: 64 * coefficient,
+              )
+            : SvgPicture.asset(
+                controller.profileRx.value?.avatarPath ?? '',
+                height: 64 * coefficient,
+                width: 64 * coefficient,
+              );
+      case AvatarsListType.nfts:
+        return controller.avatarRx.value != null && match != null
+            ? Image.network(
+                controller.avatarRx.value!,
+                height: 64 * coefficient,
+                width: 64 * coefficient,
+              )
+            : SvgPicture.asset(
+                controller.profileRx.value?.avatarPath ?? '',
+                height: 64 * coefficient,
+                width: 64 * coefficient,
+              );
+    }
   }
 }
