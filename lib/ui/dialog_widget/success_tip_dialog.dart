@@ -1,0 +1,139 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart' show Get, GetNavigation;
+import 'package:satorio/ui/theme/light_theme.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+
+class SuccessTipDialog extends StatelessWidget {
+  const SuccessTipDialog(
+    this.name,
+    this.text,
+    this.title,
+    this.amount,
+    this.userAvatar,
+    this.buttonText, {
+    this.onButtonPressed,
+    this.icon,
+  });
+
+  final String name;
+  final String text;
+  final String title;
+  final double amount;
+  final String userAvatar;
+  final String buttonText;
+
+  final IconData? icon;
+  final VoidCallback? onButtonPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(32),
+      ),
+      backgroundColor: Colors.white,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (icon != null)
+              Container(
+                width: 36 * coefficient,
+                height: 36 * coefficient,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: SatorioColor.interactive,
+                ),
+                child: Center(
+                  child: Icon(
+                    icon,
+                    size: 24 * coefficient,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            if (icon != null) SizedBox(height: 16),
+            Text(
+              title,
+              style: textTheme.headline1!.copyWith(
+                  color: SatorioColor.textBlack,
+                  fontSize: 24.0 * coefficient,
+                  fontWeight: FontWeight.w700),
+            ),
+            SizedBox(height: 20),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8),
+                ),
+                color: SatorioColor.alice_blue2,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ClipOval(
+                      child: SvgPicture.asset(
+                        userAvatar,
+                        height: 20,
+                        width: 20,
+                      )),
+                  SizedBox(
+                    width: 6,
+                  ),
+                  Text(
+                    '$name',
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyText1!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15.0 * coefficient,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyText1!.copyWith(
+                    fontSize: 17 * coefficient,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                SizedBox(width: 4,),
+                Text(
+                  '$amount SAO',
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyText1!.copyWith(
+                    fontSize: 17 * coefficient,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            ElevatedGradientButton(
+              text: buttonText,
+              onPressed: () {
+                Get.back();
+                onButtonPressed?.call();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

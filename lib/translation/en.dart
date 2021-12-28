@@ -119,7 +119,7 @@ const Map<String, String> en = {
   'txt_scan_qr': 'Scan QR',
   'txt_note': 'Note',
   'txt_preview': 'Preview',
-  'txt_transacting_tips': 'Transacting Tips',
+  'txt_transacting_tips': 'You are going to tip',
   'txt_transacting_tips_description':
       'Before you finalize your transaction, keep in mind a couple of tips:',
   'txt_more_info_transacting_tips': 'For more info about transactions tap ',
@@ -155,6 +155,7 @@ const Map<String, String> en = {
   'txt_enter_invite_email': 'Enter an email where to send an invite',
   'txt_send_invite': 'Send Invite',
   'txt_success': 'Success',
+  'txt_success_tip': 'Have just received',
   'txt_invitation_sent': 'Invitation was sent',
   'txt_transaction_sent': 'Transaction was sent',
   'txt_transaction_not_sent': 'Transaction was not sent',

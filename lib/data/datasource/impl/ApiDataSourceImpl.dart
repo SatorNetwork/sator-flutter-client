@@ -46,6 +46,7 @@ import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
+import 'package:satorio/data/request/send_tip_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/update_email_request.dart';
@@ -889,6 +890,19 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'shows/$showId/episodes/$episodeId/reviews',
       WriteReviewRequest(rating, title, review),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> sendReviewTip(
+      String reviewId,
+      double amount
+      ) {
+    return _requestPost(
+      'shows/reviews/$reviewId/tips',
+      SendTipRequest(amount),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

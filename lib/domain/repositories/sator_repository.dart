@@ -159,6 +159,8 @@ abstract class SatorioRepository {
     String review,
   );
 
+  Future<bool> sendReviewTip(String reviewId, double amount);
+
   Future<void> logout();
 
   Future<String> quizSocketUrl(String challengeId);

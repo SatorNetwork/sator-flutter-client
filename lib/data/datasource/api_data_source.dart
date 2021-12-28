@@ -142,7 +142,8 @@ abstract class ApiDataSource {
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
 
-  Future<List<ReviewModel>> getReviews(String showId, String episodeId, {int? page, int? itemsPerPage});
+  Future<List<ReviewModel>> getReviews(String showId, String episodeId,
+      {int? page, int? itemsPerPage});
 
   Future<List<ReviewModel>> getUserReviews({int? page, int? itemsPerPage});
 
@@ -181,6 +182,8 @@ abstract class ApiDataSource {
     String title,
     String review,
   );
+
+  Future<bool> sendReviewTip(String reviewId, double amount);
 
   // endregion
 
