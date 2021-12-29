@@ -13,6 +13,7 @@ import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 import 'package:satorio/util/avatar_list.dart';
 
@@ -62,31 +63,26 @@ class HomePage extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                           child: Center(
-                                            child: Obx(
-                                              () =>
-                                                  controller.profileRx.value ==
-                                                              null ||
-                                                          controller
-                                                              .profileRx
-                                                              .value!
-                                                              .avatarPath
-                                                              .isEmpty
-                                                      ? Image.asset(
-                                                          'images/null_avatar.png',
-                                                          width: 50,
-                                                          height: 50,
-                                                          fit: BoxFit.fitWidth,
-                                                        )
-                                                      : SvgPicture.asset(
-                                                          controller
-                                                              .profileRx
-                                                              .value!
-                                                              .avatarPath,
-                                                          width: 50,
-                                                          height: 50,
-                                                          fit: BoxFit.fitWidth,
-                                                        ),
-                                            ),
+                                            child: Obx(() =>
+                                                controller.profileRx.value ==
+                                                            null ||
+                                                        controller
+                                                            .profileRx
+                                                            .value!
+                                                            .avatarPath
+                                                            .isEmpty
+                                                    ? Image.asset(
+                                                        'images/null_avatar.png',
+                                                        width: 50,
+                                                        height: 50,
+                                                        fit: BoxFit.fitWidth,
+                                                      )
+                                                    : AvatarImage(
+                                                        controller.profileRx
+                                                            .value!.avatarPath,
+                                                        width: 50,
+                                                        height: 50,
+                                                      )),
                                           ),
                                         ),
                                       ),

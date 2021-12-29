@@ -217,6 +217,7 @@ const Map<String, String> en = {
   'txt_register_success': 'User %s was successfully registered',
   'txt_select_avatar': 'Select avatar',
   'txt_avatar': 'Avatar',
+  'txt_bitys': 'Bit’ys',
   'txt_splash_description':
       'Welcome to Sator, where you earn SAO crypto for experiencing content and playing games.',
   'txt_enter_satorverse': 'Enter the Satorverse!',
@@ -271,4 +272,5 @@ const Map<String, String> en = {
   'txt_update_app': 'Please, update app',
   'txt_update_app_text': 'Your application version is outdated, please update',
   'txt_update': 'Update',
+  'txt_buy_nfts': 'Buy NFTs',
 };
