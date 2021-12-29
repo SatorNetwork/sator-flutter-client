@@ -218,6 +218,7 @@ const Map<String, String> en = {
   'txt_register_success': 'User %s was successfully registered',
   'txt_select_avatar': 'Select avatar',
   'txt_avatar': 'Avatar',
+  'txt_bitys': 'Bit’ys',
   'txt_splash_description':
       'Welcome to Sator, where you earn SAO crypto for experiencing content and playing games.',
   'txt_enter_satorverse': 'Enter the Satorverse!',
@@ -269,4 +270,5 @@ const Map<String, String> en = {
   'txt_you_havent_nfts': 'You have no NFTs yet.',
   'txt_featured_nfts': 'Featured NFTs',
   'txt_null_nfts': 'This episode has no NFTs yet.\nGo to NFT marketplace',
+  'txt_buy_nfts': 'Buy NFTs',
 };
