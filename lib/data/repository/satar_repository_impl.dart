@@ -74,9 +74,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   void _handleApiUnauthorizedException(ApiUnauthorizedException exception) {
     clearDBandAccessToken().then(
-          (value) {
+      (value) {
         Get.offAll(
-              () => LoginPage(),
+          () => LoginPage(),
           binding: LoginBinding(),
           arguments: LoginArgument(null),
         );
@@ -91,11 +91,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
       SNSMobileSDK.init(
         kycToken,
-            () => _apiDataSource.kycToken(),
+        () => _apiDataSource.kycToken(),
       )
           .withLocale(
-        Locale('en'),
-      )
+            Locale('en'),
+          )
           .withDebug(kDebugMode)
           .build()
           .launch();
@@ -127,6 +127,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<String> claimRewardsText() {
     return _firebaseDataSource
         .claimRewardText()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<int> appVersion() {
+    return _firebaseDataSource
+        .appVersion()
         .catchError((value) => _handleException(value));
   }
 
