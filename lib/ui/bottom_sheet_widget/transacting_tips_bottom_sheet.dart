@@ -7,6 +7,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/decimal_text_input_formatter.dart';
 
 class TransactingTipsBottomSheet extends StatelessWidget {
   final controller;
@@ -116,6 +117,7 @@ class TransactingTipsBottomSheet extends StatelessWidget {
   Widget _amountInput() {
     return TextFormField(
       controller: controller.amountController,
+      inputFormatters: [DecimalTextInputFormatter(decimalRange: 9)],
       obscureText: false,
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       minLines: 1,
@@ -212,3 +214,5 @@ class TransactingTipsBottomSheet extends StatelessWidget {
     );
   }
 }
+
+
