@@ -211,40 +211,42 @@ class ShowDetailWithEpisodesPage
           SizedBox(
             height: 23.0 * coefficient,
           ),
-          ElevatedButton(
-            onPressed: () {
-              controller.toShowNfts();
-            },
-            style: ElevatedButton.styleFrom(
-              elevation: 0,
-              primary: Colors.transparent,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 0,
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ImageIcon(
-                  AssetImage("images/show/nft.png"),
-                  size: 22.0 * coefficient,
-                  color: Colors.white,
-                ),
-                SizedBox(
-                  height: 6.0 * coefficient,
-                ),
-                Text(
-                  'NFT',
-                  style: textTheme.subtitle2!.copyWith(
-                    color: Colors.white,
-                    fontSize: 15.0 * coefficient,
-                    fontWeight: FontWeight.w500,
+          controller.showRx.value.hasNft
+              ? ElevatedButton(
+                  onPressed: () {
+                    controller.toShowNfts();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    primary: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ImageIcon(
+                        AssetImage("images/show/nft.png"),
+                        size: 22.0 * coefficient,
+                        color: Colors.white,
+                      ),
+                      SizedBox(
+                        height: 6.0 * coefficient,
+                      ),
+                      Text(
+                        'NFT',
+                        style: textTheme.subtitle2!.copyWith(
+                          color: Colors.white,
+                          fontSize: 15.0 * coefficient,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : SizedBox(),
           SizedBox(
             height: 23.0 * coefficient,
           ),
