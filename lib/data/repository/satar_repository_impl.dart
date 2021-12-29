@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
@@ -463,6 +464,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   ) {
     return _apiDataSource
         .writeReview(showId, episodeId, rating, title, review)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> sendReviewTip(String reviewId, double amount) {
+    return _apiDataSource
+        .sendReviewTip(reviewId, amount)
         .catchError((value) => _handleException(value));
   }
 

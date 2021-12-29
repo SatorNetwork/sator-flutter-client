@@ -555,18 +555,18 @@ class HomePage extends GetView<HomeController> {
                   SizedBox(
                     width: 6 * coefficient,
                   ),
-                  Expanded(
-                    child: Text(
-                      '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: Colors.black,
-                        fontSize: 12.0 * coefficient,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  // Expanded(
+                  //   child: Text(
+                  //     '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+                  //     maxLines: 1,
+                  //     overflow: TextOverflow.ellipsis,
+                  //     style: textTheme.bodyText2!.copyWith(
+                  //       color: Colors.black,
+                  //       fontSize: 12.0 * coefficient,
+                  //       fontWeight: FontWeight.w500,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

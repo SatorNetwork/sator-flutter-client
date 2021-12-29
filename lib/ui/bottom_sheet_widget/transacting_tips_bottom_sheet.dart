@@ -1,17 +1,31 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/decimal_text_input_formatter.dart';
 
 class TransactingTipsBottomSheet extends StatelessWidget {
+  final controller;
+
+  const TransactingTipsBottomSheet(
+    this.controller,
+    this.review, {
+    this.name,
+  });
+
+  final String? name;
+  final Review review;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 28),
+      height: Get.height * 0.5,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
         color: Colors.white,
@@ -30,98 +44,175 @@ class TransactingTipsBottomSheet extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 8 * coefficient,
+            height: 20 * coefficient,
           ),
-          Text(
-            'txt_transacting_tips_description'.tr,
-            textAlign: TextAlign.center,
-            style: textTheme.bodyText2!.copyWith(
-              color: SatorioColor.textBlack,
-              fontSize: 15.0 * coefficient,
-              fontWeight: FontWeight.w400,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8),
+              ),
+              color: SatorioColor.alice_blue2,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ClipOval(
+                    child: SvgPicture.asset(
+                  review.userAvatar,
+                  height: 20,
+                  width: 20,
+                )),
+                SizedBox(
+                  width: 6,
+                ),
+                Flexible(
+                  child: Text(
+                    '$name',
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.bodyText1!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15.0 * coefficient,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(
-            height: 20 * coefficient,
+            height: 30 * coefficient,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             children: [
-              _tipWidget(),
-              _tipWidget(),
-              _tipWidget(),
+              _tipWidget('10'),
+              _tipWidget('100'),
+              _tipWidget('1000'),
             ],
           ),
           SizedBox(
             height: 20 * coefficient,
           ),
-          Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            textAlign: TextAlign.start,
-            style: textTheme.bodyText2!.copyWith(
-              color: SatorioColor.textBlack,
-              fontSize: 15.0 * coefficient,
-              fontWeight: FontWeight.w400,
+          _amountInput(),
+          Spacer(),
+          Obx(
+            () => ElevatedGradientButton(
+              text: 'txt_add'.tr,
+              isEnabled: controller.amountRx.value > 0,
+              isInProgress: controller.isRequested.value,
+              onPressed: () {
+                controller.sendReviewTip(review);
+              },
             ),
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed',
-            textAlign: TextAlign.start,
-            style: textTheme.bodyText2!.copyWith(
-              color: SatorioColor.brand,
-              fontSize: 15.0 * coefficient,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: 'txt_more_info_transacting_tips'.tr,
-              style: textTheme.bodyText2!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 15.0 * coefficient,
-                fontWeight: FontWeight.w400,
-              ),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'txt_here'.tr,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.interactive,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    recognizer: TapGestureRecognizer()..onTap = () {}),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          ElevatedGradientButton(
-            text: 'txt_i_understand'.tr,
-            onPressed: () {
-              Get.back();
-            },
           ),
         ],
       ),
     );
   }
 
-  Widget _tipWidget() {
-    return ClipOval(
+  Widget _amountInput() {
+    return TextFormField(
+      controller: controller.amountController,
+      inputFormatters: [DecimalTextInputFormatter(decimalRange: 9)],
+      obscureText: false,
+      keyboardType: TextInputType.numberWithOptions(decimal: true),
+      minLines: 1,
+      maxLines: 1,
+      textInputAction: TextInputAction.next,
+      enableSuggestions: false,
+      autocorrect: false,
+      style: textTheme.headline2!.copyWith(
+        color: SatorioColor.textBlack,
+        fontWeight: FontWeight.w700,
+      ),
+      decoration: InputDecoration(
+        hintText: '0.00',
+        errorText: '',
+        hintStyle: textTheme.headline2!.copyWith(
+          color: SatorioColor.textBlack.withOpacity(0.3),
+          fontWeight: FontWeight.w700,
+        ),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: SatorioColor.interactive),
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: SatorioColor.interactive),
+        ),
+        focusedErrorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: SatorioColor.interactive),
+        ),
+        disabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: SatorioColor.interactive),
+        ),
+        border: UnderlineInputBorder(
+          borderSide: BorderSide(color: SatorioColor.interactive),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: SatorioColor.interactive),
+        ),
+      ),
+    );
+  }
+
+  Widget _tipWidget(String amount) {
+    return InkWell(
+      onTap: () {
+        controller.setTipAmount(amount);
+      },
       child: Container(
-        width: 50,
-        height: 50,
-        color: SatorioColor.darkAccent.withOpacity(0.2),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+          color: SatorioColor.darkAccent.withOpacity(0.2),
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 20 * coefficient,
+              height: 20 * coefficient,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    SatorioColor.razzle_dazzle_rose,
+                    SatorioColor.dodger_blue
+                  ],
+                ),
+              ),
+              child: Center(
+                child: SvgPicture.asset(
+                  'images/sator_logo.svg',
+                  width: 10 * coefficient,
+                  height: 10 * coefficient,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 4,
+            ),
+            Text(
+              '$amount.00',
+              textAlign: TextAlign.center,
+              style: textTheme.bodyText1!.copyWith(
+                color: SatorioColor.textBlack,
+                fontSize: 15.0 * coefficient,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+
