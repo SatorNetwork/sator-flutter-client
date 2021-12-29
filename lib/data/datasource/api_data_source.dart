@@ -185,6 +185,8 @@ abstract class ApiDataSource {
 
   Future<bool> sendReviewTip(String reviewId, double amount);
 
+  Future<bool> rateReview(String reviewId, String ratingType);
+
   // endregion
 
   // region Quiz

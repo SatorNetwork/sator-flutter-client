@@ -126,6 +126,21 @@ class ReviewsController extends GetxController with NonWorkingFeatureMixin {
     }
   }
 
+  void rateReview(String reviewId, String ratingType) {
+    _satorioRepository.rateReview(reviewId, ratingType).then((value) {
+      if (value) {
+        _loadAllReviews();
+      }
+    }).catchError((value) {
+      _loadAllReviews();
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: Text('Something goes wrong'),
+        ),
+      );
+    });
+  }
+
   void _loadAllReviews() {
     if (_isAllLoadedRx.value) return;
 

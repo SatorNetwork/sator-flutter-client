@@ -213,6 +213,21 @@ class ShowEpisodeRealmController extends GetxController
     }
   }
 
+  void rateReview(String reviewId, String ratingType) {
+    _satorioRepository.rateReview(reviewId, ratingType).then((value) {
+      if (value) {
+        _loadReviews();
+      }
+    }).catchError((value) {
+      _loadReviews();
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: Text('Something goes wrong'),
+        ),
+      );
+    });
+  }
+
   void toChatPage() {
     Get.to(
       () => ChatPage(),
@@ -447,7 +462,9 @@ class ShowEpisodeRealmController extends GetxController
     _satorioRepository
         .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
         .then((List<Review> reviews) {
-      reviewsRx.value = reviews;
+      reviewsRx.update((value) {
+        if (value != null) value.addAll(reviews);
+      });
     });
   }
 
@@ -461,7 +478,6 @@ class ShowEpisodeRealmController extends GetxController
     )
         .then(
       (List<NftItem> nftItems) {
-        print('_loadNftItems ${nftItems.length}');
         nftItemsRx.value = nftItems;
       },
     );

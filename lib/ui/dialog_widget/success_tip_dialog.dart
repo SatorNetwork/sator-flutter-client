@@ -80,10 +80,10 @@ class SuccessTipDialog extends StatelessWidget {
                 children: [
                   ClipOval(
                       child: SvgPicture.asset(
-                        userAvatar,
-                        height: 20,
-                        width: 20,
-                      )),
+                    userAvatar,
+                    height: 20,
+                    width: 20,
+                  )),
                   SizedBox(
                     width: 6,
                   ),
@@ -104,32 +104,30 @@ class SuccessTipDialog extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Flexible(
-                  child: RichText(
+                  child: Text(
+                    'txt_success_tip'.tr,
+                    style: textTheme.bodyText1!.copyWith(
+                      fontSize: 17 * coefficient,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 6),
+                Flexible(
+                  child: Text(
+                    '$amount SAO',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'txt_success_tip'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                        fontSize: 17 * coefficient,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: '$amount SAO',
-                          style: textTheme.bodyText1!.copyWith(
-                            fontSize: 17 * coefficient,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
+                    style: textTheme.bodyText1!.copyWith(
+                      fontSize: 17 * coefficient,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
