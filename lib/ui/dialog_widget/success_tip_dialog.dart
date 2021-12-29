@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' show Get, GetNavigation;
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -86,13 +87,17 @@ class SuccessTipDialog extends StatelessWidget {
                   SizedBox(
                     width: 6,
                   ),
-                  Text(
-                    '$name',
-                    textAlign: TextAlign.center,
-                    style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 15.0 * coefficient,
-                      fontWeight: FontWeight.w700,
+                  Flexible(
+                    child: Text(
+                      '$name',
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 15.0 * coefficient,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
                 ],
@@ -101,24 +106,31 @@ class SuccessTipDialog extends StatelessWidget {
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  text,
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodyText1!.copyWith(
-                    fontSize: 17 * coefficient,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(width: 4,),
-                Text(
-                  '$amount SAO',
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodyText1!.copyWith(
-                    fontSize: 17 * coefficient,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
+                Flexible(
+                  child: RichText(
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'txt_success_tip'.tr,
+                      style: textTheme.bodyText1!.copyWith(
+                        fontSize: 17 * coefficient,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: '$amount SAO',
+                          style: textTheme.bodyText1!.copyWith(
+                            fontSize: 17 * coefficient,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

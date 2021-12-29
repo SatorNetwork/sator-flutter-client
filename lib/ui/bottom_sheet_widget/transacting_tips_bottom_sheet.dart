@@ -11,7 +11,9 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 class TransactingTipsBottomSheet extends StatelessWidget {
   final controller;
 
-  const TransactingTipsBottomSheet(this.controller, this.review, {
+  const TransactingTipsBottomSheet(
+    this.controller,
+    this.review, {
     this.name,
   });
 
@@ -56,20 +58,24 @@ class TransactingTipsBottomSheet extends StatelessWidget {
               children: [
                 ClipOval(
                     child: SvgPicture.asset(
-                      review.userAvatar,
-                      height: 20,
-                      width: 20,
-                    )),
+                  review.userAvatar,
+                  height: 20,
+                  width: 20,
+                )),
                 SizedBox(
                   width: 6,
                 ),
-                Text(
-                  '$name',
-                  textAlign: TextAlign.center,
-                  style: textTheme.bodyText1!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 15.0 * coefficient,
-                    fontWeight: FontWeight.w700,
+                Flexible(
+                  child: Text(
+                    '$name',
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.bodyText1!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15.0 * coefficient,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
@@ -93,15 +99,14 @@ class TransactingTipsBottomSheet extends StatelessWidget {
           _amountInput(),
           Spacer(),
           Obx(
-                () =>
-                ElevatedGradientButton(
-                  text: 'txt_add'.tr,
-                  isEnabled: controller.amountRx.value > 0,
-                  isInProgress: controller.isRequested.value,
-                  onPressed: () {
-                    controller.sendReviewTip(review);
-                  },
-                ),
+            () => ElevatedGradientButton(
+              text: 'txt_add'.tr,
+              isEnabled: controller.amountRx.value > 0,
+              isInProgress: controller.isRequested.value,
+              onPressed: () {
+                controller.sendReviewTip(review);
+              },
+            ),
           ),
         ],
       ),
@@ -167,17 +172,24 @@ class TransactingTipsBottomSheet extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 24,
-              width: 24,
+              width: 20 * coefficient,
+              height: 20 * coefficient,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: SatorioColor.interactive,
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    SatorioColor.razzle_dazzle_rose,
+                    SatorioColor.dodger_blue
+                  ],
+                ),
               ),
               child: Center(
                 child: SvgPicture.asset(
                   'images/sator_logo.svg',
-                  width: 12,
-                  height: 12,
+                  width: 10 * coefficient,
+                  height: 10 * coefficient,
                   color: Colors.white,
                 ),
               ),

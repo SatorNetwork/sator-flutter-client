@@ -354,7 +354,7 @@ class ShowEpisodeRealmController extends GetxController
         amountRx.value,
         userAvatar,
         'txt_cool'.tr,
-        icon: Icons.logout,
+        icon: Icons.check,
         onButtonPressed: () {
           Get.back();
         },

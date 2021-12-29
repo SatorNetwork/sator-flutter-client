@@ -926,22 +926,23 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Center(
-                            child: Text(
-                              'txt_earn_sao_upvoted'.tr,
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.interactive,
-                                fontSize: 14 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
+                        //TODO: remove?
+                        // SizedBox(
+                        //   height: 8,
+                        // ),
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                        //   child: Center(
+                        //     child: Text(
+                        //       'txt_earn_sao_upvoted'.tr,
+                        //       style: textTheme.bodyText1!.copyWith(
+                        //         color: SatorioColor.interactive,
+                        //         fontSize: 14 * coefficient,
+                        //         fontWeight: FontWeight.w400,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 32,
                         ),

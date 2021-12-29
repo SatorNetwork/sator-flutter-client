@@ -155,7 +155,7 @@ const Map<String, String> en = {
   'txt_enter_invite_email': 'Enter an email where to send an invite',
   'txt_send_invite': 'Send Invite',
   'txt_success': 'Success',
-  'txt_success_tip': 'Have just received',
+  'txt_success_tip': 'You have successfully sent ',
   'txt_invitation_sent': 'Invitation was sent',
   'txt_transaction_sent': 'Transaction was sent',
   'txt_transaction_not_sent': 'Transaction was not sent',
