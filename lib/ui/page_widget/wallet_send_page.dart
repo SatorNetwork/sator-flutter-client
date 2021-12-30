@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/wallet_send_controller.dart';
@@ -7,6 +8,8 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/ui/widget/input_text_field.dart';
+import 'package:satorio/util/decimal_text_input_formatter.dart';
+import 'package:satorio/util/links.dart';
 
 class WalletSendPage extends GetView<WalletSendController> {
   @override
@@ -81,6 +84,11 @@ class WalletSendPage extends GetView<WalletSendController> {
                       InputTextField(
                         controller: controller.amountController,
                         inputTitle: 'txt_amount'.tr,
+                        inputFormatters: [
+                          DecimalTextInputFormatter(decimalRange: 9),
+                          FilteringTextInputFormatter.allow(
+                              RegExp(amountPattern))
+                        ],
                         keyboardType:
                             TextInputType.numberWithOptions(decimal: true),
                         hintText: '0.00',

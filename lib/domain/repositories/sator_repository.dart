@@ -30,6 +30,8 @@ abstract class SatorioRepository {
 
   Future<String> claimRewardsText();
 
+  Future<int> appVersion();
+
   Future<void> clearDBandAccessToken();
 
   Future<void> clearDBandAllTokens();
@@ -158,6 +160,10 @@ abstract class SatorioRepository {
     String title,
     String review,
   );
+
+  Future<bool> sendReviewTip(String reviewId, double amount);
+
+  Future<bool> rateReview(String reviewId, String ratingType);
 
   Future<void> logout();
 

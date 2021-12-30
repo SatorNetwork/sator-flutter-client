@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -15,6 +16,7 @@ class InputTextField extends StatelessWidget {
       this.errorText,
       this.icon,
       this.onPressedIcon,
+      this.inputFormatters,
       this.enableSuggestions = true,
       this.autocorrect = true});
 
@@ -28,6 +30,7 @@ class InputTextField extends StatelessWidget {
   final String? errorText;
   final Widget? icon;
   final VoidCallback? onPressedIcon;
+  final List<TextInputFormatter>? inputFormatters;
   final bool enableSuggestions;
   final bool autocorrect;
 
@@ -57,6 +60,7 @@ class InputTextField extends StatelessWidget {
             controller: controller,
             obscureText: obscureText,
             keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
             minLines: minLines,
             maxLines: maxLines,
             textInputAction: TextInputAction.next,

@@ -16,6 +16,7 @@ import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/profile_controller.dart';
@@ -35,14 +36,15 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/environment.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/dialog_widget/success_tip_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
@@ -58,7 +60,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
-    with BackToMainMixin, NonWorkingFeatureMixin {
+    with BackToMainMixin, NonWorkingFeatureMixin, ValidationMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final int _itemsPerPage = 10;
@@ -78,6 +80,11 @@ class ShowEpisodeRealmController extends GetxController
   final RxInt attemptsLeftRx = 100500.obs;
 
   ScrollController scrollController = ScrollController();
+
+  final TextEditingController amountController = TextEditingController();
+
+  late final RxDouble amountRx = 0.0.obs;
+  final RxBool isRequested = false.obs;
 
   late ValueListenable<Box<Profile>> profileListenable;
   late Profile profile;
@@ -121,6 +128,8 @@ class ShowEpisodeRealmController extends GetxController
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
+    amountController.addListener(_amountListener);
+
     profile = profileListenable.value.getAt(0)!;
 
     _timestampsRef = FirebaseDatabase(databaseURL: firebaseUrl)
@@ -138,6 +147,12 @@ class ShowEpisodeRealmController extends GetxController
     });
 
     lastSeenInit();
+  }
+
+  @override
+  void onClose() {
+    amountController.removeListener(_amountListener);
+    super.onClose();
   }
 
   void back() {
@@ -196,6 +211,24 @@ class ShowEpisodeRealmController extends GetxController
       _loadReviews();
       _updateShowEpisode();
     }
+  }
+
+  void rateReview(String reviewId, String ratingType) {
+    _satorioRepository.rateReview(reviewId, ratingType).then((value) {
+      if (value) {
+        _satorioRepository
+            .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
+            .then((List<Review> reviews) {
+          reviewsRx.value = reviews;
+        });
+      }
+    }).catchError((value) {
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        SnackBar(
+          content: Text('Something goes wrong'),
+        ),
+      );
+    });
   }
 
   void toChatPage() {
@@ -278,6 +311,71 @@ class ShowEpisodeRealmController extends GetxController
           _rateEpisode(rate);
         },
         isZeroSeason: showSeasonRx.value.seasonNumber == 0,
+      ),
+    );
+  }
+
+  void toTransactingTipsDialog(String name, Review review) {
+    Get.bottomSheet(
+            TransactingTipsBottomSheet(
+              this,
+              review,
+              name: name,
+            ),
+            isScrollControlled: true)
+        .whenComplete(() {
+      _clearAmount();
+    });
+  }
+
+  void setTipAmount(String amount) {
+    amountController.text = '$amount.00';
+    amountRx.value = amountController.text.tryParse()!;
+  }
+
+  void sendReviewTip(Review review) {
+    Future.value(true).then((value) {
+      isRequested.value = true;
+      return value;
+    }).then((value) {
+      _satorioRepository.sendReviewTip(review.id, amountRx.value).then((value) {
+        if (value) {
+          _toSuccessDialog(review.userName, review.userAvatar);
+          _clearAmount();
+          isRequested.value = false;
+        }
+      }).catchError((value) {
+        isRequested.value = false;
+      });
+    });
+  }
+
+  void _clearAmount() {
+    amountController.clear();
+    amountRx.value = 0.0.abs();
+  }
+
+  void _amountListener() {
+    double? amount = amountController.text.tryParse();
+    if (amount != null) {
+      amountRx.value = amount;
+    }
+  }
+
+  void _toSuccessDialog(String name, String userAvatar) {
+    Get.back();
+    Get.dialog(
+      SuccessTipDialog(
+        name,
+        'txt_success_tip'.tr,
+        'txt_success'.tr,
+        amountRx.value,
+        userAvatar,
+        'txt_cool'.tr,
+        icon: Icons.check,
+        onButtonPressed: () {
+          Get.back();
+        },
       ),
     );
   }
@@ -367,7 +465,9 @@ class ShowEpisodeRealmController extends GetxController
     _satorioRepository
         .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
         .then((List<Review> reviews) {
-      reviewsRx.value = reviews;
+      reviewsRx.update((value) {
+        if (value != null) value.addAll(reviews);
+      });
     });
   }
 
@@ -381,7 +481,6 @@ class ShowEpisodeRealmController extends GetxController
     )
         .then(
       (List<NftItem> nftItems) {
-        print('_loadNftItems ${nftItems.length}');
         nftItemsRx.value = nftItems;
       },
     );

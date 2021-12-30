@@ -14,6 +14,7 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
     String realmTitle,
     String realmSubtitle,
     String watchUrl,
+    bool hasNft,
   ) : super(
           id,
           title,
@@ -25,6 +26,7 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
           realmTitle,
           realmSubtitle,
           watchUrl,
+          hasNft,
         );
 
   factory ShowDetailModel.fromJson(Map json) => ShowDetailModel(
@@ -38,6 +40,7 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
         json.parseValueAsString('realms_title'),
         json.parseValueAsString('realms_subtitle'),
         json.parseValueAsString('watch'),
+        json.parseValueAsBool('has_nft'),
       );
 
   @override
@@ -52,5 +55,6 @@ class ShowDetailModel extends ShowDetail implements ToJsonInterface {
         'realms_title': realmTitle,
         'realms_subtitle': realmSubtitle,
         'watch': watchUrl,
+        'has_nft': hasNft,
       };
 }
