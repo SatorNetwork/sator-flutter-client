@@ -2,14 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
+import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
+import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -18,6 +21,7 @@ import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
+import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
@@ -142,6 +146,14 @@ class HomeController extends GetxController
       () => ShowDetailWithEpisodesPage(),
       binding: ShowDetailWithEpisodesBinding(),
       arguments: ShowDetailWithEpisodesArgument(show),
+    );
+  }
+
+  void toShowNfts(String showId) {
+    Get.to(
+          () => NftListPage(),
+      binding: NftListBinding(),
+      arguments: NftListArgument(NftFilterType.Show, showId),
     );
   }
 

@@ -474,21 +474,26 @@ class HomePage extends GetView<HomeController> {
                         ),
                       ),
                       show.hasNft ?
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 7,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: SatorioColor.lavender_rose,
-                        ),
-                        child: Text(
-                          'NFT',
-                          style: textTheme.bodyText2!.copyWith(
-                            color: Colors.black,
-                            fontSize: 12.0 * coefficient,
-                            fontWeight: FontWeight.w700,
+                      InkWell(
+                        onTap: () {
+                          controller.toShowNfts(show.id);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 7,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: SatorioColor.lavender_rose,
+                          ),
+                          child: Text(
+                            'NFT',
+                            style: textTheme.bodyText2!.copyWith(
+                              color: Colors.black,
+                              fontSize: 12.0 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
                       ) : Container()
