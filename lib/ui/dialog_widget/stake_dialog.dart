@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
+import 'package:satorio/util/decimal_text_input_formatter.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/links.dart';
 
 typedef AmountEnterCallback = void Function(double amount);
 
@@ -58,6 +61,10 @@ class StakeDialog extends StatelessWidget {
             TextFormField(
               controller: _amountController,
               textAlign: TextAlign.start,
+              inputFormatters: [
+                DecimalTextInputFormatter(decimalRange: 6),
+                FilteringTextInputFormatter.allow(RegExp(amountPattern))
+              ],
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               style: textTheme.headline1!.copyWith(
                 color: Colors.black,
