@@ -475,6 +475,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> rateReview(String reviewId, String ratingType) {
+    return _apiDataSource
+        .rateReview(reviewId, ratingType)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<String> quizSocketUrl(String challengeId) {
     return _apiDataSource
         .quizSocketUrl(challengeId)

@@ -117,7 +117,7 @@ class TransactingTipsBottomSheet extends StatelessWidget {
   Widget _amountInput() {
     return TextFormField(
       controller: controller.amountController,
-      inputFormatters: [DecimalTextInputFormatter(decimalRange: 9)],
+      inputFormatters: [DecimalTextInputFormatter(decimalRange: 6)],
       obscureText: false,
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       minLines: 1,

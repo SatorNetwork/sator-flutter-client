@@ -13,7 +13,9 @@ class ReviewModel extends Review implements ToJsonInterface {
     String review,
     DateTime? createdAt,
     int likes,
-    int unlikes,
+    int dislikes,
+    bool isLiked,
+    bool isDisliked,
   ) : super(
           id,
           userId,
@@ -24,7 +26,9 @@ class ReviewModel extends Review implements ToJsonInterface {
           review,
           createdAt,
           likes,
-          unlikes,
+          dislikes,
+          isLiked,
+          isDisliked,
         );
 
   factory ReviewModel.fromJson(Map json) => ReviewModel(
@@ -37,7 +41,9 @@ class ReviewModel extends Review implements ToJsonInterface {
         json.parseValueAsString('review'),
         json.tryParseValueAsDateTime('created_at'),
         json.parseValueAsInt('likes'),
-        json.parseValueAsInt('unlikes'),
+        json.parseValueAsInt('dislikes'),
+        json.parseValueAsBool('is_liked'),
+        json.parseValueAsBool('is_disliked'),
       );
 
   @override
@@ -51,6 +57,8 @@ class ReviewModel extends Review implements ToJsonInterface {
         'review': review,
         'created_at': createdAt!.toIso8601String(),
         'likes': likes,
-        'unlikes': unlikes,
+        'dislikes': dislikes,
+        'is_liked': isLiked,
+        'is_disliked': isDisliked,
       };
 }

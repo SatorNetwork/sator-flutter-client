@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/message_model.dart';
 import 'package:satorio/domain/entities/message.dart';
@@ -19,6 +20,7 @@ import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/avatar_list.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/rating_type.dart';
 import 'package:satorio/util/smile_list.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
@@ -1342,12 +1344,20 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviewItem(Review review) {
-    final double reviewContainerHeight = 220.0 * coefficient;
+    final double reviewContainerHeight = 230.0 * coefficient;
 
     String avatarAsset =
         review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
 
     final RxBool isExpandedRx = false.obs;
+    final RxBool isLikedRx = review.isLiked.obs;
+    final RxBool isDislikedRx = review.isDisliked.obs;
+
+    var formattedLikes = NumberFormat.compact(
+    ).format(review.likes);
+
+    var formattedDislikes = NumberFormat.compact(
+    ).format(review.dislikes);
 
     return Obx(
       () => Container(
@@ -1442,6 +1452,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     flex: 4,
                   ),
             Container(
+              height: 40,
               padding: EdgeInsets.only(top: 16, left: 20, right: 20),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -1453,81 +1464,99 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   ],
                 ),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'images/like_icon.svg',
-                    color: SatorioColor.textBlack,
-                  ),
-                  SizedBox(
-                    width: 8 * coefficient,
-                  ),
-                  Text(
-                    '0',
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 14 * coefficient,
-                      fontWeight: FontWeight.w500,
+              child: Obx(
+                () => Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        if (isLikedRx.value) return;
+                        controller.rateReview(review.id, RatingType.like);
+                      },
+                      child: SvgPicture.asset(
+                        'images/${isLikedRx.value ? 'like_icon.svg' : 'outline_like_icon.svg'}',
+                        color: SatorioColor.interactive,
+                        height: 20,
+                        width: 20,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 15 * coefficient,
-                  ),
-                  SvgPicture.asset(
-                    'images/dislike_icon.svg',
-                    color: SatorioColor.textBlack,
-                  ),
-                  SizedBox(
-                    width: 8 * coefficient,
-                  ),
-                  Text(
-                    '0',
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 14 * coefficient,
-                      fontWeight: FontWeight.w500,
+                    SizedBox(
+                      width: 8 * coefficient,
                     ),
-                  ),
-                  Spacer(),
-                  controller.profile.id != review.userId ?
-                  InkWell(
-                    onTap: () {
-                      controller.toTransactingTipsDialog(review.userName, review);
-                    },
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 24,
-                          width: 24,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: SatorioColor.interactive,
-                          ),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'images/sator_logo.svg',
-                              width: 12,
-                              height: 12,
-                              color: Colors.white,
+                    Text(
+                      formattedLikes,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15 * coefficient,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (isDislikedRx.value) return;
+                        controller.rateReview(review.id, RatingType.dislike);
+                      },
+                      child: SvgPicture.asset(
+                         'images/${isDislikedRx.value ? 'dislike_icon.svg' : 'outline_dislike_icon.svg'}',
+                        color: SatorioColor.interactive,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8 * coefficient,
+                    ),
+                    Text(
+                      formattedDislikes,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Spacer(),
+                    controller.profile.id != review.userId ?
+                    InkWell(
+                      onTap: () {
+                        controller.toTransactingTipsDialog(review.userName, review);
+                      },
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 24,
+                            width: 24,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: SatorioColor.interactive,
+                            ),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                'images/sator_logo.svg',
+                                width: 12,
+                                height: 12,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Text(
-                          'txt_tip'.tr,
-                          style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.interactive,
-                            fontSize: 14 * coefficient,
-                            fontWeight: FontWeight.w500,
+                          SizedBox(
+                            width: 4,
                           ),
-                        ),
-                      ],
-                    ),
-                  ) : Container(),
-                ],
+                          Text(
+                            'txt_tip'.tr,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.interactive,
+                              fontSize: 14 * coefficient,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ) : Container(),
+                  ],
+                ),
               ),
             )
           ],

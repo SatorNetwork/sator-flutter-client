@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -10,6 +11,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/util/avatar_list.dart';
+import 'package:satorio/util/rating_type.dart';
 import 'package:satorio/util/smile_list.dart';
 
 class ReviewsPage extends GetView<ReviewsController> {
@@ -119,6 +121,15 @@ class ReviewsPage extends GetView<ReviewsController> {
     final RxBool isExpandedRx = false.obs;
     final int minStringLength = 45;
 
+    final RxBool isLikedRx = review.isLiked.obs;
+    final RxBool isDislikedRx = review.isDisliked.obs;
+
+    var formattedLikes = NumberFormat.compact(
+    ).format(review.likes);
+
+    var formattedDislikes = NumberFormat.compact(
+    ).format(review.dislikes);
+
     String avatarAsset =
         review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
 
@@ -226,17 +237,25 @@ class ReviewsPage extends GetView<ReviewsController> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'images/like_icon.svg',
-                      color: SatorioColor.textBlack,
+                    InkWell(
+                      onTap: () {
+                        if (isLikedRx.value) return;
+                        controller.rateReview(review.id, RatingType.like);
+                      },
+                      child: SvgPicture.asset(
+                        'images/${isLikedRx.value ? 'like_icon.svg' : 'outline_like_icon.svg'}',
+                        color: SatorioColor.interactive,
+                        height: 20,
+                        width: 20,
+                      ),
                     ),
                     SizedBox(
                       width: 8 * coefficient,
                     ),
                     Text(
-                      '0',
+                      formattedLikes,
                       style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
+                        color: SatorioColor.interactive,
                         fontSize: 14 * coefficient,
                         fontWeight: FontWeight.w500,
                       ),
@@ -244,17 +263,25 @@ class ReviewsPage extends GetView<ReviewsController> {
                     SizedBox(
                       width: 15 * coefficient,
                     ),
-                    SvgPicture.asset(
-                      'images/dislike_icon.svg',
-                      color: SatorioColor.textBlack,
+                    InkWell(
+                      onTap: () {
+                        if (isDislikedRx.value) return;
+                        controller.rateReview(review.id, RatingType.dislike);
+                      },
+                      child: SvgPicture.asset(
+                        'images/${isDislikedRx.value ? 'dislike_icon.svg' : 'outline_dislike_icon.svg'}',
+                        color: SatorioColor.interactive,
+                        height: 20,
+                        width: 20,
+                      ),
                     ),
                     SizedBox(
                       width: 8 * coefficient,
                     ),
                     Text(
-                      '0',
+                      formattedDislikes,
                       style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
+                        color: SatorioColor.interactive,
                         fontSize: 14 * coefficient,
                         fontWeight: FontWeight.w500,
                       ),

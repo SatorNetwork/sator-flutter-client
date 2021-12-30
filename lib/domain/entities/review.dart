@@ -8,7 +8,9 @@ class Review {
   final String review;
   final DateTime? createdAt;
   final int likes;
-  final int unlikes;
+  final int dislikes;
+  final bool isLiked;
+  final bool isDisliked;
 
   const Review(
     this.id,
@@ -20,6 +22,8 @@ class Review {
     this.review,
     this.createdAt,
     this.likes,
-    this.unlikes,
+    this.dislikes,
+    this.isLiked,
+    this.isDisliked,
   );
 }

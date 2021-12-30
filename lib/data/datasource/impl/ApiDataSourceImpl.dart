@@ -908,6 +908,19 @@ class ApiDataSourceImpl implements ApiDataSource {
     });
   }
 
+  @override
+  Future<bool> rateReview(
+      String reviewId,
+      String ratingType
+      ) {
+    return _requestPost(
+      'shows/reviews/$reviewId/$ratingType',
+      EmptyRequest(),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
   // endregion
 
   // region Quiz

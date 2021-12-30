@@ -525,52 +525,52 @@ class HomePage extends GetView<HomeController> {
                 fit: BoxFit.cover,
               ),
             ),
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 18 * coefficient,
-                    height: 18 * coefficient,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          SatorioColor.razzle_dazzle_rose,
-                          SatorioColor.dodger_blue
-                        ],
-                      ),
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'images/sator_logo.svg',
-                        width: 9 * coefficient,
-                        height: 9 * coefficient,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 6 * coefficient,
-                  ),
-                  // Expanded(
-                  //   child: Text(
-                  //     '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
-                  //     maxLines: 1,
-                  //     overflow: TextOverflow.ellipsis,
-                  //     style: textTheme.bodyText2!.copyWith(
-                  //       color: Colors.black,
-                  //       fontSize: 12.0 * coefficient,
-                  //       fontWeight: FontWeight.w500,
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-            ),
+            // Expanded(
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.max,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Container(
+            //         width: 18 * coefficient,
+            //         height: 18 * coefficient,
+            //         decoration: BoxDecoration(
+            //           shape: BoxShape.circle,
+            //           gradient: LinearGradient(
+            //             begin: Alignment.topCenter,
+            //             end: Alignment.bottomCenter,
+            //             colors: [
+            //               SatorioColor.razzle_dazzle_rose,
+            //               SatorioColor.dodger_blue
+            //             ],
+            //           ),
+            //         ),
+            //         child: Center(
+            //           child: SvgPicture.asset(
+            //             'images/sator_logo.svg',
+            //             width: 9 * coefficient,
+            //             height: 9 * coefficient,
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 6 * coefficient,
+            //       ),
+            //       // Expanded(
+            //       //   child: Text(
+            //       //     '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+            //       //     maxLines: 1,
+            //       //     overflow: TextOverflow.ellipsis,
+            //       //     style: textTheme.bodyText2!.copyWith(
+            //       //       color: Colors.black,
+            //       //       fontSize: 12.0 * coefficient,
+            //       //       fontWeight: FontWeight.w500,
+            //       //     ),
+            //       //   ),
+            //       // ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
