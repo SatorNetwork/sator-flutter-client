@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/decimal_text_input_formatter.dart';
+import 'package:satorio/util/links.dart';
 
 class TransactingTipsBottomSheet extends StatelessWidget {
   final controller;
@@ -117,7 +119,10 @@ class TransactingTipsBottomSheet extends StatelessWidget {
   Widget _amountInput() {
     return TextFormField(
       controller: controller.amountController,
-      inputFormatters: [DecimalTextInputFormatter(decimalRange: 6)],
+      inputFormatters: [
+        DecimalTextInputFormatter(decimalRange: 6),
+        FilteringTextInputFormatter.allow(RegExp(amountPattern))
+      ],
       obscureText: false,
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       minLines: 1,
@@ -214,5 +219,3 @@ class TransactingTipsBottomSheet extends StatelessWidget {
     );
   }
 }
-
-
