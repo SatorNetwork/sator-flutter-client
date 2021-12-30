@@ -240,7 +240,6 @@ class ReviewsPage extends GetView<ReviewsController> {
                     InkWell(
                       onTap: () {
                         if (isLikedRx.value) return;
-                        isLikedRx.value = true;
                         controller.rateReview(review.id, RatingType.like);
                       },
                       child: SvgPicture.asset(
@@ -267,7 +266,6 @@ class ReviewsPage extends GetView<ReviewsController> {
                     InkWell(
                       onTap: () {
                         if (isDislikedRx.value) return;
-                        isDislikedRx.value = true;
                         controller.rateReview(review.id, RatingType.dislike);
                       },
                       child: SvgPicture.asset(

@@ -129,10 +129,13 @@ class ReviewsController extends GetxController with NonWorkingFeatureMixin {
   void rateReview(String reviewId, String ratingType) {
     _satorioRepository.rateReview(reviewId, ratingType).then((value) {
       if (value) {
-        _loadAllReviews();
+        _satorioRepository
+            .getReviews(_showDetailId, _showEpisodeId)
+            .then((List<Review> reviews) {
+          reviewsRx.value = reviews;
+        });
       }
     }).catchError((value) {
-      _loadAllReviews();
       ScaffoldMessenger.of(Get.context!).showSnackBar(
         SnackBar(
           content: Text('Something goes wrong'),

@@ -216,10 +216,13 @@ class ShowEpisodeRealmController extends GetxController
   void rateReview(String reviewId, String ratingType) {
     _satorioRepository.rateReview(reviewId, ratingType).then((value) {
       if (value) {
-        _loadReviews();
+        _satorioRepository
+            .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
+            .then((List<Review> reviews) {
+          reviewsRx.value = reviews;
+        });
       }
     }).catchError((value) {
-      _loadReviews();
       ScaffoldMessenger.of(Get.context!).showSnackBar(
         SnackBar(
           content: Text('Something goes wrong'),
