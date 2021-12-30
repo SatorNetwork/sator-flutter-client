@@ -473,6 +473,7 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                       ),
+                      show.hasNft ?
                       Container(
                         padding: EdgeInsets.symmetric(
                           vertical: 4,
@@ -490,7 +491,7 @@ class HomePage extends GetView<HomeController> {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                      )
+                      ) : Container()
                     ],
                   ),
                 ),
