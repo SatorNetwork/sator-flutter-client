@@ -65,7 +65,7 @@ class NftCategoriesController extends GetxController
 
   void _loadAllShows() {
     _satorioRepository
-        .shows(page: _initialPage, itemsPerPage: _itemsPerPage)
+        .showsWithNfts(true, page: _initialPage, itemsPerPage: _itemsPerPage)
         .then((List<Show> shows) {
       allShowsRx.value = shows;
     });

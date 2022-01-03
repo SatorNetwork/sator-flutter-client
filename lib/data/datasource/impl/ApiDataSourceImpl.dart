@@ -641,6 +641,32 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<List<ShowModel>> showsWithNfts(bool? hasNfts,
+      {int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (hasNfts != null) query['with_nft'] = hasNfts.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    return _requestGet(
+      'shows',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ShowModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
   Future<ShowDetailModel> showDetail(String showId) {
     return _requestGet(
       'shows/$showId',
@@ -896,10 +922,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> sendReviewTip(
-      String reviewId,
-      double amount
-      ) {
+  Future<bool> sendReviewTip(String reviewId, double amount) {
     return _requestPost(
       'shows/reviews/$reviewId/tips',
       SendTipRequest(amount),
@@ -909,10 +932,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> rateReview(
-      String reviewId,
-      String ratingType
-      ) {
+  Future<bool> rateReview(String reviewId, String ratingType) {
     return _requestPost(
       'shows/reviews/$reviewId/$ratingType',
       EmptyRequest(),

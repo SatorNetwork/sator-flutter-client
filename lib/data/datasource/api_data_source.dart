@@ -130,6 +130,9 @@ abstract class ApiDataSource {
     int? itemsPerPage,
   });
 
+  Future<List<ShowModel>> showsWithNfts(bool? hasNfts,
+      {int? page, int? itemsPerPage});
+
   Future<ShowDetailModel> showDetail(String showId);
 
   Future<List<ShowSeasonModel>> showSeasons(String showId);

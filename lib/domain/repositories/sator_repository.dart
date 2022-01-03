@@ -122,6 +122,9 @@ abstract class SatorioRepository {
     int? itemsPerPage,
   });
 
+  Future<List<Show>> showsWithNfts(bool? hasNfts,
+      {int? page, int? itemsPerPage});
+
   Future<ShowDetail> showDetail(String showId);
 
   Future<List<ShowSeason>> showSeasons(String showId);
