@@ -95,7 +95,7 @@ class HomeController extends GetxController
 
   void _loadAllShows() {
     _satorioRepository
-        .shows(page: _initialPage, itemsPerPage: _itemsPerPage)
+        .shows(null, page: _initialPage, itemsPerPage: _itemsPerPage)
         .then((List<Show> shows) {
       allShowsRx.value = shows;
     });

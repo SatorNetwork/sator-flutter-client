@@ -46,6 +46,9 @@ class ShowsCategoryController extends GetxController {
       case ShowCategory.all:
         _loadAllShows();
         break;
+      case ShowCategory.withNfts:
+        _loadShowsWithNfts();
+        break;
       default:
         _loadCategory(_categoryName);
         break;
@@ -62,7 +65,7 @@ class ShowsCategoryController extends GetxController {
 
   void toShowNfts(Show show) {
     Get.to(
-          () => NftListPage(),
+      () => NftListPage(),
       binding: NftListBinding(),
       arguments: NftListArgument(NftFilterType.Show, show.id),
     );
@@ -125,6 +128,32 @@ class ShowsCategoryController extends GetxController {
 
     _satorioRepository
         .shows(
+      null,
+      page: _pageRx.value,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then((List<Show> shows) {
+      showsRx.update((value) {
+        if (value != null) value.addAll(shows);
+      });
+      _isAllLoadedRx.value = shows.isEmpty;
+      _isLoadingRx.value = false;
+      _pageRx.value = _pageRx.value + 1;
+    }).catchError((value) {
+      _isLoadingRx.value = false;
+    });
+  }
+
+  void _loadShowsWithNfts() {
+    if (_isAllLoadedRx.value) return;
+
+    if (_isLoadingRx.value) return;
+
+    _isLoadingRx.value = true;
+
+    _satorioRepository
+        .shows(
+      true,
       page: _pageRx.value,
       itemsPerPage: _itemsPerPage,
     )

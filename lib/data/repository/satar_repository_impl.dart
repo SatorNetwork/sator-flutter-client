@@ -318,9 +318,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Show>> shows({int? page, int? itemsPerPage}) {
+  Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .shows(page: page, itemsPerPage: itemsPerPage)
+        .shows(hasNfts, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -332,14 +332,6 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }) {
     return _apiDataSource
         .showsFromCategory(category, page: page, itemsPerPage: itemsPerPage)
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
-  Future<List<Show>> showsWithNfts(bool? hasNfts,
-      {int? page, int? itemsPerPage}) {
-    return _apiDataSource
-        .showsWithNfts(hasNfts, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 

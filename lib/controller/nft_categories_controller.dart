@@ -44,7 +44,7 @@ class NftCategoriesController extends GetxController
   NftCategoriesController() {
     tabController = TabController(length: _fixedTabLength, vsync: this);
 
-    _loadAllShows();
+    _loadShowsWithNfts();
 
     _loadNftCategories();
     if (Get.isRegistered<MainController>()) {
@@ -63,9 +63,9 @@ class NftCategoriesController extends GetxController
     _loadNftCategories();
   }
 
-  void _loadAllShows() {
+  void _loadShowsWithNfts() {
     _satorioRepository
-        .showsWithNfts(true, page: _initialPage, itemsPerPage: _itemsPerPage)
+        .shows(true, page: _initialPage, itemsPerPage: _itemsPerPage)
         .then((List<Show> shows) {
       allShowsRx.value = shows;
     });
@@ -75,7 +75,7 @@ class NftCategoriesController extends GetxController
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(ShowCategory.all, ShowsType.NftsAllShows),
+      arguments: ShowsCategoryArgument(ShowCategory.withNfts, ShowsType.NftsAllShows),
     );
   }
 

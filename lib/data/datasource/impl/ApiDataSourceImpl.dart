@@ -589,11 +589,12 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Shows
 
   @override
-  Future<List<ShowModel>> shows({int? page, int? itemsPerPage}) {
+  Future<List<ShowModel>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
       if (page != null) query['page'] = page.toString();
+      if (hasNfts != null) query['with_nft'] = hasNfts.toString();
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
@@ -628,32 +629,6 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     return _requestGet(
       'shows/filter/$category',
-      query: query,
-    ).then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable)
-        return (jsonData['data'] as Iterable)
-            .map((element) => ShowModel.fromJson(element))
-            .toList();
-      else
-        return [];
-    });
-  }
-
-  @override
-  Future<List<ShowModel>> showsWithNfts(bool? hasNfts,
-      {int? page, int? itemsPerPage}) {
-    Map<String, String>? query;
-    if (page != null || itemsPerPage != null) {
-      query = {};
-      if (page != null) query['page'] = page.toString();
-      if (hasNfts != null) query['with_nft'] = hasNfts.toString();
-      if (itemsPerPage != null)
-        query['items_per_page'] = itemsPerPage.toString();
-    }
-
-    return _requestGet(
-      'shows',
       query: query,
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
