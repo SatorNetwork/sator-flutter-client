@@ -114,7 +114,7 @@ abstract class SatorioRepository {
 
   Future<WalletStake> getStake(String walletId);
 
-  Future<List<Show>> shows({int? page, int? itemsPerPage});
+  Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
 
   Future<List<Show>> showsFromCategory(
     String category, {

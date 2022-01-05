@@ -318,9 +318,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Show>> shows({int? page, int? itemsPerPage}) {
+  Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .shows(page: page, itemsPerPage: itemsPerPage)
+        .shows(hasNfts, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 

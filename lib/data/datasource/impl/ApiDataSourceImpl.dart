@@ -589,11 +589,12 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Shows
 
   @override
-  Future<List<ShowModel>> shows({int? page, int? itemsPerPage}) {
+  Future<List<ShowModel>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
       if (page != null) query['page'] = page.toString();
+      if (hasNfts != null) query['with_nft'] = hasNfts.toString();
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
@@ -896,10 +897,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> sendReviewTip(
-      String reviewId,
-      double amount
-      ) {
+  Future<bool> sendReviewTip(String reviewId, double amount) {
     return _requestPost(
       'shows/reviews/$reviewId/tips',
       SendTipRequest(amount),
@@ -909,10 +907,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> rateReview(
-      String reviewId,
-      String ratingType
-      ) {
+  Future<bool> rateReview(String reviewId, String ratingType) {
     return _requestPost(
       'shows/reviews/$reviewId/$ratingType',
       EmptyRequest(),

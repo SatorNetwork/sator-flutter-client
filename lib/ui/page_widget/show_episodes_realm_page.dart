@@ -82,7 +82,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         ),
         actions: [
           Container(
-            // margin: const EdgeInsets.only(right: 20),
             width: kToolbarHeight,
             height: kToolbarHeight,
             child: Stack(
@@ -598,7 +597,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 16, right: 16, bottom: 16),
+                                        left: 16, right: 16, bottom: 0),
                                     child: Row(
                                       children: [
                                         Container(
@@ -661,79 +660,80 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    padding: EdgeInsets.only(
-                                        left: 45,
-                                        right: 45,
-                                        top: 21,
-                                        bottom: 5),
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          SatorioColor.medium_slate_blue,
-                                          SatorioColor.medium_slate_blue_2
-                                        ],
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '291',
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              'txt_players'.tr.toLowerCase(),
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              '2,130.00 SAO',
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 4,
-                                            ),
-                                            Text(
-                                              'txt_remains'.tr.toLowerCase(),
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  //TODO: uncomment
+                                  // Container(
+                                  //   padding: EdgeInsets.only(
+                                  //       left: 45,
+                                  //       right: 45,
+                                  //       top: 21,
+                                  //       bottom: 5),
+                                  //   decoration: BoxDecoration(
+                                  //     gradient: LinearGradient(
+                                  //       begin: Alignment.topCenter,
+                                  //       end: Alignment.bottomCenter,
+                                  //       colors: [
+                                  //         SatorioColor.medium_slate_blue,
+                                  //         SatorioColor.medium_slate_blue_2
+                                  //       ],
+                                  //     ),
+                                  //   ),
+                                  //   child: Row(
+                                  //     mainAxisAlignment:
+                                  //         MainAxisAlignment.spaceBetween,
+                                  //     children: [
+                                  //       Row(
+                                  //         children: [
+                                  //           Text(
+                                  //             '291',
+                                  //             style:
+                                  //                 textTheme.bodyText2!.copyWith(
+                                  //               color: Colors.white,
+                                  //               fontSize: 14 * coefficient,
+                                  //               fontWeight: FontWeight.w700,
+                                  //             ),
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 4,
+                                  //           ),
+                                  //           Text(
+                                  //             'txt_players'.tr.toLowerCase(),
+                                  //             style:
+                                  //                 textTheme.bodyText2!.copyWith(
+                                  //               color: Colors.white,
+                                  //               fontSize: 14 * coefficient,
+                                  //               fontWeight: FontWeight.w400,
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //       Row(
+                                  //         children: [
+                                  //           Text(
+                                  //             '2,130.00 SAO',
+                                  //             style:
+                                  //                 textTheme.bodyText2!.copyWith(
+                                  //               color: Colors.white,
+                                  //               fontSize: 14 * coefficient,
+                                  //               fontWeight: FontWeight.w700,
+                                  //             ),
+                                  //           ),
+                                  //           SizedBox(
+                                  //             width: 4,
+                                  //           ),
+                                  //           Text(
+                                  //             'txt_remains'.tr.toLowerCase(),
+                                  //             style:
+                                  //                 textTheme.bodyText2!.copyWith(
+                                  //               color: Colors.white,
+                                  //               fontSize: 14 * coefficient,
+                                  //               fontWeight: FontWeight.w400,
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),
