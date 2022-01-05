@@ -82,7 +82,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
         ),
         actions: [
           Container(
-            // margin: const EdgeInsets.only(right: 20),
             width: kToolbarHeight,
             height: kToolbarHeight,
             child: Stack(
