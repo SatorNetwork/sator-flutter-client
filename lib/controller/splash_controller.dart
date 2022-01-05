@@ -10,6 +10,7 @@ import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
@@ -22,6 +23,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SplashController extends GetxController {
   SatorioRepository _satorioRepository = Get.find();
+  EncryptManager _encryptManager = Get.find();
 
   Uri? deepLink;
 
@@ -41,6 +43,7 @@ class SplashController extends GetxController {
     super.onReady();
     _handleDynamicLinks();
     _checkToken();
+    _encryptManager.createRSA();
   }
 
   Future _handleDynamicLinks() async {
