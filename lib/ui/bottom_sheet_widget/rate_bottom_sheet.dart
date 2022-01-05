@@ -19,7 +19,7 @@ class RateBottomSheet extends StatelessWidget {
 
   static const int minValue = 1;
   static const int maxValue = 10;
-  static const int initValue = 7;
+  static const int initValue = 10;
 
   final bool isZeroSeason;
   final RateCallback onRate;
