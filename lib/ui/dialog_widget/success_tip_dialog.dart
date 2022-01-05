@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' show Get, GetNavigation;
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
