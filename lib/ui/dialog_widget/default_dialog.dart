@@ -16,6 +16,7 @@ class DefaultDialog extends StatelessWidget {
     this.icon,
     this.secondaryButtonText,
     this.onSecondaryButtonPressed,
+    this.isBack = true,
   });
 
   final String title;
@@ -26,6 +27,7 @@ class DefaultDialog extends StatelessWidget {
   final VoidCallback? onButtonPressed;
   final String? secondaryButtonText;
   final VoidCallback? onSecondaryButtonPressed;
+  final bool isBack;
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +80,9 @@ class DefaultDialog extends StatelessWidget {
             ElevatedGradientButton(
               text: buttonText,
               onPressed: () {
-                Get.back();
+                if (isBack) {
+                  Get.back();
+                }
                 onButtonPressed?.call();
               },
             ),

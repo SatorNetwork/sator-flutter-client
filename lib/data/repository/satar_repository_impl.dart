@@ -1,10 +1,15 @@
+import 'dart:ui';
+
 import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
@@ -52,27 +57,54 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   _handleException(Exception exception) {
     if (exception is ApiErrorException) {
-      Get.dialog(
-        DefaultDialog(
-          'txt_oops'.tr,
-          exception.errorMessage,
-          'txt_ok'.tr,
-        ),
-      );
+      _handleApiErrorException(exception);
     } else if (exception is ApiUnauthorizedException) {
-      clearDBandAccessToken().then(
-        (value) {
-          Get.offAll(
-            () => LoginPage(),
-            binding: LoginBinding(),
-            arguments: LoginArgument(null),
-          );
-          Get.snackbar('txt_oops'.tr, exception.errorMessage);
-        },
-      );
+      _handleApiUnauthorizedException(exception);
+    } else if (exception is ApiKycException) {
+      _handleApiKycException();
     } else {
       throw exception;
     }
+  }
+
+  void _handleApiErrorException(ApiErrorException exception) {
+    Get.dialog(
+      DefaultDialog(
+        'txt_oops'.tr,
+        exception.errorMessage,
+        'txt_ok'.tr,
+      ),
+    );
+  }
+
+  void _handleApiUnauthorizedException(ApiUnauthorizedException exception) {
+    clearDBandAccessToken().then(
+      (value) {
+        Get.offAll(
+          () => LoginPage(),
+          binding: LoginBinding(),
+          arguments: LoginArgument(null),
+        );
+        Get.snackbar('txt_oops'.tr, exception.errorMessage);
+      },
+    );
+  }
+
+  void _handleApiKycException() {
+    _apiDataSource.kycToken().then((String kycToken) {
+      print('KYC token = $kycToken');
+
+      SNSMobileSDK.init(
+        kycToken,
+        () => _apiDataSource.kycToken(),
+      )
+          .withLocale(
+            Locale('en'),
+          )
+          .withDebug(kDebugMode)
+          .build()
+          .launch();
+    });
   }
 
   @override
@@ -93,6 +125,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<String> firebaseUrl() {
     return _firebaseDataSource
         .firebaseUrl()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> claimRewardsText() {
+    return _firebaseDataSource
+        .claimRewardText()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<int> appVersion() {
+    return _firebaseDataSource
+        .appVersion()
         .catchError((value) => _handleException(value));
   }
 
@@ -276,9 +322,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<Show>> shows({int? page, int? itemsPerPage}) {
+  Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     return _apiDataSource
-        .shows(page: page, itemsPerPage: itemsPerPage)
+        .shows(hasNfts, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -422,6 +468,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   ) {
     return _apiDataSource
         .writeReview(showId, episodeId, rating, title, review)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> sendReviewTip(String reviewId, double amount) {
+    return _apiDataSource
+        .sendReviewTip(reviewId, amount)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> rateReview(String reviewId, String ratingType) {
+    return _apiDataSource
+        .rateReview(reviewId, ratingType)
         .catchError((value) => _handleException(value));
   }
 

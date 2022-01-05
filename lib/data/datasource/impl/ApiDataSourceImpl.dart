@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
@@ -44,6 +45,7 @@ import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
+import 'package:satorio/data/request/send_tip_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
 import 'package:satorio/data/request/update_email_request.dart';
@@ -71,6 +73,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<void> init() async {
     await _firebaseDataSource.initRemoteConfig();
+    await _firebaseDataSource.initNotifications();
     String baseUrl = await _firebaseDataSource.apiBaseUrl();
 
     _getConnect = GetConnect();
@@ -78,8 +81,8 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect.baseUrl = baseUrl;
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-      //TODO: refactor firebase data source
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      String? fcmToken = await _firebaseDataSource.fcmToken();
+
       String? deviceId = fcmToken?.split(':')[0];
       if (deviceId != null && deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
@@ -174,15 +177,20 @@ class ApiDataSourceImpl implements ApiDataSource {
 
     if (utf8Response.hasError) {
       switch (utf8Response.statusCode) {
-        case 422:
+        // 422
+        case HttpStatus.unprocessableEntity:
           ErrorValidationResponse errorValidationResponse =
               ErrorValidationResponse.fromJson(
                   json.decode(utf8Response.bodyString!));
           throw ApiValidationException(errorValidationResponse.validation);
-        case 401:
+        // 401
+        case HttpStatus.unauthorized:
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
           throw ApiUnauthorizedException(errorResponse.error);
+        // 407
+        case HttpStatus.proxyAuthenticationRequired:
+          throw ApiKycException();
         default:
           ErrorResponse errorResponse =
               ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
@@ -434,6 +442,18 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   // endregion
 
+  // region KYC
+
+  Future<String> kycToken() {
+    return _requestGet(
+      'auth/kyc/access_token',
+    ).then((Response response) {
+      return json.decode(response.bodyString!)['data'];
+    });
+  }
+
+  // endregion
+
   // region Profile
 
   @override
@@ -567,11 +587,12 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Shows
 
   @override
-  Future<List<ShowModel>> shows({int? page, int? itemsPerPage}) {
+  Future<List<ShowModel>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
       if (page != null) query['page'] = page.toString();
+      if (hasNfts != null) query['with_nft'] = hasNfts.toString();
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
@@ -868,6 +889,26 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _requestPost(
       'shows/$showId/episodes/$episodeId/reviews',
       WriteReviewRequest(rating, title, review),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> sendReviewTip(String reviewId, double amount) {
+    return _requestPost(
+      'shows/reviews/$reviewId/tips',
+      SendTipRequest(amount),
+    ).then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> rateReview(String reviewId, String ratingType) {
+    return _requestPost(
+      'shows/reviews/$reviewId/$ratingType',
+      EmptyRequest(),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });

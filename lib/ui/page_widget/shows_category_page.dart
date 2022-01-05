@@ -145,24 +145,31 @@ class ShowsCategoryPage extends GetView<ShowsCategoryController> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 7,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: SatorioColor.lavender_rose,
-                        ),
-                        child: Text(
-                          'NFT',
-                          style: textTheme.bodyText2!.copyWith(
-                            color: Colors.black,
-                            fontSize: 12.0 * coefficient,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      )
+                      show.hasNft
+                          ? InkWell(
+                              onTap: () {
+                                controller.toShowNfts(show);
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 7,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: SatorioColor.lavender_rose,
+                                ),
+                                child: Text(
+                                  'NFT',
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: Colors.black,
+                                    fontSize: 12.0 * coefficient,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container()
                     ],
                   ),
                 ),

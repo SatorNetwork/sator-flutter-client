@@ -9,6 +9,7 @@ class ShowDetail {
   final String realmTitle;
   final String realmSubtitle;
   final String watchUrl;
+  final bool hasNft;
 
   const ShowDetail(
     this.id,
@@ -21,5 +22,6 @@ class ShowDetail {
     this.realmTitle,
     this.realmSubtitle,
     this.watchUrl,
+    this.hasNft,
   );
 }

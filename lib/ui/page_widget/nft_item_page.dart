@@ -37,7 +37,7 @@ class NftItemPage extends GetView<NftItemController> {
         children: [
           Expanded(
             child: Stack(
-              fit: StackFit.expand,
+              alignment: Alignment.center,
               children: [
                 Column(
                   mainAxisSize: MainAxisSize.max,
@@ -89,7 +89,7 @@ class NftItemPage extends GetView<NftItemController> {
                     child: Obx(
                       () => Image.network(
                         controller.nftItemRx.value.imageLink,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                         color: SatorioColor.acadia,
                         colorBlendMode: BlendMode.plus,
                       ),
@@ -290,8 +290,7 @@ class NftItemPage extends GetView<NftItemController> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                isAndroid
-                    ? Column(
+                Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -314,23 +313,18 @@ class NftItemPage extends GetView<NftItemController> {
                             ),
                           ),
                         ],
-                      )
-                    : Container(),
-                isAndroid
-                    ? SizedBox(
+                      ),
+                SizedBox(
                         width: 36 * coefficient,
-                      )
-                    : Container(),
+                      ),
                 Expanded(
                   child: Obx(
                     () => controller.isOwner.value
                         ? Container()
                         : ElevatedGradientButton(
-                            text: isAndroid ? 'txt_buy'.tr : 'txt_share'.tr,
+                            text: 'txt_buy'.tr,
                             onPressed: () {
-                              isAndroid
-                                  ? controller.toCheckout()
-                                  : controller.toNonWorkingFeatureDialog();
+                              controller.toCheckout();
                             },
                           ),
                   ),

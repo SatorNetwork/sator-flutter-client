@@ -13,6 +13,7 @@ import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 import 'package:satorio/util/avatar_list.dart';
 
@@ -62,31 +63,26 @@ class HomePage extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(12.0),
                                           child: Center(
-                                            child: Obx(
-                                              () =>
-                                                  controller.profileRx.value ==
-                                                              null ||
-                                                          controller
-                                                              .profileRx
-                                                              .value!
-                                                              .avatarPath
-                                                              .isEmpty
-                                                      ? Image.asset(
-                                                          'images/null_avatar.png',
-                                                          width: 50,
-                                                          height: 50,
-                                                          fit: BoxFit.fitWidth,
-                                                        )
-                                                      : SvgPicture.asset(
-                                                          controller
-                                                              .profileRx
-                                                              .value!
-                                                              .avatarPath,
-                                                          width: 50,
-                                                          height: 50,
-                                                          fit: BoxFit.fitWidth,
-                                                        ),
-                                            ),
+                                            child: Obx(() =>
+                                                controller.profileRx.value ==
+                                                            null ||
+                                                        controller
+                                                            .profileRx
+                                                            .value!
+                                                            .avatarPath
+                                                            .isEmpty
+                                                    ? Image.asset(
+                                                        'images/null_avatar.png',
+                                                        width: 50,
+                                                        height: 50,
+                                                        fit: BoxFit.fitWidth,
+                                                      )
+                                                    : AvatarImage(
+                                                        controller.profileRx
+                                                            .value!.avatarPath,
+                                                        width: 50,
+                                                        height: 50,
+                                                      )),
                                           ),
                                         ),
                                       ),
@@ -477,24 +473,30 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 7,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: SatorioColor.lavender_rose,
-                        ),
-                        child: Text(
-                          'NFT',
-                          style: textTheme.bodyText2!.copyWith(
-                            color: Colors.black,
-                            fontSize: 12.0 * coefficient,
-                            fontWeight: FontWeight.w700,
+                      show.hasNft ?
+                      InkWell(
+                        onTap: () {
+                          controller.toShowNfts(show.id);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 7,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: SatorioColor.lavender_rose,
+                          ),
+                          child: Text(
+                            'NFT',
+                            style: textTheme.bodyText2!.copyWith(
+                              color: Colors.black,
+                              fontSize: 12.0 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      )
+                      ) : Container()
                     ],
                   ),
                 ),
@@ -528,52 +530,52 @@ class HomePage extends GetView<HomeController> {
                 fit: BoxFit.cover,
               ),
             ),
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 18 * coefficient,
-                    height: 18 * coefficient,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          SatorioColor.razzle_dazzle_rose,
-                          SatorioColor.dodger_blue
-                        ],
-                      ),
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'images/sator_logo.svg',
-                        width: 9 * coefficient,
-                        height: 9 * coefficient,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 6 * coefficient,
-                  ),
-                  Expanded(
-                    child: Text(
-                      '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: Colors.black,
-                        fontSize: 12.0 * coefficient,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Expanded(
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.max,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Container(
+            //         width: 18 * coefficient,
+            //         height: 18 * coefficient,
+            //         decoration: BoxDecoration(
+            //           shape: BoxShape.circle,
+            //           gradient: LinearGradient(
+            //             begin: Alignment.topCenter,
+            //             end: Alignment.bottomCenter,
+            //             colors: [
+            //               SatorioColor.razzle_dazzle_rose,
+            //               SatorioColor.dodger_blue
+            //             ],
+            //           ),
+            //         ),
+            //         child: Center(
+            //           child: SvgPicture.asset(
+            //             'images/sator_logo.svg',
+            //             width: 9 * coefficient,
+            //             height: 9 * coefficient,
+            //             color: Colors.white,
+            //           ),
+            //         ),
+            //       ),
+            //       SizedBox(
+            //         width: 6 * coefficient,
+            //       ),
+            //       // Expanded(
+            //       //   child: Text(
+            //       //     '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+            //       //     maxLines: 1,
+            //       //     overflow: TextOverflow.ellipsis,
+            //       //     style: textTheme.bodyText2!.copyWith(
+            //       //       color: Colors.black,
+            //       //       fontSize: 12.0 * coefficient,
+            //       //       fontWeight: FontWeight.w500,
+            //       //     ),
+            //       //   ),
+            //       // ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

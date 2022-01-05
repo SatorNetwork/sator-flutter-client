@@ -3,15 +3,18 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
+import 'package:satorio/util/avatar_list.dart';
+import 'package:satorio/util/rating_type.dart';
 import 'package:satorio/util/smile_list.dart';
 
 class ReviewsPage extends GetView<ReviewsController> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +65,7 @@ class ReviewsPage extends GetView<ReviewsController> {
               color: Colors.white,
             ),
             child: ClipRRect(
-                borderRadius:
-                BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 child: Stack(children: [
                   NotificationListener<ScrollNotification>(
                     onNotification: (notification) {
@@ -101,27 +103,38 @@ class ReviewsPage extends GetView<ReviewsController> {
 
   Widget _reviews() {
     return Obx(
-    () => ListView.separated(
+      () => ListView.separated(
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           itemCount: controller.reviewsRx.value.length,
           shrinkWrap: true,
           separatorBuilder: (context, index) => SizedBox(
-            height: 16,
-          ),
+                height: 16,
+              ),
           itemBuilder: (context, index) {
             return _reviewItem(controller.reviewsRx.value[index]);
           }),
     );
   }
 
-
   Widget _reviewItem(Review review) {
     final RxBool isExpandedRx = false.obs;
     final int minStringLength = 45;
 
+    final RxBool isLikedRx = review.isLiked.obs;
+    final RxBool isDislikedRx = review.isDisliked.obs;
+
+    var formattedLikes = NumberFormat.compact(
+    ).format(review.likes);
+
+    var formattedDislikes = NumberFormat.compact(
+    ).format(review.dislikes);
+
+    String avatarAsset =
+        review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
+
     return Obx(
-        () => InkWell(
+      () => InkWell(
         onTap: () {
           if (review.review.length < 70) return;
           isExpandedRx.toggle();
@@ -142,14 +155,37 @@ class ReviewsPage extends GetView<ReviewsController> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    SvgPicture.asset(
-                      smile[review.rating] ?? '',
-                      width: 24 * coefficient,
-                      height: 24 * coefficient,
-                    ),
+                    ClipOval(
+                        child: AvatarImage(
+                          avatarAsset,
+                          width: 20,
+                          height: 20,
+                        )),
                     SizedBox(
-                      width: 12,
+                      width: 6,
                     ),
+                    Expanded(
+                      child: Text(
+                        review.userName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 12 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
                     Flexible(
                       child: Text(
                         review.title,
@@ -169,10 +205,15 @@ class ReviewsPage extends GetView<ReviewsController> {
                 height: 8,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
                 child: Text(
                   review.review,
-                  maxLines: isExpandedRx.value ? 1000 : review.review.length < minStringLength ? 1 : 4,
+                  maxLines: isExpandedRx.value
+                      ? 1000
+                      : review.review.length < minStringLength
+                          ? 1
+                          : 4,
                   overflow: TextOverflow.ellipsis,
                   style: textTheme.bodyText2!.copyWith(
                     color: SatorioColor.textBlack,
@@ -194,92 +235,95 @@ class ReviewsPage extends GetView<ReviewsController> {
                   ),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
+                    InkWell(
+                      onTap: () {
+                        if (isLikedRx.value) return;
+                        controller.rateReview(review.id, RatingType.like);
+                      },
+                      child: SvgPicture.asset(
+                        'images/${isLikedRx.value ? 'like_icon.svg' : 'outline_like_icon.svg'}',
+                        color: SatorioColor.interactive,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8 * coefficient,
+                    ),
+                    Text(
+                      formattedLikes,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15 * coefficient,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        if (isDislikedRx.value) return;
+                        controller.rateReview(review.id, RatingType.dislike);
+                      },
+                      child: SvgPicture.asset(
+                        'images/${isDislikedRx.value ? 'dislike_icon.svg' : 'outline_dislike_icon.svg'}',
+                        color: SatorioColor.interactive,
+                        height: 20,
+                        width: 20,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8 * coefficient,
+                    ),
+                    Text(
+                      formattedDislikes,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 14 * coefficient,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Spacer(),
+                    controller.profile.id != review.userId ?
+                    InkWell(
+                      onTap: () {
+                        controller.toTransactingTipsDialog(review.userName, review);
+                      },
                       child: Row(
                         children: [
                           Container(
-                            height: 20,
-                            width: 20,
+                            height: 24,
+                            width: 24,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              gradient: LinearGradient(
-                                begin: Alignment.topRight,
-                                end: Alignment.bottomLeft,
-                                colors: [
-                                  SatorioColor.yellow_orange,
-                                  SatorioColor.tomato,
-                                ],
+                              color: SatorioColor.interactive,
+                            ),
+                            child: Center(
+                              child: SvgPicture.asset(
+                                'images/sator_logo.svg',
+                                width: 12,
+                                height: 12,
+                                color: Colors.white,
                               ),
                             ),
                           ),
                           SizedBox(
-                            width: 6,
+                            width: 4,
                           ),
-                          Expanded(
-                            child: Text(
-                              review.userName,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: textTheme.bodyText2!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 15 * coefficient,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          Text(
+                            'txt_tip'.tr,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.interactive,
+                              fontSize: 14 * coefficient,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    // Row(
-                    //   children: [
-                    //     SvgPicture.asset(
-                    //       'images/like_icon.svg',
-                    //       color: SatorioColor.textBlack,
-                    //     ),
-                    //     SizedBox(
-                    //       width: 8,
-                    //     ),
-                    //     Text(
-                    //       review.likes.toString(),
-                    //       style: textTheme.bodyText2!.copyWith(
-                    //         color: SatorioColor.textBlack,
-                    //         fontSize: 14 * coefficient,
-                    //         fontWeight: FontWeight.w500,
-                    //       ),
-                    //     ),
-                    //     SizedBox(
-                    //       width: 15,
-                    //     ),
-                    //     Container(
-                    //       height: 24,
-                    //       width: 24,
-                    //       decoration: BoxDecoration(
-                    //         shape: BoxShape.circle,
-                    //         color: SatorioColor.interactive,
-                    //       ),
-                    //       child: Center(
-                    //         child: SvgPicture.asset(
-                    //           'images/sator_logo.svg',
-                    //           width: 12,
-                    //           height: 12,
-                    //           color: Colors.white,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     SizedBox(
-                    //       width: 4,
-                    //     ),
-                    //     Text(
-                    //       'txt_tip'.tr,
-                    //       style: textTheme.bodyText2!.copyWith(
-                    //         color: SatorioColor.interactive,
-                    //         fontSize: 14 * coefficient,
-                    //         fontWeight: FontWeight.w500,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // )
+                    ) : Container(),
                   ],
                 ),
               )

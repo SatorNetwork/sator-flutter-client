@@ -81,6 +81,12 @@ abstract class ApiDataSource {
 
   // endregion
 
+  // region KYC
+
+  Future<String> kycToken();
+
+  // endregion
+
   // region Profile
 
   Future<ProfileModel> profile();
@@ -116,7 +122,7 @@ abstract class ApiDataSource {
 
   // region Shows
 
-  Future<List<ShowModel>> shows({int? page, int? itemsPerPage});
+  Future<List<ShowModel>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
 
   Future<List<ShowModel>> showsFromCategory(
     String category, {
@@ -176,6 +182,10 @@ abstract class ApiDataSource {
     String title,
     String review,
   );
+
+  Future<bool> sendReviewTip(String reviewId, double amount);
+
+  Future<bool> rateReview(String reviewId, String ratingType);
 
   // endregion
 

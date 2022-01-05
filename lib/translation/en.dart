@@ -119,7 +119,7 @@ const Map<String, String> en = {
   'txt_scan_qr': 'Scan QR',
   'txt_note': 'Note',
   'txt_preview': 'Preview',
-  'txt_transacting_tips': 'Transacting Tips',
+  'txt_transacting_tips': 'You are going to tip',
   'txt_transacting_tips_description':
       'Before you finalize your transaction, keep in mind a couple of tips:',
   'txt_more_info_transacting_tips': 'For more info about transactions tap ',
@@ -155,6 +155,7 @@ const Map<String, String> en = {
   'txt_enter_invite_email': 'Enter an email where to send an invite',
   'txt_send_invite': 'Send Invite',
   'txt_success': 'Success',
+  'txt_success_tip': 'You have successfully sent ',
   'txt_invitation_sent': 'Invitation was sent',
   'txt_transaction_sent': 'Transaction was sent',
   'txt_transaction_not_sent': 'Transaction was not sent',
@@ -217,6 +218,7 @@ const Map<String, String> en = {
   'txt_register_success': 'User %s was successfully registered',
   'txt_select_avatar': 'Select avatar',
   'txt_avatar': 'Avatar',
+  'txt_bitys': 'Bit’ys',
   'txt_splash_description':
       'Welcome to Sator, where you earn SAO crypto for experiencing content and playing games.',
   'txt_enter_satorverse': 'Enter the Satorverse!',
@@ -237,6 +239,7 @@ const Map<String, String> en = {
   'txt_popular_movies': 'Popular movies',
   'txt_music_realms': 'Music realms',
   'txt_all_shows': 'All shows',
+  'txt_realm_nft': 'Browse NFTs by realm',
   'txt_attempts_left_alert':
       'You have no more attempts to unlock with a quiz, please unlock with SAO',
   'txt_settings': 'Settings',
@@ -267,4 +270,8 @@ const Map<String, String> en = {
   'txt_you_havent_nfts': 'You have no NFTs yet.',
   'txt_featured_nfts': 'Featured NFTs',
   'txt_null_nfts': 'This episode has no NFTs yet.\nGo to NFT marketplace',
+  'txt_update_app': 'Please, update app',
+  'txt_update_app_text': 'Your application version is outdated, please update',
+  'txt_update': 'Update',
+  'txt_buy_nfts': 'Buy NFTs',
 };

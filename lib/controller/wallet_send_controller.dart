@@ -70,12 +70,6 @@ class WalletSendController extends GetxController with NonWorkingFeatureMixin {
     Get.back();
   }
 
-  void toTransactingTipsDialog() {
-    Get.bottomSheet(
-      TransactingTipsBottomSheet(),
-    );
-  }
-
   void createTransfer() {
     if (fromWalletDetailRx.value != null) {
       Future.value(true)

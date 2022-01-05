@@ -8,11 +8,13 @@ class ShowModel extends Show implements ToJsonInterface {
     String title,
     String cover,
     bool hasNewEpisode,
+    bool hasNft,
   ) : super(
           id,
           title,
           cover,
           hasNewEpisode,
+      hasNft,
         );
 
   factory ShowModel.fromJson(Map json) => ShowModel(
@@ -20,6 +22,7 @@ class ShowModel extends Show implements ToJsonInterface {
         json.parseValueAsString('title'),
         json.parseValueAsString('cover'),
         json.parseValueAsBool('has_new_episode'),
+        json.parseValueAsBool('has_nft'),
       );
 
   @override
@@ -28,5 +31,6 @@ class ShowModel extends Show implements ToJsonInterface {
         'title': title,
         'cover': cover,
         'has_new_episode': hasNewEpisode,
+        'has_nft': hasNft,
       };
 }
