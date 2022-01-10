@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart' show Get, GetNavigation;
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class SuccessTipDialog extends StatelessWidget {
@@ -79,7 +79,7 @@ class SuccessTipDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   ClipOval(
-                      child: SvgPicture.asset(
+                      child: AvatarImage(
                     userAvatar,
                     height: 20,
                     width: 20,

@@ -7,6 +7,7 @@ import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 import 'package:satorio/util/decimal_text_input_formatter.dart';
 import 'package:satorio/util/links.dart';
@@ -60,7 +61,7 @@ class TransactingTipsBottomSheet extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ClipOval(
-                    child: SvgPicture.asset(
+                    child: AvatarImage(
                   review.userAvatar,
                   height: 20,
                   width: 20,
