@@ -10,7 +10,6 @@ import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
-import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
@@ -23,7 +22,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class SplashController extends GetxController {
   SatorioRepository _satorioRepository = Get.find();
-  EncryptManager _encryptManager = Get.find();
 
   Uri? deepLink;
 
@@ -43,7 +41,6 @@ class SplashController extends GetxController {
     super.onReady();
     _handleDynamicLinks();
     _checkToken();
-    _encryptManager.createRSA();
   }
 
   Future _handleDynamicLinks() async {
@@ -84,7 +81,7 @@ class SplashController extends GetxController {
       () {
         if (_installedAppVersion >= _minAppVersion) {
           _satorioRepository.validateToken().then(
-                (bool isTokenValid) {
+            (bool isTokenValid) {
               if (isTokenValid) {
                 _checkIsVerified();
               } else {
@@ -92,7 +89,7 @@ class SplashController extends GetxController {
               }
             },
           ).catchError(
-                (value) {
+            (value) {
               _checkIsOnBoarding();
             },
           );
@@ -105,28 +102,27 @@ class SplashController extends GetxController {
 
   void _toUpdateAppDialog() {
     Get.dialog(
-      WillPopScope(
-        onWillPop: () async {
-          if (_installedAppVersion >= _minAppVersion) {
-            Get.back(closeOverlays: true);
-            return true;
-          } else {
-            return false;
-          }
-        },
-        child: DefaultDialog(
-          'txt_update_app'.tr,
-          'txt_update_app_text'.tr,
-          'txt_update'.tr,
-          icon: Icons.update,
-          isBack: false,
-          onButtonPressed: () {
-            _updateApp();
+        WillPopScope(
+          onWillPop: () async {
+            if (_installedAppVersion >= _minAppVersion) {
+              Get.back(closeOverlays: true);
+              return true;
+            } else {
+              return false;
+            }
           },
+          child: DefaultDialog(
+            'txt_update_app'.tr,
+            'txt_update_app_text'.tr,
+            'txt_update'.tr,
+            icon: Icons.update,
+            isBack: false,
+            onButtonPressed: () {
+              _updateApp();
+            },
+          ),
         ),
-      ),
-      barrierDismissible: false
-    );
+        barrierDismissible: false);
   }
 
   void _updateApp() {
@@ -140,7 +136,6 @@ class SplashController extends GetxController {
   void _launchURL(String url) async {
     await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
-
 
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {

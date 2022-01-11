@@ -1,4 +1,3 @@
 abstract class EncryptManager {
-
-  Future<void> createRSA();
+  Future<String> createRSAgetPublicKey();
 }

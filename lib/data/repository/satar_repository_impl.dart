@@ -206,6 +206,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> signIn(String email, String password) {
     return _apiDataSource
         .signIn(email, password)
+        .then((value) => _apiDataSource.publicKey())
         .catchError((value) => _handleException(value));
   }
 
@@ -213,6 +214,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> signUp(String email, String password, String username) {
     return _apiDataSource
         .signUp(email, password, username)
+        .then((value) => _apiDataSource.publicKey())
         .catchError((value) => _handleException(value));
   }
 

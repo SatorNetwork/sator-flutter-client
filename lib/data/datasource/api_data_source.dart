@@ -79,6 +79,8 @@ abstract class ApiDataSource {
 
   Future<bool> resetPassword(String email, String code, String newPassword);
 
+  Future<bool> publicKey();
+
   // endregion
 
   // region KYC

@@ -1,50 +1,22 @@
-import 'dart:math';
-import 'dart:typed_data';
-
-import 'package:encrypt/encrypt.dart';
-import 'package:flutter/foundation.dart';
+import 'package:fast_rsa/fast_rsa.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:pointycastle/export.dart';
 import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 
 class EncryptManagerImpl extends EncryptManager {
+  static const String KEY_PRIVATE = 'RSA_PRIVATE';
+  static const String KEY_PUBLIC = 'RSA_PUBLIC';
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   @override
-  Future<void> createRSA() {
-    RSAKeyParser().
-    return computeRSAKeyPair(getSecureRandom()).then((rsaKey) {
-      print("createRSA");
-      print(rsaKey.privateKey.toString());
-      print(rsaKey.publicKey.toString());
-    });
-  }
+  Future<String> createRSAgetPublicKey() async {
+    final KeyPair keyPair = await RSA.generate(256 * 8);
 
-  Future<AsymmetricKeyPair<PublicKey, PrivateKey>> computeRSAKeyPair(
-    SecureRandom secureRandom,
-  ) async {
-    return getRsaKeyPair(secureRandom);
-    // return await compute(getRsaKeyPair, secureRandom);
-  }
+    await _secureStorage.write(key: KEY_PRIVATE, value: keyPair.privateKey);
 
-  SecureRandom getSecureRandom() {
-    var secureRandom = FortunaRandom();
-    var random = Random.secure();
-    List<int> seeds = [];
-    for (int i = 0; i < 32; i++) {
-      seeds.add(random.nextInt(255));
-    }
-    secureRandom.seed(new KeyParameter(new Uint8List.fromList(seeds)));
-    return secureRandom;
-  }
+    await _secureStorage.write(key: KEY_PUBLIC, value: keyPair.publicKey);
 
-  AsymmetricKeyPair<PublicKey, PrivateKey> getRsaKeyPair(
-      SecureRandom secureRandom,
-      ) {
-    var rsapars = new RSAKeyGeneratorParameters(BigInt.from(65537), 2048, 5);
-    var params = new ParametersWithRandom(rsapars, secureRandom);
-    var keyGenerator = new RSAKeyGenerator();
-    keyGenerator.init(params);
-    return keyGenerator.generateKeyPair();
+    final result = await RSA.convertPublicKeyToPKIX(keyPair.publicKey);
+
+    return result;
   }
 }

@@ -23,7 +23,7 @@ class AppBinding extends Bindings {
     Get.put<AuthDataSource>(AuthDataSourceImpl(), permanent: true);
     Get.put<FirebaseDataSource>(FirebaseDataSourceImpl(), permanent: true);
     Get.put<ApiDataSource>(
-      ApiDataSourceImpl(Get.find(), Get.find()),
+      ApiDataSourceImpl(Get.find(), Get.find(), Get.find()),
       permanent: true,
     );
     Get.put<NatsDataSource>(NatsDataSourceImpl(), permanent: true);
