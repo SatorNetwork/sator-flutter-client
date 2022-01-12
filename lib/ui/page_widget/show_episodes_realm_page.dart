@@ -1344,7 +1344,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviewItem(Review review) {
-    final double reviewContainerHeight = 230.0 * coefficient;
+    final double reviewContainerHeight = 235.0 * coefficient;
 
     String avatarAsset =
         review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
