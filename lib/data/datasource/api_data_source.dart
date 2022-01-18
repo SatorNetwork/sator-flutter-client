@@ -213,6 +213,11 @@ abstract class ApiDataSource {
 
   // region NFT
 
+  Future<List<NftItemModel>> allNfts({
+    int? page,
+    int? itemsPerPage,
+  });
+
   Future<NftHomeModel> nftHome();
 
   Future<List<NftCategoryModel>> nftCategories();

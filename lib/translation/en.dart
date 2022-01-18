@@ -46,6 +46,7 @@ const Map<String, String> en = {
   'txt_yes': 'Yes',
   'txt_no': 'No',
   'txt_ok': 'OK',
+  'txt_all': 'All',
   'txt_prize_pool': 'Prize pool',
   'txt_winners': 'Winners',
   'txt_players': 'Players',

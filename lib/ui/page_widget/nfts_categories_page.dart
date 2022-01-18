@@ -82,6 +82,12 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           .toList(),
     );
 
+    result.add(
+      Tab(
+        text: 'txt_all'.tr,
+      ),
+    );
+
     return result;
   }
 
@@ -95,6 +101,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           )
           .toList(),
     );
+    result.add(_allNftsTab());
 
     return result;
   }
@@ -125,6 +132,40 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             itemBuilder: (context, index) {
               final NftItem nftItem =
                   controller.itemsRx.value[nftCategory.id]![index];
+              return _nftItem(nftItem);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _allNftsTab() {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.pixels >=
+            notification.metrics.maxScrollExtent - _threshHold)
+          controller.loadNfts();
+        return true;
+      },
+      child: RefreshIndicator(
+        color: SatorioColor.brand,
+        onRefresh: () async {
+          controller.refreshData();
+        },
+        child: Obx(
+              () => GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15 * coefficient,
+              mainAxisSpacing: 20 * coefficient,
+              childAspectRatio: 0.6,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            itemCount: controller.allNftsRx.value.length,
+            itemBuilder: (context, index) {
+              final NftItem nftItem =
+              controller.allNftsRx.value[index];
               return _nftItem(nftItem);
             },
           ),

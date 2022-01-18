@@ -988,6 +988,34 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region NFT
 
   @override
+  Future<List<NftItemModel>> allNfts({
+    int? page,
+    int? itemsPerPage,
+  }) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    return _requestGet(
+      'nft',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftItemModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
   Future<NftHomeModel> nftHome() {
     return _requestGet(
       'nft/home',
