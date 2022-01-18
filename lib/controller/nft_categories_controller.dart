@@ -75,7 +75,7 @@ class NftCategoriesController extends GetxController
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(ShowCategory.withNfts, ShowsType.NftsAllShows),
+      arguments: ShowsCategoryArgument(ShowCategoryType.withNfts, null, ShowsType.NftsAllShows),
     );
   }
 

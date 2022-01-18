@@ -13,6 +13,7 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
+import 'package:satorio/data/model/show_category_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -123,6 +124,11 @@ abstract class ApiDataSource {
   // region Shows
 
   Future<List<ShowModel>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
+
+  Future<List<ShowCategoryModel>> showsCategoryList({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<List<ShowModel>> showsFromCategory(
     String category, {
