@@ -7,9 +7,15 @@ abstract class NatsDataSource {
 
   Future<void> sendAnswer(
     String answerSubject,
+    String serverPublicKey,
     String questionId,
     String answerId,
   );
 
-  Future<void> sendPing(String subject);
+  Future<void> sendPing(
+    String subject,
+    String serverPublicKey,
+  );
+
+  Future<String> decryptReceivedMessage(String data);
 }

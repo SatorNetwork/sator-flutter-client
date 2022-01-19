@@ -4,6 +4,7 @@ class NatsConfig {
   final String receiveSubj;
   final String sendSubj;
   final String userId;
+  final String serverPublicKey;
 
   const NatsConfig(
     this.baseQuizUrl,
@@ -11,5 +12,6 @@ class NatsConfig {
     this.receiveSubj,
     this.sendSubj,
     this.userId,
+    this.serverPublicKey,
   );
 }

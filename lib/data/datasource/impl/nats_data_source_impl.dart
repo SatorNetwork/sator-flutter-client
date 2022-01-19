@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
+import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_empty_model.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
@@ -11,8 +12,9 @@ import 'package:satorio/data/model/to_json_interface.dart';
 
 class NatsDataSourceImpl implements NatsDataSource {
   final Client _client = Client();
+  final EncryptManager _encryptManager;
 
-  NatsDataSourceImpl() {
+  NatsDataSourceImpl(this._encryptManager) {
     if (kDebugMode) {
       _client.statusStream.listen((Status status) {
         print('NATS status - $status');
@@ -22,11 +24,17 @@ class NatsDataSourceImpl implements NatsDataSource {
 
   Future<void> _sendViaClient(
     String subject,
+    String serverPublicKey,
     ToJsonInterface data,
   ) async {
-    String jsonData = json.encode(data.toJson());
-    bool result = _client.pubString(subject, jsonData);
-    print('nSend ${result ? 'success' : 'error'} $subject: $jsonData');
+    final String jsonData = json.encode(data.toJson());
+
+    final encrypted = await _encryptManager.encrypt(serverPublicKey, jsonData);
+
+    if (_client.status == Status.connected) {
+      bool result = _client.pubString(subject, encrypted);
+      print('onSend ${result ? 'success' : 'error'} $subject: $jsonData');
+    }
   }
 
   @override
@@ -49,6 +57,7 @@ class NatsDataSourceImpl implements NatsDataSource {
   @override
   Future<void> sendAnswer(
     String answerSubject,
+    String serverPublicKey,
     String questionId,
     String answerId,
   ) {
@@ -56,14 +65,27 @@ class NatsDataSourceImpl implements NatsDataSource {
       PayloadAnswerModel(questionId, answerId),
     );
 
-    return _sendViaClient(answerSubject, message);
+    return _sendViaClient(answerSubject, serverPublicKey, message);
   }
 
   @override
-  Future<void> sendPing(String subject) {
+  Future<void> sendPing(
+    String subject,
+    String serverPublicKey,
+  ) {
     SocketMessagePlayerIsActiveModel message = SocketMessagePlayerIsActiveModel(
       PayloadEmptyModel(),
     );
-    return _sendViaClient(subject, message);
+    return _sendViaClient(subject, serverPublicKey, message);
+  }
+
+  @override
+  Future<String> decryptReceivedMessage(String data) {
+    return _encryptManager.decrypt(data).then(
+      (value) {
+        print('onMessage $value');
+        return value;
+      },
+    );
   }
 }

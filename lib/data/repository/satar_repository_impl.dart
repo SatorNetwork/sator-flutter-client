@@ -506,16 +506,23 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> sendAnswer(
-    String answerSubject,
+    String subject,
+    String serverPublicKey,
     String questionId,
     String answerId,
   ) {
-    return _natsDataSource.sendAnswer(answerSubject, questionId, answerId);
+    return _natsDataSource.sendAnswer(
+        subject, serverPublicKey, questionId, answerId);
   }
 
   @override
-  Future<void> sendPing(String subject) {
-    return _natsDataSource.sendPing(subject);
+  Future<void> sendPing(String subject, String serverPublicKey) {
+    return _natsDataSource.sendPing(subject, serverPublicKey);
+  }
+
+  @override
+  Future<String> decryptData(String data) {
+    return _natsDataSource.decryptReceivedMessage(data);
   }
 
   @override

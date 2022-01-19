@@ -26,7 +26,10 @@ class AppBinding extends Bindings {
       ApiDataSourceImpl(Get.find(), Get.find(), Get.find()),
       permanent: true,
     );
-    Get.put<NatsDataSource>(NatsDataSourceImpl(), permanent: true);
+    Get.put<NatsDataSource>(
+      NatsDataSourceImpl(Get.find()),
+      permanent: true,
+    );
 
     Get.put<SatorioRepository>(
       SatorioRepositoryImpl(Get.find(), Get.find(), Get.find(), Get.find()),

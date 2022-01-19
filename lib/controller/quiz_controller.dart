@@ -66,21 +66,33 @@ class QuizController extends GetxController {
   }
 
   Future<void> sendAnswer(String questionId, String answerId) {
-    return _satorioRepository.sendAnswer(natsConfig.sendSubj, questionId, answerId);
+    return _satorioRepository.sendAnswer(
+      natsConfig.sendSubj,
+      natsConfig.serverPublicKey,
+      questionId,
+      answerId,
+    );
   }
 
   void _initConnection() async {
-    _subscription = await _satorioRepository.subscribeNats(natsConfig.baseQuizWsUrl, natsConfig.receiveSubj);
-    _pingTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      _satorioRepository.sendPing(natsConfig.sendSubj);
-    });
+    _subscription = await _satorioRepository.subscribeNats(
+        natsConfig.baseQuizWsUrl, natsConfig.receiveSubj);
 
     _streamSubscription = _subscription.stream?.listen((Message message) {
       String data = message.string;
-      print('onMessage $data');
+      _handleReceivedMessage(data);
+    });
 
+    _pingTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _satorioRepository.sendPing(
+          natsConfig.sendSubj, natsConfig.serverPublicKey);
+    });
+  }
+
+  void _handleReceivedMessage(String message) {
+    _satorioRepository.decryptData(message).then((String value) {
       SocketMessage socketMessage =
-          SocketMessageModelFactory.createSocketMessage(json.decode(data));
+          SocketMessageModelFactory.createSocketMessage(json.decode(value));
       switch (socketMessage.type) {
         case Type.player_connected:
           _handlePayloadUser(socketMessage.payload as PayloadUser, true);
@@ -107,61 +119,19 @@ class QuizController extends GetxController {
           break;
       }
     });
-
-    // _socket = await _satorioRepository.createQuizSocket(socketUrl);
-    //
-    // _socket?.onOpen(() {
-    //   print('Socket onOpen ${_socket?.url}');
-    // });
-    // _socket?.onClose((close) {
-    //   print('Socket onClose $close');
-    // });
-    // _socket?.onError((e) {
-    //   print('Socket onError $e');
-    // });
-    // _socket?.onMessage((data) {
-    //   print('onMessage $data');
-    //   if (data is String) {
-    //     SocketMessage socketMessage =
-    //         SocketMessageModelFactory.createSocketMessage(json.decode(data));
-    //     switch (socketMessage.type) {
-    //       case Type.player_connected:
-    //         _handlePayloadUser(socketMessage.payload as PayloadUser, true);
-    //         break;
-    //       case Type.player_disconnected:
-    //         _handlePayloadUser(socketMessage.payload as PayloadUser, false);
-    //         break;
-    //       case Type.countdown:
-    //         _handlePayloadCountdown(socketMessage.payload as PayloadCountdown);
-    //         break;
-    //       case Type.question:
-    //         _handlePayloadQuestion(socketMessage.payload as PayloadQuestion);
-    //         break;
-    //       case Type.question_result:
-    //         _handlePayloadQuestionResult(
-    //             socketMessage.payload as PayloadQuestionResult);
-    //         break;
-    //       case Type.challenge_result:
-    //         _handlePayloadChallengeResult(
-    //             socketMessage.payload as PayloadChallengeResult);
-    //         break;
-    //       case Type.time_out:
-    //         _handleTimeOut(socketMessage.payload as PayloadTimeOut);
-    //         break;
-    //     }
-    //   }
-    // });
-    // _socket?.connect();
   }
 
   void _handlePayloadUser(PayloadUser payloadUser, bool isAdd) {
     QuizLobbyController lobbyController = Get.find();
     lobbyController.usersRx.update((value) {
       if (value != null) {
-        if (isAdd)
-          value.add(payloadUser);
-        else
+        if (isAdd) {
+          if (value.indexWhere(
+                  (element) => element.userId == payloadUser.userId) ==
+              -1) value.add(payloadUser);
+        } else {
           value.removeWhere((element) => element.userId == payloadUser.userId);
+        }
       }
     });
   }

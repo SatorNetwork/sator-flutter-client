@@ -175,12 +175,18 @@ abstract class SatorioRepository {
   Future<void> unsubscribeNats(Subscription subscription);
 
   Future<void> sendAnswer(
-    String answerSubject,
+    String subject,
+    String serverPublicKey,
     String questionId,
     String answerId,
   );
 
-  Future<void> sendPing(String subject);
+  Future<void> sendPing(
+    String subject,
+    String serverPublicKey,
+  );
+
+  Future<String> decryptData(String data);
 
   Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
