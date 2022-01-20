@@ -242,7 +242,7 @@ class HomePage extends GetView<HomeController> {
 
   Widget _categories() {
     return Obx(
-        () => ListView.separated(
+      () => ListView.separated(
         separatorBuilder: (context, categoryIndex) => SizedBox(
           height: controller.categoriesRx.value[categoryIndex].shows.length != 0
               ? 16
@@ -257,7 +257,8 @@ class HomePage extends GetView<HomeController> {
             children: [
               Obx(
                 () =>
-                    controller.categoriesRx.value[categoryIndex].shows.length != 0
+                    controller.categoriesRx.value[categoryIndex].shows.length !=
+                            0
                         ? Padding(
                             padding: const EdgeInsets.only(left: 20, right: 20),
                             child: TitleWithButton(
@@ -270,7 +271,8 @@ class HomePage extends GetView<HomeController> {
                         : Container(),
               ),
               Obx(
-                () => controller.categoriesRx.value[categoryIndex].shows.length !=
+                () => controller
+                            .categoriesRx.value[categoryIndex].shows.length !=
                         0
                     ? Container(
                         margin: const EdgeInsets.only(top: 16),
@@ -282,7 +284,8 @@ class HomePage extends GetView<HomeController> {
                             ),
                             scrollDirection: Axis.horizontal,
                             padding: const EdgeInsets.symmetric(horizontal: 20),
-                            itemCount: controller.categoriesRx.value.length,
+                            itemCount: controller
+                                .categoriesRx.value[categoryIndex].shows.length,
                             itemBuilder: (context, showIndex) {
                               Show show = controller.categoriesRx
                                   .value[categoryIndex].shows[showIndex];
