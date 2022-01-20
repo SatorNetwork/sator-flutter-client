@@ -241,60 +241,62 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _categories() {
-    return ListView.separated(
-      separatorBuilder: (context, categoryIndex) => SizedBox(
-        height: controller.categoriesRx.value[categoryIndex].shows.length != 0
-            ? 16
-            : 0,
-      ),
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: controller.categoriesRx.value.length,
-      itemBuilder: (context, categoryIndex) {
-        ShowCategory category = controller.categoriesRx.value[categoryIndex];
-        return Column(
-          children: [
-            Obx(
-              () =>
-                  controller.categoriesRx.value[categoryIndex].shows.length != 0
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: TitleWithButton(
-                            textCode: category.title,
-                            onTap: () {
-                              controller.toShowsCategory(category);
+    return Obx(
+        () => ListView.separated(
+        separatorBuilder: (context, categoryIndex) => SizedBox(
+          height: controller.categoriesRx.value[categoryIndex].shows.length != 0
+              ? 16
+              : 0,
+        ),
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: controller.categoriesRx.value.length,
+        itemBuilder: (context, categoryIndex) {
+          ShowCategory category = controller.categoriesRx.value[categoryIndex];
+          return Column(
+            children: [
+              Obx(
+                () =>
+                    controller.categoriesRx.value[categoryIndex].shows.length != 0
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: TitleWithButton(
+                              textCode: category.title,
+                              onTap: () {
+                                controller.toShowsCategory(category);
+                              },
+                            ),
+                          )
+                        : Container(),
+              ),
+              Obx(
+                () => controller.categoriesRx.value[categoryIndex].shows.length !=
+                        0
+                    ? Container(
+                        margin: const EdgeInsets.only(top: 16),
+                        height: 168 * coefficient,
+                        child: Obx(
+                          () => ListView.separated(
+                            separatorBuilder: (context, showIndex) => SizedBox(
+                              width: 16,
+                            ),
+                            scrollDirection: Axis.horizontal,
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            itemCount: controller.categoriesRx.value.length,
+                            itemBuilder: (context, showIndex) {
+                              Show show = controller.categoriesRx
+                                  .value[categoryIndex].shows[showIndex];
+                              return _showItem(show);
                             },
                           ),
-                        )
-                      : Container(),
-            ),
-            Obx(
-              () => controller.categoriesRx.value[categoryIndex].shows.length !=
-                      0
-                  ? Container(
-                      margin: const EdgeInsets.only(top: 16),
-                      height: 168 * coefficient,
-                      child: Obx(
-                        () => ListView.separated(
-                          separatorBuilder: (context, showIndex) => SizedBox(
-                            width: 16,
-                          ),
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          itemCount: controller.categoriesRx.value.length,
-                          itemBuilder: (context, showIndex) {
-                            Show show = controller.categoriesRx
-                                .value[categoryIndex].shows[showIndex];
-                            return _showItem(show);
-                          },
                         ),
-                      ),
-                    )
-                  : Container(),
-            ),
-          ],
-        );
-      },
+                      )
+                    : Container(),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
