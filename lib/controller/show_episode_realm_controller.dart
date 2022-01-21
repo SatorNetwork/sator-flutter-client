@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +87,7 @@ class ShowEpisodeRealmController extends GetxController
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
+  final RxBool isEnabledRx = true.obs;
 
   late ValueListenable<Box<Profile>> profileListenable;
   late Profile profile;
@@ -214,6 +217,10 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void rateReview(String reviewId, String ratingType) {
+    isEnabledRx.value = false;
+
+    Timer(Duration(milliseconds: 2000), () => isEnabledRx.value = true);
+
     _satorioRepository.rateReview(reviewId, ratingType).then((value) {
       if (value) {
         _satorioRepository
