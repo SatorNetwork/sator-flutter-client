@@ -37,6 +37,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           backgroundImage('images/bg/gradient.svg'),
           Container(
             width: Get.width,
+            height: Get.height - kToolbarHeight,
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
@@ -66,7 +67,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                         height: 32 * coefficient,
                       ),
                       Text(
-                        'txt_staking'.tr,
+                        'txt_lock_rewards'.tr,
                         style: textTheme.headline3!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 28 * coefficient,
@@ -84,18 +85,18 @@ class WalletStakePage extends GetView<WalletStakeController> {
                       SizedBox(
                         height: 32 * coefficient,
                       ),
-                      Text(
-                        'txt_loyalty_levels'.tr,
-                        style: textTheme.headline3!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 28 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16 * coefficient,
-                      ),
-                      _loyaltyLevelCard(),
+                      // Text(
+                      //   'txt_loyalty_levels'.tr,
+                      //   style: textTheme.headline3!.copyWith(
+                      //     color: SatorioColor.textBlack,
+                      //     fontSize: 28 * coefficient,
+                      //     fontWeight: FontWeight.w700,
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 16 * coefficient,
+                      // ),
+                      // _loyaltyLevelCard(),
                     ],
                   ),
                 ),
@@ -125,19 +126,33 @@ class WalletStakePage extends GetView<WalletStakeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'txt_auto_sator'.tr,
+                      'txt_multiply_rewards'.tr,
                       style: textTheme.headline5!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 20 * coefficient,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(
-                      'txt_automatic_restaking'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.black.withOpacity(0.7),
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                    Obx(
+                      () => RichText(
+                        text: TextSpan(
+                          text: 'txt_total_locked'.tr,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: Colors.black.withOpacity(0.7),
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' ${controller.walletStakeRx.value?.walletStaking!.totalStaked}',
+                              style: textTheme.bodyText1!.copyWith(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 12 * coefficient,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -167,34 +182,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           Row(
             children: [
               Text(
-                'txt_apy'.tr,
-                style: textTheme.bodyText2!.copyWith(
-                  color: Colors.black,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Expanded(
-                  child: Obx(
-                () => Text(
-                  '${controller.walletStakeRx.value?.walletStaking?.apy.toStringAsFixed(2) ?? ''}%',
-                  textAlign: TextAlign.end,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: Colors.black,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )),
-            ],
-          ),
-          SizedBox(
-            height: 8 * coefficient,
-          ),
-          Row(
-            children: [
-              Text(
-                'txt_total_staked'.tr,
+                'txt_locked_by'.tr,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.black,
                   fontSize: 15 * coefficient,
@@ -203,9 +191,9 @@ class WalletStakePage extends GetView<WalletStakeController> {
               ),
               Expanded(
                 child: Obx(
-                  () => Text(
-                    controller.walletStakeRx.value?.walletStaking?.totalStaked
-                            .toStringAsFixed(2) ??
+                      () => Text(
+                    controller.walletStakeRx.value?.walletStaking?.staked
+                        .toString() ??
                         '',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
@@ -219,12 +207,39 @@ class WalletStakePage extends GetView<WalletStakeController> {
             ],
           ),
           SizedBox(
+            height: 8 * coefficient,
+          ),
+          Row(
+            children: [
+              Text(
+                'txt_multiplier'.tr,
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.black,
+                  fontSize: 15 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Expanded(
+                  child: Obx(
+                () => Text(
+                  '${controller.walletStakeRx.value?.walletStaking?.apy.toString() ?? ''}%',
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )),
+            ],
+          ),
+          SizedBox(
             height: 20 * coefficient,
           ),
           ElevatedGradientButton(
-            text: 'txt_stake'.tr,
+            text: 'txt_add'.tr,
             onPressed: () {
-              controller.toStakeDialog();
+              controller.toLockRewardsBottomSheet();
             },
           ),
         ],
@@ -250,19 +265,33 @@ class WalletStakePage extends GetView<WalletStakeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'txt_auto_sator'.tr,
+                      'txt_multiply_rewards'.tr,
                       style: textTheme.headline5!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 20 * coefficient,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(
-                      'txt_automatic_restaking'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.black.withOpacity(0.7),
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                    Obx(
+                      () => RichText(
+                        text: TextSpan(
+                          text: 'txt_total_locked'.tr,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: Colors.black.withOpacity(0.7),
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' ${controller.walletStakeRx.value?.walletStaking!.totalStaked}',
+                              style: textTheme.bodyText1!.copyWith(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 12 * coefficient,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -292,7 +321,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           Row(
             children: [
               Text(
-                'txt_staked'.tr,
+                'txt_locked_by'.tr,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.black,
                   fontSize: 15 * coefficient,
@@ -301,9 +330,9 @@ class WalletStakePage extends GetView<WalletStakeController> {
               ),
               Expanded(
                 child: Obx(
-                  () => Text(
+                      () => Text(
                     controller.walletStakeRx.value?.walletStaking?.staked
-                            .toStringAsFixed(2) ??
+                        .toString() ??
                         '',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
@@ -322,7 +351,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           Row(
             children: [
               Text(
-                'txt_your_share'.tr,
+                'txt_multiplier'.tr,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.black,
                   fontSize: 15 * coefficient,
@@ -330,18 +359,17 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 ),
               ),
               Expanded(
-                child: Obx(
-                  () => Text(
-                    '${controller.walletStakeRx.value?.walletStaking?.yourShare.toStringAsFixed(2) ?? ''}%',
-                    textAlign: TextAlign.end,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: Colors.black,
-                      fontSize: 15 * coefficient,
-                      fontWeight: FontWeight.w600,
+                  child: Obx(
+                        () => Text(
+                      '${controller.walletStakeRx.value?.walletStaking?.apy.toString() ?? ''}%',
+                      textAlign: TextAlign.end,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: Colors.black,
+                        fontSize: 15 * coefficient,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                ),
-              ),
+                  )),
             ],
           ),
           SizedBox(
@@ -352,9 +380,9 @@ class WalletStakePage extends GetView<WalletStakeController> {
             children: [
               Expanded(
                 child: BorderedButton(
-                  text: 'txt_substract'.tr,
+                  text: 'txt_unlock'.tr,
                   onPressed: () {
-                    controller.toUnStakeDialog();
+                    controller.toUnLockRewardsBottomSheet();
                   },
                 ),
               ),
@@ -365,7 +393,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 child: ElevatedGradientButton(
                   text: 'txt_add'.tr,
                   onPressed: () {
-                    controller.toStakeDialog();
+                    controller.toLockRewardsBottomSheet();
                   },
                 ),
               ),
