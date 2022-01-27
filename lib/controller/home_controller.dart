@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
@@ -20,6 +21,7 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/domain/show_category.dart';
+import 'package:satorio/ui/page_widget/challenges_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
@@ -91,6 +93,14 @@ class HomeController extends GetxController
     _satorioRepository.updateWalletBalance();
     _loadAllShows();
     _loadShowByCategoryName();
+  }
+
+  //TODO: remove, and imports
+  void toTestRemove() {
+    Get.to(
+          () => ChallengesPage(),
+      binding: ChallengesBinding(),
+    );
   }
 
   void _loadAllShows() {
