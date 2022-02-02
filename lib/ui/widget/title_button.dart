@@ -29,12 +29,16 @@ class TitleWithButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            textCode.tr,
-            style: textTheme.bodyText1!.copyWith(
-              color: color == null ? SatorioColor.darkAccent : color,
-              fontSize: fontSize == null ? 15.0 : fontSize,
-              fontWeight: fontWeight == null ? FontWeight.w600 : fontWeight,
+          Expanded(
+            child: Text(
+              textCode.tr,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.bodyText1!.copyWith(
+                color: color == null ? SatorioColor.darkAccent : color,
+                fontSize: fontSize == null ? 15.0 : fontSize,
+                fontWeight: fontWeight == null ? FontWeight.w600 : fontWeight,
+              ),
             ),
           ),
           Row(

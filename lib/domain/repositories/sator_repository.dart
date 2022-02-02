@@ -14,6 +14,7 @@ import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -115,6 +116,11 @@ abstract class SatorioRepository {
   Future<WalletStake> getStake(String walletId);
 
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
+
+  Future<List<ShowCategory>> showsCategoryList({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<List<Show>> showsFromCategory(
     String category, {

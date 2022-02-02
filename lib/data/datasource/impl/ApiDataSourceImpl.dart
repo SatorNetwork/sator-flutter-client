@@ -26,6 +26,7 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
+import 'package:satorio/data/model/show_category_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -607,6 +608,33 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
             .map((element) => ShowModel.fromJson(element))
+            .toList();
+      else
+        return [];
+    });
+  }
+
+  @override
+  Future<List<ShowCategoryModel>> showsCategoryList({
+        int? page,
+        int? itemsPerPage,
+      }) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    return _requestGet(
+      'shows/categories',
+      query: query,
+    ).then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ShowCategoryModel.fromJson(element))
             .toList();
       else
         return [];
