@@ -477,8 +477,8 @@ class ShowEpisodeRealmController extends GetxController
   void _loadNftItems() {
     _satorioRepository
         .nftItems(
-      NftFilterType.Episode,
-      showEpisodeRx.value.id,
+      NftFilterType.Show,
+      showDetailRx.value.id,
       page: _initialPage,
       itemsPerPage: _itemsPerPage,
     )
