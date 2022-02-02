@@ -33,7 +33,7 @@ class NatsDataSourceImpl implements NatsDataSource {
 
     if (_client.status == Status.connected) {
       bool result = _client.pubString(subject, encrypted);
-      print('onSend ${result ? 'success' : 'error'} $subject: $jsonData');
+      print('onSend ${DateTime.now().toIso8601String()} ${result ? 'success' : 'error'} $subject: $jsonData');
     }
   }
 
@@ -83,7 +83,7 @@ class NatsDataSourceImpl implements NatsDataSource {
   Future<String> decryptReceivedMessage(String data) {
     return _encryptManager.decrypt(data).then(
       (value) {
-        print('onMessage $value');
+        print('onMessage ${DateTime.now().toIso8601String()} $value');
         return value;
       },
     );
