@@ -660,6 +660,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<NftItem>> allNfts({
+    int? page,
+    int? itemsPerPage,
+  }) {
+    return _apiDataSource
+        .allNfts(page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<NftHome> nftHome() {
     return _apiDataSource
         .nftHome()

@@ -201,6 +201,11 @@ abstract class SatorioRepository {
     int? itemsPerPage,
   });
 
+  Future<List<NftItem>> allNfts({
+    int? page,
+    int? itemsPerPage,
+  });
+
   Future<NftHome> nftHome();
 
   Future<List<NftCategory>> nftCategories();
