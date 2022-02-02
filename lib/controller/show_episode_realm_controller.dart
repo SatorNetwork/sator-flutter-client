@@ -466,7 +466,10 @@ class ShowEpisodeRealmController extends GetxController
         .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
         .then((List<Review> reviews) {
       reviewsRx.update((value) {
-        if (value != null) value.addAll(reviews);
+        if (value != null) {
+          value.clear();
+          value.addAll(reviews);
+        }
       });
     });
   }
