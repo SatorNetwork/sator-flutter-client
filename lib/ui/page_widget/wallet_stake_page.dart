@@ -164,33 +164,34 @@ class WalletStakePage extends GetView<WalletStakeController> {
           SizedBox(
             height: 20 * coefficient,
           ),
-          Row(
-            children: [
-              Text(
-                'txt_apy'.tr,
-                style: textTheme.bodyText2!.copyWith(
-                  color: Colors.black,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Expanded(
-                  child: Obx(
-                () => Text(
-                  '${controller.walletStakeRx.value?.walletStaking?.apy.toStringAsFixed(2) ?? ''}%',
-                  textAlign: TextAlign.end,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: Colors.black,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )),
-            ],
-          ),
-          SizedBox(
-            height: 8 * coefficient,
-          ),
+          //TODO: uncomment
+          // Row(
+          //   children: [
+          //     Text(
+          //       'txt_apy'.tr,
+          //       style: textTheme.bodyText2!.copyWith(
+          //         color: Colors.black,
+          //         fontSize: 15 * coefficient,
+          //         fontWeight: FontWeight.w400,
+          //       ),
+          //     ),
+          //     Expanded(
+          //         child: Obx(
+          //       () => Text(
+          //         '${controller.walletStakeRx.value?.walletStaking?.apy.toString() ?? ''}%',
+          //         textAlign: TextAlign.end,
+          //         style: textTheme.bodyText2!.copyWith(
+          //           color: Colors.black,
+          //           fontSize: 15 * coefficient,
+          //           fontWeight: FontWeight.w600,
+          //         ),
+          //       ),
+          //     )),
+          //   ],
+          // ),
+          // SizedBox(
+          //   height: 8 * coefficient,
+          // ),
           Row(
             children: [
               Text(
@@ -205,7 +206,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 child: Obx(
                   () => Text(
                     controller.walletStakeRx.value?.walletStaking?.totalStaked
-                            .toStringAsFixed(2) ??
+                            .toString() ??
                         '',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
@@ -303,7 +304,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 child: Obx(
                   () => Text(
                     controller.walletStakeRx.value?.walletStaking?.staked
-                            .toStringAsFixed(2) ??
+                            .toString() ??
                         '',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
@@ -332,7 +333,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
               Expanded(
                 child: Obx(
                   () => Text(
-                    '${controller.walletStakeRx.value?.walletStaking?.yourShare.toStringAsFixed(2) ?? ''}%',
+                    '${controller.walletStakeRx.value?.walletStaking?.yourShare.toString() ?? ''}%',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
                       color: Colors.black,
