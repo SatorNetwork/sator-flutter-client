@@ -616,9 +616,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<ShowCategoryModel>> showsCategoryList({
-        int? page,
-        int? itemsPerPage,
-      }) {
+    int? page,
+    int? itemsPerPage,
+  }) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
@@ -835,6 +835,11 @@ class ApiDataSourceImpl implements ApiDataSource {
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
+  }
+
+  @override
+  Future<String> challengeLink(String challengeId) {
+    return Future.value('${_getConnect.baseUrl}challenges/$challengeId');
   }
 
   @override

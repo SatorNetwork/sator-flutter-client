@@ -4,6 +4,7 @@ import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/quiz_page.dart';
+import 'package:share/share.dart';
 
 class ChallengeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -40,6 +41,11 @@ class ChallengeController extends GetxController {
         .catchError((value) {
           isRequested.value = false;
         });
+  }
+
+  void shareChallenge() async {
+    String link = await _satorioRepository.challengeLink(challengeRx.value!.id);
+    Share.share(link);
   }
 
   void _reloadChallenge(String challengeId) {

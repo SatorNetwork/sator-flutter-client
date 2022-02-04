@@ -6,6 +6,7 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ChallengePage extends GetView<ChallengeController> {
@@ -217,6 +218,18 @@ class ChallengePage extends GetView<ChallengeController> {
                         // controller.playChallenge();
                       },
                     ),
+                  ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  BorderedButton(
+                    text: 'txt_invite_friends'.tr,
+                    textColor: SatorioColor.darkAccent,
+                    borderColor: SatorioColor.darkAccent,
+                    borderWidth: 1,
+                    onPressed: () {
+                      controller.shareChallenge();
+                    },
                   ),
                 ],
               ),

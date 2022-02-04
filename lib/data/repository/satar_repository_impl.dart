@@ -414,6 +414,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<String> challengeLink(String challengeId) {
+    return _apiDataSource.challengeLink(challengeId);
+  }
+
+  @override
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)

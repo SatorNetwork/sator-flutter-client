@@ -142,6 +142,8 @@ abstract class SatorioRepository {
 
   Future<bool> clapShow(String showId);
 
+  Future<String> challengeLink(String challengeId);
+
   Future<Challenge> challenge(String challengeId);
 
   Future<EpisodeActivation> isEpisodeActivated(String episodeId);
