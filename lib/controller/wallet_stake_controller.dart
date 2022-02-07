@@ -87,12 +87,13 @@ class WalletStakeController extends GetxController {
             result
                 ? 'txt_stake_success'.tr.format(
                     [
-                      amount.toStringAsFixed(2),
+                      amount.toString(),
                       walletDetailRx.value.balance[0].currency
                     ],
                   )
                 : 'txt_something_wrong'.tr,
             result ? 'txt_cool'.tr : 'txt_ok'.tr,
+            onButtonPressed: () => result ? _updateWalletStake() : () {},
           ),
         );
       },
