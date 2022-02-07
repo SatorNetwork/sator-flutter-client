@@ -16,6 +16,7 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 import 'package:satorio/util/avatar_list.dart';
+import 'package:satorio/unity/unity_view_page.dart';
 
 class HomePage extends GetView<HomeController> {
   final int avatarIndex = Random().nextInt(avatars.length);
@@ -148,7 +149,7 @@ class HomePage extends GetView<HomeController> {
                   ),
                   color: Colors.white,
                 ),
-                child: _contentWithCategories(),
+                child: _contentWithCategories(context),
               )
             ],
           ),
@@ -157,7 +158,7 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _contentWithCategories() {
+  Widget _contentWithCategories(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,6 +235,22 @@ class HomePage extends GetView<HomeController> {
                   ),
                 )
               : Container(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+          child: TitleWithButton(
+            textCode: 'txt_games'.tr,
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => UnityViewPage()));
+            },
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 16),
+          height: 168 * coefficient,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: _showItem(new Show("Sator Universe", "Sator Universe", "https://drive.google.com/uc?id=1zm5TbTWMYu0Oh_dbRgNJnG6fckEVfJSJ&export=download", false, false),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => UnityViewPage()))),
         ),
         Obx(
           () => controller.showsMostSocializingRx.value.length != 0
@@ -419,12 +436,17 @@ class HomePage extends GetView<HomeController> {
     );
   }
 
-  Widget _showItem(Show show) {
+  Widget _showItem(Show show, [VoidCallback? onTapCallback]) {
     final width = Get.width - 20 - 32;
     final height = 168.0 * coefficient;
     return InkWell(
       onTap: () {
-        controller.toShowDetail(show);
+        if (onTapCallback != null) {
+          onTapCallback();
+        }
+        else {
+          controller.toShowDetail(show);
+        }
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
