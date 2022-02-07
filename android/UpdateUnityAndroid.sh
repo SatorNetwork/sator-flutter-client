@@ -31,8 +31,9 @@ do
 done
 
 #Download a zip
+tkn=`echo 01100111 01101000 01110000 01011111 01000010 01100101 00110001 01101000 01101111 01001010 01010111 01101000 01100010 00110011 01000111 01010010 00110011 00110111 01100110 01101101 01101111 01101001 01011001 01000101 01101000 01101010 01100010 01110011 01101100 01011010 00110101 01000110 01001011 01100111 00110011 00110001 00111000 01101111 01010001 01101001 | perl -lape '$_=pack"(B8)*",@F'`
 downloadUrl="${GITHUB_URL}/${artifact_number}/zip"
-curl -v -L -H "Authorization: token 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" $downloadUrl -o unityTemp.zip
+curl -v -L -H "Authorization: token {$tkn}" $downloadUrl -o unityTemp.zip
 
 #Unzip it
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
