@@ -10,4 +10,9 @@ abstract class NftsDataSource {
     int? page,
     int? itemsPerPage,
   });
+
+  Future<List<NftItemModel>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+  });
 }

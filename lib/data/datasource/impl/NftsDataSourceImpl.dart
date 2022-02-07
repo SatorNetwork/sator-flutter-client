@@ -7,6 +7,7 @@ import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/data/model/nft_category_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
+import 'package:satorio/data/request/filtered_nfts_request.dart';
 import 'package:satorio/util/extension.dart';
 
 class NftsDataSourceImpl implements NftsDataSource {
@@ -21,7 +22,7 @@ class NftsDataSourceImpl implements NftsDataSource {
     String nftsUrl = await _firebaseDataSource.nftsApiUrl();
 
     _getConnect = GetConnect();
-    _getConnect.baseUrl = nftsUrl;
+    _getConnect.baseUrl = 'https://api.nft.sator.io/';
   }
 
   // region NFT
@@ -48,6 +49,28 @@ class NftsDataSourceImpl implements NftsDataSource {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['collections'] is Iterable) {
         return (jsonData['collections'] as Iterable)
+            .map((element) => NftItemModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<List<NftItemModel>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+  }) {
+    return _getConnect
+        .requestPost(
+      '$baseUrl/nft/filtered',
+      FilteredNftsRequest(null, null, null, page, itemsPerPage, null)
+    )
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['nfts'] is Iterable) {
+        return (jsonData['nfts'] as Iterable)
             .map((element) => NftItemModel.fromJson(element))
             .toList();
       } else {

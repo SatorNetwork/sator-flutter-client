@@ -749,4 +749,15 @@ class SatorioRepositoryImpl implements SatorioRepository {
   ValueListenable transactionsListenable() {
     return _localDataSource.transactionsListenable();
   }
+
+  //TODO:  move to region
+  @override
+  Future<List<NftItem>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+  }) {
+    return _nftsDataSource
+        .nftsFiltered(page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
 }
