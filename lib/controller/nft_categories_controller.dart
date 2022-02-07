@@ -22,7 +22,7 @@ import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class NftCategoriesController extends GetxController
     with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
-  static const int _fixedTabLength = 1;
+  static const int _fixedTabLength = 2;
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
@@ -33,6 +33,7 @@ class NftCategoriesController extends GetxController
 
   late final Rx<NftHome?> nftHomeRx;
   final Rx<List<NftCategory>> categoriesRx = Rx([]);
+  final Rx<List<NftItem>> allNftsRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
 
   final Rx<Map<String, List<NftItem>>> itemsRx = Rx({});
@@ -41,10 +42,16 @@ class NftCategoriesController extends GetxController
   final Map<String, bool> _isLoadingRx = {};
   final Map<String, bool> _isAllLoadedRx = {};
 
+  final RxInt _nftsPageRx = _initialPage.obs;
+  final RxBool _isLoadRx = false.obs;
+  final RxBool _isLoadedRx = false.obs;
+
   NftCategoriesController() {
     tabController = TabController(length: _fixedTabLength, vsync: this);
 
     _loadShowsWithNfts();
+
+    loadNfts();
 
     _loadNftCategories();
     if (Get.isRegistered<MainController>()) {
@@ -75,7 +82,7 @@ class NftCategoriesController extends GetxController
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(ShowCategory.withNfts, ShowsType.NftsAllShows),
+      arguments: ShowsCategoryArgument(ShowCategoryType.withNfts, null, ShowsType.NftsAllShows),
     );
   }
 
@@ -102,6 +109,39 @@ class NftCategoriesController extends GetxController
     if (categoryIndex >= 0) {
       tabController.animateTo(categoryIndex + _fixedTabLength);
     }
+  }
+
+  void loadNfts() {
+    if (_isLoadedRx.value) return;
+
+    if (_isLoadRx.value) return;
+
+    Future.value(true)
+        .then((value) {
+      _isLoadRx.value = true;
+      return value;
+    })
+        .then(
+          (value) => _satorioRepository.allNfts(
+        page: _nftsPageRx.value,
+        itemsPerPage: _itemsPerPage,
+      ),
+    )
+        .then(
+          (List<NftItem> nftItems) {
+        allNftsRx.update((value) {
+          if (value != null) value.addAll(nftItems);
+        });
+        _isLoadedRx.value = nftItems.isEmpty;
+        _isLoadRx.value = false;
+        _nftsPageRx.value = _nftsPageRx.value + 1;
+      },
+    )
+        .catchError(
+          (value) {
+            _isLoadRx.value = false;
+      },
+    );
   }
 
   void _loadNftCategories() {
