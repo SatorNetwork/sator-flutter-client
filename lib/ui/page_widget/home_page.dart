@@ -49,8 +49,7 @@ class HomePage extends GetView<HomeController> {
                             Expanded(
                               child: InkWell(
                                 onTap: () {
-                                  //TODO: change to toProfile()
-                                  controller.toTestRemove();
+                                  controller.toProfile();
                                 },
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
