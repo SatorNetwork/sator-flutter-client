@@ -2,13 +2,8 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
-import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
-import 'package:satorio/data/datasource/exception/api_error_exception.dart';
-import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
-import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
-import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
@@ -59,12 +54,11 @@ import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
 import 'package:satorio/data/response/attempts_left_response.dart';
 import 'package:satorio/data/response/auth_response.dart';
-import 'package:satorio/data/response/error_response.dart';
-import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
+import 'package:satorio/util/extension.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
@@ -98,61 +92,12 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   // region Internal
-
-  Future<Response> _requestGet(
-    String path, {
-    Map<String, dynamic>? query,
-  }) async {
-    return await _getConnect.get(path, query: query).then(
-          (Response response) => _processResponse(response),
-        );
-  }
-
-  Future<Response> _requestPost(
-    String path,
-    ToJsonInterface request, {
-    Map<String, dynamic>? query,
-  }) async {
-    return await _getConnect.post(path, request.toJson(), query: query).then(
-          (Response response) => _processResponse(response),
-        );
-  }
-
-  Future<Response> _requestPut(
-    String path,
-    ToJsonInterface request, {
-    Map<String, dynamic>? query,
-  }) async {
-    return await _getConnect.put(path, request.toJson(), query: query).then(
-          (Response response) => _processResponse(response),
-        );
-  }
-
   Future<Response> _requestRefreshToken() async {
     String? refreshToken = await _authDataSource.getAuthRefreshToken();
     return _getConnect.request('auth/refresh-token', 'GET',
         headers: {'Authorization': 'Bearer $refreshToken'}).then(
-      (Response response) => _processResponse(response),
+      (Response response) => _getConnect.processResponse(response),
     );
-  }
-
-  Future<Response> _requestPatch(
-    String path,
-    ToJsonInterface request, {
-    Map<String, dynamic>? query,
-  }) async {
-    return await _getConnect.patch(path, request.toJson(), query: query).then(
-          (Response response) => _processResponse(response),
-        );
-  }
-
-  Future<Response> _requestDelete(
-    String path, {
-    Map<String, dynamic>? query,
-  }) async {
-    return await _getConnect.delete(path, query: query).then(
-          (Response response) => _processResponse(response),
-        );
   }
 
   Future<void> _sendViaSocket(GetSocket? socket, ToJsonInterface data) async {
@@ -163,65 +108,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     }
     return;
   }
-
-  Response _processResponse(Response response) {
-    Response utf8Response = response;
-    // Response utf8Response = Response(
-    //   request: response.request,
-    //   statusCode: response.statusCode,
-    //   bodyBytes: response.bodyBytes,
-    //   bodyString: utf8.decode(response.bodyString!.runes.toList()),
-    //   statusText: response.statusText,
-    //   headers: response.headers,
-    //   body: response.body,
-    // );
-
-    _logResponse(utf8Response);
-
-    if (utf8Response.hasError) {
-      switch (utf8Response.statusCode) {
-        // 422
-        case HttpStatus.unprocessableEntity:
-          ErrorValidationResponse errorValidationResponse =
-              ErrorValidationResponse.fromJson(
-                  json.decode(utf8Response.bodyString!));
-          throw ApiValidationException(errorValidationResponse.validation);
-        // 401
-        case HttpStatus.unauthorized:
-          ErrorResponse errorResponse =
-              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
-          throw ApiUnauthorizedException(errorResponse.error);
-        // 407
-        case HttpStatus.proxyAuthenticationRequired:
-          throw ApiKycException();
-        default:
-          ErrorResponse errorResponse =
-              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
-          throw ApiErrorException(errorResponse.error);
-      }
-    }
-
-    return utf8Response;
-  }
-
-  void _logResponse(Response response) {
-    print('--------');
-
-    // print('Request headers:');
-    // response.request!.headers.forEach((key, value) {
-    //   print('   $key : $value');
-    // });
-    print(
-        '${response.request!.method.toUpperCase()} ${response.request!.url} ${response.statusCode}');
-
-    // print('Response headers:');
-    // response.headers!.forEach((key, value) {
-    //   print('   $key : $value');
-    // });
-    print('${response.bodyString}');
-    print('--------');
-  }
-
   // endregion
 
   // region Local Auth
@@ -257,10 +143,12 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> signIn(String email, String password) {
-    return _requestPost(
+    return _getConnect
+        .requestPost(
       'auth/login',
       SignInRequest(email, password),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       //for future separation on backend
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
@@ -292,7 +180,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> signUp(String email, String password, String username) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/signup',
       SignUpRequest(email, password, username),
     ).then((Response response) {
@@ -305,7 +193,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> requestUpdateEmail(String email) {
-    return _requestPost('auth/request-update-email', UpdateEmailRequest(email))
+    return _getConnect.requestPost('auth/request-update-email', UpdateEmailRequest(email))
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -313,7 +201,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> updateUsername(String username) {
-    return _requestPost('auth/update-username', UpdateUsernameRequest(username))
+    return _getConnect.requestPost('auth/update-username', UpdateUsernameRequest(username))
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -321,7 +209,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> changePassword(String oldPassword, String newPassword) {
-    return _requestPost('auth/change-password',
+    return _getConnect.requestPost('auth/change-password',
             ChangePasswordRequest(oldPassword, newPassword))
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
@@ -330,7 +218,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> apiLogout() {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/logout',
       EmptyRequest(),
     ).then((Response response) {
@@ -340,7 +228,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> verifyAccount(String code) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/verify-account',
       VerifyAccountRequest(code),
     ).then((Response response) {
@@ -350,7 +238,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> verifyUpdateEmail(String email, String code) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/update-email',
       VerifyUpdateEmailRequest(email, code),
     ).then((Response response) {
@@ -360,7 +248,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> isVerified() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'auth/is-verified',
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
@@ -369,7 +257,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> selectAvatar(String avatarPath) {
-    return _requestPut(
+    return _getConnect.requestPut(
       'profile/avatar',
       SelectAvatarRequest(avatarPath),
     ).then((Response response) {
@@ -379,7 +267,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> resendCode() {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/resend-otp',
       EmptyRequest(),
     ).then((Response response) {
@@ -389,7 +277,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> refreshToken() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'auth/refresh-token',
     ).then((Response response) {
       String token =
@@ -401,7 +289,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> validateToken() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'auth',
     ).then((Response response) {
       if (response.isOk) {
@@ -415,7 +303,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> forgotPassword(String email) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/forgot-password',
       ForgotPasswordRequest(email),
     ).then((Response response) {
@@ -425,7 +313,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> validateResetPasswordCode(String email, String code) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/validate-reset-password-code',
       ValidateResetPasswordCodeRequest(email, code),
     ).then((Response response) {
@@ -435,7 +323,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> resetPassword(String email, String code, String newPassword) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'auth/reset-password',
       ResetPasswordRequest(email, code, newPassword),
     ).then((Response response) {
@@ -448,7 +336,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region KYC
 
   Future<String> kycToken() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'auth/kyc/access_token',
     ).then((Response response) {
       return json.decode(response.bodyString!)['data'];
@@ -461,7 +349,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ProfileModel> profile() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'profile',
     ).then((Response response) {
       return ProfileModel.fromJson(json.decode(response.bodyString!)['data']);
@@ -474,7 +362,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<AmountCurrencyModel>> walletBalance() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'balance',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -489,7 +377,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<WalletModel>> wallets() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'wallets',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -504,7 +392,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<WalletDetailModel> walletDetail(String detailPath) {
-    return _requestGet(
+    return _getConnect.requestGet(
       detailPath,
     ).then((Response response) {
       return WalletDetailModel.fromJson(
@@ -519,7 +407,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     if (from != null) query['from'] = from.toIso8601String();
     if (to != null) query['to'] = to.toIso8601String();
 
-    return _requestGet(
+    return _getConnect.requestGet(
       transactionsPath,
       query: query.isEmpty ? null : query,
     ).then((Response response) {
@@ -536,7 +424,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<TransferModel> createTransfer(
       String fromWalletId, String recipientAddress, double amount) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'wallets/$fromWalletId/create-transfer',
       CreateTransferRequest(recipientAddress, amount),
     ).then((Response response) {
@@ -547,7 +435,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> confirmTransfer(String fromWalletId, String txHash) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'wallets/$fromWalletId/confirm-transfer',
       ConfirmTransferRequest(txHash),
     ).then((Response response) {
@@ -557,7 +445,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> stake(String walletId, double amount) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'wallets/$walletId/stake',
       WalletStakeRequest(amount),
     ).then((Response response) {
@@ -567,7 +455,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> unstake(String walletId, double amount) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'wallets/$walletId/unstake',
       WalletStakeRequest(amount),
     ).then((Response response) {
@@ -577,7 +465,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<WalletStakeModel> getStake(String walletId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'wallets/$walletId/stake',
     ).then((Response response) {
       return WalletStakeModel.fromJson(
@@ -600,7 +488,7 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows',
       query: query,
     ).then((Response response) {
@@ -616,9 +504,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<ShowCategoryModel>> showsCategoryList({
-        int? page,
-        int? itemsPerPage,
-      }) {
+    int? page,
+    int? itemsPerPage,
+  }) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
@@ -627,7 +515,7 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/categories',
       query: query,
     ).then((Response response) {
@@ -655,7 +543,7 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/filter/$category',
       query: query,
     ).then((Response response) {
@@ -671,7 +559,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ShowDetailModel> showDetail(String showId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/$showId',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -681,7 +569,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<ShowSeasonModel>> showSeasons(String showId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/$showId/episodes',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -699,7 +587,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ShowEpisodeModel> showEpisode(String showId, String episodeId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/$showId/episodes/$episodeId',
     ).then((Response response) {
       return ShowEpisodeModel.fromJson(
@@ -716,7 +604,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       query['page'] = page.toString();
     }
 
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/$showId/challenges',
       query: query,
     ).then((Response response) {
@@ -740,7 +628,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/$showId/episodes/$episodeId/reviews',
       query: query,
     ).then((Response response) {
@@ -764,7 +652,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/episodes',
       query: query,
     ).then((Response response) {
@@ -787,7 +675,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/reviews',
       query: query,
     ).then((Response response) {
@@ -807,7 +695,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ShowModel> loadShow(String showId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'shows/$showId',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -818,7 +706,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'qrcodes/$qrCodeId',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -829,7 +717,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> clapShow(String showId) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'shows/$showId/claps',
       EmptyRequest(),
     ).then((Response response) {
@@ -839,7 +727,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ChallengeModel> challenge(String challengeId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'challenges/$challengeId',
     ).then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
@@ -848,7 +736,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<EpisodeActivationModel> isEpisodeActivated(String episodeId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'challenges/$episodeId/is-activated',
     ).then((Response response) {
       return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
@@ -860,7 +748,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     String episodeId,
     String paidOption,
   ) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'challenges/unlock/$episodeId',
       PaidUnlockRequest(paidOption),
     ).then((Response response) {
@@ -870,7 +758,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<int> showEpisodeAttemptsLeft(String episodeId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'challenges/$episodeId/attempts-left',
     ).then((Response response) {
       return AttemptsLeftResponse.fromJson(
@@ -881,7 +769,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'challenges/$episodeId/validation-question',
     ).then((Response response) {
       return PayloadQuestionModel.fromJson(
@@ -891,7 +779,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'challenges/$questionId/check-answer/$answerId',
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
@@ -900,7 +788,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> rateEpisode(String showId, String episodeId, int rate) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'shows/$showId/episodes/$episodeId/rate',
       RateRequest(rate),
     ).then((Response response) {
@@ -916,7 +804,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     String title,
     String review,
   ) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'shows/$showId/episodes/$episodeId/reviews',
       WriteReviewRequest(rating, title, review),
     ).then((Response response) {
@@ -926,7 +814,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> sendReviewTip(String reviewId, double amount) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'shows/reviews/$reviewId/tips',
       SendTipRequest(amount),
     ).then((Response response) {
@@ -936,7 +824,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> rateReview(String reviewId, String ratingType) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'shows/reviews/$reviewId/$ratingType',
       EmptyRequest(),
     ).then((Response response) {
@@ -950,7 +838,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<String> quizSocketUrl(String challengeId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'quiz/$challengeId/play',
     ).then((Response response) {
       return SocketUrlResponse.fromJson(
@@ -969,7 +857,7 @@ class ApiDataSourceImpl implements ApiDataSource {
         ? 'rewards/claim'
         : claimRewardsPath;
 
-    return _requestGet(
+    return _getConnect.requestGet(
       path,
     ).then((Response response) {
       return ClaimRewardModel.fromJson(
@@ -983,7 +871,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> sendInvite(String email) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'invitations',
       SendInviteRequest(email),
     ).then((Response response) {
@@ -993,7 +881,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ReferralCodeModel> getReferralCode() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'ref/my',
     ).then((Response response) {
       return ReferralCodeModel.fromJson(
@@ -1003,7 +891,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> confirmReferralCode(String referralCode) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'ref/confirm/$referralCode',
       EmptyRequest(),
     ).then((Response response) {
@@ -1028,7 +916,7 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _requestGet(
+    return _getConnect.requestGet(
       'nft',
       query: query,
     ).then((Response response) {
@@ -1045,7 +933,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<NftHomeModel> nftHome() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'nft/home',
     ).then((Response response) {
       return NftHomeModel.fromJson(json.decode(response.bodyString!)['data']);
@@ -1054,7 +942,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<NftCategoryModel>> nftCategories() {
-    return _requestGet(
+    return _getConnect.requestGet(
       'nft/categories',
     ).then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -1099,7 +987,7 @@ class ApiDataSourceImpl implements ApiDataSource {
         break;
     }
 
-    return _requestGet(
+    return _getConnect.requestGet(
       'nft/filter/$pathParameter/$objectId',
       query: query,
     ).then(
@@ -1118,7 +1006,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<NftItemModel> nftItem(String nftItemId) {
-    return _requestGet(
+    return _getConnect.requestGet(
       'nft/$nftItemId',
     ).then((Response response) {
       return NftItemModel.fromJson(json.decode(response.bodyString!)['data']);
@@ -1127,7 +1015,7 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> buyNftItem(String nftItemId) {
-    return _requestPost(
+    return _getConnect.requestPost(
       'nft/$nftItemId/buy',
       EmptyRequest(),
     ).then((Response response) {

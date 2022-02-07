@@ -12,6 +12,7 @@ import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
+import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -43,13 +44,18 @@ import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
+  final NftsDataSource _nftsDataSource;
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
+  final RxBool _init = false.obs;
 
-  SatorioRepositoryImpl(
-      this._apiDataSource, this._localDataSource, this._firebaseDataSource) {
-    _localDataSource.init();
-    _apiDataSource.init();
+  SatorioRepositoryImpl(this._apiDataSource, this._nftsDataSource,
+      this._localDataSource, this._firebaseDataSource) {
+    _localDataSource
+        .init()
+        .then((value) => _apiDataSource.init())
+        .then((value) => _nftsDataSource.init())
+        .then((value) => _init.value = true);
   }
 
   _handleException(Exception exception) {
@@ -103,6 +109,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
           .launch();
     });
   }
+
+  @override
+  RxBool get isInited => _init;
 
   @override
   Future<void> initRemoteConfig() {
@@ -327,9 +336,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<List<ShowCategory>> showsCategoryList({
-        int? page,
-        int? itemsPerPage,
-      }) {
+    int? page,
+    int? itemsPerPage,
+  }) {
     return _apiDataSource
         .showsCategoryList(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
@@ -664,7 +673,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
     int? page,
     int? itemsPerPage,
   }) {
-    return _apiDataSource
+    return _nftsDataSource
         .allNfts(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }

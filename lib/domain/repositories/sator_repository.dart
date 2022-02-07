@@ -23,6 +23,8 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_stake.dart';
 
 abstract class SatorioRepository {
+  final RxBool isInited = false.obs;
+
   Future<void> initRemoteConfig();
 
   Future<String> firebaseChatChild();
