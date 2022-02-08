@@ -14,5 +14,8 @@ abstract class NftsDataSource {
   Future<List<NftItemModel>> nftsFiltered({
     int? page,
     int? itemsPerPage,
+    List<String>? showIds,
   });
+
+  Future<NftItemModel> nft(String mintAddress);
 }

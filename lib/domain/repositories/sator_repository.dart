@@ -239,5 +239,8 @@ abstract class SatorioRepository {
   Future<List<NftItem>> nftsFiltered({
     int? page,
     int? itemsPerPage,
+    List<String>? showIds,
   });
+
+  Future<NftItem> nft(String mintAddress);
 }

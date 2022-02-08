@@ -62,7 +62,9 @@ class NftItemPage extends GetView<NftItemController> {
                             opacity: 0.55,
                             child: Obx(
                               () => Image.network(
-                                controller.nftItemRx.value.imageLink,
+                                controller.nftItemRx.value.nftPreview.isEmpty
+                                    ? controller.nftItemRx.value.nftLink
+                                    : controller.nftItemRx.value.nftPreview,
                                 fit: BoxFit.cover,
                                 color: SatorioColor.acadia,
                                 colorBlendMode: BlendMode.plus,
@@ -88,7 +90,9 @@ class NftItemPage extends GetView<NftItemController> {
                     borderRadius: BorderRadius.all(Radius.circular(8)),
                     child: Obx(
                       () => Image.network(
-                        controller.nftItemRx.value.imageLink,
+                        controller.nftItemRx.value.nftPreview.isEmpty
+                            ? controller.nftItemRx.value.nftLink
+                            : controller.nftItemRx.value.nftPreview,
                         fit: BoxFit.contain,
                         color: SatorioColor.acadia,
                         colorBlendMode: BlendMode.plus,
@@ -96,34 +100,35 @@ class NftItemPage extends GetView<NftItemController> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Obx(
-                    () => controller.nftItemRx.value.isVideoNft()
-                        ? Container(
-                            margin: EdgeInsets.only(
-                              right: 20 + 10 * coefficient,
-                              bottom: 10 * coefficient,
-                            ),
-                            child: FloatingActionButton(
-                              onPressed: () {
-                                controller.toNetworkVideo();
-                              },
-                              backgroundColor: SatorioColor.darkAccent,
-                              splashColor: SatorioColor.interactive,
-                              child: Icon(
-                                Icons.play_arrow_rounded,
-                                size: 32,
-                                color: Colors.white,
-                              ),
-                            ),
-                          )
-                        : SizedBox(
-                            height: 0,
-                            width: 0,
-                          ),
-                  ),
-                )
+                //TODO: uncomment when functionality will be added
+                // Align(
+                //   alignment: Alignment.bottomRight,
+                //   child: Obx(
+                //     () => controller.nftItemRx.value.isVideoNft()
+                //         ? Container(
+                //             margin: EdgeInsets.only(
+                //               right: 20 + 10 * coefficient,
+                //               bottom: 10 * coefficient,
+                //             ),
+                //             child: FloatingActionButton(
+                //               onPressed: () {
+                //                 controller.toNetworkVideo();
+                //               },
+                //               backgroundColor: SatorioColor.darkAccent,
+                //               splashColor: SatorioColor.interactive,
+                //               child: Icon(
+                //                 Icons.play_arrow_rounded,
+                //                 size: 32,
+                //                 color: Colors.white,
+                //               ),
+                //             ),
+                //           )
+                //         : SizedBox(
+                //             height: 0,
+                //             width: 0,
+                //           ),
+                //   ),
+                // )
               ],
             ),
           ),
@@ -143,7 +148,7 @@ class NftItemPage extends GetView<NftItemController> {
                     children: [
                       Obx(
                         () => Text(
-                          controller.nftItemRx.value.name,
+                          controller.nftItemRx.value.nftMetadata.name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: textTheme.bodyText2!.copyWith(
@@ -260,7 +265,7 @@ class NftItemPage extends GetView<NftItemController> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Obx(
               () => Text(
-                controller.nftItemRx.value.description,
+                controller.nftItemRx.value.nftMetadata.description,
                 maxLines: 5,
                 overflow: TextOverflow.ellipsis,
                 style: textTheme.bodyText2!.copyWith(
@@ -291,32 +296,32 @@ class NftItemPage extends GetView<NftItemController> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'txt_current_price'.tr,
-                            style: textTheme.bodyText2!.copyWith(
-                              color: SatorioColor.charcoal,
-                              fontSize: 15 * coefficient,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
-                              style: textTheme.bodyText2!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 15 * coefficient,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'txt_current_price'.tr,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.charcoal,
+                        fontSize: 15 * coefficient,
+                        fontWeight: FontWeight.w600,
                       ),
+                    ),
+                    Obx(
+                      () => Text(
+                        '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(
-                        width: 36 * coefficient,
-                      ),
+                  width: 36 * coefficient,
+                ),
                 Expanded(
                   child: Obx(
                     () => controller.isOwner.value

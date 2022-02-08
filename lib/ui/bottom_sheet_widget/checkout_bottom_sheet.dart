@@ -83,7 +83,9 @@ class CheckoutBottomSheet extends StatelessWidget {
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 child: Obx(
                   () => Image.network(
-                    controller.nftItemRx.value.imageLink,
+                    controller.nftItemRx.value.nftPreview.isEmpty
+                        ? controller.nftItemRx.value.nftLink
+                        : controller.nftItemRx.value.nftPreview,
                     fit: BoxFit.cover,
                     width: 80 * coefficient,
                     height: 80 * coefficient,
@@ -96,7 +98,7 @@ class CheckoutBottomSheet extends StatelessWidget {
               Expanded(
                 child: Obx(
                   () => Text(
-                    controller.nftItemRx.value.name,
+                    controller.nftItemRx.value.nftMetadata.name,
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
                     style: textTheme.bodyText2!.copyWith(

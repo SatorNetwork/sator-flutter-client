@@ -755,9 +755,17 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<List<NftItem>> nftsFiltered({
     int? page,
     int? itemsPerPage,
+    List<String>? showIds,
   }) {
     return _nftsDataSource
-        .nftsFiltered(page: page, itemsPerPage: itemsPerPage)
+        .nftsFiltered(page: page, itemsPerPage: itemsPerPage, showIds: showIds)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<NftItem> nft(String mintAddress) {
+    return _nftsDataSource
+        .nft(mintAddress)
         .catchError((value) => _handleException(value));
   }
 }

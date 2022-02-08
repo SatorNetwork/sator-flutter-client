@@ -30,7 +30,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
     nftItemRx = Rx(argument.nftItem);
     _checkOwner();
-    _refreshNftItem(argument.nftItem.id);
+    _refreshNftItem(argument.nftItem.mintAddress);
   }
 
   void back() {
@@ -56,15 +56,15 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
     );
   }
 
-  void toNetworkVideo() {
-    if (nftItemRx.value.isVideoNft()) {
-      Get.to(
-        () => VideoNetworkPage(),
-        binding: VideoNetworkBinding(),
-        arguments: VideoNetworkArgument(nftItemRx.value.tokenUri),
-      );
-    }
-  }
+  // void toNetworkVideo() {
+  //   if (nftItemRx.value.isVideoNft()) {
+  //     Get.to(
+  //       () => VideoNetworkPage(),
+  //       binding: VideoNetworkBinding(),
+  //       arguments: VideoNetworkArgument(nftItemRx.value.tokenUri),
+  //     );
+  //   }
+  // }
 
   void buy() {
     Profile? profile = _getProfile();
@@ -76,13 +76,13 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
           },
         )
         .then(
-          (value) => _satorioRepository.buyNftItem(nftItemRx.value.id),
+          (value) => _satorioRepository.buyNftItem(nftItemRx.value.mintAddress),
         )
         .then(
           (isSuccess) {
             if (isSuccess) {
               Get.bottomSheet(
-                SuccessNftBoughtBottomSheet(nftItemRx.value.name, profile!.id),
+                SuccessNftBoughtBottomSheet(nftItemRx.value.nftMetadata.name, profile!.id),
               );
             }
             isBuyRequested.value = false;
@@ -95,8 +95,8 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
         );
   }
 
-  void _refreshNftItem(String nftItemId) {
-    _satorioRepository.nftItem(nftItemId).then((NftItem nftItem) {
+  void _refreshNftItem(String mintAddress) {
+    _satorioRepository.nft(mintAddress).then((NftItem nftItem) {
       nftItemRx.value = nftItem;
       _checkOwner();
     });
@@ -105,7 +105,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
   void _checkOwner() {
     Profile? profile = _getProfile();
     if (profile != null) {
-      isOwner.value = nftItemRx.value.ownerId == profile.id;
+      isOwner.value = nftItemRx.value.owner == profile.id;
     }
   }
 

@@ -1138,7 +1138,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.network(
-                nftItem.imageLink,
+                nftItem.nftPreview,
                 height: height,
                 width: width,
                 fit: BoxFit.cover,
@@ -1153,7 +1153,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     children: [
                       Expanded(
                         child: Text(
-                          nftItem.name,
+                          nftItem.nftMetadata.name,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: textTheme.bodyText2!.copyWith(

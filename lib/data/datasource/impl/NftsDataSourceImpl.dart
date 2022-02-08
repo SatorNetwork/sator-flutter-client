@@ -8,6 +8,7 @@ import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/data/model/nft_category_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/request/filtered_nfts_request.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/util/extension.dart';
 
 class NftsDataSourceImpl implements NftsDataSource {
@@ -22,7 +23,7 @@ class NftsDataSourceImpl implements NftsDataSource {
     String nftsUrl = await _firebaseDataSource.nftsApiUrl();
 
     _getConnect = GetConnect();
-    _getConnect.baseUrl = 'https://api.nft.sator.io/';
+    _getConnect.baseUrl = nftsUrl;
   }
 
   // region NFT
@@ -61,12 +62,13 @@ class NftsDataSourceImpl implements NftsDataSource {
   Future<List<NftItemModel>> nftsFiltered({
     int? page,
     int? itemsPerPage,
+    List<String>? showIds,
   }) {
     return _getConnect
         .requestPost(
-      '$baseUrl/nft/filtered',
-      FilteredNftsRequest(null, null, null, page, itemsPerPage, null)
-    )
+            '$baseUrl/nft/filtered',
+            FilteredNftsRequest(NftOrderByType.timestamp, NftOrderType.desc,
+                NftOrderOnSaleType.onSale, page, itemsPerPage, null, showIds))
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['nfts'] is Iterable) {
@@ -94,6 +96,17 @@ class NftsDataSourceImpl implements NftsDataSource {
       } else {
         return [];
       }
+    });
+  }
+
+  @override
+  Future<NftItemModel> nft(String mintAddress) {
+    return _getConnect
+        .requestGet(
+      '$baseUrl/nft/$mintAddress',
+    )
+        .then((Response response) {
+      return NftItemModel.fromJson(json.decode(response.bodyString!));
     });
   }
 

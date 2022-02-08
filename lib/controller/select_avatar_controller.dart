@@ -44,7 +44,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
     if (avatarsListType.value == AvatarsListType.local) {
       avatarRx.value = avatars[index];
     } else {
-      avatarRx.value = nftItemsRx.value[index].imageLink;
+      avatarRx.value = nftItemsRx.value[index].nftPreview;
     }
   }
 
