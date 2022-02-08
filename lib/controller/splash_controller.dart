@@ -52,6 +52,8 @@ class SplashController extends GetxController {
       deepLink = data.link;
     }
 
+    print('SplashController deepLink: $deepLink');
+
     _handleDeepLink(data);
 
     FirebaseDynamicLinks.instance.onLink(
@@ -145,7 +147,11 @@ class SplashController extends GetxController {
         Get.offAll(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
-          arguments: EmailVerificationArgument('txt_your_email'.tr, false),
+          arguments: EmailVerificationArgument(
+            'txt_your_email'.tr,
+            false,
+            deepLink,
+          ),
         );
       }
     }).catchError(

@@ -634,9 +634,9 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<ShowCategoryModel>> showsCategoryList({
-        int? page,
-        int? itemsPerPage,
-      }) {
+    int? page,
+    int? itemsPerPage,
+  }) {
     Map<String, String>? query;
     if (page != null || itemsPerPage != null) {
       query = {};
