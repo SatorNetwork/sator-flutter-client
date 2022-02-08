@@ -7,6 +7,8 @@ abstract class FirebaseDataSource {
 
   Future<String> nftsApiUrl();
 
+  Future<String> nftsMarketplaceUrl();
+
   Future<String> firebaseUrl();
 
   Future<String> claimRewardText();

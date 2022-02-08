@@ -149,6 +149,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<String> nftsMarketplaceUrl() {
+    return _firebaseDataSource
+        .nftsMarketplaceUrl()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> clearDBandAccessToken() {
     return _localDataSource
         .clear()

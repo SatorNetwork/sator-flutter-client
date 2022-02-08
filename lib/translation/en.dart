@@ -275,4 +275,5 @@ const Map<String, String> en = {
   'txt_update_app_text': 'Your application version is outdated, please update',
   'txt_update': 'Update',
   'txt_buy_nfts': 'Buy NFTs',
+  'txt_to_marketplace': 'Go to marketplace',
 };

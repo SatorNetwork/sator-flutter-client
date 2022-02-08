@@ -35,6 +35,8 @@ abstract class SatorioRepository {
 
   Future<int> appVersion();
 
+  Future<String> nftsMarketplaceUrl();
+
   Future<void> clearDBandAccessToken();
 
   Future<void> clearDBandAllTokens();

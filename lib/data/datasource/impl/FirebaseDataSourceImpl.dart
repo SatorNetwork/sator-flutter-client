@@ -47,7 +47,12 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   Future<String> nftsApiUrl() async {
     return _remoteConfig
-        .getString(isProduction ? 'nfts_api_dev_url' : 'nfts_api_dev_url');
+        .getString(isProduction ? 'nfts_api_prod_url' : 'nfts_api_dev_url');
+  }
+
+  Future<String> nftsMarketplaceUrl() async {
+    return _remoteConfig
+        .getString(isProduction ? 'nft_prod_marketplace' : 'nft_dev_marketplace');
   }
 
   Future<String> firebaseUrl() async {
