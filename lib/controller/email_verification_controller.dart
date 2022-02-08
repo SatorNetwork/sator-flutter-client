@@ -23,6 +23,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
   late final String email;
   late final bool isUpdate;
+  late final Uri? deepLink;
 
   @override
   void onInit() {
@@ -46,15 +47,21 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
     email = argument.email;
     isUpdate = argument.isUpdate;
+    deepLink = argument.deepLink;
   }
 
   void verifyAccount() {
     _satorioRepository.verifyAccount(codeController.text).then(
       (isSuccess) {
         if (isSuccess) {
-          Get.offAll(() => SelectAvatarPage(),
-              binding: SelectAvatarBinding(),
-              arguments: SelectAvatarArgument(SelectAvatarType.registration));
+          Get.offAll(
+            () => SelectAvatarPage(),
+            binding: SelectAvatarBinding(),
+            arguments: SelectAvatarArgument(
+              SelectAvatarType.registration,
+              deepLink,
+            ),
+          );
         } else {
           codeController.clear();
         }
@@ -67,11 +74,10 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
   void verifyUpdateEmail() {
     _satorioRepository.verifyUpdateEmail(email, codeController.text).then(
-          (isSuccess) {
+      (isSuccess) {
         if (isSuccess) {
           _satorioRepository.updateProfile();
-          Get.to(() => SettingsPage(),
-              binding: SettingsBinding());
+          Get.to(() => SettingsPage(), binding: SettingsBinding());
           codeController.clear();
         } else {
           codeController.clear();
@@ -111,6 +117,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 class EmailVerificationArgument {
   final String email;
   final bool isUpdate;
+  final Uri? deepLink;
 
-  const EmailVerificationArgument(this.email, this.isUpdate);
+  const EmailVerificationArgument(this.email, this.isUpdate, this.deepLink);
 }

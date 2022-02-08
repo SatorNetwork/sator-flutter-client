@@ -164,8 +164,6 @@ abstract class ApiDataSource {
 
   // region Challenges
 
-  Future<String> challengeLink(String challengeId);
-
   Future<ChallengeModel> challenge(String challengeId);
 
   Future<EpisodeActivationModel> isEpisodeActivated(String episodeId);

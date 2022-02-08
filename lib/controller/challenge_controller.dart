@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/quiz_binding.dart';
 import 'package:satorio/controller/quiz_controller.dart';
@@ -43,9 +44,27 @@ class ChallengeController extends GetxController {
         });
   }
 
-  void shareChallenge() async {
-    String link = await _satorioRepository.challengeLink(challengeRx.value!.id);
-    Share.share(link);
+  void shareChallenge() {
+    if (challengeRx.value != null) {
+      final DynamicLinkParameters parameters = DynamicLinkParameters(
+        uriPrefix: 'https://satorio.page.link',
+        link: Uri.parse(
+            'https://satorio.page.link/quiz-invite?id=${challengeRx.value!.id}'),
+        androidParameters: AndroidParameters(
+          packageName: 'com.satorio.app',
+          minimumVersion: 0,
+        ),
+        // iosParameters: IosParameters(
+        //   bundleId: 'com.google.FirebaseCppDynamicLinksTestApp.dev',
+        //   minimumVersion: '0',
+        // ),
+      );
+
+      parameters.buildShortLink().then((value) {
+        print(value.shortUrl);
+        Share.share(value.shortUrl.toString());
+      });
+    }
   }
 
   void _reloadChallenge(String challengeId) {

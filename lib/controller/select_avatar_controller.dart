@@ -8,7 +8,6 @@ import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
-
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
 
@@ -28,10 +27,12 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
   late final ValueListenable<Box<Profile>> profileListenable;
 
   late final SelectAvatarType type;
+  late final Uri? deepLink;
 
   SelectAvatarController() {
     SelectAvatarArgument argument = Get.arguments as SelectAvatarArgument;
     type = argument.selectAvatarType;
+    deepLink = argument.deepLink;
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
   }
@@ -57,6 +58,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
             Get.offAll(
               () => MainPage(),
               binding: MainBinding(),
+              arguments: MainArgument(deepLink),
             );
             break;
           case SelectAvatarType.settings:
@@ -122,8 +124,9 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
 
 class SelectAvatarArgument {
   final SelectAvatarType selectAvatarType;
+  final Uri? deepLink;
 
-  const SelectAvatarArgument(this.selectAvatarType);
+  const SelectAvatarArgument(this.selectAvatarType, this.deepLink);
 }
 
 enum AvatarsListType {

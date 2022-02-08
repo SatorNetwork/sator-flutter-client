@@ -8,8 +8,7 @@ import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'email_verification_controller.dart';
 import 'mixin/validation_mixin.dart';
 
-class SettingsChangeInfoController extends GetxController
-    with ValidationMixin {
+class SettingsChangeInfoController extends GetxController with ValidationMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final TextEditingController emailController = TextEditingController();
@@ -78,7 +77,7 @@ class SettingsChangeInfoController extends GetxController
           Get.to(
             () => EmailVerificationPage(),
             binding: EmailVerificationBinding(),
-            arguments: EmailVerificationArgument(emailRx.value, true),
+            arguments: EmailVerificationArgument(emailRx.value, true, null),
           );
           emailController.clear();
         }
@@ -106,7 +105,7 @@ class SettingsChangeInfoController extends GetxController
               );
               Future.delayed(
                 Duration(seconds: 2),
-                    () {
+                () {
                   Get.back();
                 },
               );

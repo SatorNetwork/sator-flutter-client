@@ -838,11 +838,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<String> challengeLink(String challengeId) {
-    return Future.value('${_getConnect.baseUrl}challenges/$challengeId');
-  }
-
-  @override
   Future<ChallengeModel> challenge(String challengeId) {
     return _requestGet(
       'challenges/$challengeId',
