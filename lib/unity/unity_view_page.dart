@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 
 class UnityViewPage extends StatefulWidget {
@@ -15,11 +16,20 @@ class _UnityViewPageState extends State<UnityViewPage> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   }
 
   @override
   void dispose() {
     _unityWidgetController.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
     super.dispose();
   }
 
