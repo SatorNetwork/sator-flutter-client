@@ -14,7 +14,6 @@ import 'package:satorio/util/extension.dart';
 class NftsDataSourceImpl implements NftsDataSource {
   late final GetConnect _getConnect;
   final FirebaseDataSource _firebaseDataSource;
-  static const String baseUrl = 'v1/service';
 
   NftsDataSourceImpl(this._firebaseDataSource);
 
@@ -43,7 +42,7 @@ class NftsDataSourceImpl implements NftsDataSource {
 
     return _getConnect
         .requestGet(
-      '$baseUrl/nft/collections',
+      'collections',
       query: query,
     )
         .then((Response response) {
@@ -66,7 +65,7 @@ class NftsDataSourceImpl implements NftsDataSource {
   }) {
     return _getConnect
         .requestPost(
-            '$baseUrl/nft/filtered',
+            'filtered',
             FilteredNftsRequest(NftOrderByType.timestamp, NftOrderType.desc,
                 NftOrderOnSaleType.onSale, page, itemsPerPage, null, showIds))
         .then((Response response) {
@@ -85,7 +84,7 @@ class NftsDataSourceImpl implements NftsDataSource {
   Future<List<NftCategoryModel>> nftCategories() {
     return _getConnect
         .requestGet(
-      '$baseUrl/nft/categories',
+      'categories',
     )
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
@@ -103,7 +102,7 @@ class NftsDataSourceImpl implements NftsDataSource {
   Future<NftItemModel> nft(String mintAddress) {
     return _getConnect
         .requestGet(
-      '$baseUrl/nft/$mintAddress',
+      '$mintAddress',
     )
         .then((Response response) {
       return NftItemModel.fromJson(json.decode(response.bodyString!));
