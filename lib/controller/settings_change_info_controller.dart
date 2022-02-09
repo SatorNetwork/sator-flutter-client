@@ -75,6 +75,7 @@ class SettingsChangeInfoController extends GetxController
     }).then((value) {
       _satorioRepository.requestUpdateEmail(emailRx.value).then((isSuccess) {
         if (isSuccess) {
+          Get.back();
           Get.to(
             () => EmailVerificationPage(),
             binding: EmailVerificationBinding(),
