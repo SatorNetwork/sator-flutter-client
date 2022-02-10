@@ -1,11 +1,22 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/quiz_binding.dart';
+import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/controller/quiz_controller.dart';
+import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
+import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/nats_config.dart';
+import 'package:satorio/domain/entities/paid_option.dart';
+import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/quiz_page.dart';
+import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:share/share.dart';
 
 class ChallengeController extends GetxController {
@@ -35,7 +46,7 @@ class ChallengeController extends GetxController {
           (value) => _satorioRepository.quizNats(challengeRx.value!.id),
         )
         .then(
-          (natsConfig ) {
+          (natsConfig) {
             isRequested.value = false;
             _toQuiz(natsConfig);
           },
@@ -68,6 +79,34 @@ class ChallengeController extends GetxController {
     }
   }
 
+  void toEpisodeRealmDialog() {
+    if (challengeRx.value != null) {
+      Get.bottomSheet(
+        EpisodeRealmBottomSheet(
+          onQuizPressed: () {
+            if (challengeRx.value!.attemptsLeft > 0) {
+              _loadQuizQuestion();
+            } else {
+              Get.dialog(
+                DefaultDialog(
+                  'txt_oops'.tr,
+                  'txt_attempts_left_alert'.tr,
+                  'txt_ok'.tr,
+                ),
+              );
+            }
+          },
+          onPaidUnlockPressed: () {
+            _toRealmPaidActivationBottomSheet();
+          },
+        ),
+        isScrollControlled: true,
+        enableDrag: false,
+        barrierColor: Colors.transparent,
+      );
+    }
+  }
+
   void _reloadChallenge(String challengeId) {
     _satorioRepository.challenge(challengeId).then((Challenge challenge) {
       challengeRx.value = challenge;
@@ -86,6 +125,98 @@ class ChallengeController extends GetxController {
     if (challengeRx.value != null) {
       _reloadChallenge(challengeRx.value!.id);
     }
+  }
+
+  void _loadQuizQuestion() {
+    if (challengeRx.value != null) {
+      Future.value(true)
+          .then((value) {
+            isRequested.value = true;
+            return value;
+          })
+          .then(
+            (value) => _satorioRepository
+                .showEpisodeQuizQuestion(challengeRx.value!.episodeId),
+          )
+          .then((PayloadQuestion payloadQuestion) {
+            isRequested.value = false;
+            _toEpisodeQuiz(payloadQuestion);
+          })
+          .catchError(
+            (value) {
+              isRequested.value = false;
+            },
+          );
+    }
+  }
+
+  void _toEpisodeQuiz(PayloadQuestion payloadQuestion) async {
+    if (challengeRx.value != null) {
+      final result = await Get.to(
+        () => ShowEpisodeQuizPage(),
+        binding: ShowEpisodeQuizBinding(),
+        arguments: ShowEpisodeQuizArgument(
+          null,
+          null,
+          payloadQuestion,
+        ),
+      );
+
+      if (result != null && result is bool) {
+        _reloadChallenge(challengeRx.value!.id);
+      }
+    }
+  }
+
+  void _toRealmPaidActivationBottomSheet() {
+    Get.bottomSheet(
+      RealmPaidActivationBottomSheet(
+        (paidOption) {
+          _paidUnlock(paidOption);
+        },
+      ),
+      isScrollControlled: true,
+      barrierColor: Colors.transparent,
+    );
+  }
+
+  void _paidUnlock(PaidOption paidOption) {
+    if (challengeRx.value != null) {
+      Future.value(true)
+          .then((value) {
+            isRequested.value = true;
+            return value;
+          })
+          .then(
+            (value) => _satorioRepository.paidUnlockEpisode(
+              challengeRx.value!.episodeId,
+              paidOption.label,
+            ),
+          )
+          .then(
+            (EpisodeActivation episodeActivation) {
+              isRequested.value = false;
+              if (episodeActivation.isActive) {
+                _toUnlockBottomSheet();
+                _reloadChallenge(challengeRx.value!.id);
+              }
+            },
+          )
+          .catchError(
+            (value) {
+              isRequested.value = false;
+            },
+          );
+    }
+  }
+
+  void _toUnlockBottomSheet() {
+    Get.bottomSheet(
+      RealmUnlockBottomSheet(),
+      isScrollControlled: true,
+      barrierColor: Colors.transparent,
+      enableDrag: false,
+    );
   }
 }
 
