@@ -42,7 +42,9 @@ class _UnityViewPageState extends State<UnityViewPage> {
         return false;
       }, child:
          Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        title: const Text('Sator Universe'),
+      ),
       body: UnityWidget(
         onUnityCreated: onUnityCreated,
         onUnityMessage: onUnityMessage,
