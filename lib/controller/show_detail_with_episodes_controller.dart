@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/show_episodes_realm_binding.dart';
-import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -22,6 +22,7 @@ class ShowDetailWithEpisodesController extends GetxController
   late final Rx<Show> showRx;
   final Rx<ShowDetail?> showDetailRx = Rx(null);
   final Rx<List<ShowSeason>> seasonsRx = Rx([]);
+  final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
   late TabController tabController;
 
@@ -44,6 +45,7 @@ class ShowDetailWithEpisodesController extends GetxController
   @override
   void onInit() {
     super.onInit();
+    _loadNftItems();
     scrollController.addListener(_scrollListener);
   }
 
@@ -56,6 +58,18 @@ class ShowDetailWithEpisodesController extends GetxController
   void refreshShowData() {
     _loadShowDetail();
     _loadEpisodes();
+  }
+
+  void _loadNftItems() {
+    _satorioRepository
+        .nftsFiltered(
+        showIds: [showRx.value.id]
+    )
+        .then(
+          (List<NftItem> nftItems) {
+        nftItemsRx.value = nftItems;
+      },
+    );
   }
 
   void toShowNfts() {
