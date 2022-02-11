@@ -20,7 +20,7 @@ import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 
 abstract class SatorioRepository {
   final RxBool isInited = false.obs;
@@ -115,9 +115,9 @@ abstract class SatorioRepository {
 
   Future<bool> stake(String walletId, double amount);
 
-  Future<bool> unstake(String walletId, double amount);
+  Future<bool> unstake(String walletId);
 
-  Future<WalletStake> getStake(String walletId);
+  Future<WalletStaking> getStake(String walletId);
 
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
 

@@ -70,8 +70,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
           (isSuccess) {
         if (isSuccess) {
           _satorioRepository.updateProfile();
-          Get.to(() => SettingsPage(),
-              binding: SettingsBinding());
+          Get.back();
           codeController.clear();
         } else {
           codeController.clear();

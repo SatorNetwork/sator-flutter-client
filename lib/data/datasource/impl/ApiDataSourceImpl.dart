@@ -31,7 +31,7 @@ import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
-import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/data/model/wallet_staking_model.dart';
 import 'package:satorio/data/request/change_password_request.dart';
 import 'package:satorio/data/request/confirm_transfer_request.dart';
 import 'package:satorio/data/request/create_transfer_request.dart';
@@ -454,21 +454,21 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> unstake(String walletId, double amount) {
+  Future<bool> unstake(String walletId) {
     return _getConnect.requestPost(
       'wallets/$walletId/unstake',
-      WalletStakeRequest(amount),
+      EmptyRequest(),
     ).then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
-  Future<WalletStakeModel> getStake(String walletId) {
+  Future<WalletStakingModel> getStake(String walletId) {
     return _getConnect.requestGet(
       'wallets/$walletId/stake',
     ).then((Response response) {
-      return WalletStakeModel.fromJson(
+      return WalletStakingModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
   }
