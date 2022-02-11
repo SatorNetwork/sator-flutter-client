@@ -186,10 +186,7 @@ class HomeController extends GetxController
   }
 
   void toProfile() {
-    _satorioRepository.nftsFiltered(page: 1, itemsPerPage: 10).then((value) {
-      print(value);
-    });
-    // _toTab(MainController.TabProfile);
+    _toTab(MainController.TabProfile);
   }
 
   void _toTab(int mainPageTab) {
