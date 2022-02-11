@@ -10,7 +10,7 @@ class WalletStakeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<WalletDetail> walletDetailRx;
-  Rx<WalletStaking?> walletStakingRx = Rx(null);
+  final Rx<WalletStaking?> walletStakingRx = Rx(null);
 
   final RxBool tmpState = false.obs;
 
