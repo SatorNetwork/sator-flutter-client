@@ -151,17 +151,17 @@ class ChallengeController extends GetxController {
   }
 
   void _toEpisodeQuiz(PayloadQuestion payloadQuestion) async {
-    if (challengeRx.value != null) {
-      final result = await Get.to(
-        () => ShowEpisodeQuizPage(),
-        binding: ShowEpisodeQuizBinding(),
-        arguments: ShowEpisodeQuizArgument(
-          null,
-          null,
-          payloadQuestion,
-        ),
-      );
+    final result = await Get.to(
+      () => ShowEpisodeQuizPage(),
+      binding: ShowEpisodeQuizBinding(),
+      arguments: ShowEpisodeQuizArgument(
+        null,
+        null,
+        payloadQuestion,
+      ),
+    );
 
+    if (challengeRx.value != null) {
       _reloadChallenge(challengeRx.value!.id);
     }
   }
