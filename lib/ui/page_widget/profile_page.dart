@@ -364,7 +364,7 @@ class ProfilePage extends GetView<ProfileController> {
                                         Radius.circular(17 * coefficient),
                                       ),
                                       child: Image.network(
-                                        nfts[0].nftPreview.isEmpty
+                                        nfts[0].nftPreview.isNotEmpty
                                             ? nfts[0].nftPreview
                                             : nfts[0].nftLink,
                                         width: nftsLargestImageSize,
@@ -396,7 +396,7 @@ class ProfilePage extends GetView<ProfileController> {
                                               Radius.circular(17 * coefficient),
                                             ),
                                             child: Image.network(
-                                              nfts[1].nftPreview.isEmpty
+                                              nfts[1].nftPreview.isNotEmpty
                                                   ? nfts[1].nftPreview
                                                   : nfts[1].nftLink,
                                               width: nftsLargestImageSize,
@@ -431,7 +431,9 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[2].nftPreview,
+                                                      nfts[2].nftPreview.isNotEmpty
+                                                          ? nfts[2].nftPreview
+                                                          : nfts[2].nftLink,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -455,7 +457,7 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[3].nftPreview.isEmpty
+                                                      nfts[3].nftPreview.isNotEmpty
                                                           ? nfts[3].nftPreview
                                                           : nfts[3].nftLink,
                                                       fit: BoxFit.cover,
