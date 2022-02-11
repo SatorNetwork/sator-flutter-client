@@ -162,9 +162,7 @@ class ChallengeController extends GetxController {
         ),
       );
 
-      if (result != null && result is bool) {
-        _reloadChallenge(challengeRx.value!.id);
-      }
+      _reloadChallenge(challengeRx.value!.id);
     }
   }
 
