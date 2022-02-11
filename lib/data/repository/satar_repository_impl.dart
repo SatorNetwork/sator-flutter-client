@@ -36,7 +36,7 @@ import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
@@ -621,14 +621,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> unstake(String walletId, double amount) {
+  Future<bool> unstake(String walletId) {
     return _apiDataSource
-        .unstake(walletId, amount)
+        .unstake(walletId)
         .catchError((value) => _handleException(value));
   }
 
   @override
-  Future<WalletStake> getStake(String walletId) {
+  Future<WalletStaking> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
         .catchError((value) => _handleException(value));

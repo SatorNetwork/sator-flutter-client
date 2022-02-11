@@ -37,6 +37,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           backgroundImage('images/bg/gradient.svg'),
           Container(
             width: Get.width,
+            height: Get.height - kToolbarHeight,
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
@@ -66,7 +67,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                         height: 32 * coefficient,
                       ),
                       Text(
-                        'txt_staking'.tr,
+                        'txt_lock_rewards'.tr,
                         style: textTheme.headline3!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 28 * coefficient,
@@ -84,18 +85,18 @@ class WalletStakePage extends GetView<WalletStakeController> {
                       SizedBox(
                         height: 32 * coefficient,
                       ),
-                      Text(
-                        'txt_loyalty_levels'.tr,
-                        style: textTheme.headline3!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 28 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16 * coefficient,
-                      ),
-                      _loyaltyLevelCard(),
+                      // Text(
+                      //   'txt_loyalty_levels'.tr,
+                      //   style: textTheme.headline3!.copyWith(
+                      //     color: SatorioColor.textBlack,
+                      //     fontSize: 28 * coefficient,
+                      //     fontWeight: FontWeight.w700,
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 16 * coefficient,
+                      // ),
+                      // _loyaltyLevelCard(),
                     ],
                   ),
                 ),
@@ -125,19 +126,33 @@ class WalletStakePage extends GetView<WalletStakeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'txt_auto_sator'.tr,
+                      'txt_multiply_rewards'.tr,
                       style: textTheme.headline5!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 20 * coefficient,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(
-                      'txt_automatic_restaking'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.black.withOpacity(0.7),
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                    Obx(
+                      () => RichText(
+                        text: TextSpan(
+                          text: 'txt_total_locked'.tr,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: Colors.black.withOpacity(0.7),
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: ' ${controller.walletStakingRx.value?.totalLocked ?? ''}',
+                              style: textTheme.bodyText1!.copyWith(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 12 * coefficient,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -164,38 +179,10 @@ class WalletStakePage extends GetView<WalletStakeController> {
           SizedBox(
             height: 20 * coefficient,
           ),
-          //TODO: uncomment
-          // Row(
-          //   children: [
-          //     Text(
-          //       'txt_apy'.tr,
-          //       style: textTheme.bodyText2!.copyWith(
-          //         color: Colors.black,
-          //         fontSize: 15 * coefficient,
-          //         fontWeight: FontWeight.w400,
-          //       ),
-          //     ),
-          //     Expanded(
-          //         child: Obx(
-          //       () => Text(
-          //         '${controller.walletStakeRx.value?.walletStaking?.apy.toString() ?? ''}%',
-          //         textAlign: TextAlign.end,
-          //         style: textTheme.bodyText2!.copyWith(
-          //           color: Colors.black,
-          //           fontSize: 15 * coefficient,
-          //           fontWeight: FontWeight.w600,
-          //         ),
-          //       ),
-          //     )),
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: 8 * coefficient,
-          // ),
           Row(
             children: [
               Text(
-                'txt_total_staked'.tr,
+                'txt_locked_by'.tr,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.black,
                   fontSize: 15 * coefficient,
@@ -205,9 +192,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
               Expanded(
                 child: Obx(
                   () => Text(
-                    controller.walletStakeRx.value?.walletStaking?.totalStaked
-                            .toString() ??
-                        '',
+                    '${controller.walletStakingRx.value?.lockedByYou ?? ''}',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
                       color: Colors.black,
@@ -220,12 +205,39 @@ class WalletStakePage extends GetView<WalletStakeController> {
             ],
           ),
           SizedBox(
+            height: 8 * coefficient,
+          ),
+          Row(
+            children: [
+              Text(
+                'txt_multiplier'.tr,
+                style: textTheme.bodyText2!.copyWith(
+                  color: Colors.black,
+                  fontSize: 15 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Expanded(
+                  child: Obx(
+                () => Text(
+                  '${controller.walletStakingRx.value?.currentMultiplier ?? ''}%',
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )),
+            ],
+          ),
+          SizedBox(
             height: 20 * coefficient,
           ),
           ElevatedGradientButton(
-            text: 'txt_stake'.tr,
+            text: 'txt_add'.tr,
             onPressed: () {
-              controller.toStakeDialog();
+              controller.toLockRewardsBottomSheet();
             },
           ),
         ],
@@ -251,19 +263,34 @@ class WalletStakePage extends GetView<WalletStakeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'txt_auto_sator'.tr,
+                      'txt_multiply_rewards'.tr,
                       style: textTheme.headline5!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 20 * coefficient,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text(
-                      'txt_automatic_restaking'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.black.withOpacity(0.7),
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                    Obx(
+                      () => RichText(
+                        text: TextSpan(
+                          text: 'txt_total_locked'.tr,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: Colors.black.withOpacity(0.7),
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text:
+                                  ' ${controller.walletStakingRx.value?.totalLocked}',
+                              style: textTheme.bodyText1!.copyWith(
+                                color: Colors.black.withOpacity(0.7),
+                                fontSize: 12 * coefficient,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -293,7 +320,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           Row(
             children: [
               Text(
-                'txt_staked'.tr,
+                'txt_locked_by'.tr,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.black,
                   fontSize: 15 * coefficient,
@@ -303,9 +330,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
               Expanded(
                 child: Obx(
                   () => Text(
-                    controller.walletStakeRx.value?.walletStaking?.staked
-                            .toString() ??
-                        '',
+                    '${controller.walletStakingRx.value?.lockedByYou ?? ''}',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
                       color: Colors.black,
@@ -323,7 +348,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           Row(
             children: [
               Text(
-                'txt_your_share'.tr,
+                'txt_multiplier'.tr,
                 style: textTheme.bodyText2!.copyWith(
                   color: Colors.black,
                   fontSize: 15 * coefficient,
@@ -331,18 +356,17 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 ),
               ),
               Expanded(
-                child: Obx(
-                  () => Text(
-                    '${controller.walletStakeRx.value?.walletStaking?.yourShare.toString() ?? ''}%',
-                    textAlign: TextAlign.end,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: Colors.black,
-                      fontSize: 15 * coefficient,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Obx(
+                () => Text(
+                  '${controller.walletStakingRx.value?.currentMultiplier.toString()}%',
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
+              )),
             ],
           ),
           SizedBox(
@@ -353,9 +377,9 @@ class WalletStakePage extends GetView<WalletStakeController> {
             children: [
               Expanded(
                 child: BorderedButton(
-                  text: 'txt_substract'.tr,
+                  text: 'txt_unlock'.tr,
                   onPressed: () {
-                    controller.toUnStakeDialog();
+                    controller.toUnLockRewardsBottomSheet();
                   },
                 ),
               ),
@@ -366,7 +390,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 child: ElevatedGradientButton(
                   text: 'txt_add'.tr,
                   onPressed: () {
-                    controller.toStakeDialog();
+                    controller.toLockRewardsBottomSheet();
                   },
                 ),
               ),
@@ -377,188 +401,188 @@ class WalletStakePage extends GetView<WalletStakeController> {
     );
   }
 
-  Widget _loyaltyLevelCard() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          width: 2,
-          color: SatorioColor.interactive,
-        ),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding:
-                const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(
-                            () => Text(
-                              controller.walletStakeRx.value?.walletLoyalty
-                                      ?.levelTitle ??
-                                  '',
-                              style: textTheme.headline5!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 20 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              controller.walletStakeRx.value?.walletLoyalty
-                                      ?.levelSubtitle ??
-                                  '',
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.manatee,
-                                fontSize: 12 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 48 * coefficient,
-                      height: 48 * coefficient,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: SatorioColor.royal_blue_2,
-                          width: 2,
-                        ),
-                        color: SatorioColor.interactive,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.star_rounded,
-                          size: 32 * coefficient,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20 * coefficient,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'txt_data'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '138.7% ',
-                        textAlign: TextAlign.end,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 8 * coefficient,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'txt_dividends'.tr,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 24 * coefficient,
-                      height: 24 * coefficient,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SatorioColor.lavender_blue,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.check_rounded,
-                          size: 18 * coefficient,
-                          color: SatorioColor.interactive,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 8 * coefficient,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'txt_number'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '138,256.75',
-                        textAlign: TextAlign.end,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(18),
-                  bottomLeft: Radius.circular(18)),
-              color: SatorioColor.interactive,
-            ),
-            child: Center(
-              child: Text(
-                'txt_current'.tr,
-                textAlign: TextAlign.end,
-                style: textTheme.bodyText1!.copyWith(
-                  color: Colors.white,
-                  fontSize: 17 * coefficient,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  // Widget _loyaltyLevelCard() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(20),
+  //       border: Border.all(
+  //         width: 2,
+  //         color: SatorioColor.interactive,
+  //       ),
+  //       color: SatorioColor.alice_blue,
+  //     ),
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Container(
+  //           padding:
+  //               const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Obx(
+  //                           () => Text(
+  //                             controller.walletStakeRx.value?.walletLoyalty
+  //                                     ?.levelTitle ??
+  //                                 '',
+  //                             style: textTheme.headline5!.copyWith(
+  //                               color: SatorioColor.textBlack,
+  //                               fontSize: 20 * coefficient,
+  //                               fontWeight: FontWeight.w700,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Obx(
+  //                           () => Text(
+  //                             controller.walletStakeRx.value?.walletLoyalty
+  //                                     ?.levelSubtitle ??
+  //                                 '',
+  //                             style: textTheme.bodyText1!.copyWith(
+  //                               color: SatorioColor.manatee,
+  //                               fontSize: 12 * coefficient,
+  //                               fontWeight: FontWeight.w400,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: 48 * coefficient,
+  //                     height: 48 * coefficient,
+  //                     decoration: BoxDecoration(
+  //                       shape: BoxShape.circle,
+  //                       border: Border.all(
+  //                         color: SatorioColor.royal_blue_2,
+  //                         width: 2,
+  //                       ),
+  //                       color: SatorioColor.interactive,
+  //                     ),
+  //                     child: Center(
+  //                       child: Icon(
+  //                         Icons.star_rounded,
+  //                         size: 32 * coefficient,
+  //                         color: Colors.white,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 20 * coefficient,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   Text(
+  //                     'txt_data'.tr,
+  //                     style: textTheme.bodyText2!.copyWith(
+  //                       color: SatorioColor.textBlack,
+  //                       fontSize: 15 * coefficient,
+  //                       fontWeight: FontWeight.w400,
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: Text(
+  //                       '138.7% ',
+  //                       textAlign: TextAlign.end,
+  //                       style: textTheme.bodyText2!.copyWith(
+  //                         color: SatorioColor.textBlack,
+  //                         fontSize: 15 * coefficient,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 8 * coefficient,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                     child: Text(
+  //                       'txt_dividends'.tr,
+  //                       style: textTheme.bodyText2!.copyWith(
+  //                         color: SatorioColor.textBlack,
+  //                         fontSize: 15 * coefficient,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: 24 * coefficient,
+  //                     height: 24 * coefficient,
+  //                     decoration: BoxDecoration(
+  //                       shape: BoxShape.circle,
+  //                       color: SatorioColor.lavender_blue,
+  //                     ),
+  //                     child: Center(
+  //                       child: Icon(
+  //                         Icons.check_rounded,
+  //                         size: 18 * coefficient,
+  //                         color: SatorioColor.interactive,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 8 * coefficient,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   Text(
+  //                     'txt_number'.tr,
+  //                     style: textTheme.bodyText2!.copyWith(
+  //                       color: SatorioColor.textBlack,
+  //                       fontSize: 15 * coefficient,
+  //                       fontWeight: FontWeight.w400,
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: Text(
+  //                       '138,256.75',
+  //                       textAlign: TextAlign.end,
+  //                       style: textTheme.bodyText2!.copyWith(
+  //                         color: SatorioColor.textBlack,
+  //                         fontSize: 15 * coefficient,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         Container(
+  //           padding: const EdgeInsets.symmetric(vertical: 10),
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.only(
+  //                 bottomRight: Radius.circular(18),
+  //                 bottomLeft: Radius.circular(18)),
+  //             color: SatorioColor.interactive,
+  //           ),
+  //           child: Center(
+  //             child: Text(
+  //               'txt_current'.tr,
+  //               textAlign: TextAlign.end,
+  //               style: textTheme.bodyText1!.copyWith(
+  //                 color: Colors.white,
+  //                 fontSize: 17 * coefficient,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 }

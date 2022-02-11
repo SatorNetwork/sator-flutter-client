@@ -22,7 +22,7 @@ import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
-import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/data/model/wallet_staking_model.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 abstract class ApiDataSource {
@@ -115,9 +115,9 @@ abstract class ApiDataSource {
 
   Future<bool> stake(String walletId, double amount);
 
-  Future<bool> unstake(String walletId, double amount);
+  Future<bool> unstake(String walletId);
 
-  Future<WalletStakeModel> getStake(String walletId);
+  Future<WalletStakingModel> getStake(String walletId);
 
   // endregion
 

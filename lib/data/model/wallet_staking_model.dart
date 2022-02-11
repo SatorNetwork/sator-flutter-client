@@ -4,33 +4,29 @@ import 'package:satorio/util/extension.dart';
 
 class WalletStakingModel extends WalletStaking implements ToJsonInterface {
   const WalletStakingModel(
-    String assetName,
-    double apy,
-    double totalStaked,
-    double staked,
-    double yourShare,
+    double totalLocked,
+    double lockedByYou,
+    double currentMultiplier,
+    double availableToLock,
   ) : super(
-          assetName,
-          apy,
-          totalStaked,
-          staked,
-          yourShare,
+          totalLocked,
+          lockedByYou,
+          currentMultiplier,
+          availableToLock,
         );
 
   factory WalletStakingModel.fromJson(Map json) => WalletStakingModel(
-        json.parseValueAsString('asset_name'),
-        json.parseValueAsDouble('apy'),
-        json.parseValueAsDouble('total_staked'),
-        json.parseValueAsDouble('staked'),
-        json.parseValueAsDouble('your_share'),
+        json.parseValueAsDouble('TotalLocked'),
+        json.parseValueAsDouble('LockedByYou'),
+        json.parseValueAsDouble('CurrentMultiplier'),
+        json.parseValueAsDouble('AvailableToLock'),
       );
 
   @override
   Map toJson() => {
-        'asset_name': assetName,
-        'apy': apy,
-        'total_staked': totalStaked,
-        'staked': staked,
-        'your_share': yourShare,
+        'TotalLocked': totalLocked,
+        'LockedByYou': lockedByYou,
+        'CurrentMultiplier': currentMultiplier,
+        'AvailableToLock': availableToLock,
       };
 }
