@@ -1138,7 +1138,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.network(
-                nftItem.nftPreview,
+                nftItem.nftPreview.isEmpty
+                    ? nftItem.nftLink
+                    : nftItem.nftPreview,
                 height: height,
                 width: width,
                 fit: BoxFit.cover,
