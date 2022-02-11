@@ -157,12 +157,13 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _contentWithCategories() {
+    final RxInt _itemsPerPage = 3.obs;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(
-          () => controller.nftHomeRx.value?.items.length != 0
+          () => controller.nftHomeRx.value.length != 0
               ? Padding(
                   padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
                   child: TitleWithButton(
@@ -175,7 +176,7 @@ class HomePage extends GetView<HomeController> {
               : Container(),
         ),
         Obx(
-          () => controller.nftHomeRx.value?.items.length != 0
+          () => controller.nftHomeRx.value.length != 0
               ? Container(
                   margin: const EdgeInsets.only(top: 16),
                   height: 125 * coefficient,
@@ -186,10 +187,10 @@ class HomePage extends GetView<HomeController> {
                       ),
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: controller.nftHomeRx.value?.items.length ?? 0,
+                      itemCount: _itemsPerPage.value,
                       itemBuilder: (context, index) {
                         final NftItem nftItem =
-                            controller.nftHomeRx.value!.items[index];
+                            controller.nftHomeRx.value[index];
                         return _nftItem(nftItem);
                       },
                     ),
@@ -409,7 +410,9 @@ class HomePage extends GetView<HomeController> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                nftItem.imageLink,
+                nftItem.nftPreview.isEmpty
+                    ? nftItem.nftLink
+                    : nftItem.nftPreview,
                 width: width,
                 height: height - 25 * coefficient,
                 fit: BoxFit.cover,

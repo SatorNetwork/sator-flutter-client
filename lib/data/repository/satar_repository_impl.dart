@@ -14,6 +14,7 @@ import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dar
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
+import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -39,21 +40,26 @@ import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
+  final NftsDataSource _nftsDataSource;
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
+  final RxBool _init = false.obs;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._localDataSource,
-      this._firebaseDataSource, this._natsDataSource) {
-    _localDataSource.init();
-    _apiDataSource.init();
+  SatorioRepositoryImpl(this._apiDataSource, this._nftsDataSource,
+      this._localDataSource, this._firebaseDataSource, this._natsDataSource) {
+    _localDataSource
+        .init()
+        .then((value) => _apiDataSource.init())
+        .then((value) => _nftsDataSource.init())
+        .then((value) => _init.value = true);
   }
 
   _handleException(Exception exception) {
@@ -109,6 +115,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  RxBool get isInited => _init;
+
+  @override
   Future<void> initRemoteConfig() {
     return _firebaseDataSource
         .initRemoteConfig()
@@ -140,6 +149,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<int> appVersion() {
     return _firebaseDataSource
         .appVersion()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> nftsMarketplaceUrl() {
+    return _firebaseDataSource
+        .nftsMarketplaceUrl()
         .catchError((value) => _handleException(value));
   }
 
@@ -644,14 +660,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> unstake(String walletId, double amount) {
+  Future<bool> unstake(String walletId) {
     return _apiDataSource
-        .unstake(walletId, amount)
+        .unstake(walletId)
         .catchError((value) => _handleException(value));
   }
 
   @override
-  Future<WalletStake> getStake(String walletId) {
+  Future<WalletStaking> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
         .catchError((value) => _handleException(value));
@@ -687,7 +703,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
     int? page,
     int? itemsPerPage,
   }) {
-    return _apiDataSource
+    return _nftsDataSource
         .allNfts(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
@@ -762,5 +778,24 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable transactionsListenable() {
     return _localDataSource.transactionsListenable();
+  }
+
+  //TODO:  move to region
+  @override
+  Future<List<NftItem>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+    List<String>? showIds,
+  }) {
+    return _nftsDataSource
+        .nftsFiltered(page: page, itemsPerPage: itemsPerPage, showIds: showIds)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<NftItem> nft(String mintAddress) {
+    return _nftsDataSource
+        .nft(mintAddress)
+        .catchError((value) => _handleException(value));
   }
 }

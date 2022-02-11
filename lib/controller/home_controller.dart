@@ -13,7 +13,6 @@ import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -32,7 +31,7 @@ class HomeController extends GetxController
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
 
-  late final Rx<NftHome?> nftHomeRx;
+  late final Rx<List<NftItem>> nftHomeRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
   final Rx<List<ShowCategory>> categoriesRx = Rx([]);
 
@@ -48,13 +47,14 @@ class HomeController extends GetxController
 
     this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
-
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      nftHomeRx = mainController.nftHomeRx;
-    } else {
-      nftHomeRx = Rx(null);
-    }
+    _satorioRepository
+        .nftsFiltered(
+      page: _initialPage,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then((value) {
+      nftHomeRx.value = value;
+    });
   }
 
   @override
@@ -99,8 +99,8 @@ class HomeController extends GetxController
           _satorioRepository
               .showsFromCategory(category.id)
               .then((List<Show> shows) {
-            final ShowCategory showCategory = ShowCategory(category.id, category.title,
-                category.disabled, category.sort, shows);
+            final ShowCategory showCategory = ShowCategory(category.id,
+                category.title, category.disabled, category.sort, shows);
             categoriesRx.update((value) {
               final index =
                   value!.indexWhere((element) => element.id == showCategory.id);
@@ -135,15 +135,17 @@ class HomeController extends GetxController
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(showCategory.id, showCategory.title, ShowsType.HomeAllShows),
+      arguments: ShowsCategoryArgument(
+          showCategory.id, showCategory.title, ShowsType.HomeAllShows),
     );
   }
 
   void toAllShows() {
     Get.to(
-          () => ShowsCategoryPage(),
+      () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument('all', 'txt_all_realms'.tr, ShowsType.HomeAllShows),
+      arguments: ShowsCategoryArgument(
+          'all', 'txt_all_realms'.tr, ShowsType.HomeAllShows),
     );
   }
 

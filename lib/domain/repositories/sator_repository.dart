@@ -1,5 +1,6 @@
 import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
@@ -21,9 +22,11 @@ import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 
 abstract class SatorioRepository {
+  final RxBool isInited = false.obs;
+
   Future<void> initRemoteConfig();
 
   Future<String> firebaseChatChild();
@@ -33,6 +36,8 @@ abstract class SatorioRepository {
   Future<String> claimRewardsText();
 
   Future<int> appVersion();
+
+  Future<String> nftsMarketplaceUrl();
 
   Future<void> clearDBandAccessToken();
 
@@ -112,9 +117,9 @@ abstract class SatorioRepository {
 
   Future<bool> stake(String walletId, double amount);
 
-  Future<bool> unstake(String walletId, double amount);
+  Future<bool> unstake(String walletId);
 
-  Future<WalletStake> getStake(String walletId);
+  Future<WalletStaking> getStake(String walletId);
 
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
 
@@ -243,4 +248,13 @@ abstract class SatorioRepository {
   ValueListenable walletDetailsListenable(List<String>? ids);
 
   ValueListenable transactionsListenable();
+
+  //TODO: move to region
+  Future<List<NftItem>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+    List<String>? showIds,
+  });
+
+  Future<NftItem> nft(String mintAddress);
 }

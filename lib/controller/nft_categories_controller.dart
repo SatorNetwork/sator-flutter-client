@@ -31,7 +31,7 @@ class NftCategoriesController extends GetxController
 
   late TabController tabController;
 
-  late final Rx<NftHome?> nftHomeRx;
+  late final Rx<NftHome?> nftHomeRx = Rx(null);
   final Rx<List<NftCategory>> categoriesRx = Rx([]);
   final Rx<List<NftItem>> allNftsRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
@@ -53,13 +53,14 @@ class NftCategoriesController extends GetxController
 
     loadNfts();
 
-    _loadNftCategories();
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      nftHomeRx = mainController.nftHomeRx;
-    } else {
-      nftHomeRx = Rx(null);
-    }
+    //TODO: uncomment with categories
+    // _loadNftCategories();
+    // if (Get.isRegistered<MainController>()) {
+    //   MainController mainController = Get.find();
+    //   allNftsRx.value = mainController.nftHomeRx.value;
+    // } else {
+    //   nftHomeRx.value = null;
+    // }
   }
 
   void refreshData() {
@@ -67,7 +68,8 @@ class NftCategoriesController extends GetxController
       MainController mainController = Get.find();
       mainController.loadNftHome();
     }
-    _loadNftCategories();
+    //TODO: uncomment with categories
+    // _loadNftCategories();
   }
 
   void _loadShowsWithNfts() {
@@ -82,16 +84,17 @@ class NftCategoriesController extends GetxController
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(ShowCategoryType.withNfts, null, ShowsType.NftsAllShows),
+      arguments: ShowsCategoryArgument(
+          ShowCategoryType.withNfts, null, ShowsType.NftsAllShows),
     );
   }
 
   void toShowNfts(String showId) {
-      Get.to(
-            () => NftListPage(),
-        binding: NftListBinding(),
-        arguments: NftListArgument(NftFilterType.Show, showId),
-      );
+    Get.to(
+      () => NftListPage(),
+      binding: NftListBinding(),
+      arguments: NftListArgument(NftFilterType.Show, showId),
+    );
   }
 
   void toNftItem(final NftItem nftItem) {
@@ -100,6 +103,10 @@ class NftCategoriesController extends GetxController
       binding: NftItemBinding(),
       arguments: NftItemArgument(nftItem),
     );
+  }
+
+  void toAllTab() {
+    tabController.animateTo(1);
   }
 
   void toNftCategory(String categoryId) {
@@ -118,37 +125,39 @@ class NftCategoriesController extends GetxController
 
     Future.value(true)
         .then((value) {
-      _isLoadRx.value = true;
-      return value;
-    })
+          _isLoadRx.value = true;
+          return value;
+        })
         .then(
-          (value) => _satorioRepository.allNfts(
-        page: _nftsPageRx.value,
-        itemsPerPage: _itemsPerPage,
-      ),
-    )
+          (value) => _satorioRepository.nftsFiltered(
+            page: _nftsPageRx.value,
+            itemsPerPage: _itemsPerPage,
+          ),
+        )
         .then(
           (List<NftItem> nftItems) {
-        allNftsRx.update((value) {
-          if (value != null) value.addAll(nftItems);
-        });
-        _isLoadedRx.value = nftItems.isEmpty;
-        _isLoadRx.value = false;
-        _nftsPageRx.value = _nftsPageRx.value + 1;
-      },
-    )
+            allNftsRx.update((value) {
+              if (value != null) value.addAll(nftItems);
+            });
+            _isLoadedRx.value = nftItems.isEmpty;
+            _isLoadRx.value = false;
+            _nftsPageRx.value = _nftsPageRx.value + 1;
+          },
+        )
         .catchError(
           (value) {
             _isLoadRx.value = false;
-      },
-    );
+          },
+        );
   }
 
   void _loadNftCategories() {
     _satorioRepository.nftCategories().then(
       (List<NftCategory> categories) {
         tabController = TabController(
-            length: categories.length + _fixedTabLength, vsync: this);
+            //TODO: categories.length +
+            length: _fixedTabLength,
+            vsync: this);
 
         categoriesRx.value = categories;
 
