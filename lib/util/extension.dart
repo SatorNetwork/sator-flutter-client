@@ -1,5 +1,15 @@
+import 'dart:convert';
+import 'package:get/get_connect/http/src/status/http_status.dart';
+
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:satorio/data/datasource/exception/api_error_exception.dart';
+import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
+import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/exception/api_validation_exception.dart';
+import 'package:satorio/data/model/to_json_interface.dart';
+import 'package:satorio/data/response/error_response.dart';
+import 'package:satorio/data/response/error_validation_response.dart';
 import 'package:sprintf/sprintf.dart';
 
 extension Format on String {
@@ -49,6 +59,115 @@ extension StringParseHelper on String {
     } catch (FormatException) {
       return null;
     }
+  }
+}
+
+extension GetConnectHttpMethods on GetConnect {
+  Future<Response> requestGet(
+    String path, {
+    Map<String, dynamic>? query,
+  }) async {
+    return await this.get(path, query: query).then(
+          (Response response) => processResponse(response),
+        );
+  }
+
+  Future<Response> requestPost(
+    String path,
+    ToJsonInterface request, {
+    Map<String, dynamic>? query,
+  }) async {
+    return await this.post(path, request.toJson(), query: query).then(
+          (Response response) => processResponse(response),
+        );
+  }
+
+  Future<Response> requestPut(
+    String path,
+    ToJsonInterface request, {
+    Map<String, dynamic>? query,
+  }) async {
+    return await this.put(path, request.toJson(), query: query).then(
+          (Response response) => processResponse(response),
+        );
+  }
+
+  Future<Response> requestPatch(
+    String path,
+    ToJsonInterface request, {
+    Map<String, dynamic>? query,
+  }) async {
+    return await this.patch(path, request.toJson(), query: query).then(
+          (Response response) => processResponse(response),
+        );
+  }
+
+  Future<Response> requestDelete(
+    String path, {
+    Map<String, dynamic>? query,
+  }) async {
+    return await this.delete(path, query: query).then(
+          (Response response) => processResponse(response),
+        );
+  }
+
+  //TODO: refactor
+  Response processResponse(Response response) {
+    Response utf8Response = response;
+    // Response utf8Response = Response(
+    //   request: response.request,
+    //   statusCode: response.statusCode,
+    //   bodyBytes: response.bodyBytes,
+    //   bodyString: utf8.decode(response.bodyString!.runes.toList()),
+    //   statusText: response.statusText,
+    //   headers: response.headers,
+    //   body: response.body,
+    // );
+
+    _logResponse(utf8Response);
+
+    if (utf8Response.hasError) {
+      switch (utf8Response.statusCode) {
+        // 422
+        case HttpStatus.unprocessableEntity:
+          ErrorValidationResponse errorValidationResponse =
+              ErrorValidationResponse.fromJson(
+                  json.decode(utf8Response.bodyString!));
+          throw ApiValidationException(errorValidationResponse.validation);
+        // 401
+        case HttpStatus.unauthorized:
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
+          throw ApiUnauthorizedException(errorResponse.error);
+        // 407
+        case HttpStatus.proxyAuthenticationRequired:
+          throw ApiKycException();
+        default:
+          ErrorResponse errorResponse =
+              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
+          throw ApiErrorException(errorResponse.error);
+      }
+    }
+
+    return utf8Response;
+  }
+
+  void _logResponse(Response response) {
+    print('--------');
+
+    // print('Request headers:');
+    // response.request!.headers.forEach((key, value) {
+    //   print('   $key : $value');
+    // });
+    print(
+        '${response.request!.method.toUpperCase()} ${response.request!.url} ${response.statusCode}');
+
+    // print('Response headers:');
+    // response.headers!.forEach((key, value) {
+    //   print('   $key : $value');
+    // });
+    print('${response.bodyString}');
+    print('--------');
   }
 }
 

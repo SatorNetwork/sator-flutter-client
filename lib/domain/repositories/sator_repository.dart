@@ -23,6 +23,8 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 
 abstract class SatorioRepository {
+  final RxBool isInited = false.obs;
+
   Future<void> initRemoteConfig();
 
   Future<String> firebaseChatChild();
@@ -32,6 +34,8 @@ abstract class SatorioRepository {
   Future<String> claimRewardsText();
 
   Future<int> appVersion();
+
+  Future<String> nftsMarketplaceUrl();
 
   Future<void> clearDBandAccessToken();
 
@@ -232,4 +236,13 @@ abstract class SatorioRepository {
   ValueListenable walletDetailsListenable(List<String>? ids);
 
   ValueListenable transactionsListenable();
+
+  //TODO: move to region
+  Future<List<NftItem>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+    List<String>? showIds,
+  });
+
+  Future<NftItem> nft(String mintAddress);
 }

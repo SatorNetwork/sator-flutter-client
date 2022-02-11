@@ -364,7 +364,9 @@ class ProfilePage extends GetView<ProfileController> {
                                         Radius.circular(17 * coefficient),
                                       ),
                                       child: Image.network(
-                                        nfts[0].imageLink,
+                                        nfts[0].nftPreview.isNotEmpty
+                                            ? nfts[0].nftPreview
+                                            : nfts[0].nftLink,
                                         width: nftsLargestImageSize,
                                         height: nftsLargestImageSize,
                                         fit: BoxFit.cover,
@@ -394,7 +396,9 @@ class ProfilePage extends GetView<ProfileController> {
                                               Radius.circular(17 * coefficient),
                                             ),
                                             child: Image.network(
-                                              nfts[1].imageLink,
+                                              nfts[1].nftPreview.isNotEmpty
+                                                  ? nfts[1].nftPreview
+                                                  : nfts[1].nftLink,
                                               width: nftsLargestImageSize,
                                               height: nftsLargestImageSize,
                                               fit: BoxFit.cover,
@@ -427,7 +431,9 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[2].imageLink,
+                                                      nfts[2].nftPreview.isNotEmpty
+                                                          ? nfts[2].nftPreview
+                                                          : nfts[2].nftLink,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -451,7 +457,9 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[3].imageLink,
+                                                      nfts[3].nftPreview.isNotEmpty
+                                                          ? nfts[3].nftPreview
+                                                          : nfts[3].nftLink,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -469,7 +477,7 @@ class ProfilePage extends GetView<ProfileController> {
                       ),
                     ),
                     Text(
-                      nfts.length > 0 ? nfts[0].name : '',
+                      nfts.length > 0 ? nfts[0].nftMetadata.name : '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.headline3!.copyWith(

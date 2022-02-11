@@ -14,9 +14,9 @@ import 'package:satorio/ui/bottom_sheet_widget/success_nft_bought_bottom_sheet.d
 import 'package:satorio/ui/page_widget/video_network_page.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
 import 'package:satorio/util/links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NftItemController extends GetxController with NonWorkingFeatureMixin {
-
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<NftItem> nftItemRx;
@@ -25,16 +25,31 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
   final RxBool isBuyRequested = false.obs;
   final RxBool termsOfUseCheck = false.obs;
 
+  late final String marketplaceUrl;
+
   NftItemController() {
     NftItemArgument argument = Get.arguments as NftItemArgument;
 
     nftItemRx = Rx(argument.nftItem);
     _checkOwner();
-    _refreshNftItem(argument.nftItem.id);
+    _refreshNftItem(argument.nftItem.mintAddress);
+  }
+
+  @override
+  void onInit() async {
+    super.onInit();
+
+    marketplaceUrl = await _satorioRepository.nftsMarketplaceUrl();
   }
 
   void back() {
     Get.back();
+  }
+
+  void toMarketplace(String id) async {
+    await canLaunch('$marketplaceUrl/nft-item?id=$id')
+        ? await launch('$marketplaceUrl/nft-item?id=$id')
+        : throw '$marketplaceUrl/nft-item?id=$id';
   }
 
   void addToFavourite() {}
@@ -56,15 +71,15 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
     );
   }
 
-  void toNetworkVideo() {
-    if (nftItemRx.value.isVideoNft()) {
-      Get.to(
-        () => VideoNetworkPage(),
-        binding: VideoNetworkBinding(),
-        arguments: VideoNetworkArgument(nftItemRx.value.tokenUri),
-      );
-    }
-  }
+  // void toNetworkVideo() {
+  //   if (nftItemRx.value.isVideoNft()) {
+  //     Get.to(
+  //       () => VideoNetworkPage(),
+  //       binding: VideoNetworkBinding(),
+  //       arguments: VideoNetworkArgument(nftItemRx.value.tokenUri),
+  //     );
+  //   }
+  // }
 
   void buy() {
     Profile? profile = _getProfile();
@@ -76,13 +91,14 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
           },
         )
         .then(
-          (value) => _satorioRepository.buyNftItem(nftItemRx.value.id),
+          (value) => _satorioRepository.buyNftItem(nftItemRx.value.mintAddress),
         )
         .then(
           (isSuccess) {
             if (isSuccess) {
               Get.bottomSheet(
-                SuccessNftBoughtBottomSheet(nftItemRx.value.name, profile!.id),
+                SuccessNftBoughtBottomSheet(
+                    nftItemRx.value.nftMetadata.name, profile!.id),
               );
             }
             isBuyRequested.value = false;
@@ -95,8 +111,8 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
         );
   }
 
-  void _refreshNftItem(String nftItemId) {
-    _satorioRepository.nftItem(nftItemId).then((NftItem nftItem) {
+  void _refreshNftItem(String mintAddress) {
+    _satorioRepository.nft(mintAddress).then((NftItem nftItem) {
       nftItemRx.value = nftItem;
       _checkOwner();
     });
@@ -105,7 +121,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
   void _checkOwner() {
     Profile? profile = _getProfile();
     if (profile != null) {
-      isOwner.value = nftItemRx.value.ownerId == profile.id;
+      isOwner.value = nftItemRx.value.owner == profile.id;
     }
   }
 

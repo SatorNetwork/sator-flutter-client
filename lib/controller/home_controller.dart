@@ -32,7 +32,7 @@ class HomeController extends GetxController
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
 
-  late final Rx<NftHome?> nftHomeRx;
+  late final Rx<List<NftItem>> nftHomeRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
   final Rx<List<ShowCategory>> categoriesRx = Rx([]);
 
@@ -48,13 +48,12 @@ class HomeController extends GetxController
 
     this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
-
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      nftHomeRx = mainController.nftHomeRx;
-    } else {
-      nftHomeRx = Rx(null);
-    }
+    _satorioRepository.nftsFiltered(
+      page: _initialPage,
+      itemsPerPage: _itemsPerPage,
+    ).then((value) {
+      nftHomeRx.value = value;
+    });
   }
 
   @override

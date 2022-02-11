@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
-import 'package:satorio/domain/entities/nft_home.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 
@@ -16,7 +16,7 @@ class MainController extends GetxController {
 
   final RxInt selectedBottomTabIndex = 0.obs;
 
-  final Rx<NftHome?> nftHomeRx = Rx(null);
+  final Rx<List<NftItem>> nftHomeRx = Rx([]);
 
   @override
   void onInit() {
@@ -35,11 +35,10 @@ class MainController extends GetxController {
   }
 
   void loadNftHome() {
-    _satorioRepository.nftHome().then(
-      (NftHome nftHome) {
-        nftHomeRx.value = nftHome;
-      },
-    );
+    _satorioRepository.nftsFiltered(
+    ).then((value) {
+      nftHomeRx.value = value;
+    });
   }
 
   void toQrScanner() {

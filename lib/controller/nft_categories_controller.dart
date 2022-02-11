@@ -31,7 +31,7 @@ class NftCategoriesController extends GetxController
 
   late TabController tabController;
 
-  late final Rx<NftHome?> nftHomeRx;
+  late final Rx<NftHome?> nftHomeRx = Rx(null);
   final Rx<List<NftCategory>> categoriesRx = Rx([]);
   final Rx<List<NftItem>> allNftsRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
@@ -53,13 +53,14 @@ class NftCategoriesController extends GetxController
 
     loadNfts();
 
-    _loadNftCategories();
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      nftHomeRx = mainController.nftHomeRx;
-    } else {
-      nftHomeRx = Rx(null);
-    }
+    //TODO: uncomment with categories
+    // _loadNftCategories();
+    // if (Get.isRegistered<MainController>()) {
+    //   MainController mainController = Get.find();
+    //   allNftsRx.value = mainController.nftHomeRx.value;
+    // } else {
+    //   nftHomeRx.value = null;
+    // }
   }
 
   void refreshData() {
@@ -67,7 +68,8 @@ class NftCategoriesController extends GetxController
       MainController mainController = Get.find();
       mainController.loadNftHome();
     }
-    _loadNftCategories();
+    //TODO: uncomment with categories
+    // _loadNftCategories();
   }
 
   void _loadShowsWithNfts() {
@@ -102,6 +104,10 @@ class NftCategoriesController extends GetxController
     );
   }
 
+  void toAllTab() {
+    tabController.animateTo(1);
+  }
+
   void toNftCategory(String categoryId) {
     int categoryIndex = categoriesRx.value.indexWhere(
       (element) => element.id == categoryId,
@@ -122,7 +128,7 @@ class NftCategoriesController extends GetxController
       return value;
     })
         .then(
-          (value) => _satorioRepository.allNfts(
+          (value) => _satorioRepository.nftsFiltered(
         page: _nftsPageRx.value,
         itemsPerPage: _itemsPerPage,
       ),
@@ -148,7 +154,8 @@ class NftCategoriesController extends GetxController
     _satorioRepository.nftCategories().then(
       (List<NftCategory> categories) {
         tabController = TabController(
-            length: categories.length + _fixedTabLength, vsync: this);
+          //TODO: categories.length +
+            length: _fixedTabLength, vsync: this);
 
         categoriesRx.value = categories;
 
