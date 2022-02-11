@@ -144,7 +144,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                           ),
                           children: <TextSpan>[
                             TextSpan(
-                              text: ' ${controller.walletStakeRx.value?.walletStaking!.totalStaked}',
+                              text: ' ${controller.walletStakingRx.value?.totalLocked ?? ''}',
                               style: textTheme.bodyText1!.copyWith(
                                 color: Colors.black.withOpacity(0.7),
                                 fontSize: 12 * coefficient,
@@ -191,10 +191,8 @@ class WalletStakePage extends GetView<WalletStakeController> {
               ),
               Expanded(
                 child: Obx(
-                      () => Text(
-                    controller.walletStakeRx.value?.walletStaking?.staked
-                        .toString() ??
-                        '',
+                  () => Text(
+                    '${controller.walletStakingRx.value?.lockedByYou ?? ''}',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
                       color: Colors.black,
@@ -222,7 +220,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
               Expanded(
                   child: Obx(
                 () => Text(
-                  '${controller.walletStakeRx.value?.walletStaking?.apy.toString() ?? ''}%',
+                  '${controller.walletStakingRx.value?.currentMultiplier ?? ''}%',
                   textAlign: TextAlign.end,
                   style: textTheme.bodyText2!.copyWith(
                     color: Colors.black,
@@ -283,7 +281,8 @@ class WalletStakePage extends GetView<WalletStakeController> {
                           ),
                           children: <TextSpan>[
                             TextSpan(
-                              text: ' ${controller.walletStakeRx.value?.walletStaking!.totalStaked}',
+                              text:
+                                  ' ${controller.walletStakingRx.value?.totalLocked}',
                               style: textTheme.bodyText1!.copyWith(
                                 color: Colors.black.withOpacity(0.7),
                                 fontSize: 12 * coefficient,
@@ -330,10 +329,8 @@ class WalletStakePage extends GetView<WalletStakeController> {
               ),
               Expanded(
                 child: Obx(
-                      () => Text(
-                    controller.walletStakeRx.value?.walletStaking?.staked
-                        .toString() ??
-                        '',
+                  () => Text(
+                    '${controller.walletStakingRx.value?.lockedByYou ?? ''}',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
                       color: Colors.black,
@@ -360,16 +357,16 @@ class WalletStakePage extends GetView<WalletStakeController> {
               ),
               Expanded(
                   child: Obx(
-                        () => Text(
-                      '${controller.walletStakeRx.value?.walletStaking?.apy.toString() ?? ''}%',
-                      textAlign: TextAlign.end,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: Colors.black,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )),
+                () => Text(
+                  '${controller.walletStakingRx.value?.currentMultiplier.toString()}%',
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              )),
             ],
           ),
           SizedBox(
@@ -404,188 +401,188 @@ class WalletStakePage extends GetView<WalletStakeController> {
     );
   }
 
-  Widget _loyaltyLevelCard() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          width: 2,
-          color: SatorioColor.interactive,
-        ),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding:
-                const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(
-                            () => Text(
-                              controller.walletStakeRx.value?.walletLoyalty
-                                      ?.levelTitle ??
-                                  '',
-                              style: textTheme.headline5!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 20 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          Obx(
-                            () => Text(
-                              controller.walletStakeRx.value?.walletLoyalty
-                                      ?.levelSubtitle ??
-                                  '',
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.manatee,
-                                fontSize: 12 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 48 * coefficient,
-                      height: 48 * coefficient,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: SatorioColor.royal_blue_2,
-                          width: 2,
-                        ),
-                        color: SatorioColor.interactive,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.star_rounded,
-                          size: 32 * coefficient,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20 * coefficient,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'txt_data'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '138.7% ',
-                        textAlign: TextAlign.end,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 8 * coefficient,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'txt_dividends'.tr,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 24 * coefficient,
-                      height: 24 * coefficient,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SatorioColor.lavender_blue,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.check_rounded,
-                          size: 18 * coefficient,
-                          color: SatorioColor.interactive,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 8 * coefficient,
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'txt_number'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        '138,256.75',
-                        textAlign: TextAlign.end,
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(18),
-                  bottomLeft: Radius.circular(18)),
-              color: SatorioColor.interactive,
-            ),
-            child: Center(
-              child: Text(
-                'txt_current'.tr,
-                textAlign: TextAlign.end,
-                style: textTheme.bodyText1!.copyWith(
-                  color: Colors.white,
-                  fontSize: 17 * coefficient,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  // Widget _loyaltyLevelCard() {
+  //   return Container(
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(20),
+  //       border: Border.all(
+  //         width: 2,
+  //         color: SatorioColor.interactive,
+  //       ),
+  //       color: SatorioColor.alice_blue,
+  //     ),
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: [
+  //         Container(
+  //           padding:
+  //               const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                     child: Column(
+  //                       crossAxisAlignment: CrossAxisAlignment.start,
+  //                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                       children: [
+  //                         Obx(
+  //                           () => Text(
+  //                             controller.walletStakeRx.value?.walletLoyalty
+  //                                     ?.levelTitle ??
+  //                                 '',
+  //                             style: textTheme.headline5!.copyWith(
+  //                               color: SatorioColor.textBlack,
+  //                               fontSize: 20 * coefficient,
+  //                               fontWeight: FontWeight.w700,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                         Obx(
+  //                           () => Text(
+  //                             controller.walletStakeRx.value?.walletLoyalty
+  //                                     ?.levelSubtitle ??
+  //                                 '',
+  //                             style: textTheme.bodyText1!.copyWith(
+  //                               color: SatorioColor.manatee,
+  //                               fontSize: 12 * coefficient,
+  //                               fontWeight: FontWeight.w400,
+  //                             ),
+  //                           ),
+  //                         ),
+  //                       ],
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: 48 * coefficient,
+  //                     height: 48 * coefficient,
+  //                     decoration: BoxDecoration(
+  //                       shape: BoxShape.circle,
+  //                       border: Border.all(
+  //                         color: SatorioColor.royal_blue_2,
+  //                         width: 2,
+  //                       ),
+  //                       color: SatorioColor.interactive,
+  //                     ),
+  //                     child: Center(
+  //                       child: Icon(
+  //                         Icons.star_rounded,
+  //                         size: 32 * coefficient,
+  //                         color: Colors.white,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 20 * coefficient,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   Text(
+  //                     'txt_data'.tr,
+  //                     style: textTheme.bodyText2!.copyWith(
+  //                       color: SatorioColor.textBlack,
+  //                       fontSize: 15 * coefficient,
+  //                       fontWeight: FontWeight.w400,
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: Text(
+  //                       '138.7% ',
+  //                       textAlign: TextAlign.end,
+  //                       style: textTheme.bodyText2!.copyWith(
+  //                         color: SatorioColor.textBlack,
+  //                         fontSize: 15 * coefficient,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 8 * coefficient,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   Expanded(
+  //                     child: Text(
+  //                       'txt_dividends'.tr,
+  //                       style: textTheme.bodyText2!.copyWith(
+  //                         color: SatorioColor.textBlack,
+  //                         fontSize: 15 * coefficient,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   Container(
+  //                     width: 24 * coefficient,
+  //                     height: 24 * coefficient,
+  //                     decoration: BoxDecoration(
+  //                       shape: BoxShape.circle,
+  //                       color: SatorioColor.lavender_blue,
+  //                     ),
+  //                     child: Center(
+  //                       child: Icon(
+  //                         Icons.check_rounded,
+  //                         size: 18 * coefficient,
+  //                         color: SatorioColor.interactive,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               SizedBox(
+  //                 height: 8 * coefficient,
+  //               ),
+  //               Row(
+  //                 children: [
+  //                   Text(
+  //                     'txt_number'.tr,
+  //                     style: textTheme.bodyText2!.copyWith(
+  //                       color: SatorioColor.textBlack,
+  //                       fontSize: 15 * coefficient,
+  //                       fontWeight: FontWeight.w400,
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: Text(
+  //                       '138,256.75',
+  //                       textAlign: TextAlign.end,
+  //                       style: textTheme.bodyText2!.copyWith(
+  //                         color: SatorioColor.textBlack,
+  //                         fontSize: 15 * coefficient,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         Container(
+  //           padding: const EdgeInsets.symmetric(vertical: 10),
+  //           decoration: BoxDecoration(
+  //             borderRadius: BorderRadius.only(
+  //                 bottomRight: Radius.circular(18),
+  //                 bottomLeft: Radius.circular(18)),
+  //             color: SatorioColor.interactive,
+  //           ),
+  //           child: Center(
+  //             child: Text(
+  //               'txt_current'.tr,
+  //               textAlign: TextAlign.end,
+  //               style: textTheme.bodyText1!.copyWith(
+  //                 color: Colors.white,
+  //                 fontSize: 17 * coefficient,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 }

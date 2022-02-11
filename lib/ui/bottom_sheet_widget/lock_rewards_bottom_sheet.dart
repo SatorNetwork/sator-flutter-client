@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -12,20 +12,30 @@ import 'package:satorio/util/decimal_text_input_formatter.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/links.dart';
 
-typedef AmountEnterCallback = void Function(double amount);
+typedef AmountEnterLockCallback = void Function(double amount);
+typedef AmountEnterUnlockCallback = void Function();
 
 class LockRewardsBottomSheet extends StatelessWidget {
   final String text;
   final String amountCurrency;
-  final WalletStake? walletStake;
+  final WalletStaking walletStaking;
   final WalletDetail? walletDetail;
   final String buttonText;
-  final AmountEnterCallback onPressed;
+  final AmountEnterLockCallback onLockPressed;
+  final AmountEnterUnlockCallback onUnlockPressed;
+  final bool isUnlock;
 
   final TextEditingController _amountController = TextEditingController();
 
-  LockRewardsBottomSheet(this.text, this.amountCurrency, this.walletStake,
-      this.walletDetail, this.buttonText, this.onPressed);
+  LockRewardsBottomSheet(
+      this.text,
+      this.amountCurrency,
+      this.walletStaking,
+      this.walletDetail,
+      this.buttonText,
+      this.onLockPressed,
+      this.onUnlockPressed,
+      this.isUnlock);
 
   @override
   Widget build(BuildContext context) {
@@ -91,56 +101,84 @@ class LockRewardsBottomSheet extends StatelessWidget {
           SizedBox(
             height: 30 * coefficient,
           ),
-          _amountInput(),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'txt_transaction_fee'.tr,
-                  style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 12.0 * coefficient,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-              RichText(
-                text: TextSpan(
-                  text: '35 SAO',
-                  style: textTheme.bodyText1!.copyWith(
-                    color: Colors.black.withOpacity(0.7),
-                    fontSize: 12 * coefficient,
-                    fontWeight: FontWeight.w700,
+          isUnlock
+              ? RichText(
+                  text: TextSpan(
+                    text: 'txt_you_unlock'.tr,
+                    style: textTheme.headline2!.copyWith(
+                      color: Colors.black.withOpacity(0.7),
+                      fontWeight: FontWeight.w600,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '${walletStaking.lockedByYou}',
+                        style: textTheme.headline2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
                   ),
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: ' / ',
-                      style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                )
+              : _amountInput(),
+          isUnlock
+              ? SizedBox()
+              : Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'txt_transaction_fee'.tr,
+                        style: textTheme.bodyText1!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 12.0 * coefficient,
+                            fontWeight: FontWeight.w400),
                       ),
                     ),
-                    TextSpan(
-                      text: '\$24.92',
-                      style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.interactive,
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                    RichText(
+                      text: TextSpan(
+                        text: '35 SAO',
+                        style: textTheme.bodyText1!.copyWith(
+                          color: Colors.black.withOpacity(0.7),
+                          fontSize: 12 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: ' / ',
+                            style: textTheme.bodyText1!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 12 * coefficient,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '\$24.92',
+                            style: textTheme.bodyText1!.copyWith(
+                              color: SatorioColor.interactive,
+                              fontSize: 12 * coefficient,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
           Spacer(),
           ElevatedGradientButton(
             text: buttonText,
             onPressed: () {
               double? amount = _amountController.text.tryParse();
-              if (amount != null) {
+              if (isUnlock) {
                 Get.back();
-                onPressed(amount);
+                onUnlockPressed();
+                return;
+              }
+
+              if (amount != null && !isUnlock) {
+                Get.back();
+                onLockPressed(amount);
+                return;
               }
             },
           ),

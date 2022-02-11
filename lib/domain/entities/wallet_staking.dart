@@ -1,15 +1,13 @@
 class WalletStaking {
-  final String assetName;
-  final double apy;
-  final double totalStaked;
-  final double staked;
-  final double yourShare;
+  final double totalLocked;
+  final double lockedByYou;
+  final double currentMultiplier;
+  final double availableToLock;
 
   const WalletStaking(
-    this.assetName,
-    this.apy,
-    this.totalStaked,
-    this.staked,
-    this.yourShare,
+    this.totalLocked,
+    this.lockedByYou,
+    this.currentMultiplier,
+    this.availableToLock,
   );
 }
