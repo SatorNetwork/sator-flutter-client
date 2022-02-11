@@ -282,7 +282,6 @@ class ShowEpisodeRealmController extends GetxController
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
         },
-        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
       isScrollControlled: true,
       enableDrag: false,

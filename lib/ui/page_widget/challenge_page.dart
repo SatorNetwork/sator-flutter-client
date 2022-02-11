@@ -279,6 +279,8 @@ class ChallengePage extends GetView<ChallengeController> {
   String _buttonText(Challenge? challenge) {
     if (challenge == null)
       return '';
+    else if (!challenge.isRealmActivated)
+      return 'txt_unlock_realm'.tr;
     else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0)
       return 'txt_back_realm'.tr;
     else
@@ -288,6 +290,8 @@ class ChallengePage extends GetView<ChallengeController> {
   void _buttonClick(Challenge? challenge) {
     if (challenge == null) {
       // nothing...
+    } else if (!challenge.isRealmActivated) {
+      controller.toEpisodeRealmDialog();
     } else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0) {
       controller.back();
     } else {

@@ -4,6 +4,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
+import 'package:satorio/domain/entities/show_episode.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -324,14 +326,10 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
       ),
       child: Obx(
         () => Text(
-          controller.showSeasonRx.value.seasonNumber == 0
-              ? ''
-              : 'txt_episode_entrance_quiz'.tr.format(
-                  [
-                    controller.showSeasonRx.value.seasonNumber,
-                    controller.showEpisodeRx.value.episodeNumber,
-                  ],
-                ),
+          _entranceText(
+            controller.showSeasonRx.value,
+            controller.showEpisodeRx.value,
+          ),
           style: TextStyle(
             color: SatorioColor.darkAccent,
             fontSize: 16.0,
@@ -341,5 +339,19 @@ class ShowEpisodeQuizPage extends GetView<ShowEpisodeQuizController> {
         ),
       ),
     );
+  }
+
+  String _entranceText(ShowSeason? showSeason, ShowEpisode? showEpisode) {
+    if (showSeason == null || showEpisode == null)
+      return 'txt_episode_entrance_quiz_'.tr;
+    else if (controller.showSeasonRx.value!.seasonNumber == 0)
+      return '';
+    else
+      return 'txt_episode_entrance_quiz'.tr.format(
+        [
+          controller.showSeasonRx.value!.seasonNumber,
+          controller.showEpisodeRx.value!.episodeNumber,
+        ],
+      );
   }
 }
