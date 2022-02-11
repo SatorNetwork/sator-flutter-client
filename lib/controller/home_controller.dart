@@ -54,13 +54,6 @@ class HomeController extends GetxController
     ).then((value) {
       nftHomeRx.value = value;
     });
-
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      nftHomeRx.value = mainController.nftHomeRx.value;
-    } else {
-      nftHomeRx.value = [];
-    }
   }
 
   @override
