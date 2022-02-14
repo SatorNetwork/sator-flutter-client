@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_nats/dart_nats.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -19,8 +21,10 @@ import 'package:satorio/domain/entities/payload/payload_question_result.dart';
 import 'package:satorio/domain/entities/payload/payload_time_out.dart';
 import 'package:satorio/domain/entities/payload/payload_user.dart';
 import 'package:satorio/domain/entities/payload/socket_message.dart';
+import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/quiz_screen_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/quiz_winner_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
@@ -179,13 +183,13 @@ class QuizController extends GetxController {
         DefaultDialog(
           'txt_oops'.tr,
           'txt_wrong_answer'.tr,
-          'txt_back_realm'.tr,
+          'txt_keep_going'.tr,
           icon: Icons.sentiment_dissatisfied_rounded,
           onButtonPressed: () {
-            backToEpisode();
+            Get.back();
           },
         ),
-        barrierDismissible: false,
+        barrierDismissible: true,
       );
     }
   }
@@ -204,6 +208,20 @@ class QuizController extends GetxController {
 
     QuizResultController quizResultController = Get.find();
     quizResultController.resultRx.value = payloadChallengeResult;
+
+    final Profile profile = (_satorioRepository.profileListenable()
+            as ValueListenable<Box<Profile>>)
+        .value
+        .getAt(0)!;
+
+    final index = payloadChallengeResult.winners
+        .indexWhere((element) => element.userId == profile.id);
+    if (index >= 0) {
+      final player = payloadChallengeResult.winners[index];
+      Get.bottomSheet(
+        QuizWinnerBottomSheet(player.prize, player.bonus),
+      );
+    }
   }
 
   _handleTimeOut(PayloadTimeOut payloadTimeOut) {

@@ -54,8 +54,8 @@ const Map<String, String> en = {
   'txt_challenge_lobby': 'Challenge Lobby',
   'txt_waiting_players': 'Waiting for players to join',
   'txt_players_connected': 'Players connected',
-  'txt_wrong_answer': 'Wrong answer. You lost :(',
-  'txt_time_expire': 'Time expired. You lost :(',
+  'txt_wrong_answer': 'Wrong answer.',
+  'txt_time_expire': 'Time expired.',
   'txt_back_home': 'Back home',
   'txt_back_realm': 'Back to the realm',
   'txt_keep_going': 'Keep going!',
@@ -290,4 +290,7 @@ const Map<String, String> en = {
   'txt_other_players': 'Other players',
   'txt_play_next_challenge': 'Play next challenge',
   'txt_finish': 'Finish',
+  'txt_your_total_reward': 'Your total reward',
+  'txt_includes_bonus': 'Includes bonus from holding',
+  'txt_back': 'Back',
 };
