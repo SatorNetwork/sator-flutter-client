@@ -12,6 +12,7 @@ import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -130,9 +131,9 @@ class NftCategoriesController extends GetxController
         })
         .then(
           (value) => _satorioRepository.nftsFiltered(
-            page: _nftsPageRx.value,
-            itemsPerPage: _itemsPerPage,
-          ),
+              page: _nftsPageRx.value,
+              itemsPerPage: _itemsPerPage,
+              orderType: NftOrderOnSaleType.onSale),
         )
         .then(
           (List<NftItem> nftItems) {

@@ -115,6 +115,8 @@ abstract class SatorioRepository {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<double> possibleMultiplier(String walletId, double amount);
+
   Future<bool> stake(String walletId, double amount);
 
   Future<bool> unstake(String walletId);
@@ -254,6 +256,8 @@ abstract class SatorioRepository {
     int? page,
     int? itemsPerPage,
     List<String>? showIds,
+    String? orderType,
+    String? owner,
   });
 
   Future<NftItem> nft(String mintAddress);

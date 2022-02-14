@@ -55,6 +55,7 @@ import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
 import 'package:satorio/data/response/attempts_left_response.dart';
 import 'package:satorio/data/response/auth_response.dart';
+import 'package:satorio/data/response/possible_multiplier_response.dart';
 import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
@@ -493,6 +494,16 @@ class ApiDataSourceImpl implements ApiDataSource {
     )
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<double> possibleMultiplier(String walletId, double amount) {
+    return _getConnect.requestPost(
+      'wallets/$walletId/possible-multiplier',
+      WalletStakeRequest(amount),
+    ).then((Response response) {
+      return PossibleMultiplierResponse.fromJson(json.decode(response.bodyString!)).possibleMultiplier;
     });
   }
 

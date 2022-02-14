@@ -189,7 +189,7 @@ const Map<String, String> en = {
   'txt_reserve_price': 'Reserve price',
   'txt_available': 'Available',
   'txt_you_unlock': 'You unlock: ',
-  'txt_stake_success': '%s %s was added to a staking pool',
+  'txt_stake_success': '%s %s was locked from your balance. Now you have %s%% multiplier to quiz rewards.',
   'txt_unstake_success': '%s %s was substracted to a staking pool',
   'txt_no_thanks': 'No thanks',
   'txt_choose_option': 'Choose your option',

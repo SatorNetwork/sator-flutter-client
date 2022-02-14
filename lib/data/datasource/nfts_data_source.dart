@@ -15,6 +15,8 @@ abstract class NftsDataSource {
     int? page,
     int? itemsPerPage,
     List<String>? showIds,
+    String? orderType,
+    String? owner,
   });
 
   Future<NftItemModel> nft(String mintAddress);

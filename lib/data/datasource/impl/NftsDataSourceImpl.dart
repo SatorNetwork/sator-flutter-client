@@ -61,12 +61,14 @@ class NftsDataSourceImpl implements NftsDataSource {
     int? page,
     int? itemsPerPage,
     List<String>? showIds,
+    String? orderType,
+    String? owner,
   }) {
     return _getConnect
         .requestPost(
             'filtered',
             FilteredNftsRequest(NftOrderByType.timestamp, NftOrderType.desc,
-                NftOrderOnSaleType.onSale, page, itemsPerPage, null, showIds))
+                orderType, page, itemsPerPage, owner, showIds))
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['nfts'] is Iterable) {

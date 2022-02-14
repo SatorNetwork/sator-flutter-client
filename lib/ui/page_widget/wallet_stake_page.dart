@@ -359,7 +359,9 @@ class WalletStakePage extends GetView<WalletStakeController> {
               Expanded(
                   child: Obx(
                 () => Text(
-                  '${controller.walletStakingRx.value?.currentMultiplier.toString()}%',
+                  controller.pmState.value
+                      ? '+${controller.walletStakingRx.value?.currentMultiplier}%'
+                      : '${controller.walletStakingRx.value?.currentMultiplier}%',
                   textAlign: TextAlign.end,
                   style: textTheme.bodyText2!.copyWith(
                     color: Colors.black,
