@@ -113,6 +113,8 @@ abstract class ApiDataSource {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<double> possibleMultiplier(String walletId, double amount);
+
   Future<bool> stake(String walletId, double amount);
 
   Future<bool> unstake(String walletId);

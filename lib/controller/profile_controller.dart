@@ -25,6 +25,8 @@ import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/dialog_widget/send_invite_dialog.dart';
@@ -47,11 +49,20 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   final Rx<List<ActivatedRealm?>> activatedRealmsRx = Rx([]);
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
+  Map<String, Wallet> wallets = {};
+  Rx<List<WalletDetail>> walletDetailsRx = Rx([]);
+  RxString solanaAddressRx = ''.obs;
+
   late final ValueListenable<Box<Profile>> profileListenable;
+  late ValueListenable<Box<Wallet>> _walletsListenable;
+  ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
 
   final Rx<Uri?> referralLinkRx = Rx(null);
 
   ProfileController() {
+    _walletsListenable =
+        _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
+
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
   }
@@ -60,25 +71,81 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void onInit() {
     super.onInit();
 
+    _walletsListenable.addListener(_walletsListener);
+
     _profileListener();
     profileListenable.addListener(_profileListener);
 
     _loadUserReviews();
     _loadActivatedRealms();
-    _loadNfts();
   }
 
   @override
   void onClose() {
     profileListenable.removeListener(_profileListener);
+    _walletsListenable.removeListener(_walletsListener);
+    _walletDetailsListenable?.removeListener(_walletDetailsListener);
+
     super.onClose();
+  }
+
+  void _solanaAddress() {
+    walletDetailsRx.value.forEach((element) {
+      solanaAddressRx.update((val) {
+        if (element.solanaAccountAddress.isNotEmpty) {
+          solanaAddressRx.value = element.solanaAccountAddress;
+          _loadNfts();
+        }
+      });
+    });
+  }
+
+  void _walletsListener() {
+    // Update wallets map
+    Map<String, Wallet> walletsNew = {};
+    _walletsListenable.value.values.forEach((wallet) {
+      walletsNew[wallet.id] = wallet;
+    });
+    wallets = walletsNew;
+
+    // Ids of wallets
+    List<String> ids = wallets.values.map((wallet) => wallet.id).toList();
+
+    // Re-subscribe to new actual ids
+    _walletDetailsListenable?.removeListener(_walletDetailsListener);
+    _walletDetailsListenable = _satorioRepository.walletDetailsListenable(ids)
+        as ValueListenable<Box<WalletDetail>>;
+    _walletDetailsListenable?.addListener(_walletDetailsListener);
+  }
+
+  void _walletDetailsListener() {
+    List<WalletDetail> walletDetails =
+        _walletDetailsListenable!.value.values.toList();
+    walletDetails.sort((a, b) => a.order.compareTo(b.order));
+    walletDetailsRx.value = walletDetails;
+    _solanaAddress();
   }
 
   void refreshPage() {
     _satorioRepository.updateProfile();
     _loadUserReviews();
     _loadActivatedRealms();
-    _loadNfts();
+    _refreshAllWallets();
+    _solanaAddress();
+  }
+
+  void _updateWalletDetail(Wallet? wallet) {
+    if (wallet != null) {
+      _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+    }
+  }
+
+  void _refreshAllWallets() {
+    _satorioRepository.updateWallets().then((List<Wallet> wallets) {
+      wallets.forEach((wallet) {
+        _updateWalletDetail(wallet);
+      });
+    });
   }
 
   void toReviewsPage() {
@@ -215,12 +282,10 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void _loadNfts() {
     if (profileRx.value != null) {
       _satorioRepository
-          .nftItems(
-        NftFilterType.User,
-        profileRx.value!.id,
-        page: _initialPage,
-        itemsPerPage: _itemsPerPageNft,
-      )
+          .nftsFiltered(
+              page: _initialPage,
+              itemsPerPage: _itemsPerPageNft,
+              owner: solanaAddressRx.value)
           .then((List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       });

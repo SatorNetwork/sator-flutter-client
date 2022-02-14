@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
@@ -11,8 +12,10 @@ class WalletStakeController extends GetxController {
 
   late final Rx<WalletDetail> walletDetailRx;
   final Rx<WalletStaking?> walletStakingRx = Rx(null);
+  final RxDouble possibleMultiplierRx = 0.0.obs;
 
   final RxBool tmpState = false.obs;
+  final RxBool pmState = false.obs;
 
   WalletStakeController() {
     WalletStakeArgument argument = Get.arguments as WalletStakeArgument;
@@ -31,6 +34,7 @@ class WalletStakeController extends GetxController {
         .then((WalletStaking walletStaking) {
       walletStakingRx.value = walletStaking;
       tmpState.value = walletStakingRx.value!.lockedByYou > 0;
+      pmState.value = walletStakingRx.value!.currentMultiplier > 0;
     });
   }
 
@@ -44,7 +48,7 @@ class WalletStakeController extends GetxController {
           walletDetailRx.value,
           'txt_add'.tr, (double value) {
         _stakeAmount(value);
-      }, () {}, false),
+      }, () {}, false, this),
       isScrollControlled: true,
     );
   }
@@ -60,9 +64,15 @@ class WalletStakeController extends GetxController {
           'txt_unlock'.tr,
           (double value) {}, () {
         _unstakeAmount();
-      }, true),
+      }, true, this),
       isScrollControlled: true,
     );
+  }
+
+  void possibleMultiplier(double? amount) {
+    _satorioRepository.possibleMultiplier(walletDetailRx.value.id, amount!).then((value) {
+      possibleMultiplierRx.value = value;
+    });
   }
 
   void _stakeAmount(double amount) {
@@ -74,6 +84,7 @@ class WalletStakeController extends GetxController {
         .then(
       (bool result) {
         if (result) {
+          possibleMultiplier(amount);
           _updateWalletStake();
           tmpState.value = true;
         }
@@ -85,12 +96,14 @@ class WalletStakeController extends GetxController {
                 ? 'txt_stake_success'.tr.format(
                     [
                       amount.toString(),
-                      walletDetailRx.value.balance[0].currency
+                      walletDetailRx.value.balance[0].currency,
+                      possibleMultiplierRx.value,
                     ],
                   )
                 : 'txt_something_wrong'.tr,
             result ? 'txt_cool'.tr : 'txt_ok'.tr,
             onButtonPressed: () => result ? _updateWalletStake() : () {},
+            icon: result ? Icons.check_rounded : null,
           ),
         );
       },

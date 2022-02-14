@@ -16,11 +16,10 @@ class FilteredNftsRequest implements ToJsonInterface {
 
   @override
   Map toJson() => {
-        'order_by': orderBy,
-        'order': order,
-        'on_sale': onSale,
-        'pagination': PaginationRequest(page, numOfItems),
-        'owner': owner,
-        'filter': NftFilterRequest(showIds)
-      };
+    'order_by': orderBy,
+    'order': order,
+    'pagination': PaginationRequest(page, numOfItems),
+    'owner': owner,
+    'filter': NftFilterRequest(showIds, onSale, owner)
+  };
 }

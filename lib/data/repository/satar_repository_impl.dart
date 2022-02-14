@@ -630,6 +630,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<double> possibleMultiplier(String walletId, double amount) {
+    return _apiDataSource
+        .possibleMultiplier(walletId, amount)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<bool> stake(String walletId, double amount) {
     return _apiDataSource
         .stake(walletId, amount)
@@ -763,9 +770,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
     int? page,
     int? itemsPerPage,
     List<String>? showIds,
+    String? orderType,
+    String? owner,
   }) {
     return _nftsDataSource
-        .nftsFiltered(page: page, itemsPerPage: itemsPerPage, showIds: showIds)
+        .nftsFiltered(
+            page: page,
+            itemsPerPage: itemsPerPage,
+            showIds: showIds,
+            orderType: orderType,
+            owner: owner)
         .catchError((value) => _handleException(value));
   }
 
