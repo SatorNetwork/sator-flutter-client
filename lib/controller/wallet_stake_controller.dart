@@ -40,6 +40,7 @@ class WalletStakeController extends GetxController {
 
   void toLockRewardsBottomSheet() {
     if (walletDetailRx.value.balance.length <= 0) return;
+    possibleMultiplierRx.value = 0.0;
     Get.bottomSheet(
       LockRewardsBottomSheet(
           'txt_available_lock'.tr,

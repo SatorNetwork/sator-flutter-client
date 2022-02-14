@@ -6,6 +6,6 @@ class PossibleMultiplierResponse {
   PossibleMultiplierResponse(this.possibleMultiplier);
 
   factory PossibleMultiplierResponse.fromJson(Map json) => PossibleMultiplierResponse(
-        json.parseValueAsDouble('possibleMultiplier'),
+        json.parseValueAsDouble('data'),
       );
 }

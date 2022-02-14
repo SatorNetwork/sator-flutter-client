@@ -207,7 +207,6 @@ class LockRewardsBottomSheet extends StatelessWidget {
             Duration(seconds: 1),
             () => _controller
                 .possibleMultiplier(_amountController.text.tryParse()));
-        print(_amountController.text.tryParse());
       },
       obscureText: false,
       keyboardType: TextInputType.numberWithOptions(decimal: true),
