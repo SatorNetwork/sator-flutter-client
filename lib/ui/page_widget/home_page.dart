@@ -414,7 +414,7 @@ class HomePage extends GetView<HomeController> {
                     ? nftItem.nftLink
                     : nftItem.nftPreview,
                 width: width,
-                height: height - 25 * coefficient,
+                height: height, //height - 25 * coefficient,
                 fit: BoxFit.cover,
               ),
             ),

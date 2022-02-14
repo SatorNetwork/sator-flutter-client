@@ -26,7 +26,6 @@ import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
-import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
@@ -825,7 +824,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<ChallengeModel> challenge(String challengeId) {
     return _getConnect
         .requestGet(
-      'challenges/$challengeId',
+      'quiz_v2/challenges/$challengeId',
     )
         .then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
