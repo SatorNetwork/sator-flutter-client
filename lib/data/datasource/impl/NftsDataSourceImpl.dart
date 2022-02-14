@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
-
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/data/model/nft_category_model.dart';

@@ -1,10 +1,10 @@
-import 'package:get/get.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nats_config_model.dart';
 import 'package:satorio/data/model/nft_category_model.dart';
 import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
@@ -79,6 +79,8 @@ abstract class ApiDataSource {
   Future<bool> validateResetPasswordCode(String email, String code);
 
   Future<bool> resetPassword(String email, String code, String newPassword);
+
+  Future<bool> publicKey();
 
   // endregion
 
@@ -199,7 +201,7 @@ abstract class ApiDataSource {
 
   // region Quiz
 
-  Future<String> quizSocketUrl(String challengeId);
+  Future<NatsConfigModel> quizNats(String challengeId);
 
   // endregion
 
@@ -240,18 +242,6 @@ abstract class ApiDataSource {
   Future<NftItemModel> nftItem(String nftItemId);
 
   Future<bool> buyNftItem(String nftItemId);
-
-  // endregion
-
-  // region Socket
-
-  Future<GetSocket> createSocket(String url);
-
-  Future<void> sendAnswer(
-    GetSocket? socket,
-    String questionId,
-    String answerId,
-  );
 
 // endregion
 

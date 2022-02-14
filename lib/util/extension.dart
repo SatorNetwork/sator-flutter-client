@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:get/get_connect/http/src/status/http_status.dart';
 
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/status/http_status.dart';
 import 'package:intl/intl.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';

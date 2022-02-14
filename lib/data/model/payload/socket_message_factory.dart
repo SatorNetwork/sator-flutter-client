@@ -1,6 +1,7 @@
 import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_challenge_result_model.dart';
 import 'package:satorio/data/model/payload/payload_countdown_model.dart';
+import 'package:satorio/data/model/payload/payload_empty_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/payload/payload_question_result_model.dart';
 import 'package:satorio/data/model/payload/payload_time_out_model.dart';
@@ -88,10 +89,37 @@ class SocketMessageAnswerModel extends SocketMessageAnswer
       };
 }
 
+class SocketMessageTimeOutModel extends SocketMessageTimeOut
+    implements ToJsonInterface {
+  SocketMessageTimeOutModel(PayloadTimeOutModel payload) : super(payload);
+
+  @override
+  Map toJson() => {
+        'type': type,
+        'payload': (payload as ToJsonInterface).toJson(),
+      };
+}
+
+class SocketMessagePlayerIsActiveModel extends SocketMessagePlayerIsActive
+    implements ToJsonInterface {
+  SocketMessagePlayerIsActiveModel(PayloadEmptyModel payload) : super(payload);
+
+  @override
+  Map toJson() => {
+        'type': type,
+        'payload': (payload as ToJsonInterface).toJson(),
+      };
+}
+
 class SocketMessageModelFactory {
   static SocketMessage createSocketMessage(Map json) {
-    String type = json['type'];
+    String type = json['type'] == null
+        ? ''
+        : (json['type'] is int
+            ? Type.fromInt(json['type'] as int)
+            : json['type'] as String);
     Map payloadJson = json['payload'];
+
     switch (type) {
       case Type.player_connected:
         return SocketMessagePlayerConnectedModel(
@@ -122,8 +150,12 @@ class SocketMessageModelFactory {
           PayloadAnswerModel.fromJson(payloadJson),
         );
       case Type.time_out:
-        return SocketMessageTimeOut(
+        return SocketMessageTimeOutModel(
           PayloadTimeOutModel.fromJson(payloadJson),
+        );
+      case Type.player_is_active:
+        return SocketMessagePlayerIsActiveModel(
+          PayloadEmptyModel.fromJson(payloadJson),
         );
       default:
         throw FormatException('unsupported type $type for SocketMessage');

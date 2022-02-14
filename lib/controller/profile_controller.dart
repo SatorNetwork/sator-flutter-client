@@ -57,8 +57,6 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   late ValueListenable<Box<Wallet>> _walletsListenable;
   ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
 
-  final Rx<Uri?> referralLinkRx = Rx(null);
-
   ProfileController() {
     _walletsListenable =
         _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
@@ -217,21 +215,19 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
     );
 
     parameters.buildShortLink().then((value) {
-      referralLinkRx.update((val) {
-        referralLinkRx.value = value.shortUrl;
-        print(referralLinkRx.value);
-
-        Get.dialog(
-          SendInviteDialog(referralLinkRx.value.toString()),
-        );
-      });
+      print(value.shortUrl);
+      Get.dialog(
+        SendInviteDialog(value.shortUrl.toString()),
+      );
     });
   }
 
   void toSelectAvatar() {
-    Get.to(() => SelectAvatarPage(),
-        binding: SelectAvatarBinding(),
-        arguments: SelectAvatarArgument(SelectAvatarType.settings));
+    Get.to(
+      () => SelectAvatarPage(),
+      binding: SelectAvatarBinding(),
+      arguments: SelectAvatarArgument(SelectAvatarType.settings, null),
+    );
   }
 
   void toLogoutDialog() {

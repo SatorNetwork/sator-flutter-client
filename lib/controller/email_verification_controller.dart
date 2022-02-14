@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
-import 'package:satorio/binding/settings_binding.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
-import 'package:satorio/ui/page_widget/settings_page.dart';
 
 class EmailVerificationController extends GetxController with ValidationMixin {
   static const Duration _defaultDelay = Duration(minutes: 1);
@@ -23,6 +21,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
   late final String email;
   late final bool isUpdate;
+  late final Uri? deepLink;
 
   @override
   void onInit() {
@@ -46,15 +45,21 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
     email = argument.email;
     isUpdate = argument.isUpdate;
+    deepLink = argument.deepLink;
   }
 
   void verifyAccount() {
     _satorioRepository.verifyAccount(codeController.text).then(
       (isSuccess) {
         if (isSuccess) {
-          Get.offAll(() => SelectAvatarPage(),
-              binding: SelectAvatarBinding(),
-              arguments: SelectAvatarArgument(SelectAvatarType.registration));
+          Get.offAll(
+            () => SelectAvatarPage(),
+            binding: SelectAvatarBinding(),
+            arguments: SelectAvatarArgument(
+              SelectAvatarType.registration,
+              deepLink,
+            ),
+          );
         } else {
           codeController.clear();
         }
@@ -67,7 +72,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
   void verifyUpdateEmail() {
     _satorioRepository.verifyUpdateEmail(email, codeController.text).then(
-          (isSuccess) {
+      (isSuccess) {
         if (isSuccess) {
           _satorioRepository.updateProfile();
           Get.back();
@@ -110,6 +115,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 class EmailVerificationArgument {
   final String email;
   final bool isUpdate;
+  final Uri? deepLink;
 
-  const EmailVerificationArgument(this.email, this.isUpdate);
+  const EmailVerificationArgument(this.email, this.isUpdate, this.deepLink);
 }

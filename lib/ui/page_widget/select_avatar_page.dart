@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -116,11 +115,11 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
     ScrollController _controller = ScrollController();
     return controller.nftItemsRx.value.length != 0
         ? GridView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             controller: _controller,
             scrollDirection: Axis.vertical,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 6),
+            gridDelegate:
+                SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 6),
             shrinkWrap: true,
             itemCount: controller.nftItemsRx.value.length,
             itemBuilder: (_, index) => _nftAvatar(index),
