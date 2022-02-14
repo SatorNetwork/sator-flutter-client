@@ -286,4 +286,8 @@ const Map<String, String> en = {
   'txt_update': 'Update',
   'txt_buy_nfts': 'Buy NFTs',
   'txt_to_marketplace': 'Go to marketplace',
+  'txt_top_scores': 'Top scores',
+  'txt_other_players': 'Other players',
+  'txt_play_next_challenge': 'Play next challenge',
+  'txt_finish': 'Finish',
 };

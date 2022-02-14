@@ -54,10 +54,15 @@ class QuizController extends GetxController {
   }
 
   void backToEpisode() {
+    print('backToEpisode');
     _satorioRepository.updateWalletBalance();
     Get.until((route) => !Get.isOverlaysOpen);
     if (Get.isRegistered<ShowEpisodeRealmController>()) {
-      Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+      print('isRegistered');
+      Get.until((route) {
+        print('Get.currentRoute ${Get.currentRoute}');
+        return Get.currentRoute == '/() => ShowEpisodesRealmPage';
+      });
     }
   }
 

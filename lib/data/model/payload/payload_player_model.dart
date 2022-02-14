@@ -1,21 +1,24 @@
 import 'package:satorio/data/model/to_json_interface.dart';
-import 'package:satorio/domain/entities/payload/payload_winner.dart';
+import 'package:satorio/domain/entities/payload/payload_player.dart';
 import 'package:satorio/util/extension.dart';
 
-class PayloadWinnerModel extends PayloadWinner implements ToJsonInterface {
-  const PayloadWinnerModel(
+class PayloadPlayerModel extends PayloadPlayer implements ToJsonInterface {
+  const PayloadPlayerModel(
     String userId,
     String username,
+    String avatar,
     String prize,
   ) : super(
           userId,
           username,
+          avatar,
           prize,
         );
 
-  factory PayloadWinnerModel.fromJson(Map json) => PayloadWinnerModel(
+  factory PayloadPlayerModel.fromJson(Map json) => PayloadPlayerModel(
         json.parseValueAsString('user_id'),
         json.parseValueAsString('username'),
+        json.parseValueAsString('avatar'),
         json.parseValueAsString('prize'),
       );
 
