@@ -71,7 +71,11 @@ class WalletStakeController extends GetxController {
   }
 
   void possibleMultiplier(double? amount) {
-    _satorioRepository.possibleMultiplier(walletDetailRx.value.id, amount!).then((value) {
+    if (amount == null) {
+      possibleMultiplierRx.value = 0.0;
+      return;
+    }
+    _satorioRepository.possibleMultiplier(walletDetailRx.value.id, amount).then((value) {
       possibleMultiplierRx.value = value;
     });
   }
