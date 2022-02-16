@@ -158,7 +158,7 @@ class QuizController extends GetxController {
     bool isDialogOpen = Get.isDialogOpen ?? false;
     bool isBottomSheetOpen = Get.isBottomSheetOpen ?? false;
     if (isDialogOpen || isBottomSheetOpen) {
-      Get.back();
+      Get.until((route) => !Get.isOverlaysOpen);
     }
     bool restart = true;
     if (screenTypeRx.value == QuizScreenType.countdown) {
@@ -186,7 +186,7 @@ class QuizController extends GetxController {
           'txt_keep_going'.tr,
           icon: Icons.sentiment_dissatisfied_rounded,
           onButtonPressed: () {
-            Get.back();
+            Get.until((route) => !Get.isOverlaysOpen);
           },
         ),
         barrierDismissible: true,
@@ -200,7 +200,7 @@ class QuizController extends GetxController {
     bool isDialogOpen = Get.isDialogOpen ?? false;
     bool isBottomSheetOpen = Get.isBottomSheetOpen ?? false;
     if (isDialogOpen || isBottomSheetOpen) {
-      Get.back();
+      Get.until((route) => !Get.isOverlaysOpen);
     }
     if (screenTypeRx.value == QuizScreenType.question) {
       screenTypeRx.value = QuizScreenType.result;
