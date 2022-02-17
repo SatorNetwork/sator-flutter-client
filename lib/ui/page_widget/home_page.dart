@@ -157,7 +157,6 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _contentWithCategories() {
-    final RxInt _itemsPerPage = 3.obs;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,7 +186,7 @@ class HomePage extends GetView<HomeController> {
                       ),
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      itemCount: _itemsPerPage.value,
+                      itemCount: controller.nftHomeRx.value.length,
                       itemBuilder: (context, index) {
                         final NftItem nftItem =
                             controller.nftHomeRx.value[index];
