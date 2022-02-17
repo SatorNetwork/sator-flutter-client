@@ -104,7 +104,7 @@ class QuizController extends GetxController {
           SocketMessageModelFactory.createSocketMessage(json.decode(value));
 
       if (_isMessageExpired(socketMessage)) {
-        print('Message expired!');
+        print('Message EXPIRED !!!');
         return;
       }
 
