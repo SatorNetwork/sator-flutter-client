@@ -105,7 +105,7 @@ class NftListPage extends GetView<NftListController> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(12)),
               child: Image.network(
-                nftItem.imageLink,
+                nftItem.nftPreview,
                 fit: BoxFit.cover,
               ),
             ),
@@ -115,7 +115,7 @@ class NftListPage extends GetView<NftListController> {
           ),
           Container(
             child: Text(
-              nftItem.name,
+              nftItem.nftMetadata.name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: textTheme.bodyText2!.copyWith(

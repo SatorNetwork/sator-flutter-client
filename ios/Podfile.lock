@@ -4,6 +4,8 @@ PODS:
     - Flutter
     - HLSCachingReverseProxyServer
   - Cache (6.0.0)
+  - fast_rsa (0.6.0):
+    - Flutter
   - Firebase/Analytics (8.9.0):
     - Firebase/Core
   - Firebase/Core (8.9.0):
@@ -206,6 +208,7 @@ PODS:
 
 DEPENDENCIES:
   - better_player (from `.symlinks/plugins/better_player/ios`)
+  - fast_rsa (from `.symlinks/plugins/fast_rsa/ios`)
   - Firebase/Analytics
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
@@ -258,6 +261,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   better_player:
     :path: ".symlinks/plugins/better_player/ios"
+  fast_rsa:
+    :path: ".symlinks/plugins/fast_rsa/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_database:
@@ -298,6 +303,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   better_player: 5f77b030c433bd39af0aaaffc184cf4267601a84
   Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
+  fast_rsa: 75791197cef082a0e3ba2376e65cbf83176d13aa
   Firebase: 13d8d96499e2635428d5bf0ec675df21f95d9a95
   firebase_core: 3aa324017663581c1d250b66518b86298fda337c
   firebase_database: e986407d9f77768c00579899ebd0af4098dd781e

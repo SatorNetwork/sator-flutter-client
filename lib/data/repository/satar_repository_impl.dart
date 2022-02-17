@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
@@ -12,12 +13,15 @@ import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
+import 'package:satorio/data/datasource/nats_data_source.dart';
+import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nats_config.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
@@ -28,6 +32,7 @@ import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
@@ -35,20 +40,26 @@ import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
+  final NftsDataSource _nftsDataSource;
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
+  final NatsDataSource _natsDataSource;
+  final RxBool _init = false.obs;
 
-  SatorioRepositoryImpl(
-      this._apiDataSource, this._localDataSource, this._firebaseDataSource) {
-    _localDataSource.init();
-    _apiDataSource.init();
+  SatorioRepositoryImpl(this._apiDataSource, this._nftsDataSource,
+      this._localDataSource, this._firebaseDataSource, this._natsDataSource) {
+    _localDataSource
+        .init()
+        .then((value) => _apiDataSource.init())
+        .then((value) => _nftsDataSource.init())
+        .then((value) => _init.value = true);
   }
 
   _handleException(Exception exception) {
@@ -104,6 +115,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  RxBool get isInited => _init;
+
+  @override
   Future<void> initRemoteConfig() {
     return _firebaseDataSource
         .initRemoteConfig()
@@ -135,6 +149,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<int> appVersion() {
     return _firebaseDataSource
         .appVersion()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> nftsMarketplaceUrl() {
+    return _firebaseDataSource
+        .nftsMarketplaceUrl()
         .catchError((value) => _handleException(value));
   }
 
@@ -202,6 +223,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> signIn(String email, String password) {
     return _apiDataSource
         .signIn(email, password)
+        .then((value) => _apiDataSource.publicKey())
         .catchError((value) => _handleException(value));
   }
 
@@ -209,6 +231,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> signUp(String email, String password, String username) {
     return _apiDataSource
         .signUp(email, password, username)
+        .then((value) => _apiDataSource.publicKey())
         .catchError((value) => _handleException(value));
   }
 
@@ -321,6 +344,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .shows(hasNfts, page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<ShowCategory>> showsCategoryList({
+    int? page,
+    int? itemsPerPage,
+  }) {
+    return _apiDataSource
+        .showsCategoryList(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -482,24 +515,41 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<String> quizSocketUrl(String challengeId) {
+  Future<NatsConfig> quizNats(String challengeId) {
     return _apiDataSource
-        .quizSocketUrl(challengeId)
+        .quizNats(challengeId)
         .catchError((value) => _handleException(value));
   }
 
   @override
-  Future<GetSocket> createQuizSocket(String socketUrl) {
-    return _apiDataSource.createSocket(socketUrl);
+  Future<Subscription> subscribeNats(String url, String subject) {
+    return _natsDataSource.subscribe(url, subject);
+  }
+
+  @override
+  Future<void> unsubscribeNats(Subscription subscription) {
+    return _natsDataSource.unsubscribe(subscription);
   }
 
   @override
   Future<void> sendAnswer(
-    GetSocket? socket,
+    String subject,
+    String serverPublicKey,
     String questionId,
     String answerId,
   ) {
-    return _apiDataSource.sendAnswer(socket, questionId, answerId);
+    return _natsDataSource.sendAnswer(
+        subject, serverPublicKey, questionId, answerId);
+  }
+
+  @override
+  Future<void> sendPing(String subject, String serverPublicKey) {
+    return _natsDataSource.sendPing(subject, serverPublicKey);
+  }
+
+  @override
+  Future<String> decryptData(String data) {
+    return _natsDataSource.decryptReceivedMessage(data);
   }
 
   @override
@@ -603,6 +653,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<double> possibleMultiplier(String walletId, double amount) {
+    return _apiDataSource
+        .possibleMultiplier(walletId, amount)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<bool> stake(String walletId, double amount) {
     return _apiDataSource
         .stake(walletId, amount)
@@ -610,14 +667,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> unstake(String walletId, double amount) {
+  Future<bool> unstake(String walletId) {
     return _apiDataSource
-        .unstake(walletId, amount)
+        .unstake(walletId)
         .catchError((value) => _handleException(value));
   }
 
   @override
-  Future<WalletStake> getStake(String walletId) {
+  Future<WalletStaking> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
         .catchError((value) => _handleException(value));
@@ -645,6 +702,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }) {
     return _apiDataSource
         .getActivatedRealms(page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<NftItem>> allNfts({
+    int? page,
+    int? itemsPerPage,
+  }) {
+    return _nftsDataSource
+        .allNfts(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -718,5 +785,31 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable transactionsListenable() {
     return _localDataSource.transactionsListenable();
+  }
+
+  //TODO:  move to region
+  @override
+  Future<List<NftItem>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+    List<String>? showIds,
+    String? orderType,
+    String? owner,
+  }) {
+    return _nftsDataSource
+        .nftsFiltered(
+            page: page,
+            itemsPerPage: itemsPerPage,
+            showIds: showIds,
+            orderType: orderType,
+            owner: owner)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<NftItem> nft(String mintAddress) {
+    return _nftsDataSource
+        .nft(mintAddress)
+        .catchError((value) => _handleException(value));
   }
 }

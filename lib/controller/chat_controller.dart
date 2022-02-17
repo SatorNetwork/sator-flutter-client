@@ -13,7 +13,6 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/environment.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
 class ChatController extends GetxController with BackToMainMixin {

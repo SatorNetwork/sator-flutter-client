@@ -72,14 +72,21 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
         text: 'txt_home'.tr,
       ),
     );
-    result.addAll(
-      controller.categoriesRx.value
-          .map(
-            (category) => Tab(
-              text: category.title,
-            ),
-          )
-          .toList(),
+    //TODO: uncomment when categories functionality will be added
+    // result.addAll(
+    //   controller.categoriesRx.value
+    //       .map(
+    //         (category) => Tab(
+    //           text: category.title,
+    //         ),
+    //       )
+    //       .toList(),
+    // );
+
+    result.add(
+      Tab(
+        text: 'txt_all'.tr,
+      ),
     );
 
     return result;
@@ -88,13 +95,15 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
   List<Widget> _generateTabContent(List<NftCategory> value) {
     List<Widget> result = [];
     result.add(_homeTab());
-    result.addAll(
-      controller.categoriesRx.value
-          .map(
-            (category) => _nftItemList(category),
-          )
-          .toList(),
-    );
+    //TODO: uncomment when categories functionality will be added
+    // result.addAll(
+    //   controller.categoriesRx.value
+    //       .map(
+    //         (category) => _nftItemList(category),
+    //       )
+    //       .toList(),
+    // );
+    result.add(_allNftsTab());
 
     return result;
   }
@@ -121,10 +130,42 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
               childAspectRatio: 0.6,
             ),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-            itemCount: controller.itemsRx.value[nftCategory.id]?.length ?? 0,
+            itemCount: controller.allNftsRx.value.length,
             itemBuilder: (context, index) {
-              final NftItem nftItem =
-                  controller.itemsRx.value[nftCategory.id]![index];
+              final NftItem nftItem = controller.allNftsRx.value[index];
+              return _nftItem(nftItem);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _allNftsTab() {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification.metrics.pixels >=
+            notification.metrics.maxScrollExtent - _threshHold)
+          controller.loadNfts();
+        return true;
+      },
+      child: RefreshIndicator(
+        color: SatorioColor.brand,
+        onRefresh: () async {
+          controller.refreshData();
+        },
+        child: Obx(
+          () => GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15 * coefficient,
+              mainAxisSpacing: 20 * coefficient,
+              childAspectRatio: 0.6,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+            itemCount: controller.allNftsRx.value.length,
+            itemBuilder: (context, index) {
+              final NftItem nftItem = controller.allNftsRx.value[index];
               return _nftItem(nftItem);
             },
           ),
@@ -146,7 +187,9 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(12)),
               child: Image.network(
-                nftItem.imageLink,
+                nftItem.nftPreview.isEmpty
+                    ? nftItem.nftLink
+                    : nftItem.nftPreview,
                 fit: BoxFit.cover,
               ),
             ),
@@ -156,7 +199,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           ),
           Container(
             child: Text(
-              nftItem.name,
+              nftItem.nftMetadata.name,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: textTheme.bodyText2!.copyWith(
@@ -218,14 +261,8 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Obx(
                   () => TitleWithButton(
-                    onTap: controller.nftHomeRx.value == null
-                        ? () {}
-                        : () {
-                            controller.toNftCategory(
-                              controller.nftHomeRx.value!.id,
-                            );
-                          },
-                    textCode: controller.nftHomeRx.value?.title ?? '',
+                    onTap: () => controller.toAllTab(),
+                    textCode: controller.nftHomeRx.value?.title ?? 'All',
                     fontSize: 24.0 * coefficient,
                     fontWeight: FontWeight.w700,
                     buttonText: 'txt_view'.tr,
@@ -241,23 +278,23 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Obx(
                   () {
-                    switch (controller.nftHomeRx.value?.items.length ?? 0) {
+                    switch (controller.allNftsRx.value.length) {
                       case 0:
                         return Container();
                       case 1:
                         return _homeNft1(
-                          controller.nftHomeRx.value!.items[0],
+                          controller.allNftsRx.value[0],
                         );
                       case 2:
                         return _homeNft2(
-                          controller.nftHomeRx.value!.items[0],
-                          controller.nftHomeRx.value!.items[1],
+                          controller.allNftsRx.value[0],
+                          controller.allNftsRx.value[1],
                         );
                       default:
                         return _homeNft3(
-                          controller.nftHomeRx.value!.items[0],
-                          controller.nftHomeRx.value!.items[1],
-                          controller.nftHomeRx.value!.items[2],
+                          controller.allNftsRx.value[0],
+                          controller.allNftsRx.value[1],
+                          controller.allNftsRx.value[2],
                         );
                     }
                   },
@@ -378,7 +415,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
               Radius.circular(17 * coefficient),
             ),
             child: Image.network(
-              nftItem.imageLink,
+              nftItem.nftPreview.isEmpty ? nftItem.nftLink : nftItem.nftPreview,
               height: 200,
               width: Get.width,
               fit: BoxFit.cover,

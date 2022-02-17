@@ -11,8 +11,8 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 class ShowEpisodeQuizController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  late final Rx<ShowSeason> showSeasonRx;
-  late final Rx<ShowEpisode> showEpisodeRx;
+  late final Rx<ShowSeason?> showSeasonRx;
+  late final Rx<ShowEpisode?> showEpisodeRx;
   late final Rx<PayloadQuestion> questionRx;
 
   final Rx<String> answerIdRx = Rx('');
@@ -86,8 +86,8 @@ class ShowEpisodeQuizController extends GetxController {
 }
 
 class ShowEpisodeQuizArgument {
-  final ShowSeason showSeason;
-  final ShowEpisode showEpisode;
+  final ShowSeason? showSeason;
+  final ShowEpisode? showEpisode;
   final PayloadQuestion payloadQuestion;
 
   const ShowEpisodeQuizArgument(

@@ -6,6 +6,7 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class ChallengePage extends GetView<ChallengeController> {
@@ -135,11 +136,9 @@ class ChallengePage extends GetView<ChallengeController> {
                       Expanded(
                         child: Obx(
                           () => Text(
-                            controller.challengeRx.value == null ||
-                                    controller
-                                        .challengeRx.value!.winners.isEmpty
+                            controller.challengeRx.value == null
                                 ? '--'
-                                : controller.challengeRx.value!.winners,
+                                : '${controller.challengeRx.value!.maxWinners}',
                             textAlign: TextAlign.end,
                             style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
@@ -167,7 +166,7 @@ class ChallengePage extends GetView<ChallengeController> {
                           () => Text(
                             controller.challengeRx.value == null
                                 ? ''
-                                : '${0} / ${controller.challengeRx.value!.players}',
+                                : '${controller.challengeRx.value!.registeredPlayers} / ${controller.challengeRx.value!.players}',
                             textAlign: TextAlign.end,
                             style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
@@ -218,6 +217,18 @@ class ChallengePage extends GetView<ChallengeController> {
                       },
                     ),
                   ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  BorderedButton(
+                    text: 'txt_invite_friends'.tr,
+                    textColor: SatorioColor.darkAccent,
+                    borderColor: SatorioColor.darkAccent,
+                    borderWidth: 1,
+                    onPressed: () {
+                      controller.shareChallenge();
+                    },
+                  ),
                 ],
               ),
             ),
@@ -266,6 +277,8 @@ class ChallengePage extends GetView<ChallengeController> {
   String _buttonText(Challenge? challenge) {
     if (challenge == null)
       return '';
+    else if (!challenge.isRealmActivated)
+      return 'txt_unlock_realm'.tr;
     else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0)
       return 'txt_back_realm'.tr;
     else
@@ -275,6 +288,8 @@ class ChallengePage extends GetView<ChallengeController> {
   void _buttonClick(Challenge? challenge) {
     if (challenge == null) {
       // nothing...
+    } else if (!challenge.isRealmActivated) {
+      controller.toEpisodeRealmDialog();
     } else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0) {
       controller.back();
     } else {

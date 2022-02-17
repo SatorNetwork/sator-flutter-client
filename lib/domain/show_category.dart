@@ -1,4 +1,4 @@
-class ShowCategory {
+class ShowCategoryType {
   static const all = 'all';
   static const highestRewarding = 'highest_rewarding';
   static const mostSocializing = 'most_socializing';

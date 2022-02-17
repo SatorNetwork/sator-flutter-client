@@ -1,18 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/lock_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
-import 'package:satorio/ui/dialog_widget/stake_dialog.dart';
 import 'package:satorio/util/extension.dart';
 
 class WalletStakeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<WalletDetail> walletDetailRx;
-  final Rx<WalletStake?> walletStakeRx = Rx(null);
+  final Rx<WalletStaking?> walletStakingRx = Rx(null);
+  final RxDouble possibleMultiplierRx = 0.0.obs;
 
   final RxBool tmpState = false.obs;
+  final RxBool pmState = false.obs;
 
   WalletStakeController() {
     WalletStakeArgument argument = Get.arguments as WalletStakeArgument;
@@ -25,42 +28,55 @@ class WalletStakeController extends GetxController {
     Get.back();
   }
 
-  void toStakeDialog() {
-    if (walletDetailRx.value.balance.length > 0) {
-      Get.dialog(
-        StakeDialog(
-          'txt_available'.tr,
-          walletDetailRx.value.balance[0].displayedValue,
-          'txt_add'.tr,
-          (double value) {
-            _stakeAmount(value);
-          },
-        ),
-      );
-    }
-  }
-
-  void toUnStakeDialog() {
-    if ((walletStakeRx.value?.walletStaking?.staked ?? 0.0) > 0 &&
-        walletDetailRx.value.balance.length > 0) {
-      Get.dialog(
-        StakeDialog(
-          'txt_staked'.tr,
-          '${walletStakeRx.value!.walletStaking!.staked} ${walletDetailRx.value.balance[0].currency}',
-          'txt_substract'.tr,
-          (double value) {
-            _unstakeAmount(value);
-          },
-        ),
-      );
-    }
-  }
-
   void _updateWalletStake() {
     _satorioRepository
         .getStake(walletDetailRx.value.id)
-        .then((WalletStake walletStake) {
-      walletStakeRx.value = walletStake;
+        .then((WalletStaking walletStaking) {
+      walletStakingRx.value = walletStaking;
+      tmpState.value = walletStakingRx.value!.lockedByYou > 0;
+      pmState.value = walletStakingRx.value!.currentMultiplier > 0;
+    });
+  }
+
+  void toLockRewardsBottomSheet() {
+    if (walletDetailRx.value.balance.length <= 0) return;
+    possibleMultiplierRx.value = 0.0;
+    Get.bottomSheet(
+      LockRewardsBottomSheet(
+          'txt_available_lock'.tr,
+          walletDetailRx.value.balance[0].displayedValue,
+          walletStakingRx.value!,
+          walletDetailRx.value,
+          'txt_add'.tr, (double value) {
+        _stakeAmount(value);
+      }, () {}, false, this),
+      isScrollControlled: true,
+    );
+  }
+
+  void toUnLockRewardsBottomSheet() {
+    if (walletDetailRx.value.balance.length <= 0) return;
+    Get.bottomSheet(
+      LockRewardsBottomSheet(
+          'txt_unlock'.tr,
+          walletDetailRx.value.balance[0].displayedValue,
+          walletStakingRx.value!,
+          walletDetailRx.value,
+          'txt_unlock'.tr,
+          (double value) {}, () {
+        _unstakeAmount();
+      }, true, this),
+      isScrollControlled: true,
+    );
+  }
+
+  void possibleMultiplier(double? amount) {
+    if (amount == null) {
+      possibleMultiplierRx.value = 0.0;
+      return;
+    }
+    _satorioRepository.possibleMultiplier(walletDetailRx.value.id, amount).then((value) {
+      possibleMultiplierRx.value = value;
     });
   }
 
@@ -73,6 +89,7 @@ class WalletStakeController extends GetxController {
         .then(
       (bool result) {
         if (result) {
+          possibleMultiplier(amount);
           _updateWalletStake();
           tmpState.value = true;
         }
@@ -80,22 +97,26 @@ class WalletStakeController extends GetxController {
         Get.dialog(
           DefaultDialog(
             result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result ? 'txt_stake_success'.tr.format(
+            result
+                ? 'txt_stake_success'.tr.format(
                     [
-                      amount.toStringAsFixed(2),
-                      walletDetailRx.value.balance[0].currency
+                      amount.toString(),
+                      walletDetailRx.value.balance[0].currency,
+                      possibleMultiplierRx.value,
                     ],
                   )
                 : 'txt_something_wrong'.tr,
             result ? 'txt_cool'.tr : 'txt_ok'.tr,
+            onButtonPressed: () => result ? _updateWalletStake() : () {},
+            icon: result ? Icons.check_rounded : null,
           ),
         );
       },
     );
   }
 
-  void _unstakeAmount(double amount) {
-    _satorioRepository.unstake(walletDetailRx.value.id, amount).then(
+  void _unstakeAmount() {
+    _satorioRepository.unstake(walletDetailRx.value.id).then(
       (bool result) {
         if (result) {
           _updateWalletStake();
@@ -105,9 +126,10 @@ class WalletStakeController extends GetxController {
         Get.dialog(
           DefaultDialog(
             result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result ? 'txt_unstake_success'.tr.format(
+            result
+                ? 'txt_unstake_success'.tr.format(
                     [
-                      amount.toStringAsFixed(2),
+                      walletStakingRx.value?.lockedByYou.toStringAsFixed(2),
                       walletDetailRx.value.balance[0].currency
                     ],
                   )

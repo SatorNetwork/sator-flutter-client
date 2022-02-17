@@ -13,13 +13,12 @@ import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/domain/show_category.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
@@ -32,13 +31,9 @@ class HomeController extends GetxController
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<AmountCurrency>> walletRx = Rx([]);
 
-  late final Rx<NftHome?> nftHomeRx;
-  final Rx<List<Show>> showsHighestRewardingRx = Rx([]);
-  final Rx<List<Show>> showsPopularMoviesRx = Rx([]);
-  final Rx<List<Show>> showsMusicRealmsRx = Rx([]);
-  final Rx<List<Show>> showsMostSocializingRx = Rx([]);
-  final Rx<List<Show>> showsNewestAddedRx = Rx([]);
+  late final Rx<List<NftItem>> nftHomeRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
+  final Rx<List<ShowCategory>> categoriesRx = Rx([]);
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
@@ -52,20 +47,21 @@ class HomeController extends GetxController
 
     this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
-
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      nftHomeRx = mainController.nftHomeRx;
-    } else {
-      nftHomeRx = Rx(null);
-    }
+    _satorioRepository
+        .nftsFiltered(
+      page: _initialPage,
+      itemsPerPage: _itemsPerPage,
+    )
+        .then((value) {
+      nftHomeRx.value = value;
+    });
   }
 
   @override
   void onInit() {
     super.onInit();
     _loadAllShows();
-    _loadShowByCategoryName();
+    _loadCategories();
 
     _profileListener();
     profileListenable.addListener(_profileListener);
@@ -89,8 +85,42 @@ class HomeController extends GetxController
 
     _satorioRepository.updateProfile();
     _satorioRepository.updateWalletBalance();
+
+    _loadCategories();
     _loadAllShows();
-    _loadShowByCategoryName();
+  }
+
+  void _loadCategories() {
+    _satorioRepository
+        .showsCategoryList(page: _initialPage, itemsPerPage: _itemsPerPage)
+        .then((List<ShowCategory> categories) {
+      categories.forEach(
+        (category) {
+          _satorioRepository
+              .showsFromCategory(category.id)
+              .then((List<Show> shows) {
+            final ShowCategory showCategory = ShowCategory(category.id,
+                category.title, category.disabled, category.sort, shows);
+            categoriesRx.update((value) {
+              final index =
+                  value!.indexWhere((element) => element.id == showCategory.id);
+              if (index >= 0) {
+                value.removeAt(index);
+                value.insert(index, showCategory);
+                _sortShows(value);
+              } else {
+                value.add(showCategory);
+                _sortShows(value);
+              }
+            });
+          });
+        },
+      );
+    });
+  }
+
+  void _sortShows(List<ShowCategory> shows) {
+    shows.sort((a, b) => a.sort.compareTo(b.sort));
   }
 
   void _loadAllShows() {
@@ -101,43 +131,21 @@ class HomeController extends GetxController
     });
   }
 
-  void _loadShowByCategoryName() {
-    _satorioRepository
-        .showsFromCategory(ShowCategory.highestRewarding)
-        .then((List<Show> shows) {
-      showsHighestRewardingRx.value = shows;
-    });
-
-    _satorioRepository
-        .showsFromCategory(ShowCategory.mostSocializing)
-        .then((List<Show> shows) {
-      showsMostSocializingRx.value = shows;
-    });
-
-    _satorioRepository
-        .showsFromCategory(ShowCategory.newestAdded)
-        .then((List<Show> shows) {
-      showsNewestAddedRx.value = shows;
-    });
-
-    _satorioRepository
-        .showsFromCategory(ShowCategory.popularMovies)
-        .then((List<Show> shows) {
-      showsPopularMoviesRx.value = shows;
-    });
-
-    _satorioRepository
-        .showsFromCategory(ShowCategory.musicRealms)
-        .then((List<Show> shows) {
-      showsMusicRealmsRx.value = shows;
-    });
-  }
-
-  void toShowsCategory(String categoryName) {
+  void toShowsCategory(ShowCategory showCategory) {
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(categoryName, ShowsType.HomeAllShows),
+      arguments: ShowsCategoryArgument(
+          showCategory.id, showCategory.title, ShowsType.HomeAllShows),
+    );
+  }
+
+  void toAllShows() {
+    Get.to(
+      () => ShowsCategoryPage(),
+      binding: ShowsCategoryBinding(),
+      arguments: ShowsCategoryArgument(
+          'all', 'txt_all_realms'.tr, ShowsType.HomeAllShows),
     );
   }
 
@@ -151,7 +159,7 @@ class HomeController extends GetxController
 
   void toShowNfts(String showId) {
     Get.to(
-          () => NftListPage(),
+      () => NftListPage(),
       binding: NftListBinding(),
       arguments: NftListArgument(NftFilterType.Show, showId),
     );

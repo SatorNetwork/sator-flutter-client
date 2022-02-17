@@ -7,7 +7,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   RemoteConfig _remoteConfig = RemoteConfig.instance;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  final bool isProduction = true;
+  final bool isProduction = false;
 
   Future<void> initRemoteConfig() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
@@ -43,6 +43,16 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   Future<String> apiBaseUrl() async {
     return _remoteConfig
         .getString(isProduction ? 'api_base_prod_url' : 'api_base_dev_url');
+  }
+
+  Future<String> nftsApiUrl() async {
+    return _remoteConfig
+        .getString(isProduction ? 'nfts_api_prod_url' : 'nfts_api_dev_url');
+  }
+
+  Future<String> nftsMarketplaceUrl() async {
+    return _remoteConfig.getString(
+        isProduction ? 'nft_prod_marketplace' : 'nft_dev_marketplace');
   }
 
   Future<String> firebaseUrl() async {

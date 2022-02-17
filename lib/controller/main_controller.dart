@@ -1,8 +1,11 @@
 import 'package:get/get.dart';
+import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
+import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
-import 'package:satorio/domain/entities/nft_home.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 
 class MainController extends GetxController {
@@ -16,7 +19,7 @@ class MainController extends GetxController {
 
   final RxInt selectedBottomTabIndex = 0.obs;
 
-  final Rx<NftHome?> nftHomeRx = Rx(null);
+  final Rx<List<NftItem>> nftHomeRx = Rx([]);
 
   @override
   void onInit() {
@@ -24,6 +27,37 @@ class MainController extends GetxController {
     _loadProfile();
     _loadWalletBalance();
     loadNftHome();
+  }
+
+  @override
+  void onReady() {
+    _tryHandleDeepLink();
+  }
+
+  void _tryHandleDeepLink() {
+    if (Get.arguments != null && Get.arguments is MainArgument) {
+      final deepLink = (Get.arguments as MainArgument).deepLink;
+
+      if (deepLink != null) {
+        final List<String> pathSegments = deepLink.pathSegments;
+        switch (pathSegments.length) {
+          case 1:
+            {
+              if (pathSegments[0] == 'quiz-invite') {
+                final id = deepLink.queryParameters['id'];
+                if (id != null && id.isNotEmpty) {
+                  Get.to(
+                    () => ChallengePage(),
+                    binding: ChallengeBinding(),
+                    arguments: ChallengeArgument(id),
+                  );
+                }
+              }
+              break;
+            }
+        }
+      }
+    }
   }
 
   void _loadProfile() {
@@ -35,11 +69,9 @@ class MainController extends GetxController {
   }
 
   void loadNftHome() {
-    _satorioRepository.nftHome().then(
-      (NftHome nftHome) {
-        nftHomeRx.value = nftHome;
-      },
-    );
+    _satorioRepository.nftsFiltered().then((value) {
+      nftHomeRx.value = value;
+    });
   }
 
   void toQrScanner() {
@@ -49,4 +81,10 @@ class MainController extends GetxController {
       arguments: QrScannerArgument(false),
     );
   }
+}
+
+class MainArgument {
+  final Uri? deepLink;
+
+  const MainArgument(this.deepLink);
 }

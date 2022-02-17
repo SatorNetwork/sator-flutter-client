@@ -1,10 +1,10 @@
-import 'package:get/get.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nats_config_model.dart';
 import 'package:satorio/data/model/nft_category_model.dart';
 import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
@@ -13,6 +13,7 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
+import 'package:satorio/data/model/show_category_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
@@ -21,7 +22,7 @@ import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
-import 'package:satorio/data/model/wallet_stake_model.dart';
+import 'package:satorio/data/model/wallet_staking_model.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 
 abstract class ApiDataSource {
@@ -79,6 +80,8 @@ abstract class ApiDataSource {
 
   Future<bool> resetPassword(String email, String code, String newPassword);
 
+  Future<bool> publicKey();
+
   // endregion
 
   // region KYC
@@ -112,17 +115,24 @@ abstract class ApiDataSource {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<double> possibleMultiplier(String walletId, double amount);
+
   Future<bool> stake(String walletId, double amount);
 
-  Future<bool> unstake(String walletId, double amount);
+  Future<bool> unstake(String walletId);
 
-  Future<WalletStakeModel> getStake(String walletId);
+  Future<WalletStakingModel> getStake(String walletId);
 
   // endregion
 
   // region Shows
 
   Future<List<ShowModel>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
+
+  Future<List<ShowCategoryModel>> showsCategoryList({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<List<ShowModel>> showsFromCategory(
     String category, {
@@ -191,7 +201,7 @@ abstract class ApiDataSource {
 
   // region Quiz
 
-  Future<String> quizSocketUrl(String challengeId);
+  Future<NatsConfigModel> quizNats(String challengeId);
 
   // endregion
 
@@ -213,6 +223,11 @@ abstract class ApiDataSource {
 
   // region NFT
 
+  Future<List<NftItemModel>> allNfts({
+    int? page,
+    int? itemsPerPage,
+  });
+
   Future<NftHomeModel> nftHome();
 
   Future<List<NftCategoryModel>> nftCategories();
@@ -227,18 +242,6 @@ abstract class ApiDataSource {
   Future<NftItemModel> nftItem(String nftItemId);
 
   Future<bool> buyNftItem(String nftItemId);
-
-  // endregion
-
-  // region Socket
-
-  Future<GetSocket> createSocket(String url);
-
-  Future<void> sendAnswer(
-    GetSocket? socket,
-    String questionId,
-    String answerId,
-  );
 
 // endregion
 

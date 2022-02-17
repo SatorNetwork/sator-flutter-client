@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,6 +87,7 @@ class ShowEpisodeRealmController extends GetxController
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
+  final RxBool isEnabledRx = true.obs;
 
   late ValueListenable<Box<Profile>> profileListenable;
   late Profile profile;
@@ -214,6 +217,10 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void rateReview(String reviewId, String ratingType) {
+    isEnabledRx.value = false;
+
+    Timer(Duration(milliseconds: 2000), () => isEnabledRx.value = true);
+
     _satorioRepository.rateReview(reviewId, ratingType).then((value) {
       if (value) {
         _satorioRepository
@@ -275,7 +282,6 @@ class ShowEpisodeRealmController extends GetxController
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
         },
-        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
       isScrollControlled: true,
       enableDrag: false,
@@ -466,20 +472,19 @@ class ShowEpisodeRealmController extends GetxController
         .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
         .then((List<Review> reviews) {
       reviewsRx.update((value) {
-        if (value != null) value.addAll(reviews);
+        if (value != null) {
+          value.clear();
+          value.addAll(reviews);
+        }
       });
     });
   }
 
   void _loadNftItems() {
-    _satorioRepository
-        .nftItems(
-      NftFilterType.Episode,
-      showEpisodeRx.value.id,
-      page: _initialPage,
-      itemsPerPage: _itemsPerPage,
-    )
-        .then(
+    _satorioRepository.nftsFiltered(
+        page: _initialPage,
+        itemsPerPage: _itemsPerPage,
+        showIds: [showDetailRx.value.id]).then(
       (List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       },
