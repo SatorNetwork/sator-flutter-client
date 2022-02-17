@@ -19,6 +19,7 @@ class Challenge {
   final int questionsPerGame;
   final int minCorrectAnswers;
   final bool isRealmActivated;
+  final int registeredPlayers;
 
   const Challenge(
     this.id,
@@ -41,5 +42,6 @@ class Challenge {
     this.questionsPerGame,
     this.minCorrectAnswers,
     this.isRealmActivated,
+    this.registeredPlayers,
   );
 }
