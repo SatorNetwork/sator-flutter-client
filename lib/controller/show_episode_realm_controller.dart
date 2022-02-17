@@ -282,7 +282,6 @@ class ShowEpisodeRealmController extends GetxController
         onPaidUnlockPressed: () {
           _toRealmPaidActivationBottomSheet();
         },
-        isZeroSeason: showSeasonRx.value.seasonNumber == 0,
       ),
       isScrollControlled: true,
       enableDrag: false,
@@ -482,13 +481,10 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _loadNftItems() {
-    _satorioRepository
-        .nftsFiltered(
-      page: _initialPage,
-      itemsPerPage: _itemsPerPage,
-      showIds: [showDetailRx.value.id]
-    )
-        .then(
+    _satorioRepository.nftsFiltered(
+        page: _initialPage,
+        itemsPerPage: _itemsPerPage,
+        showIds: [showDetailRx.value.id]).then(
       (List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       },

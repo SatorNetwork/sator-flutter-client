@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:satorio/controller/profile_controller.dart';
@@ -431,7 +430,9 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[2].nftPreview.isNotEmpty
+                                                      nfts[2]
+                                                              .nftPreview
+                                                              .isNotEmpty
                                                           ? nfts[2].nftPreview
                                                           : nfts[2].nftLink,
                                                       fit: BoxFit.cover,
@@ -457,7 +458,9 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[3].nftPreview.isNotEmpty
+                                                      nfts[3]
+                                                              .nftPreview
+                                                              .isNotEmpty
                                                           ? nfts[3].nftPreview
                                                           : nfts[3].nftLink,
                                                       fit: BoxFit.cover,

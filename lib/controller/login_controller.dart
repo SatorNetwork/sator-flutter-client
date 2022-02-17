@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
-
 import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/binding/password_recovery_binding.dart';
 import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/controller/email_verification_controller.dart';
+import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
@@ -42,7 +42,7 @@ class LoginController extends GetxController with ValidationMixin {
       LoginArgument argument = Get.arguments as LoginArgument;
       deepLink = argument.deepLink;
     }
-
+    print('LoginController deepLink: $deepLink');
     _getBiometric();
   }
 
@@ -206,12 +206,13 @@ class LoginController extends GetxController with ValidationMixin {
         Get.offAll(
           () => MainPage(),
           binding: MainBinding(),
+          arguments: MainArgument(deepLink),
         );
       else
         Get.to(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
-          arguments: EmailVerificationArgument(emailRx.value, false),
+          arguments: EmailVerificationArgument(emailRx.value, false, deepLink),
         );
       isRequested.value = false;
     });

@@ -12,6 +12,7 @@ import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -84,16 +85,17 @@ class NftCategoriesController extends GetxController
     Get.to(
       () => ShowsCategoryPage(),
       binding: ShowsCategoryBinding(),
-      arguments: ShowsCategoryArgument(ShowCategoryType.withNfts, null, ShowsType.NftsAllShows),
+      arguments: ShowsCategoryArgument(
+          ShowCategoryType.withNfts, null, ShowsType.NftsAllShows),
     );
   }
 
   void toShowNfts(String showId) {
-      Get.to(
-            () => NftListPage(),
-        binding: NftListBinding(),
-        arguments: NftListArgument(NftFilterType.Show, showId),
-      );
+    Get.to(
+      () => NftListPage(),
+      binding: NftListBinding(),
+      arguments: NftListArgument(NftFilterType.Show, showId),
+    );
   }
 
   void toNftItem(final NftItem nftItem) {
@@ -124,38 +126,39 @@ class NftCategoriesController extends GetxController
 
     Future.value(true)
         .then((value) {
-      _isLoadRx.value = true;
-      return value;
-    })
+          _isLoadRx.value = true;
+          return value;
+        })
         .then(
           (value) => _satorioRepository.nftsFiltered(
-        page: _nftsPageRx.value,
-        itemsPerPage: _itemsPerPage,
-      ),
-    )
+              page: _nftsPageRx.value,
+              itemsPerPage: _itemsPerPage,
+              orderType: NftOrderOnSaleType.onSale),
+        )
         .then(
           (List<NftItem> nftItems) {
-        allNftsRx.update((value) {
-          if (value != null) value.addAll(nftItems);
-        });
-        _isLoadedRx.value = nftItems.isEmpty;
-        _isLoadRx.value = false;
-        _nftsPageRx.value = _nftsPageRx.value + 1;
-      },
-    )
+            allNftsRx.update((value) {
+              if (value != null) value.addAll(nftItems);
+            });
+            _isLoadedRx.value = nftItems.isEmpty;
+            _isLoadRx.value = false;
+            _nftsPageRx.value = _nftsPageRx.value + 1;
+          },
+        )
         .catchError(
           (value) {
             _isLoadRx.value = false;
-      },
-    );
+          },
+        );
   }
 
   void _loadNftCategories() {
     _satorioRepository.nftCategories().then(
       (List<NftCategory> categories) {
         tabController = TabController(
-          //TODO: categories.length +
-            length: _fixedTabLength, vsync: this);
+            //TODO: categories.length +
+            length: _fixedTabLength,
+            vsync: this);
 
         categoriesRx.value = categories;
 

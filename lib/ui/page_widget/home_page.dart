@@ -189,7 +189,6 @@ class HomePage extends GetView<HomeController> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       itemCount: _itemsPerPage.value,
                       itemBuilder: (context, index) {
-
                         final NftItem nftItem =
                             controller.nftHomeRx.value[index];
                         return _nftItem(nftItem);
@@ -411,10 +410,11 @@ class HomePage extends GetView<HomeController> {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
-                nftItem.nftPreview.isEmpty ? nftItem.nftLink :
-                nftItem.nftPreview,
+                nftItem.nftPreview.isEmpty
+                    ? nftItem.nftLink
+                    : nftItem.nftPreview,
                 width: width,
-                height: height - 25 * coefficient,
+                height: height, //height - 25 * coefficient,
                 fit: BoxFit.cover,
               ),
             ),

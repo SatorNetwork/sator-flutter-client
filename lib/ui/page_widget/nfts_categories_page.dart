@@ -132,8 +132,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             itemCount: controller.allNftsRx.value.length,
             itemBuilder: (context, index) {
-              final NftItem nftItem =
-                  controller.allNftsRx.value[index];
+              final NftItem nftItem = controller.allNftsRx.value[index];
               return _nftItem(nftItem);
             },
           ),
@@ -156,7 +155,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           controller.refreshData();
         },
         child: Obx(
-              () => GridView.builder(
+          () => GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 15 * coefficient,
@@ -166,8 +165,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
             itemCount: controller.allNftsRx.value.length,
             itemBuilder: (context, index) {
-              final NftItem nftItem =
-              controller.allNftsRx.value[index];
+              final NftItem nftItem = controller.allNftsRx.value[index];
               return _nftItem(nftItem);
             },
           ),
@@ -189,7 +187,9 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(12)),
               child: Image.network(
-                nftItem.nftPreview.isEmpty ? nftItem.nftLink : nftItem.nftPreview,
+                nftItem.nftPreview.isEmpty
+                    ? nftItem.nftLink
+                    : nftItem.nftPreview,
                 fit: BoxFit.cover,
               ),
             ),

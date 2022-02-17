@@ -1,7 +1,7 @@
-import 'package:satorio/data/model/payload/payload_winner_model.dart';
+import 'package:satorio/data/model/payload/payload_player_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
-import 'package:satorio/domain/entities/payload/payload_winner.dart';
+import 'package:satorio/domain/entities/payload/payload_player.dart';
 import 'package:satorio/util/extension.dart';
 
 class PayloadChallengeResultModel extends PayloadChallengeResult
@@ -10,12 +10,14 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
     String challengeId,
     String prizePool,
     String showTransactionUrl,
-    List<PayloadWinner> winners,
+    List<PayloadPlayer> winners,
+    List<PayloadPlayer> losers,
   ) : super(
           challengeId,
           prizePool,
           showTransactionUrl,
           winners,
+          losers,
         );
 
   factory PayloadChallengeResultModel.fromJson(Map json) =>
@@ -27,7 +29,13 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
             ? []
             : (json['winners'] as Iterable)
                 .where((element) => element != null)
-                .map((element) => PayloadWinnerModel.fromJson(element))
+                .map((element) => PayloadPlayerModel.fromJson(element))
+                .toList(),
+        (json['losers'] == null || !(json['losers'] is Iterable))
+            ? []
+            : (json['losers'] as Iterable)
+                .where((element) => element != null)
+                .map((element) => PayloadPlayerModel.fromJson(element))
                 .toList(),
       );
 
@@ -37,8 +45,12 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
         'prize_pool': prizePool,
         'show_transaction_url': showTransactionUrl,
         'winners': winners
-            .where((element) => element is ToJsonInterface)
-            .map((element) => (element as ToJsonInterface).toJson())
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
+            .toList(),
+        'losers': losers
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
             .toList(),
       };
 }

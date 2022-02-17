@@ -329,7 +329,8 @@ class NftItemPage extends GetView<NftItemController> {
                         : ElevatedGradientButton(
                             text: 'txt_to_marketplace'.tr,
                             onPressed: () {
-                              controller.toMarketplace(controller.nftItemRx.value.mintAddress);
+                              controller.toMarketplace(
+                                  controller.nftItemRx.value.mintAddress);
                             },
                           ),
                   ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:satorio/controller/wallet_stake_controller.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -24,6 +25,7 @@ class LockRewardsBottomSheet extends StatelessWidget {
   final AmountEnterLockCallback onLockPressed;
   final AmountEnterUnlockCallback onUnlockPressed;
   final bool isUnlock;
+  final WalletStakeController _controller;
 
   final TextEditingController _amountController = TextEditingController();
 
@@ -35,7 +37,8 @@ class LockRewardsBottomSheet extends StatelessWidget {
       this.buttonText,
       this.onLockPressed,
       this.onUnlockPressed,
-      this.isUnlock);
+      this.isUnlock,
+      this._controller);
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +90,17 @@ class LockRewardsBottomSheet extends StatelessWidget {
                     fontWeight: FontWeight.w400),
               ),
               Expanded(
-                child: Text(
-                  '400%',
-                  textAlign: TextAlign.end,
-                  style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.interactive,
-                      fontSize: 17.0 * coefficient,
-                      fontWeight: FontWeight.w600),
+                child: Obx(
+                  () => Text(
+                    _controller.possibleMultiplierRx.value > 0
+                        ? '+${_controller.possibleMultiplierRx.value}%'
+                        : '${_controller.possibleMultiplierRx.value}%',
+                    textAlign: TextAlign.end,
+                    style: textTheme.bodyText1!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 17.0 * coefficient,
+                        fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ],
@@ -121,49 +128,50 @@ class LockRewardsBottomSheet extends StatelessWidget {
                   ),
                 )
               : _amountInput(),
-          isUnlock
-              ? SizedBox()
-              : Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'txt_transaction_fee'.tr,
-                        style: textTheme.bodyText1!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 12.0 * coefficient,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        text: '35 SAO',
-                        style: textTheme.bodyText1!.copyWith(
-                          color: Colors.black.withOpacity(0.7),
-                          fontSize: 12 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: ' / ',
-                            style: textTheme.bodyText1!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 12 * coefficient,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          TextSpan(
-                            text: '\$24.92',
-                            style: textTheme.bodyText1!.copyWith(
-                              color: SatorioColor.interactive,
-                              fontSize: 12 * coefficient,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+          //TODO: uncomment when functionality will be added
+          // isUnlock
+          //     ? SizedBox()
+          //     : Row(
+          //         children: [
+          //           Expanded(
+          //             child: Text(
+          //               'txt_transaction_fee'.tr,
+          //               style: textTheme.bodyText1!.copyWith(
+          //                   color: SatorioColor.textBlack,
+          //                   fontSize: 12.0 * coefficient,
+          //                   fontWeight: FontWeight.w400),
+          //             ),
+          //           ),
+          //           RichText(
+          //             text: TextSpan(
+          //               text: '35 SAO',
+          //               style: textTheme.bodyText1!.copyWith(
+          //                 color: Colors.black.withOpacity(0.7),
+          //                 fontSize: 12 * coefficient,
+          //                 fontWeight: FontWeight.w700,
+          //               ),
+          //               children: <TextSpan>[
+          //                 TextSpan(
+          //                   text: ' / ',
+          //                   style: textTheme.bodyText1!.copyWith(
+          //                     color: SatorioColor.textBlack,
+          //                     fontSize: 12 * coefficient,
+          //                     fontWeight: FontWeight.w400,
+          //                   ),
+          //                 ),
+          //                 TextSpan(
+          //                   text: '\$24.92',
+          //                   style: textTheme.bodyText1!.copyWith(
+          //                     color: SatorioColor.interactive,
+          //                     fontSize: 12 * coefficient,
+          //                     fontWeight: FontWeight.w400,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ],
+          //       ),
           Spacer(),
           ElevatedGradientButton(
             text: buttonText,
@@ -194,6 +202,12 @@ class LockRewardsBottomSheet extends StatelessWidget {
         DecimalTextInputFormatter(decimalRange: 6),
         FilteringTextInputFormatter.allow(RegExp(amountPattern))
       ],
+      onChanged: (value) {
+        Future.delayed(
+            Duration(seconds: 1),
+            () => _controller
+                .possibleMultiplier(_amountController.text.tryParse()));
+      },
       obscureText: false,
       keyboardType: TextInputType.numberWithOptions(decimal: true),
       minLines: 1,

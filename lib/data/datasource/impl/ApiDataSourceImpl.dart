@@ -5,18 +5,18 @@ import 'package:get/get_connect/connect.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
 import 'package:satorio/data/model/episode_activation_model.dart';
+import 'package:satorio/data/model/nats_config_model.dart';
 import 'package:satorio/data/model/nft_category_model.dart';
 import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
-import 'package:satorio/data/model/payload/payload_answer_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
-import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
@@ -26,7 +26,6 @@ import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
-import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
@@ -38,6 +37,7 @@ import 'package:satorio/data/request/create_transfer_request.dart';
 import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/paid_unlock_request.dart';
+import 'package:satorio/data/request/public_key_request.dart';
 import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/select_avatar_request.dart';
@@ -54,9 +54,9 @@ import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
 import 'package:satorio/data/response/attempts_left_response.dart';
 import 'package:satorio/data/response/auth_response.dart';
+import 'package:satorio/data/response/possible_multiplier_response.dart';
 import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
-import 'package:satorio/data/response/socket_url_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/util/extension.dart';
 
@@ -64,8 +64,10 @@ class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
   final AuthDataSource _authDataSource;
   final FirebaseDataSource _firebaseDataSource;
+  final EncryptManager _encryptManager;
 
-  ApiDataSourceImpl(this._authDataSource, this._firebaseDataSource);
+  ApiDataSourceImpl(
+      this._authDataSource, this._firebaseDataSource, this._encryptManager);
 
   @override
   Future<void> init() async {
@@ -100,14 +102,6 @@ class ApiDataSourceImpl implements ApiDataSource {
     );
   }
 
-  Future<void> _sendViaSocket(GetSocket? socket, ToJsonInterface data) async {
-    if (socket != null) {
-      String jsonData = json.encode(data.toJson());
-      print('onSend $jsonData');
-      socket.send(jsonData);
-    }
-    return;
-  }
   // endregion
 
   // region Local Auth
@@ -180,10 +174,12 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> signUp(String email, String password, String username) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/signup',
       SignUpRequest(email, password, username),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
@@ -193,7 +189,8 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> requestUpdateEmail(String email) {
-    return _getConnect.requestPost('auth/request-update-email', UpdateEmailRequest(email))
+    return _getConnect
+        .requestPost('auth/request-update-email', UpdateEmailRequest(email))
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -201,7 +198,8 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> updateUsername(String username) {
-    return _getConnect.requestPost('auth/update-username', UpdateUsernameRequest(username))
+    return _getConnect
+        .requestPost('auth/update-username', UpdateUsernameRequest(username))
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
@@ -209,7 +207,8 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> changePassword(String oldPassword, String newPassword) {
-    return _getConnect.requestPost('auth/change-password',
+    return _getConnect
+        .requestPost('auth/change-password',
             ChangePasswordRequest(oldPassword, newPassword))
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
@@ -218,68 +217,82 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> apiLogout() {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/logout',
       EmptyRequest(),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> verifyAccount(String code) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/verify-account',
       VerifyAccountRequest(code),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> verifyUpdateEmail(String email, String code) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/update-email',
       VerifyUpdateEmailRequest(email, code),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> isVerified() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'auth/is-verified',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> selectAvatar(String avatarPath) {
-    return _getConnect.requestPut(
+    return _getConnect
+        .requestPut(
       'profile/avatar',
       SelectAvatarRequest(avatarPath),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> resendCode() {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/resend-otp',
       EmptyRequest(),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return response.isOk;
     });
   }
 
   @override
   Future<bool> refreshToken() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'auth/refresh-token',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       String token =
           AuthResponse.fromJson(json.decode(response.bodyString!)).accessToken;
       _authDataSource.storeAuthToken(token);
@@ -289,9 +302,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> validateToken() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'auth',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       if (response.isOk) {
         return ResultResponse.fromJson(json.decode(response.bodyString!))
             .result;
@@ -303,31 +318,53 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> forgotPassword(String email) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/forgot-password',
       ForgotPasswordRequest(email),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> validateResetPasswordCode(String email, String code) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/validate-reset-password-code',
       ValidateResetPasswordCodeRequest(email, code),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> resetPassword(String email, String code, String newPassword) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'auth/reset-password',
       ResetPasswordRequest(email, code, newPassword),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  @override
+  Future<bool> publicKey() {
+    return _encryptManager
+        .createRSAgetPublicKey()
+        .then(
+          (publicKey) => _getConnect.requestPost(
+            'auth/user/public_key/register',
+            PublicKeyRequest(publicKey),
+          ),
+        )
+        .then((Response response) {
+      return response.isOk;
     });
   }
 
@@ -336,9 +373,11 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region KYC
 
   Future<String> kycToken() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'auth/kyc/access_token',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return json.decode(response.bodyString!)['data'];
     });
   }
@@ -349,9 +388,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ProfileModel> profile() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'profile',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ProfileModel.fromJson(json.decode(response.bodyString!)['data']);
     });
   }
@@ -362,9 +403,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<AmountCurrencyModel>> walletBalance() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'balance',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -377,9 +420,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<WalletModel>> wallets() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'wallets',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -392,9 +437,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<WalletDetailModel> walletDetail(String detailPath) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       detailPath,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return WalletDetailModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
@@ -407,10 +454,12 @@ class ApiDataSourceImpl implements ApiDataSource {
     if (from != null) query['from'] = from.toIso8601String();
     if (to != null) query['to'] = to.toIso8601String();
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       transactionsPath,
       query: query.isEmpty ? null : query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -424,10 +473,12 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<TransferModel> createTransfer(
       String fromWalletId, String recipientAddress, double amount) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'wallets/$fromWalletId/create-transfer',
       CreateTransferRequest(recipientAddress, amount),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       return TransferModel.fromJson(jsonData['data']);
     });
@@ -435,39 +486,57 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> confirmTransfer(String fromWalletId, String txHash) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'wallets/$fromWalletId/confirm-transfer',
       ConfirmTransferRequest(txHash),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
-  Future<bool> stake(String walletId, double amount) {
+  Future<double> possibleMultiplier(String walletId, double amount) {
     return _getConnect.requestPost(
-      'wallets/$walletId/stake',
+      'wallets/$walletId/possible-multiplier',
       WalletStakeRequest(amount),
     ).then((Response response) {
+      return PossibleMultiplierResponse.fromJson(json.decode(response.bodyString!)).possibleMultiplier;
+    });
+  }
+
+  @override
+  Future<bool> stake(String walletId, double amount) {
+    return _getConnect
+        .requestPost(
+      'wallets/$walletId/stake',
+      WalletStakeRequest(amount),
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> unstake(String walletId) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'wallets/$walletId/unstake',
       EmptyRequest(),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<WalletStakingModel> getStake(String walletId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'wallets/$walletId/stake',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return WalletStakingModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
@@ -488,10 +557,12 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -515,10 +586,12 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/categories',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -543,10 +616,12 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/filter/$category',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -559,9 +634,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ShowDetailModel> showDetail(String showId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/$showId',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       return ShowDetailModel.fromJson(jsonData['data']);
     });
@@ -569,9 +646,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<List<ShowSeasonModel>> showSeasons(String showId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/$showId/episodes',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       List<ShowSeasonModel> result;
       if (jsonData['data'] is Iterable)
@@ -587,9 +666,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ShowEpisodeModel> showEpisode(String showId, String episodeId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/$showId/episodes/$episodeId',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ShowEpisodeModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
@@ -604,10 +685,12 @@ class ApiDataSourceImpl implements ApiDataSource {
       query['page'] = page.toString();
     }
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/$showId/challenges',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -628,10 +711,12 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/$showId/episodes/$episodeId/reviews',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -652,10 +737,12 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/episodes',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -675,10 +762,12 @@ class ApiDataSourceImpl implements ApiDataSource {
       if (itemsPerPage != null)
         query['items_per_page'] = itemsPerPage.toString();
     }
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/reviews',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
@@ -695,9 +784,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<ShowModel> loadShow(String showId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'shows/$showId',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
 
       return ShowModel.fromJson(jsonData['data']);
@@ -706,9 +797,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'qrcodes/$qrCodeId',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
 
       return QrShowModel.fromJson(jsonData['data']);
@@ -717,28 +810,34 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> clapShow(String showId) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'shows/$showId/claps',
       EmptyRequest(),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<ChallengeModel> challenge(String challengeId) {
-    return _getConnect.requestGet(
-      'challenges/$challengeId',
-    ).then((Response response) {
+    return _getConnect
+        .requestGet(
+      'quiz_v2/challenges/$challengeId',
+    )
+        .then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
     });
   }
 
   @override
   Future<EpisodeActivationModel> isEpisodeActivated(String episodeId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'challenges/$episodeId/is-activated',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
     });
   }
@@ -748,19 +847,23 @@ class ApiDataSourceImpl implements ApiDataSource {
     String episodeId,
     String paidOption,
   ) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'challenges/unlock/$episodeId',
       PaidUnlockRequest(paidOption),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return EpisodeActivationModel.fromJson(json.decode(response.bodyString!));
     });
   }
 
   @override
   Future<int> showEpisodeAttemptsLeft(String episodeId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'challenges/$episodeId/attempts-left',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return AttemptsLeftResponse.fromJson(
               json.decode(response.bodyString!)['data'])
           .attemptsLeft;
@@ -769,9 +872,11 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<PayloadQuestionModel> showEpisodeQuizQuestion(String episodeId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'challenges/$episodeId/validation-question',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return PayloadQuestionModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
@@ -779,19 +884,23 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> showEpisodeQuizAnswer(String questionId, String answerId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'challenges/$questionId/check-answer/$answerId',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> rateEpisode(String showId, String episodeId, int rate) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'shows/$showId/episodes/$episodeId/rate',
       RateRequest(rate),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -804,30 +913,36 @@ class ApiDataSourceImpl implements ApiDataSource {
     String title,
     String review,
   ) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'shows/$showId/episodes/$episodeId/reviews',
       WriteReviewRequest(rating, title, review),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> sendReviewTip(String reviewId, double amount) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'shows/reviews/$reviewId/tips',
       SendTipRequest(amount),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<bool> rateReview(String reviewId, String ratingType) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'shows/reviews/$reviewId/$ratingType',
       EmptyRequest(),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -837,13 +952,14 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Quiz
 
   @override
-  Future<String> quizSocketUrl(String challengeId) {
-    return _getConnect.requestGet(
-      'quiz/$challengeId/play',
-    ).then((Response response) {
-      return SocketUrlResponse.fromJson(
-              json.decode(response.bodyString!)['data'])
-          .playUrl;
+  Future<NatsConfigModel> quizNats(String challengeId) {
+    return _getConnect
+        .requestGet(
+      'quiz_v2/$challengeId/play',
+    )
+        .then((Response response) {
+      return NatsConfigModel.fromJson(
+          json.decode(response.bodyString!)['data']);
     });
   }
 
@@ -857,9 +973,11 @@ class ApiDataSourceImpl implements ApiDataSource {
         ? 'rewards/claim'
         : claimRewardsPath;
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       path,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ClaimRewardModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
@@ -871,19 +989,23 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> sendInvite(String email) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'invitations',
       SendInviteRequest(email),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
   @override
   Future<ReferralCodeModel> getReferralCode() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'ref/my',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ReferralCodeModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
@@ -891,10 +1013,12 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<bool> confirmReferralCode(String referralCode) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'ref/confirm/$referralCode',
       EmptyRequest(),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
@@ -916,10 +1040,12 @@ class ApiDataSourceImpl implements ApiDataSource {
         query['items_per_page'] = itemsPerPage.toString();
     }
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'nft',
       query: query,
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable) {
         return (jsonData['data'] as Iterable)
@@ -933,18 +1059,22 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<NftHomeModel> nftHome() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'nft/home',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return NftHomeModel.fromJson(json.decode(response.bodyString!)['data']);
     });
   }
 
   @override
   Future<List<NftCategoryModel>> nftCategories() {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'nft/categories',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable) {
         return (jsonData['data'] as Iterable)
@@ -987,10 +1117,12 @@ class ApiDataSourceImpl implements ApiDataSource {
         break;
     }
 
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'nft/filter/$pathParameter/$objectId',
       query: query,
-    ).then(
+    )
+        .then(
       (Response response) {
         Map jsonData = json.decode(response.bodyString!);
         if (jsonData['data'] is Iterable) {
@@ -1006,46 +1138,26 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<NftItemModel> nftItem(String nftItemId) {
-    return _getConnect.requestGet(
+    return _getConnect
+        .requestGet(
       'nft/$nftItemId',
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return NftItemModel.fromJson(json.decode(response.bodyString!)['data']);
     });
   }
 
   @override
   Future<bool> buyNftItem(String nftItemId) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'nft/$nftItemId/buy',
       EmptyRequest(),
-    ).then((Response response) {
+    )
+        .then((Response response) {
       return response.isOk;
       // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
-  }
-
-  // endregion
-
-  // region Socket
-
-  @override
-  Future<GetSocket> createSocket(String url) async {
-    return GetConnect().socket(url);
-  }
-
-  @override
-  Future<void> sendAnswer(
-    GetSocket? socket,
-    String questionId,
-    String answerId,
-  ) async {
-    _sendViaSocket(
-      socket,
-      SocketMessageAnswerModel(
-        PayloadAnswerModel(questionId, answerId),
-      ),
-    );
-    return;
   }
 
 // endregion

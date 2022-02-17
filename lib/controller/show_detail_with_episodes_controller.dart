@@ -61,12 +61,8 @@ class ShowDetailWithEpisodesController extends GetxController
   }
 
   void _loadNftItems() {
-    _satorioRepository
-        .nftsFiltered(
-        showIds: [showRx.value.id]
-    )
-        .then(
-          (List<NftItem> nftItems) {
+    _satorioRepository.nftsFiltered(showIds: [showRx.value.id]).then(
+      (List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       },
     );
@@ -74,7 +70,7 @@ class ShowDetailWithEpisodesController extends GetxController
 
   void toShowNfts() {
     Get.to(
-          () => NftListPage(),
+      () => NftListPage(),
       binding: NftListBinding(),
       arguments: NftListArgument(NftFilterType.Show, showRx.value.id),
     );
@@ -102,11 +98,7 @@ class ShowDetailWithEpisodesController extends GetxController
         () => ShowEpisodesRealmPage(),
         binding: ShowEpisodesRealmBinding(),
         arguments: ShowEpisodeRealmArgument(
-          showDetailRx.value!,
-          showSeason,
-          showEpisode,
-          false
-        ),
+            showDetailRx.value!, showSeason, showEpisode, false),
       );
     }
   }
