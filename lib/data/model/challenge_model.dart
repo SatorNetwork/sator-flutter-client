@@ -24,6 +24,7 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
     int questionsPerGame,
     int minCorrectAnswers,
     bool isRealmActivated,
+    int registeredPlayers,
   ) : super(
           id,
           showId,
@@ -45,6 +46,7 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
           questionsPerGame,
           minCorrectAnswers,
           isRealmActivated,
+          registeredPlayers,
         );
 
   factory ChallengeModel.fromJson(Map json) => ChallengeModel(
@@ -68,21 +70,31 @@ class ChallengeModel extends Challenge implements ToJsonInterface {
         json.parseValueAsInt('questions_per_game'),
         json.parseValueAsInt('min_correct_answers'),
         json.parseValueAsBool('is_realm_activated'),
+        json.parseValueAsInt('registered_players'),
       );
 
   @override
   Map toJson() => {
         'id': id,
+        'show_id': showId,
+        'episode_id': episodeId,
         'title': title,
         'description': description,
         'prize_pool': prizePool,
+        'prize_pool_amount': prizePoolAmount,
         'players': players,
         'winners': winners,
         'time_per_question': timePerQuestion,
+        'time_per_question_sec': timePerQuestionSec,
         'play': play,
         'user_max_attempts': userMaxAttempts,
         'attempts_left': attemptsLeft,
         'received_reward': receivedReward,
         'received_reward_str': receivedRewardAsString,
+        'max_winners': maxWinners,
+        'questions_per_game': questionsPerGame,
+        'min_correct_answers': minCorrectAnswers,
+        'is_realm_activated': isRealmActivated,
+        'registered_players': registeredPlayers,
       };
 }

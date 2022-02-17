@@ -168,7 +168,7 @@ class ChallengePage extends GetView<ChallengeController> {
                           () => Text(
                             controller.challengeRx.value == null
                                 ? ''
-                                : '${0} / ${controller.challengeRx.value!.players}',
+                                : '${controller.challengeRx.value!.registeredPlayers} / ${controller.challengeRx.value!.players}',
                             textAlign: TextAlign.end,
                             style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
