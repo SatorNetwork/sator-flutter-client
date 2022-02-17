@@ -46,7 +46,7 @@ class NftsDataSourceImpl implements NftsDataSource {
     )
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['collections'] is Iterable) {
+      if (jsonData['collections'] != null && jsonData['collections'] is Iterable) {
         return (jsonData['collections'] as Iterable)
             .map((element) => NftItemModel.fromJson(element))
             .toList();
@@ -71,7 +71,7 @@ class NftsDataSourceImpl implements NftsDataSource {
                 orderType, page, itemsPerPage, owner, showIds))
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['nfts'] is Iterable) {
+      if (jsonData['nfts'] != null && jsonData['nfts'] is Iterable) {
         return (jsonData['nfts'] as Iterable)
             .map((element) => NftItemModel.fromJson(element))
             .toList();
@@ -89,7 +89,7 @@ class NftsDataSourceImpl implements NftsDataSource {
     )
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['categories'] is Iterable) {
+      if (jsonData['categories'] != null && jsonData['categories'] is Iterable) {
         return (jsonData['categories'] as Iterable)
             .map((element) => NftCategoryModel.fromJson(element))
             .toList();
