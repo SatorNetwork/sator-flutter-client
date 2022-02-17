@@ -136,11 +136,9 @@ class ChallengePage extends GetView<ChallengeController> {
                       Expanded(
                         child: Obx(
                           () => Text(
-                            controller.challengeRx.value == null ||
-                                    controller
-                                        .challengeRx.value!.winners.isEmpty
+                            controller.challengeRx.value == null
                                 ? '--'
-                                : controller.challengeRx.value!.winners,
+                                : '${controller.challengeRx.value!.maxWinners}',
                             textAlign: TextAlign.end,
                             style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
