@@ -11,8 +11,10 @@ import 'package:satorio/domain/entities/payload/payload_user.dart';
 class SocketMessage<T extends Payload> {
   final String type;
   final T payload;
+  final DateTime? date;
+  final int ttl;
 
-  const SocketMessage(this.type, this.payload);
+  const SocketMessage(this.type, this.payload, this.date, this.ttl);
 }
 
 class Type {
@@ -52,45 +54,119 @@ class Type {
 }
 
 class SocketMessagePlayerConnected extends SocketMessage<PayloadUser> {
-  SocketMessagePlayerConnected(PayloadUser payload)
-      : super(Type.player_connected, payload);
+  SocketMessagePlayerConnected(
+    PayloadUser payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.player_connected,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessagePlayerDisconnected extends SocketMessage<PayloadUser> {
-  SocketMessagePlayerDisconnected(PayloadUser payload)
-      : super(Type.player_disconnected, payload);
+  SocketMessagePlayerDisconnected(
+    PayloadUser payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.player_disconnected,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessageCountdown extends SocketMessage<PayloadCountdown> {
-  SocketMessageCountdown(PayloadCountdown payload)
-      : super(Type.countdown, payload);
+  SocketMessageCountdown(
+    PayloadCountdown payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.countdown,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessageQuestion extends SocketMessage<PayloadQuestion> {
-  SocketMessageQuestion(PayloadQuestion payload)
-      : super(Type.question, payload);
+  SocketMessageQuestion(
+    PayloadQuestion payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.question,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessageQuestionResult extends SocketMessage<PayloadQuestionResult> {
-  SocketMessageQuestionResult(PayloadQuestionResult payload)
-      : super(Type.question_result, payload);
+  SocketMessageQuestionResult(
+    PayloadQuestionResult payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.question_result,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessageChallengeResult
     extends SocketMessage<PayloadChallengeResult> {
-  SocketMessageChallengeResult(PayloadChallengeResult payload)
-      : super(Type.challenge_result, payload);
+  SocketMessageChallengeResult(
+    PayloadChallengeResult payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.challenge_result,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessageAnswer extends SocketMessage<PayloadAnswer> {
-  SocketMessageAnswer(PayloadAnswer payload) : super(Type.answer, payload);
+  SocketMessageAnswer(
+    PayloadAnswer payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.answer,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessageTimeOut extends SocketMessage<PayloadTimeOut> {
-  SocketMessageTimeOut(PayloadTimeOut payload) : super(Type.time_out, payload);
+  SocketMessageTimeOut(
+    PayloadTimeOut payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.time_out,
+          payload,
+          date,
+          ttl,
+        );
 }
 
 class SocketMessagePlayerIsActive extends SocketMessage<PayloadEmpty> {
-  SocketMessagePlayerIsActive(PayloadEmpty payload)
-      : super(Type.player_is_active, payload);
+  SocketMessagePlayerIsActive(
+    PayloadEmpty payload,
+    DateTime? date,
+    ttl,
+  ) : super(
+          Type.player_is_active,
+          payload,
+          date,
+          ttl,
+        );
 }
