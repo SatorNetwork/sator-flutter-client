@@ -161,6 +161,10 @@ class ChallengeController extends GetxController {
       ),
     );
 
+    if (result != null && result is bool && result) {
+      _toUnlockBottomSheet();
+    }
+
     if (challengeRx.value != null) {
       _reloadChallenge(challengeRx.value!.id);
     }
