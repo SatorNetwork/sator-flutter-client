@@ -7,7 +7,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   RemoteConfig _remoteConfig = RemoteConfig.instance;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  final bool isProduction = false;
+  final bool isProduction = true;
 
   Future<void> initRemoteConfig() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
