@@ -102,6 +102,12 @@ class QuizController extends GetxController {
     _satorioRepository.decryptData(message).then((String value) {
       SocketMessage socketMessage =
           SocketMessageModelFactory.createSocketMessage(json.decode(value));
+
+      if (_isMessageExpired(socketMessage)) {
+        print('Message EXPIRED !!!');
+        return;
+      }
+
       switch (socketMessage.type) {
         case Type.player_connected:
           _handlePayloadUser(socketMessage.payload as PayloadUser, true);
@@ -128,6 +134,15 @@ class QuizController extends GetxController {
           break;
       }
     });
+  }
+
+  bool _isMessageExpired(SocketMessage message) {
+    if (message.date == null) {
+      return true;
+    } else {
+      return DateTime.now().difference(message.date!).inMilliseconds >
+          message.ttl;
+    }
   }
 
   void _handlePayloadUser(PayloadUser payloadUser, bool isAdd) {

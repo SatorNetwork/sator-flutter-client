@@ -33,7 +33,8 @@ class NatsDataSourceImpl implements NatsDataSource {
 
     if (_client.status == Status.connected) {
       bool result = _client.pubString(subject, encrypted);
-      print('onSend ${DateTime.now().toIso8601String()} ${result ? 'success' : 'error'} $subject: $jsonData');
+      print(
+          'onSend ${DateTime.now().toIso8601String()} ${result ? 'success' : 'error'} $subject: $jsonData');
     }
   }
 
@@ -63,6 +64,8 @@ class NatsDataSourceImpl implements NatsDataSource {
   ) {
     SocketMessageAnswerModel message = SocketMessageAnswerModel(
       PayloadAnswerModel(questionId, answerId),
+      DateTime.now(),
+      60000,
     );
 
     return _sendViaClient(answerSubject, serverPublicKey, message);
@@ -75,6 +78,8 @@ class NatsDataSourceImpl implements NatsDataSource {
   ) {
     SocketMessagePlayerIsActiveModel message = SocketMessagePlayerIsActiveModel(
       PayloadEmptyModel(),
+      DateTime.now(),
+      1000,
     );
     return _sendViaClient(subject, serverPublicKey, message);
   }
