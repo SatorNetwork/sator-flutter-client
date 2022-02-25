@@ -43,8 +43,6 @@ class SplashController extends GetxController {
     _satorioRepository.isInited.listen((value) {
       if (value) _checkToken();
     });
-
-    _satorioRepository.updateRssItems();
   }
 
   Future _handleDynamicLinks() async {

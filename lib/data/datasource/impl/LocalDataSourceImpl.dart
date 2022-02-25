@@ -29,8 +29,8 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   static const _isBiometricEnabled = 'isBiometricEnabled';
   static const _isBiometricUserDisabled = 'isBiometricUserDisabled';
-
   static const _onBoarded = 'onBoarded';
+  static const _lastRssUpdate = 'lastRssUpdate';
 
   GetStorage _storage = GetStorage('LocalDataSource');
 
@@ -195,15 +195,30 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> saveRssItems(List<RssItem> feedItems) async {
-    final Map<String, RssItem> rssItemsMap = {};
-    feedItems
-        .where((element) => element.guid != null && element.guid!.isNotEmpty)
-        .forEach((rssItem) {
-      rssItemsMap[rssItem.guid!] = rssItem;
-    });
+    final String lastRssUpdate = _storage.read(_lastRssUpdate) ?? '';
+    final DateTime? lastRssUpdateTime = DateTime.tryParse(lastRssUpdate);
+    final DateTime now = DateTime.now();
 
-    Box<RssItem> rssItemBox = Hive.box<RssItem>(_rssItemBox);
-    rssItemBox.putAll(rssItemsMap).then((value) => print(rssItemsMap.length.toString()));
+    if (lastRssUpdateTime == null ||
+        now.difference(lastRssUpdateTime).inDays >= 1) {
+      final Map<String, RssItem> rssItemsMap = {};
+      feedItems
+          .where((element) => element.guid != null && element.guid!.isNotEmpty)
+          .forEach((rssItem) {
+        rssItemsMap[rssItem.guid!] = rssItem;
+      });
+
+      Box<RssItem> rssItemBox = Hive.box<RssItem>(_rssItemBox);
+      rssItemBox
+          .putAll(rssItemsMap)
+          .then(
+            (value) => _storage.write(_lastRssUpdate, now.toIso8601String()),
+          )
+          .then((value) =>
+              print('Stored rss items: ${rssItemsMap.length.toString()}'));
+    } else {
+      print('Already checked not so far');
+    }
   }
 
   @override
