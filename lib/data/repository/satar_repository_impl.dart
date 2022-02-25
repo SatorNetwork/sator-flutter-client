@@ -11,6 +11,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/feed_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
@@ -51,10 +52,18 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
+  final FeedDataSource _feedDataSource;
+
   final RxBool _init = false.obs;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._nftsDataSource,
-      this._localDataSource, this._firebaseDataSource, this._natsDataSource) {
+  SatorioRepositoryImpl(
+    this._apiDataSource,
+    this._nftsDataSource,
+    this._localDataSource,
+    this._firebaseDataSource,
+    this._natsDataSource,
+    this._feedDataSource,
+  ) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
@@ -787,6 +796,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _localDataSource.transactionsListenable();
   }
 
+  @override
+  ValueListenable rssItemsListenable() {
+    return _localDataSource.rssItemsListenable();
+  }
+
   //TODO:  move to region
   @override
   Future<List<NftItem>> nftsFiltered({
@@ -811,5 +825,12 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _nftsDataSource
         .nft(mintAddress)
         .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> updateRssItems() {
+    return _feedDataSource.rssItems().then(
+          (value) => _localDataSource.saveRssItems(value),
+        );
   }
 }

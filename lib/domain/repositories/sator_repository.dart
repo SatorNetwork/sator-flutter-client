@@ -251,6 +251,8 @@ abstract class SatorioRepository {
 
   ValueListenable transactionsListenable();
 
+  ValueListenable rssItemsListenable();
+
   //TODO: move to region
   Future<List<NftItem>> nftsFiltered({
     int? page,
@@ -261,4 +263,6 @@ abstract class SatorioRepository {
   });
 
   Future<NftItem> nft(String mintAddress);
+
+  Future<void> updateRssItems();
 }

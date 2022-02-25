@@ -10,7 +10,6 @@ import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
-import 'package:satorio/data/datasource/impl/feed_data_source_impl.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
@@ -45,7 +44,7 @@ class SplashController extends GetxController {
       if (value) _checkToken();
     });
 
-    FeedDataSourceImpl().feed();
+    _satorioRepository.updateRssItems();
   }
 
   Future _handleDynamicLinks() async {

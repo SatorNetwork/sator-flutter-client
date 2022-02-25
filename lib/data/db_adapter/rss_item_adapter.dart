@@ -17,7 +17,7 @@ class RssItemAdapter extends TypeAdapter<RssItem> {
     final contentValue = reader.readString();
     final contentImages = reader.readStringList();
 
-    return const RssItem(
+    return RssItem(
       title: title,
       description: description,
       link: link,

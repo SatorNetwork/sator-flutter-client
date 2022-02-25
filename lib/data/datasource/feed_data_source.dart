@@ -1,4 +1,5 @@
-abstract class FeedDataSource {
+import 'package:webfeed/webfeed.dart';
 
-  Future<void> feed();
+abstract class FeedDataSource {
+  Future<List<RssItem>> rssItems();
 }

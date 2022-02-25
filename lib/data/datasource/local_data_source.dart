@@ -4,6 +4,7 @@ import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
+import 'package:webfeed/webfeed.dart';
 
 abstract class LocalDataSource {
   Future<void> init();
@@ -41,4 +42,8 @@ abstract class LocalDataSource {
   Future<void> saveTransactions(List<Transaction> transactions);
 
   ValueListenable transactionsListenable();
+
+  Future<void> saveRssItems(List<RssItem> feedItems);
+
+  ValueListenable rssItemsListenable();
 }

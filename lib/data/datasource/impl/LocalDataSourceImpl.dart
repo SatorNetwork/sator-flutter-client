@@ -7,6 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/db_adapter/amount_currency_adapter.dart';
 import 'package:satorio/data/db_adapter/profile_adapter.dart';
+import 'package:satorio/data/db_adapter/rss_item_adapter.dart';
 import 'package:satorio/data/db_adapter/transaction_adapter.dart';
 import 'package:satorio/data/db_adapter/wallet_action_adapter.dart';
 import 'package:satorio/data/db_adapter/wallet_adapter.dart';
@@ -16,6 +17,7 @@ import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
+import 'package:webfeed/domain/rss_item.dart';
 
 class LocalDataSourceImpl implements LocalDataSource {
   static const _profileBox = 'profile';
@@ -23,6 +25,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   static const _walletBox = 'wallet';
   static const _walletDetailBox = 'walletDetail';
   static const _transactionBox = 'transaction';
+  static const _rssItemBox = 'rssItem';
 
   static const _isBiometricEnabled = 'isBiometricEnabled';
   static const _isBiometricUserDisabled = 'isBiometricUserDisabled';
@@ -41,6 +44,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     Hive.registerAdapter(WalletActionAdapter());
     Hive.registerAdapter(WalletDetailAdapter());
     Hive.registerAdapter(TransactionAdapter());
+    Hive.registerAdapter(RssItemAdapter());
 
     try {
       await _open();
@@ -56,6 +60,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     await Hive.openBox<Wallet>(_walletBox);
     await Hive.openBox<WalletDetail>(_walletDetailBox);
     await Hive.openBox<Transaction>(_transactionBox);
+    await Hive.openBox<RssItem>(_rssItemBox);
   }
 
   Future<void> _delete() async {
@@ -64,6 +69,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     await Hive.deleteBoxFromDisk(_walletBox);
     await Hive.deleteBoxFromDisk(_walletDetailBox);
     await Hive.deleteBoxFromDisk(_transactionBox);
+    await Hive.deleteBoxFromDisk(_rssItemBox);
   }
 
   @override
@@ -173,7 +179,7 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<void> saveTransactions(List<Transaction> transactions) async {
-    Map<String, Transaction> transactionMap = {};
+    final Map<String, Transaction> transactionMap = {};
     transactions.forEach((transaction) {
       transactionMap[transaction.id] = transaction;
     });
@@ -185,5 +191,23 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   ValueListenable transactionsListenable() {
     return Hive.box<Transaction>(_transactionBox).listenable();
+  }
+
+  @override
+  Future<void> saveRssItems(List<RssItem> feedItems) async {
+    final Map<String, RssItem> rssItemsMap = {};
+    feedItems
+        .where((element) => element.guid != null && element.guid!.isNotEmpty)
+        .forEach((rssItem) {
+      rssItemsMap[rssItem.guid!] = rssItem;
+    });
+
+    Box<RssItem> rssItemBox = Hive.box<RssItem>(_rssItemBox);
+    rssItemBox.putAll(rssItemsMap).then((value) => print(rssItemsMap.length.toString()));
+  }
+
+  @override
+  ValueListenable rssItemsListenable() {
+    return Hive.box<RssItem>(_rssItemBox).listenable();
   }
 }
