@@ -5,9 +5,11 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/wallet_receive_binding.dart';
 import 'package:satorio/binding/wallet_send_binding.dart';
 import 'package:satorio/binding/wallet_stake_binding.dart';
+import 'package:satorio/binding/wallet_top_up_binding.dart';
 import 'package:satorio/controller/wallet_receive_controller.dart';
 import 'package:satorio/controller/wallet_send_controller.dart';
 import 'package:satorio/controller/wallet_stake_controller.dart';
+import 'package:satorio/controller/wallet_top_up_controller.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
@@ -17,6 +19,7 @@ import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/wallet_receive_page.dart';
 import 'package:satorio/ui/page_widget/wallet_send_page.dart';
 import 'package:satorio/ui/page_widget/wallet_stake_page.dart';
+import 'package:satorio/ui/page_widget/wallet_top_up_page.dart';
 
 class WalletController extends GetxController {
   static const _initPage = 0;
@@ -161,6 +164,13 @@ class WalletController extends GetxController {
       _satorioRepository.updateWalletTransactions(wallet.transactionsUrl,
           from: fromDateTime);
     }
+  }
+
+  void toTopUp() {
+    Get.to(
+          () => WalletTopUpPage(),
+      binding: WalletTopUpBinding(),
+    );
   }
 
   void toReceive(WalletDetail walletDetail) {
