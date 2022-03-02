@@ -194,31 +194,30 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
-  Future<void> saveRssItems(List<RssItem> feedItems) async {
+  Future<DateTime?> lastRssUpdateTime() async {
     final String lastRssUpdate = _storage.read(_lastRssUpdate) ?? '';
-    final DateTime? lastRssUpdateTime = DateTime.tryParse(lastRssUpdate);
+    return DateTime.tryParse(lastRssUpdate);
+  }
+
+  @override
+  Future<void> saveRssItems(List<RssItem> feedItems) async {
     final DateTime now = DateTime.now();
 
-    if (lastRssUpdateTime == null ||
-        now.difference(lastRssUpdateTime).inDays >= 1) {
-      final Map<String, RssItem> rssItemsMap = {};
-      feedItems
-          .where((element) => element.guid != null && element.guid!.isNotEmpty)
-          .forEach((rssItem) {
-        rssItemsMap[rssItem.guid!] = rssItem;
-      });
+    final Map<String, RssItem> rssItemsMap = {};
+    feedItems
+        .where((element) => element.guid != null && element.guid!.isNotEmpty)
+        .forEach((rssItem) {
+      rssItemsMap[rssItem.guid!] = rssItem;
+    });
 
-      Box<RssItem> rssItemBox = Hive.box<RssItem>(_rssItemBox);
-      rssItemBox
-          .putAll(rssItemsMap)
-          .then(
-            (value) => _storage.write(_lastRssUpdate, now.toIso8601String()),
-          )
-          .then((value) =>
-              print('Stored rss items: ${rssItemsMap.length.toString()}'));
-    } else {
-      print('Already checked not so far');
-    }
+    Box<RssItem> rssItemBox = Hive.box<RssItem>(_rssItemBox);
+    rssItemBox
+        .putAll(rssItemsMap)
+        .then(
+          (value) => _storage.write(_lastRssUpdate, now.toIso8601String()),
+        )
+        .then((value) =>
+            print('Stored rss items: ${rssItemsMap.length.toString()}'));
   }
 
   @override

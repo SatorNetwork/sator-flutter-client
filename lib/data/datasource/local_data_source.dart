@@ -43,6 +43,8 @@ abstract class LocalDataSource {
 
   ValueListenable transactionsListenable();
 
+  Future<DateTime?> lastRssUpdateTime();
+
   Future<void> saveRssItems(List<RssItem> feedItems);
 
   ValueListenable rssItemsListenable();

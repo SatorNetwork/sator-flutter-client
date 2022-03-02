@@ -11,6 +11,7 @@ class RssItemAdapter extends TypeAdapter<RssItem> {
   RssItem read(BinaryReader reader) {
     final title = reader.readString();
     final description = reader.readString();
+    final author = reader.readString();
     final link = reader.readString();
     final guid = reader.readString();
     final pubDate = DateTime.tryParse(reader.readString());
@@ -20,6 +21,7 @@ class RssItemAdapter extends TypeAdapter<RssItem> {
     return RssItem(
       title: title,
       description: description,
+      author: author,
       link: link,
       guid: guid,
       pubDate: pubDate,
@@ -32,8 +34,11 @@ class RssItemAdapter extends TypeAdapter<RssItem> {
 
   @override
   void write(BinaryWriter writer, RssItem rssItem) {
+    final String author = rssItem.author ?? (rssItem.dc?.creator ?? '');
+
     writer.writeString(rssItem.title ?? '');
     writer.writeString(rssItem.description ?? '');
+    writer.writeString(author);
     writer.writeString(rssItem.link ?? '');
     writer.writeString(rssItem.guid ?? '');
     writer.writeString(rssItem.pubDate?.toIso8601String() ?? '');

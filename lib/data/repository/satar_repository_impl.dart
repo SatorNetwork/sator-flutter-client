@@ -828,9 +828,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<void> updateRssItems() {
-    return _feedDataSource.rssItems().then(
-          (value) => _localDataSource.saveRssItems(value),
-        );
+  Future<void> updateRssItems() async {
+    final lastRssUpdateTime = await _localDataSource.lastRssUpdateTime();
+    if (lastRssUpdateTime == null ||
+        DateTime.now().difference(lastRssUpdateTime).inDays >= 1) {
+      return _feedDataSource.rssItems().then(
+            (value) => _localDataSource.saveRssItems(value),
+          );
+    } else {
+      print('Rss Feed already checked not so far');
+      return Future.value();
+    }
   }
 }
