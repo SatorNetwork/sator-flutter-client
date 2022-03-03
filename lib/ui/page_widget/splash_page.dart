@@ -46,15 +46,6 @@ class SplashPage extends GetView<SplashController> {
                 SizedBox(
                   height: 32 * coefficient,
                 ),
-                Text(
-                  'txt_splash_description'.tr,
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                    color: SatorioColor.textBlack,
-                    fontSize: 17.0 * coefficient,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
               ],
             ),
           ),
