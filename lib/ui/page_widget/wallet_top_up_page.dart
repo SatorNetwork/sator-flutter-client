@@ -21,13 +21,14 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         centerTitle: true,
-        title: Text('txt_top_up'.tr,
-            style: textTheme.bodyText1!.copyWith(
-              color: SatorioColor.darkAccent,
-              fontSize: 17,
-              fontWeight: FontWeight.w600,
-            ),
+        title: Text(
+          'txt_top_up'.tr,
+          style: textTheme.bodyText1!.copyWith(
+            color: SatorioColor.darkAccent,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
           ),
+        ),
         leading: Material(
           color: Colors.transparent,
           shadowColor: Colors.transparent,
@@ -66,24 +67,38 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('txt_top_up_options'.tr, style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      )),
-                      SizedBox(height: 20 * coefficient,),
+                      Text('txt_top_up_options'.tr,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: SatorioColor.darkAccent,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          )),
+                      SizedBox(
+                        height: 20 * coefficient,
+                      ),
                       _toggleButton(),
-                      SizedBox(height: 30 * coefficient,),
-                      Text('txt_top_up_buy'.tr, style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      )),
-                      SizedBox(height: 20 * coefficient,),
+                      SizedBox(
+                        height: 30 * coefficient,
+                      ),
                       Obx(
-                        () =>
-                            Container(
-                          child: controller.isExchangeRx.value ? _buySaoItems() : _buySaoItems(),
+                        () => Text(
+                            !controller.isExchangeRx.value
+                                ? 'txt_top_up_buy'.tr
+                                : 'txt_top_up_exchange_options'.tr,
+                            style: textTheme.bodyText1!.copyWith(
+                              color: SatorioColor.darkAccent,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            )),
+                      ),
+                      SizedBox(
+                        height: 20 * coefficient,
+                      ),
+                      Obx(
+                        () => Container(
+                          child: !controller.isExchangeRx.value
+                              ? _buySaoItems()
+                              : _exchangeItems(),
                         ),
                       ),
                     ],
@@ -99,8 +114,8 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
 
   Widget _toggleButton() {
     return Obx(
-        () => Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      () => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Flexible(
             child: InkWell(
@@ -109,7 +124,9 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: controller.isExchangeRx.value ? SatorioColor.alice_blue : SatorioColor.interactive,
+                  color: controller.isExchangeRx.value
+                      ? SatorioColor.alice_blue
+                      : SatorioColor.interactive,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 height: 75 * coefficient,
@@ -118,22 +135,34 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset('images/sator_logo.svg', width: 20, height: 20, color: controller.isExchangeRx.value ?  SatorioColor.darkAccent : Colors.white,),
-                      SizedBox(height: 4,),
+                      SvgPicture.asset(
+                        'images/sator_logo.svg',
+                        width: 20,
+                        height: 20,
+                        color: controller.isExchangeRx.value
+                            ? SatorioColor.darkAccent
+                            : Colors.white,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
                       Text('txt_top_up_buy_sao'.tr,
                           style: textTheme.bodyText1!.copyWith(
-                            color: controller.isExchangeRx.value ?  SatorioColor.darkAccent : Colors.white,
+                            color: controller.isExchangeRx.value
+                                ? SatorioColor.darkAccent
+                                : Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                          )
-                      ),
+                          )),
                     ],
                   ),
                 ),
               ),
             ),
           ),
-          SizedBox(width: 24 * coefficient,),
+          SizedBox(
+            width: 24 * coefficient,
+          ),
           Flexible(
             child: InkWell(
               onTap: () {
@@ -141,7 +170,9 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                  color: controller.isExchangeRx.value ? SatorioColor.interactive : SatorioColor.alice_blue,
+                  color: controller.isExchangeRx.value
+                      ? SatorioColor.interactive
+                      : SatorioColor.alice_blue,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 height: 75 * coefficient,
@@ -150,11 +181,22 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset('images/exchange.svg', width: 20, height: 20, color: controller.isExchangeRx.value ?  Colors.white : SatorioColor.darkAccent,),
-                      SizedBox(height: 4,),
+                      SvgPicture.asset(
+                        'images/exchange.svg',
+                        width: 20,
+                        height: 20,
+                        color: controller.isExchangeRx.value
+                            ? Colors.white
+                            : SatorioColor.darkAccent,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
                       Text('txt_top_up_exchange'.tr,
                           style: textTheme.bodyText1!.copyWith(
-                            color: controller.isExchangeRx.value ?  Colors.white : SatorioColor.darkAccent,
+                            color: controller.isExchangeRx.value
+                                ? Colors.white
+                                : SatorioColor.darkAccent,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           )),
@@ -169,91 +211,156 @@ class WalletTopUpPage extends GetView<WalletTopUpController> {
     );
   }
 
+  Widget _exchangeItem(ExchangeOption option) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        width: Get.width,
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        height: 76,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: SatorioColor.alice_blue),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text('${option.market}',
+                style: textTheme.bodyText1!.copyWith(
+                  color: SatorioColor.darkAccent,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                )),
+            Image.asset(_marketImage(option.market))
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buySaoItem(BuySao buySao) {
-    return Container(
-      child: Row(
-        children: [
-          ClipOval(
-            child: Container(
-              width: 24,
-              height: 24,
-              color: SatorioColor.mauve,
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15),
+        height: 76,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(6),
+            color: SatorioColor.alice_blue),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    SatorioColor.royal_blue_2,
+                    SatorioColor.brand,
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              width: 36,
+              height: 36,
               child: Center(
                 child: SvgPicture.asset(
                   'images/sator_logo.svg',
                   width: 12,
                   height: 12,
-                  color: SatorioColor.brand,
+                  color: Colors.white,
                 ),
               ),
             ),
-          ),
-          SizedBox(width: 10,),
-          RichText(
-              text: TextSpan(
-                  text: buySao.saoAmount.toString(),
-                  style: textTheme.bodyText2!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: 'SAO',
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
+            SizedBox(
+              width: 10,
+            ),
+            RichText(
+                textAlign: TextAlign.end,
+                text: TextSpan(
+                    text: buySao.saoAmount.toStringAsFixed(0),
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ])),
-          Expanded(child: Container()),
-          Flexible(child: RichText(
-            text: TextSpan(
-              text: buySao.price.toString(),
-              style: textTheme.bodyText2!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 15 * coefficient,
-                fontWeight: FontWeight.w400,
-              ),
-              children: [
-                TextSpan(
-                  text: buySao.currency,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-          ])))
-        ],
+                    children: [
+                      TextSpan(
+                        text: ' SAO',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ])),
+            Expanded(
+                child: RichText(
+                    textAlign: TextAlign.end,
+                    text: TextSpan(
+                        text: '${buySao.currency}',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: '${buySao.price}',
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 15 * coefficient,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ])))
+          ],
+        ),
       ),
     );
   }
 
-  Widget _exchangeOptionItem(ExchangeOption exchangeOption) {
-    return Container(
-      child: Row(
-        children: [
-          Text(exchangeOption.market),
-          SvgPicture.asset('')
-        ],
-      ),
-    );
+  String _marketImage(String market) {
+    switch (market.toLowerCase()) {
+      case 'coinbase':
+        return 'images/coinbase.png';
+      case 'binance':
+        return 'images/binance.png';
+      case 'uniswap':
+        return 'images/uniswap.png';
+      default:
+        return 'images/uniswap.png';
+    }
   }
 
   Widget _buySaoItems() {
     return ListView.separated(
         scrollDirection: Axis.vertical,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
+        padding: EdgeInsets.symmetric(vertical: 10),
         itemCount: dummyBuySao.length,
         shrinkWrap: true,
         separatorBuilder: (context, index) => SizedBox(
-          height: 16,
-        ),
+              height: 14,
+            ),
         itemBuilder: (context, index) {
           BuySao buySao = dummyBuySao[index];
           return _buySaoItem(buySao);
+        });
+  }
+
+  Widget _exchangeItems() {
+    return ListView.separated(
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.symmetric(vertical: 10),
+        itemCount: dummyExchangeOptions.length,
+        shrinkWrap: true,
+        separatorBuilder: (context, index) => SizedBox(
+              height: 14,
+            ),
+        itemBuilder: (context, index) {
+          ExchangeOption exchangeOption = dummyExchangeOptions[index];
+          return _exchangeItem(exchangeOption);
         });
   }
 

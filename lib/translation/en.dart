@@ -299,6 +299,7 @@ const Map<String, String> en = {
   'txt_top_up_options': 'Top Up Options',
   'txt_top_up_buy': 'Buy SAO',
   'txt_top_up_exchange': 'Exchange',
+  'txt_top_up_exchange_options': 'Exchange options',
   'txt_top_up_buy_sao': 'Buy',
   'txt_coinbase': 'Coinbase',
   'txt_binance': 'Binance',
