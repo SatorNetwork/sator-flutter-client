@@ -390,9 +390,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<ChallengeSimple>> showChallenges(String showId, {int? page}) {
+  Future<List<ChallengeSimple>> showChallenges(
+    String showId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
     return _apiDataSource
-        .showChallenges(showId, page: page)
+        .showChallenges(showId, page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -439,6 +443,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<Challenge>> challenges({int? page, int? itemsPerPage}) {
+    return _apiDataSource
+        .challenges(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 

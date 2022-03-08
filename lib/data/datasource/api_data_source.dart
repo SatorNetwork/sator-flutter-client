@@ -146,7 +146,11 @@ abstract class ApiDataSource {
 
   Future<ShowEpisodeModel> showEpisode(String showId, String episodeId);
 
-  Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
+  Future<List<ChallengeSimpleModel>> showChallenges(
+    String showId, {
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<ShowModel> loadShow(String showId);
 
@@ -169,6 +173,11 @@ abstract class ApiDataSource {
   // region Challenges
 
   Future<ChallengeModel> challenge(String challengeId);
+
+  Future<List<ChallengeModel>> challenges({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<EpisodeActivationModel> isEpisodeActivated(String episodeId);
 

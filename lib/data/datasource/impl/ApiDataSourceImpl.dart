@@ -498,11 +498,15 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<double> possibleMultiplier(String walletId, double amount) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'wallets/$walletId/possible-multiplier',
       WalletStakeRequest(amount),
-    ).then((Response response) {
-      return PossibleMultiplierResponse.fromJson(json.decode(response.bodyString!)).possibleMultiplier;
+    )
+        .then((Response response) {
+      return PossibleMultiplierResponse.fromJson(
+              json.decode(response.bodyString!))
+          .possibleMultiplier;
     });
   }
 
@@ -677,12 +681,17 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ChallengeSimpleModel>> showChallenges(String showId,
-      {int? page}) {
+  Future<List<ChallengeSimpleModel>> showChallenges(
+    String showId, {
+    int? page,
+    int? itemsPerPage,
+  }) {
     Map<String, String>? query;
-    if (page != null) {
+    if (page != null || itemsPerPage != null) {
       query = {};
-      query['page'] = page.toString();
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
     }
 
     return _getConnect
@@ -828,6 +837,23 @@ class ApiDataSourceImpl implements ApiDataSource {
     )
         .then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<List<ChallengeModel>> challenges({int? page, int? itemsPerPage}) {
+    return _getConnect
+        .requestGet(
+      'quiz_v2/challenges/sorted_by_players',
+    )
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ChallengeModel.fromJson(element))
+            .toList();
+      else
+        return [];
     });
   }
 
