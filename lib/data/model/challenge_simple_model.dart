@@ -6,23 +6,35 @@ class ChallengeSimpleModel extends ChallengeSimple implements ToJsonInterface {
   const ChallengeSimpleModel(
     String id,
     String title,
-    String description,
+    int playersToStart,
+    int playersCount,
+    String prizePool,
+    bool isRealmActivated,
   ) : super(
           id,
           title,
-          description,
+          playersToStart,
+          playersCount,
+          prizePool,
+          isRealmActivated,
         );
 
   factory ChallengeSimpleModel.fromJson(Map json) => ChallengeSimpleModel(
         json.parseValueAsString('id'),
         json.parseValueAsString('title'),
-        json.parseValueAsString('description'),
+        json.parseValueAsInt('players_to_start'),
+        json.parseValueAsInt('players_number'),
+        json.parseValueAsString('prize_pool'),
+        json.parseValueAsBool('is_realm_activated'),
       );
 
   @override
   Map toJson() => {
         'id': id,
         'title': title,
-        'description': description,
+        'players_to_start': playersToStart,
+        'players_number': playersCount,
+        'prize_pool': prizePool,
+        'is_realm_activated': isRealmActivated
       };
 }

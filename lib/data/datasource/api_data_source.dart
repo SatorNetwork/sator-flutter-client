@@ -146,12 +146,6 @@ abstract class ApiDataSource {
 
   Future<ShowEpisodeModel> showEpisode(String showId, String episodeId);
 
-  Future<List<ChallengeSimpleModel>> showChallenges(
-    String showId, {
-    int? page,
-    int? itemsPerPage,
-  });
-
   Future<ShowModel> loadShow(String showId);
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
@@ -174,7 +168,7 @@ abstract class ApiDataSource {
 
   Future<ChallengeModel> challenge(String challengeId);
 
-  Future<List<ChallengeModel>> challenges({
+  Future<List<ChallengeSimpleModel>> challenges({
     int? page,
     int? itemsPerPage,
   });

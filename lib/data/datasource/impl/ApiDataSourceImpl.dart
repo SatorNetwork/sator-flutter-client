@@ -681,36 +681,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ChallengeSimpleModel>> showChallenges(
-    String showId, {
-    int? page,
-    int? itemsPerPage,
-  }) {
-    Map<String, String>? query;
-    if (page != null || itemsPerPage != null) {
-      query = {};
-      if (page != null) query['page'] = page.toString();
-      if (itemsPerPage != null)
-        query['items_per_page'] = itemsPerPage.toString();
-    }
-
-    return _getConnect
-        .requestGet(
-      'shows/$showId/challenges',
-      query: query,
-    )
-        .then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable)
-        return (jsonData['data'] as Iterable)
-            .map((element) => ChallengeSimpleModel.fromJson(element))
-            .toList();
-      else
-        return [];
-    });
-  }
-
-  @override
   Future<List<ReviewModel>> getReviews(String showId, String episodeId,
       {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
@@ -841,16 +811,26 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ChallengeModel>> challenges({int? page, int? itemsPerPage}) {
+  Future<List<ChallengeSimpleModel>> challenges(
+      {int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
     return _getConnect
         .requestGet(
       'quiz_v2/challenges/sorted_by_players',
+      query: query,
     )
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable)
         return (jsonData['data'] as Iterable)
-            .map((element) => ChallengeModel.fromJson(element))
+            .map((element) => ChallengeSimpleModel.fromJson(element))
             .toList();
       else
         return [];

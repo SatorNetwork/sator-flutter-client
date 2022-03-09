@@ -142,12 +142,6 @@ abstract class SatorioRepository {
 
   Future<ShowEpisode> showEpisode(String showId, String episodeId);
 
-  Future<List<ChallengeSimple>> showChallenges(
-    String showId, {
-    int page,
-    int? itemsPerPage,
-  });
-
   Future<Show> loadShow(String showId);
 
   Future<QrShow> getShowEpisodeByQR(String qrCodeId);
@@ -156,7 +150,7 @@ abstract class SatorioRepository {
 
   Future<Challenge> challenge(String challengeId);
 
-  Future<List<Challenge>> challenges({
+  Future<List<ChallengeSimple>> challenges({
     int? page,
     int? itemsPerPage,
   });
