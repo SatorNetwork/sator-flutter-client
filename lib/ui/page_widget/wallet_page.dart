@@ -85,8 +85,7 @@ class WalletPage extends GetView<WalletController> {
                             ),
                           ),
                           SizedBox(height: 20,),
-                          //TODO: refactor with wallets types
-                          _walletButtons(walletDetail.order, walletDetail),
+                          _walletButtons(walletDetail.type, walletDetail),
                         ],
                       );
                       // return _walletItem(walletDetail);
@@ -148,13 +147,12 @@ class WalletPage extends GetView<WalletController> {
     );
   }
 
-  //TODO: refactor with types in wallet
-  Widget _walletButtons(int order, WalletDetail walletDetail) {
-    switch (order) {
-      case 1:
+  Widget _walletButtons(String walletType, WalletDetail walletDetail) {
+    switch (walletType) {
+      case 'sao':
         return _buttonItem('txt_get_sao'.tr, () => controller.toTopUp());
       default:
-        return _buttonItem('txt_to_challenges'.tr, () => print('russian ship fuck you self'));
+        return _buttonItem('txt_to_challenges'.tr, () => controller.toChallenges());
     }
   }
 
