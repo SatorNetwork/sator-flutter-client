@@ -36,6 +36,7 @@ import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
@@ -677,6 +678,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<WalletStaking> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<StakeLevel>> stakeLevels() {
+    return _apiDataSource
+        .stakeLevels()
         .catchError((value) => _handleException(value));
   }
 

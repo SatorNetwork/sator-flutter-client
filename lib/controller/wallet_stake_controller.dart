@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -12,6 +13,7 @@ class WalletStakeController extends GetxController {
 
   late final Rx<WalletDetail> walletDetailRx;
   final Rx<WalletStaking?> walletStakingRx = Rx(null);
+  final Rx<List<StakeLevel>> stakeLevelsRx = Rx([]);
   final RxDouble possibleMultiplierRx = 0.0.obs;
 
   final RxBool tmpState = false.obs;
@@ -20,6 +22,8 @@ class WalletStakeController extends GetxController {
   WalletStakeController() {
     WalletStakeArgument argument = Get.arguments as WalletStakeArgument;
     walletDetailRx = Rx(argument.walletDetail);
+
+    _stakeLevels();
 
     _updateWalletStake();
   }
@@ -35,6 +39,12 @@ class WalletStakeController extends GetxController {
       walletStakingRx.value = walletStaking;
       tmpState.value = walletStakingRx.value!.lockedByYou > 0;
       pmState.value = walletStakingRx.value!.currentMultiplier > 0;
+    });
+  }
+
+  void _stakeLevels() {
+    _satorioRepository.stakeLevels().then((List<StakeLevel> stakeLevels) {
+      stakeLevelsRx.value = stakeLevels;
     });
   }
 
