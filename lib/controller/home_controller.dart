@@ -3,14 +3,12 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
-import 'package:satorio/binding/rss_item_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
-import 'package:satorio/controller/rss_item_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
@@ -23,10 +21,8 @@ import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
-import 'package:satorio/ui/page_widget/rss_item_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
-import 'package:webfeed/webfeed.dart';
 
 class HomeController extends GetxController
     with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
@@ -170,18 +166,6 @@ class HomeController extends GetxController
   }
 
   void toNftItem(final NftItem nftItem) {
-    final item = (_satorioRepository.rssItemsListenable()
-            as ValueListenable<Box<RssItem>>)
-        .value
-        .values
-        .first;
-    Get.to(
-      () => RssItemPage(),
-      binding: RssItemBinding(),
-      arguments: RssItemArgument(item),
-    );
-    return;
-
     Get.to(
       () => NftItemPage(),
       binding: NftItemBinding(),

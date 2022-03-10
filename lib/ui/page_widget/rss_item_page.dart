@@ -20,7 +20,6 @@ class RssItemPage extends GetView<RssItemController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
       body: Stack(
         children: [
           Container(

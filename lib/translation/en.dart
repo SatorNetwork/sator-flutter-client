@@ -18,7 +18,8 @@ const Map<String, String> en = {
   'txt_sign_in': 'Sign In',
   'txt_sign_out': 'Sign out',
   'txt_login': 'Login',
-  'txt_login_refresh_error': 'Please login with email and password or try again',
+  'txt_login_refresh_error':
+      'Please login with email and password or try again',
   'txt_login_biometric': 'Login with biometric',
   'txt_login_biometric_title': 'Biometric',
   'txt_login_biometric_q': 'Do you want turn on biometric?',
@@ -189,7 +190,8 @@ const Map<String, String> en = {
   'txt_reserve_price': 'Reserve price',
   'txt_available': 'Available',
   'txt_you_unlock': 'You unlock: ',
-  'txt_stake_success': '%s %s was locked from your balance. Now you have %s%% multiplier to quiz rewards.',
+  'txt_stake_success':
+      '%s %s was locked from your balance. Now you have %s%% multiplier to quiz rewards.',
   'txt_unstake_success': '%s %s was substracted to a staking pool',
   'txt_no_thanks': 'No thanks',
   'txt_choose_option': 'Choose your option',
@@ -293,4 +295,5 @@ const Map<String, String> en = {
   'txt_your_total_reward': 'Your total reward',
   'txt_includes_bonus': 'Includes bonus from holding',
   'txt_back': 'Back',
+  'txt_sator_blog': 'Sator Blog',
 };
