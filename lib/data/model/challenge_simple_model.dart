@@ -10,6 +10,7 @@ class ChallengeSimpleModel extends ChallengeSimple implements ToJsonInterface {
     int playersCount,
     String prizePool,
     bool isRealmActivated,
+    String cover,
   ) : super(
           id,
           title,
@@ -17,6 +18,7 @@ class ChallengeSimpleModel extends ChallengeSimple implements ToJsonInterface {
           playersCount,
           prizePool,
           isRealmActivated,
+          cover,
         );
 
   factory ChallengeSimpleModel.fromJson(Map json) => ChallengeSimpleModel(
@@ -26,6 +28,7 @@ class ChallengeSimpleModel extends ChallengeSimple implements ToJsonInterface {
         json.parseValueAsInt('players_number'),
         json.parseValueAsString('prize_pool'),
         json.parseValueAsBool('is_realm_activated'),
+        json.parseValueAsString('cover'),
       );
 
   @override
@@ -35,6 +38,7 @@ class ChallengeSimpleModel extends ChallengeSimple implements ToJsonInterface {
         'players_to_start': playersToStart,
         'players_number': playersCount,
         'prize_pool': prizePool,
-        'is_realm_activated': isRealmActivated
+        'is_realm_activated': isRealmActivated,
+        'cover': cover,
       };
 }

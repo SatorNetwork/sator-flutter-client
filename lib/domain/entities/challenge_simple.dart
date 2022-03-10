@@ -5,6 +5,7 @@ class ChallengeSimple {
   final int playersCount;
   final String prizePool;
   final bool isRealmActivated;
+  final String cover;
 
   const ChallengeSimple(
     this.id,
@@ -13,5 +14,6 @@ class ChallengeSimple {
     this.playersCount,
     this.prizePool,
     this.isRealmActivated,
+    this.cover,
   );
 }

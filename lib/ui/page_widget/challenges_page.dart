@@ -112,21 +112,31 @@ class ChallengesPage extends GetView<ChallengesController> {
         ),
         child: Row(
           children: [
-            Container(
-              height: imageHeight,
-              width: imageWidth,
-              padding: EdgeInsets.all(8 * coefficient),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                color: color,
-              ),
-              child: Center(
-                child: SvgPicture.asset(
-                  'images/sator_logo.svg',
-                  color: Colors.white,
-                ),
-              ),
-            ),
+            challenge.cover.isEmpty
+                ? Container(
+                    height: imageHeight,
+                    width: imageWidth,
+                    padding: EdgeInsets.all(8 * coefficient),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      color: color,
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'images/sator_logo.svg',
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(12)),
+                    child: Image.network(
+                      challenge.cover,
+                      height: imageHeight,
+                      width: imageWidth,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
             SizedBox(
               width: 12,
             ),
