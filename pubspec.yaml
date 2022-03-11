@@ -61,6 +61,7 @@ dependencies:
   dart_nats: ^0.3.5
   fast_rsa: ^3.2.0
   cryptography: ^2.0.5
+  confetti: ^0.6.0
 
 dev_dependencies:
   flutter_test:
