@@ -80,9 +80,7 @@ class ChallengesPage extends GetView<ChallengesController> {
                         final ChallengeSimple challenge =
                             controller.challengesRx.value[index];
                         final Color color = _colors[index % _colors.length];
-                        return challenge.isRealmActivated
-                            ? _challengeItem(challenge, color)
-                            : _lockChallengeItem(challenge);
+                        return _challengeItem(challenge, color);
                       },
                     ),
                   ),
@@ -140,100 +138,60 @@ class ChallengesPage extends GetView<ChallengesController> {
             SizedBox(
               width: 12,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  challenge.title,
-                  style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.darkAccent,
-                      fontSize: 18.0 * coefficient,
-                      fontWeight: FontWeight.w600),
-                ),
-                Row(
-                  children: [
-                    SvgPicture.asset('images/player_icon.svg'),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Text(
-                      '${challenge.playersCount}/${challenge.playersToStart}',
-                      style: textTheme.bodyText1!.copyWith(
-                        fontSize: 14 * coefficient,
-                        fontWeight: FontWeight.w500,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    challenge.title,
+                    style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.darkAccent,
+                        fontSize: 18.0 * coefficient,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  Row(
+                    children: [
+                      SvgPicture.asset('images/player_icon.svg'),
+                      SizedBox(
+                        width: 6,
                       ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    SvgPicture.asset('images/prize_icon.svg'),
-                    SizedBox(
-                      width: 6,
-                    ),
-                    Text(
-                      challenge.prizePool,
-                      style: textTheme.bodyText1!.copyWith(
-                        fontSize: 14 * coefficient,
-                        fontWeight: FontWeight.w500,
-                        color: SatorioColor.darkAccent,
+                      Text(
+                        '${challenge.playersCount}/${challenge.playersToStart}',
+                        style: textTheme.bodyText1!.copyWith(
+                          fontSize: 14 * coefficient,
+                          fontWeight: FontWeight.w500,
+                          color: SatorioColor.darkAccent,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _lockChallengeItem(ChallengeSimple challenge) {
-    final double itemHeight = 74.0 * coefficient;
-    return InkWell(
-      onTap: () {
-        controller.toChallenge(challenge);
-      },
-      child: Container(
-        padding: EdgeInsets.all(12.0),
-        height: itemHeight,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(13)),
-          color: SatorioColor.alice_blue,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  challenge.title,
-                  style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.darkAccent,
-                      fontSize: 18.0 * coefficient,
-                      fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  'txt_coming_soon'.tr,
-                  style: textTheme.bodyText2!.copyWith(
-                    fontSize: 14 * coefficient,
-                    fontWeight: FontWeight.w400,
+                      SizedBox(
+                        width: 20,
+                      ),
+                      SvgPicture.asset('images/prize_icon.svg'),
+                      SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        challenge.prizePool,
+                        style: textTheme.bodyText1!.copyWith(
+                          fontSize: 14 * coefficient,
+                          fontWeight: FontWeight.w500,
+                          color: SatorioColor.darkAccent,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            challenge.isRealmActivated
+                ? SizedBox(
+                    width: 0,
+                  )
+                : SvgPicture.asset(
+                    'images/locked_icon.svg',
                     color: SatorioColor.darkAccent,
                   ),
-                )
-              ],
-            ),
-            SvgPicture.asset(
-              'images/locked_icon.svg',
-              color: SatorioColor.darkAccent,
-            )
           ],
         ),
       ),
