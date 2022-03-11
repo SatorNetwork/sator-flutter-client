@@ -7,6 +7,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 class SplashPage extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
+    controller.dummy();
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Stack(

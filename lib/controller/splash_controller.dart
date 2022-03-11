@@ -77,6 +77,8 @@ class SplashController extends GetxController {
     });
   }
 
+  void dummy() {}
+
   void _checkToken() async {
     Future.delayed(
       Duration(milliseconds: 1000),
