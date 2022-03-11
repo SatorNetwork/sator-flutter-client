@@ -85,18 +85,18 @@ class SplashController extends GetxController {
           _satorioRepository.validateToken().then(
             (bool isTokenValid) {
               if (isTokenValid) {
-                // _checkIsVerified();
+                _checkIsVerified();
               } else {
-                // _checkIsOnBoarding();
+                _checkIsOnBoarding();
               }
             },
           ).catchError(
             (value) {
-              // _checkIsOnBoarding();
+              _checkIsOnBoarding();
             },
           );
         } else {
-          // _toUpdateAppDialog();
+          _toUpdateAppDialog();
         }
       },
     );
