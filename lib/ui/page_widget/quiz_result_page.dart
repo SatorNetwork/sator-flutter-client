@@ -7,6 +7,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
+import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QuizResultPage extends GetView<QuizResultController> {
   @override
@@ -153,17 +154,18 @@ class QuizResultPage extends GetView<QuizResultController> {
                   SizedBox(
                     height: 25 * coefficient,
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   child: ElevatedGradientButton(
-                  //     text: 'txt_play_next_challenge'.tr,
-                  //     onPressed: () {
-                  //     },
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 13 * coefficient,
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedGradientButton(
+                      text: 'txt_play_next_challenge'.tr,
+                      onPressed: () {
+                        controller.quizController.toChallenges();
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 13 * coefficient,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: BorderedButton(
@@ -273,5 +275,4 @@ class QuizResultPage extends GetView<QuizResultController> {
       ),
     );
   }
-
 }

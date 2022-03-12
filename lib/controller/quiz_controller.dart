@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/challenges_binding.dart';
+import 'package:satorio/controller/challenges_controller.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -23,6 +25,7 @@ import 'package:satorio/domain/entities/quiz_screen_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/page_widget/challenges_page.dart';
 
 class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
@@ -54,20 +57,34 @@ class QuizController extends GetxController {
   }
 
   void backToEpisode() {
-    print('backToEpisode');
     _satorioRepository.updateWalletBalance();
     Get.until((route) => !Get.isOverlaysOpen);
     if (Get.isRegistered<ShowEpisodeRealmController>()) {
-      print('isRegistered');
       Get.until((route) {
-        print('Get.currentRoute ${Get.currentRoute}');
         return Get.currentRoute == '/() => ShowEpisodesRealmPage';
       });
+    } else {
+      Get.back();
     }
   }
 
   void back() {
     Get.back();
+  }
+
+  void toChallenges() {
+    if (Get.isRegistered<ChallengesController>()) {
+      Get.until((route) {
+        return Get.currentRoute == '/() => ChallengesPage';
+      });
+    } else {
+      // Workaround - cause Get.off here doesn't call onClose hook
+      Get.back();
+      Get.to(
+        () => ChallengesPage(),
+        binding: ChallengesBinding(),
+      );
+    }
   }
 
   Future<void> sendAnswer(String questionId, String answerId) {
