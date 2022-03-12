@@ -40,6 +40,7 @@ class NatsDataSourceImpl implements NatsDataSource {
 
   @override
   Future<Subscription> subscribe(String url, String subject) {
+    print('${_client.status}');
     return _client
         .connect(
           Uri.parse(url),
@@ -51,6 +52,7 @@ class NatsDataSourceImpl implements NatsDataSource {
 
   @override
   Future<void> unsubscribe(Subscription subscription) {
+    print('unsubscribe');
     _client.unSub(subscription);
     return _client.close();
   }
@@ -65,7 +67,7 @@ class NatsDataSourceImpl implements NatsDataSource {
     SocketMessageAnswerModel message = SocketMessageAnswerModel(
       PayloadAnswerModel(questionId, answerId),
       DateTime.now(),
-      60000,
+      10000,
     );
 
     return _sendViaClient(answerSubject, serverPublicKey, message);

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
@@ -19,6 +20,7 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/challenges_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
@@ -166,6 +168,9 @@ class HomeController extends GetxController
   }
 
   void toNftItem(final NftItem nftItem) {
+    Get.to(() => ChallengesPage(), binding: ChallengesBinding());
+    return;
+
     Get.to(
       () => NftItemPage(),
       binding: NftItemBinding(),

@@ -53,6 +53,7 @@ class QuizController extends GetxController {
 
   @override
   void onClose() {
+    print('onClose()');
     _pingTimer.cancel();
     _streamSubscription?.cancel();
     _satorioRepository.unsubscribeNats(_subscription);
