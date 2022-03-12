@@ -34,13 +34,13 @@ class NatsDataSourceImpl implements NatsDataSource {
     if (_client.status == Status.connected) {
       bool result = _client.pubString(subject, encrypted);
       print(
-          'onSend ${DateTime.now().toIso8601String()} ${result ? 'success' : 'error'} $subject: $jsonData');
+        'onSend ${DateTime.now().toIso8601String()} ${result ? 'success' : 'error'} $subject: $jsonData',
+      );
     }
   }
 
   @override
   Future<Subscription> subscribe(String url, String subject) {
-    print('${_client.status}');
     return _client
         .connect(
           Uri.parse(url),
@@ -52,7 +52,6 @@ class NatsDataSourceImpl implements NatsDataSource {
 
   @override
   Future<void> unsubscribe(Subscription subscription) {
-    print('unsubscribe');
     _client.unSub(subscription);
     return _client.close();
   }

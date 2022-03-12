@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/controller/challenges_controller.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
@@ -50,7 +49,6 @@ class QuizController extends GetxController {
 
   @override
   void onClose() {
-    print('onClose()');
     _pingTimer.cancel();
     _streamSubscription?.cancel();
     _satorioRepository.unsubscribeNats(_subscription);
@@ -76,9 +74,13 @@ class QuizController extends GetxController {
 
   void toChallenges() {
     if (Get.isRegistered<ChallengesController>()) {
-      Get.until((route) => Get.currentRoute == '/() => ChallengesPage');
+      Get.until((route) {
+        return Get.currentRoute == '/() => ChallengesPage';
+      });
     } else {
-      Get.off(
+      // Workaround - cause Get.off here doesn't call onClose hook
+      Get.back();
+      Get.to(
         () => ChallengesPage(),
         binding: ChallengesBinding(),
       );
