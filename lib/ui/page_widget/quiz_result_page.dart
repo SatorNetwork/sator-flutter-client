@@ -7,7 +7,6 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
-import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class QuizResultPage extends GetView<QuizResultController> {
   @override
