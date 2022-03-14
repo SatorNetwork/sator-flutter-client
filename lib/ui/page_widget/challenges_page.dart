@@ -150,6 +150,8 @@ class ChallengesPage extends GetView<ChallengesController> {
                 children: [
                   Text(
                     challenge.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.darkAccent,
                         fontSize: 18.0 * coefficient,
