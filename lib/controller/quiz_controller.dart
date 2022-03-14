@@ -74,6 +74,8 @@ class QuizController extends GetxController {
 
   void toChallenges() {
     if (Get.isRegistered<ChallengesController>()) {
+      final ChallengesController challengesController = Get.find();
+      challengesController.refreshData();
       Get.until((route) {
         return Get.currentRoute == '/() => ChallengesPage';
       });
