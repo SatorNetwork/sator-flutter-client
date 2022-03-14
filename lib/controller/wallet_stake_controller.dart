@@ -143,7 +143,10 @@ class WalletStakeController extends GetxController {
               ),
             );
           },
-        );
+        )
+        .catchError((error) {
+          isInProgress.value = false;
+        });
   }
 
   void _unstakeAmount() {
@@ -178,7 +181,10 @@ class WalletStakeController extends GetxController {
               ),
             );
           },
-        );
+        )
+        .catchError((error) {
+          isInProgress.value = false;
+        });
   }
 }
 
