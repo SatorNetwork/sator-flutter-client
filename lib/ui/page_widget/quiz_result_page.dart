@@ -154,17 +154,18 @@ class QuizResultPage extends GetView<QuizResultController> {
                   SizedBox(
                     height: 25 * coefficient,
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  //   child: ElevatedGradientButton(
-                  //     text: 'txt_play_next_challenge'.tr,
-                  //     onPressed: () {
-                  //     },
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 13 * coefficient,
-                  // ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: ElevatedGradientButton(
+                      text: 'txt_play_next_challenge'.tr,
+                      onPressed: () {
+                        controller.quizController.toChallenges();
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 13 * coefficient,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: BorderedButton(
@@ -274,5 +275,4 @@ class QuizResultPage extends GetView<QuizResultController> {
       ),
     );
   }
-
 }
