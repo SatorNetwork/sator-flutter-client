@@ -36,6 +36,7 @@ import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
@@ -390,13 +391,6 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<ChallengeSimple>> showChallenges(String showId, {int? page}) {
-    return _apiDataSource
-        .showChallenges(showId, page: page)
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
   Future<Show> loadShow(String showId) {
     return _apiDataSource
         .loadShow(showId)
@@ -439,6 +433,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<ChallengeSimple>> challenges({int? page, int? itemsPerPage}) {
+    return _apiDataSource
+        .challenges(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -677,6 +678,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<WalletStaking> getStake(String walletId) {
     return _apiDataSource
         .getStake(walletId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<StakeLevel>> stakeLevels() {
+    return _apiDataSource
+        .stakeLevels()
         .catchError((value) => _handleException(value));
   }
 

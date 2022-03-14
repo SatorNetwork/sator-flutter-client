@@ -114,7 +114,7 @@ class ChallengeController extends GetxController {
   }
 
   void _toQuiz(NatsConfig natsConfig) async {
-    final result = await Get.to(
+    Get.off(
       () => QuizPage(),
       binding: QuizBinding(),
       arguments: QuizArgument(
@@ -122,9 +122,18 @@ class ChallengeController extends GetxController {
         natsConfig,
       ),
     );
-    if (challengeRx.value != null) {
-      _reloadChallenge(challengeRx.value!.id);
-    }
+
+    // final result = await Get.to(
+    //   () => QuizPage(),
+    //   binding: QuizBinding(),
+    //   arguments: QuizArgument(
+    //     challengeRx.value!,
+    //     natsConfig,
+    //   ),
+    // );
+    // if (challengeRx.value != null) {
+    //   _reloadChallenge(challengeRx.value!.id);
+    // }
   }
 
   void _loadQuizQuestion() {

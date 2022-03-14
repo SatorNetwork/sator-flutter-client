@@ -34,7 +34,8 @@ class NatsDataSourceImpl implements NatsDataSource {
     if (_client.status == Status.connected) {
       bool result = _client.pubString(subject, encrypted);
       print(
-          'onSend ${DateTime.now().toIso8601String()} ${result ? 'success' : 'error'} $subject: $jsonData');
+        'onSend ${DateTime.now().toIso8601String()} ${result ? 'success' : 'error'} $subject: $jsonData',
+      );
     }
   }
 
@@ -65,7 +66,7 @@ class NatsDataSourceImpl implements NatsDataSource {
     SocketMessageAnswerModel message = SocketMessageAnswerModel(
       PayloadAnswerModel(questionId, answerId),
       DateTime.now(),
-      60000,
+      10000,
     );
 
     return _sendViaClient(answerSubject, serverPublicKey, message);
