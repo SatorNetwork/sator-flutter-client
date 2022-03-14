@@ -20,6 +20,7 @@ import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
@@ -122,6 +123,8 @@ abstract class SatorioRepository {
   Future<bool> unstake(String walletId);
 
   Future<WalletStaking> getStake(String walletId);
+
+  Future<List<StakeLevel>> stakeLevels();
 
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
 
