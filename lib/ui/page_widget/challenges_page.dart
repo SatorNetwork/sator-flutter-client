@@ -68,20 +68,25 @@ class ChallengesPage extends GetView<ChallengesController> {
                       controller.loadChallenges();
                     return true;
                   },
-                  child: Obx(
-                    () => ListView.separated(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-                      itemCount: controller.challengesRx.value.length,
-                      separatorBuilder: (context, index) => SizedBox(
-                        height: 12,
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      controller.refreshData();
+                    },
+                    child: Obx(
+                      () => ListView.separated(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                        itemCount: controller.challengesRx.value.length,
+                        separatorBuilder: (context, index) => SizedBox(
+                          height: 12,
+                        ),
+                        itemBuilder: (context, index) {
+                          final ChallengeSimple challenge =
+                              controller.challengesRx.value[index];
+                          final Color color = _colors[index % _colors.length];
+                          return _challengeItem(challenge, color);
+                        },
                       ),
-                      itemBuilder: (context, index) {
-                        final ChallengeSimple challenge =
-                            controller.challengesRx.value[index];
-                        final Color color = _colors[index % _colors.length];
-                        return _challengeItem(challenge, color);
-                      },
                     ),
                   ),
                 ),
