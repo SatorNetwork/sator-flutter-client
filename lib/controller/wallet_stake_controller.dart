@@ -18,6 +18,7 @@ class WalletStakeController extends GetxController {
 
   final RxBool tmpState = false.obs;
   final RxBool pmState = false.obs;
+  final RxBool isInProgress = false.obs;
 
   WalletStakeController() {
     WalletStakeArgument argument = Get.arguments as WalletStakeArgument;
@@ -42,9 +43,20 @@ class WalletStakeController extends GetxController {
     });
   }
 
+  // _stakeLevels get loyalty levels and set current as first
   void _stakeLevels() {
     _satorioRepository.stakeLevels().then((List<StakeLevel> stakeLevels) {
-      stakeLevelsRx.value = stakeLevels;
+      stakeLevels.forEach((element) {
+        if (!element.isCurrent) {
+          stakeLevelsRx.update((val) {
+            stakeLevelsRx.value.add(element);
+          });
+        } else {
+          stakeLevelsRx.update((val) {
+            stakeLevelsRx.value.insert(0, element);
+          });
+        }
+      });
     });
   }
 
@@ -85,70 +97,88 @@ class WalletStakeController extends GetxController {
       possibleMultiplierRx.value = 0.0;
       return;
     }
-    _satorioRepository.possibleMultiplier(walletDetailRx.value.id, amount).then((value) {
+    _satorioRepository
+        .possibleMultiplier(walletDetailRx.value.id, amount)
+        .then((value) {
       possibleMultiplierRx.value = value;
     });
   }
 
+  //_stakeAmount add tokens to staking pool
   void _stakeAmount(double amount) {
-    _satorioRepository
-        .stake(
-      walletDetailRx.value.id,
-      amount,
-    )
+    Future.value(true)
+        .then((value) {
+          isInProgress.value = true;
+          return value;
+        })
         .then(
-      (bool result) {
-        if (result) {
-          possibleMultiplier(amount);
-          _updateWalletStake();
-          tmpState.value = true;
-        }
-
-        Get.dialog(
-          DefaultDialog(
-            result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result
-                ? 'txt_stake_success'.tr.format(
-                    [
-                      amount.toString(),
-                      walletDetailRx.value.balance[0].currency,
-                      possibleMultiplierRx.value,
-                    ],
-                  )
-                : 'txt_something_wrong'.tr,
-            result ? 'txt_cool'.tr : 'txt_ok'.tr,
-            onButtonPressed: () => result ? _updateWalletStake() : () {},
-            icon: result ? Icons.check_rounded : null,
+          (value) => _satorioRepository.stake(
+            walletDetailRx.value.id,
+            amount,
           ),
+        )
+        .then(
+          (bool result) {
+            if (result) {
+              possibleMultiplier(amount);
+              _updateWalletStake();
+              tmpState.value = true;
+              isInProgress.value = false;
+            }
+            Get.dialog(
+              DefaultDialog(
+                result ? 'txt_success'.tr : 'txt_oops'.tr,
+                result
+                    ? 'txt_stake_success'.tr.format(
+                        [
+                          amount.toString(),
+                          walletDetailRx.value.balance[0].currency,
+                          possibleMultiplierRx.value,
+                        ],
+                      )
+                    : 'txt_something_wrong'.tr,
+                result ? 'txt_cool'.tr : 'txt_ok'.tr,
+                onButtonPressed: () => result ? _updateWalletStake() : () {},
+                icon: result ? Icons.check_rounded : null,
+              ),
+            );
+          },
         );
-      },
-    );
   }
 
   void _unstakeAmount() {
-    _satorioRepository.unstake(walletDetailRx.value.id).then(
-      (bool result) {
-        if (result) {
-          _updateWalletStake();
-          tmpState.value = false;
-        }
+    Future.value(true)
+        .then((value) {
+          isInProgress.value = true;
+          return true;
+        })
+        .then(
+          (value) => _satorioRepository.unstake(walletDetailRx.value.id),
+        )
+        .then(
+          (bool result) {
+            if (result) {
+              _updateWalletStake();
+              tmpState.value = false;
+              isInProgress.value = false;
+            }
 
-        Get.dialog(
-          DefaultDialog(
-            result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result
-                ? 'txt_unstake_success'.tr.format(
-                    [
-                      walletStakingRx.value?.lockedByYou.toStringAsFixed(2),
-                      walletDetailRx.value.balance[0].currency
-                    ],
-                  )
-                : 'txt_something_wrong'.tr,
-            result ? 'txt_cool'.tr : 'txt_ok'.tr,
-          ),
+            Get.dialog(
+              DefaultDialog(
+                result ? 'txt_success'.tr : 'txt_oops'.tr,
+                result
+                    ? 'txt_unstake_success'.tr.format(
+                        [
+                          walletStakingRx.value?.lockedByYou.toStringAsFixed(2),
+                          walletDetailRx.value.balance[0].currency
+                        ],
+                      )
+                    : 'txt_something_wrong'.tr,
+                result ? 'txt_cool'.tr : 'txt_ok'.tr,
+              ),
+            );
+          },
         );
-      },
-    );
   }
 }
 

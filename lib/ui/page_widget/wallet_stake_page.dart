@@ -249,11 +249,14 @@ class WalletStakePage extends GetView<WalletStakeController> {
             SizedBox(
               height: 20 * coefficient,
             ),
-            ElevatedGradientButton(
-              text: 'txt_add'.tr,
-              onPressed: () {
-                controller.toLockRewardsBottomSheet();
-              },
+            Obx(
+              () => ElevatedGradientButton(
+                text: 'txt_add'.tr,
+                isInProgress: controller.isInProgress.value,
+                onPressed: () {
+                  controller.toLockRewardsBottomSheet();
+                },
+              ),
             ),
           ],
         ),
@@ -395,23 +398,29 @@ class WalletStakePage extends GetView<WalletStakeController> {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Expanded(
-                  child: BorderedButton(
-                    text: 'txt_unlock'.tr,
-                    onPressed: () {
-                      controller.toUnLockRewardsBottomSheet();
-                    },
+                Obx(
+                  () => Expanded(
+                    child: BorderedButton(
+                      text: 'txt_unlock'.tr,
+                      isInProgress: controller.isInProgress.value,
+                      onPressed: () {
+                        controller.toUnLockRewardsBottomSheet();
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(
                   width: 12 * coefficient,
                 ),
-                Expanded(
-                  child: ElevatedGradientButton(
-                    text: 'txt_add'.tr,
-                    onPressed: () {
-                      controller.toLockRewardsBottomSheet();
-                    },
+                Obx(
+                  () => Expanded(
+                    child: ElevatedGradientButton(
+                      text: 'txt_add'.tr,
+                      isInProgress: controller.isInProgress.value,
+                      onPressed: () {
+                        controller.toLockRewardsBottomSheet();
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -464,6 +473,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -487,30 +497,29 @@ class WalletStakePage extends GetView<WalletStakeController> {
                         ),
                       ],
                     ),
-                    Expanded(
-                      child: Container(
-                        width: 48 * coefficient,
-                        height: 48 * coefficient,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: stakeLevel.isCurrent
-                                ? SatorioColor.royal_blue_2
-                                : SatorioColor.alice_blue,
-                            width: 2,
-                          ),
+                    // Expanded(child: Container()),
+                    Container(
+                      width: 48 * coefficient,
+                      height: 48 * coefficient,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
                           color: stakeLevel.isCurrent
-                              ? SatorioColor.interactive
-                              : SatorioColor.alice_blue,
+                              ? SatorioColor.royal_blue_2
+                              : SatorioColor.alice_blue2,
+                          width: 2,
                         ),
-                        child: Center(
-                          child: Icon(
-                            Icons.star_rounded,
-                            size: 32 * coefficient,
-                            color: stakeLevel.isCurrent
-                                ? Colors.white
-                                : SatorioColor.alice_blue2,
-                          ),
+                        color: stakeLevel.isCurrent
+                            ? SatorioColor.interactive
+                            : SatorioColor.alice_blue,
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.star_rounded,
+                          size: 32 * coefficient,
+                          color: stakeLevel.isCurrent
+                              ? Colors.white
+                              : SatorioColor.alice_blue2,
                         ),
                       ),
                     ),
@@ -607,7 +616,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                     bottomLeft: Radius.circular(18)),
                 color: stakeLevel.isCurrent
                     ? SatorioColor.interactive
-                    : SatorioColor.alice_blue,
+                    : SatorioColor.alice_blue2,
               ),
               child: stakeLevel.isCurrent
                   ? Center(
@@ -621,7 +630,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                         ),
                       ),
                     )
-                  : SizedBox(),
+                  : Center(child: SizedBox()),
             ),
           )
         ],

@@ -294,6 +294,6 @@ const Map<String, String> en = {
   'txt_includes_bonus': 'Includes bonus from holding',
   'txt_back': 'Back',
   'txt_min_amount': 'Minimum amount',
-  'txt_min_days': 'Minimum days to stake',
+  'txt_min_days': 'Minimum days to lock',
   'txt_rewards': 'Rewards',
 };
