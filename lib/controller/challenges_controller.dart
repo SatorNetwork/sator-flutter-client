@@ -66,4 +66,17 @@ class ChallengesController extends GetxController {
       arguments: ChallengeArgument(challenge.id),
     );
   }
+
+  void refreshData() {
+    if (!_isLoadingRx.value) {
+      challengesRx.update((value) {
+        if (value != null) value.clear();
+      });
+      _pageRx.value = _initialPage;
+      _isLoadingRx.value = false;
+      _isAllLoadedRx.value = false;
+
+      loadChallenges();
+    }
+  }
 }
