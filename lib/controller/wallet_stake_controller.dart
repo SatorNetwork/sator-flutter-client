@@ -122,6 +122,7 @@ class WalletStakeController extends GetxController {
             if (result) {
               possibleMultiplier(amount);
               _updateWalletStake();
+              _stakeLevels();
               tmpState.value = true;
               isInProgress.value = false;
             }
@@ -162,6 +163,7 @@ class WalletStakeController extends GetxController {
           (bool result) {
             if (result) {
               _updateWalletStake();
+              _stakeLevels();
               tmpState.value = false;
               isInProgress.value = false;
             }
