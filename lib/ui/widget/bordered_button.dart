@@ -13,6 +13,7 @@ class BorderedButton extends StatelessWidget {
     this.borderRadius,
     this.icon,
     this.onPressed,
+    this.isInProgress = false,
   });
 
   final String text;
@@ -23,6 +24,7 @@ class BorderedButton extends StatelessWidget {
   final double? borderRadius;
   final VoidCallback? onPressed;
   final Widget? icon;
+  final bool isInProgress;
 
   static const double minHeight = 48.0;
 
@@ -40,25 +42,36 @@ class BorderedButton extends StatelessWidget {
         ),
         side: BorderSide(color: borderColor, width: borderWidth),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            text,
-            style: textTheme.bodyText2!.copyWith(
-              color: textColor,
-              fontSize: 16.0,
-              fontWeight: FontWeight.w600,
+      child: isInProgress
+          ? SizedBox(
+              height: minHeight * 0.6,
+              width: minHeight * 0.6,
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.transparent,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  SatorioColor.interactive.withOpacity(0.5),
+                ),
+              ),
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  text,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: textColor,
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                if (icon != null)
+                  SizedBox(
+                    width: 12,
+                  ),
+                if (icon != null) icon!,
+              ],
             ),
-          ),
-          if (icon != null)
-            SizedBox(
-              width: 12,
-            ),
-          if (icon != null) icon!,
-        ],
-      ),
     );
   }
 }

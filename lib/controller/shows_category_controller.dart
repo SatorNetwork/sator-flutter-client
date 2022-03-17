@@ -6,7 +6,7 @@ import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/domain/show_category.dart';
+import 'package:satorio/domain/entities/show_category_type.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 

@@ -18,6 +18,7 @@ import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
+import 'package:satorio/data/model/stake_level_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
@@ -123,6 +124,8 @@ abstract class ApiDataSource {
 
   Future<WalletStakingModel> getStake(String walletId);
 
+  Future<List<StakeLevelModel>> stakeLevels();
+
   // endregion
 
   // region Shows
@@ -146,8 +149,6 @@ abstract class ApiDataSource {
 
   Future<ShowEpisodeModel> showEpisode(String showId, String episodeId);
 
-  Future<List<ChallengeSimpleModel>> showChallenges(String showId, {int? page});
-
   Future<ShowModel> loadShow(String showId);
 
   Future<QrShowModel> getShowEpisodeByQR(String qrCodeId);
@@ -169,6 +170,11 @@ abstract class ApiDataSource {
   // region Challenges
 
   Future<ChallengeModel> challenge(String challengeId);
+
+  Future<List<ChallengeSimpleModel>> challenges({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<EpisodeActivationModel> isEpisodeActivated(String episodeId);
 

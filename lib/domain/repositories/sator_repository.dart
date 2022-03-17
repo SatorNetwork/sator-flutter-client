@@ -20,6 +20,7 @@ import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
@@ -123,6 +124,8 @@ abstract class SatorioRepository {
 
   Future<WalletStaking> getStake(String walletId);
 
+  Future<List<StakeLevel>> stakeLevels();
+
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
 
   Future<List<ShowCategory>> showsCategoryList({
@@ -142,8 +145,6 @@ abstract class SatorioRepository {
 
   Future<ShowEpisode> showEpisode(String showId, String episodeId);
 
-  Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
-
   Future<Show> loadShow(String showId);
 
   Future<QrShow> getShowEpisodeByQR(String qrCodeId);
@@ -151,6 +152,11 @@ abstract class SatorioRepository {
   Future<bool> clapShow(String showId);
 
   Future<Challenge> challenge(String challengeId);
+
+  Future<List<ChallengeSimple>> challenges({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<EpisodeActivation> isEpisodeActivated(String episodeId);
 

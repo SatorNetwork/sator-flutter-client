@@ -304,4 +304,7 @@ const Map<String, String> en = {
   'txt_coinbase': 'Coinbase',
   'txt_binance': 'Binance',
   'txt_uniswap': 'Uniswap',
+  'txt_min_amount': 'Minimum amount',
+  'txt_min_days': 'Minimum days to lock',
+  'txt_rewards': 'Rewards',
 };
