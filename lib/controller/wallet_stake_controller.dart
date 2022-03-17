@@ -46,6 +46,10 @@ class WalletStakeController extends GetxController {
   // _stakeLevels get loyalty levels and set current as first
   void _stakeLevels() {
     _satorioRepository.stakeLevels().then((List<StakeLevel> stakeLevels) {
+      if (stakeLevels.length == 0) return;
+
+      stakeLevelsRx.value = [];
+
       stakeLevels.forEach((element) {
         if (!element.isCurrent) {
           stakeLevelsRx.update((val) {
