@@ -1,17 +1,16 @@
-import 'package:better_player/better_player.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/controller/wallet_top_up_controller.dart';
+
+import 'package:satorio/controller/wallet_in_app_purchase_controller.dart';
 import 'package:satorio/domain/entities/buy_sao.dart';
 import 'package:satorio/domain/entities/exchange_option.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/text_theme.dart';
 
-import '../theme/text_theme.dart';
-
-class WalletTopUpPage extends GetView<WalletTopUpController> {
+class WalletInAppPurchasePage extends GetView<WalletInAppPurchaseController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

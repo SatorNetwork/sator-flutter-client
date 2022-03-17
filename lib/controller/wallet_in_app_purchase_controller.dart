@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 
-class WalletTopUpController extends GetxController {
+class WalletInAppPurchaseController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   final RxBool isExchangeRx = false.obs;
