@@ -62,6 +62,7 @@ dependencies:
   fast_rsa: ^3.2.0
   cryptography: ^2.0.5
   confetti: ^0.6.0
+  in_app_purchase: ^3.0.2
 
 dev_dependencies:
   flutter_test:

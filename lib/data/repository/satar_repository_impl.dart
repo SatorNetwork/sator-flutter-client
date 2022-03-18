@@ -12,6 +12,7 @@ import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
@@ -52,14 +53,21 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
+  final InAppPurchaseDataSource _inAppPurchaseDataSource;
   final RxBool _init = false.obs;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._nftsDataSource,
-      this._localDataSource, this._firebaseDataSource, this._natsDataSource) {
+  SatorioRepositoryImpl(
+      this._apiDataSource,
+      this._nftsDataSource,
+      this._localDataSource,
+      this._firebaseDataSource,
+      this._natsDataSource,
+      this._inAppPurchaseDataSource) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
         .then((value) => _nftsDataSource.init())
+        .then((value) => _inAppPurchaseDataSource.init())
         .then((value) => _init.value = true);
   }
 
