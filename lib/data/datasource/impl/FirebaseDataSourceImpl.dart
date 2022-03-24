@@ -11,7 +11,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   Future<void> initRemoteConfig() async {
     await _remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: Duration(seconds: 1),
+      fetchTimeout: Duration(seconds: 2),
       minimumFetchInterval: Duration(seconds: 10),
     ));
 
