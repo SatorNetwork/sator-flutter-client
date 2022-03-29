@@ -26,7 +26,7 @@ import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class HomeController extends GetxController
-    with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
+    with GetSingleTickerProviderStateMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);

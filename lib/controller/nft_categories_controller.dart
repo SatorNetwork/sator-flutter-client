@@ -14,15 +14,15 @@ import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_category_type.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/domain/entities/show_category_type.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class NftCategoriesController extends GetxController
-    with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
+    with GetSingleTickerProviderStateMixin, NonWorkingFeatureMixin {
   static const int _fixedTabLength = 2;
 
   final int _itemsPerPage = 10;

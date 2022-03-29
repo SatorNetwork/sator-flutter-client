@@ -5,7 +5,7 @@ import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/ui/page_widget/settings_page.dart';
 
 class PersonalProfileController extends GetxController
-    with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
+    with GetSingleTickerProviderStateMixin, NonWorkingFeatureMixin {
   late final TabController tabController;
 
   PersonalProfileController() {
