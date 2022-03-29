@@ -4,6 +4,7 @@ import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
@@ -826,6 +827,56 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<NftItem> nft(String mintAddress) {
     return _nftsDataSource
         .nft(mintAddress)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<IAPItem>> getProducts(List<String> productsIds) {
+    return _inAppPurchaseDataSource
+        .getProducts(productsIds)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> buyInAppProduct(String id) {
+    return _inAppPurchaseDataSource
+        .buyInAppProduct(id)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> initializePurchase() {
+    return _inAppPurchaseDataSource
+        .initializePurchase()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<PurchasedItem>?> purchaseHistory() {
+    return _inAppPurchaseDataSource
+        .purchaseHistory()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> consumeAll() {
+    return _inAppPurchaseDataSource
+        .consumeAll()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> finishTransaction(
+      PurchasedItem purchasedItem, bool isConsumable) {
+    return _inAppPurchaseDataSource
+        .finishTransaction(purchasedItem, isConsumable)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future inAppProductsIds() {
+    return _firebaseDataSource
+        .inAppProductsIds()
         .catchError((value) => _handleException(value));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
@@ -237,9 +238,11 @@ class WalletInAppPurchasePage extends GetView<WalletInAppPurchaseController> {
     );
   }
 
-  Widget _buySaoItem(BuySao buySao) {
+  Widget _buySaoItem(int index, IAPItem item) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        controller.buyInAppProduct(item.productId!);
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 15),
         height: 76,
@@ -278,7 +281,7 @@ class WalletInAppPurchasePage extends GetView<WalletInAppPurchaseController> {
             RichText(
                 textAlign: TextAlign.end,
                 text: TextSpan(
-                    text: buySao.saoAmount.toStringAsFixed(0),
+                    text: item.title,
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 15 * coefficient,
@@ -298,7 +301,7 @@ class WalletInAppPurchasePage extends GetView<WalletInAppPurchaseController> {
                 child: RichText(
                     textAlign: TextAlign.end,
                     text: TextSpan(
-                        text: '${buySao.currency}',
+                        text: '${item.currency}',
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 15 * coefficient,
@@ -306,7 +309,7 @@ class WalletInAppPurchasePage extends GetView<WalletInAppPurchaseController> {
                         ),
                         children: [
                           TextSpan(
-                            text: '${buySao.price}',
+                            text: ' ${item.price}',
                             style: textTheme.bodyText2!.copyWith(
                               color: SatorioColor.textBlack,
                               fontSize: 15 * coefficient,
@@ -334,18 +337,20 @@ class WalletInAppPurchasePage extends GetView<WalletInAppPurchaseController> {
   }
 
   Widget _buySaoItems() {
-    return ListView.separated(
-        scrollDirection: Axis.vertical,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        itemCount: dummyBuySao.length,
-        shrinkWrap: true,
-        separatorBuilder: (context, index) => SizedBox(
-              height: 14,
-            ),
-        itemBuilder: (context, index) {
-          BuySao buySao = dummyBuySao[index];
-          return _buySaoItem(buySao);
-        });
+    return Obx(
+        () => ListView.separated(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.symmetric(vertical: 10),
+          itemCount: controller.productsRx.value.length,
+          shrinkWrap: true,
+          separatorBuilder: (context, index) => SizedBox(
+                height: 14,
+              ),
+          itemBuilder: (context, index) {
+            IAPItem buySao = controller.productsRx.value[index];
+            return _buySaoItem(index, buySao);
+          }),
+    );
   }
 
   Widget _exchangeItems() {
