@@ -22,7 +22,7 @@ import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class NftCategoriesController extends GetxController
-    with GetSingleTickerProviderStateMixin, NonWorkingFeatureMixin {
+    with GetTickerProviderStateMixin, NonWorkingFeatureMixin {
   static const int _fixedTabLength = 2;
 
   final int _itemsPerPage = 10;

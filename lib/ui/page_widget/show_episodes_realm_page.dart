@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/message_model.dart';
 import 'package:satorio/domain/entities/message.dart';
@@ -559,6 +560,37 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 32,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: InkWell(
+                            onTap: () {
+                              controller.toPuzzle();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    SatorioColor.pale_cornflower_blue,
+                                    SatorioColor.lavender3,
+                                  ],
+                                ),
+                              ),
+                              child: Lottie.asset(
+                                'lottie-anim/puzzle.json',
+                                repeat: true,
+                                width: Get.width - 2 * 20,
+                              ),
                             ),
                           ),
                         ),

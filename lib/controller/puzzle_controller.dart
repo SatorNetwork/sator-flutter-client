@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -10,8 +11,7 @@ import 'package:satorio/domain/puzzle/tile.dart';
 
 enum PuzzleStatus { incomplete, complete }
 
-class PuzzleController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   static const String _imageUrl =
       'https://previews.123rf.com/images/aquir/aquir1311/aquir131100316/23569861-%EC%83%98%ED%94%8C-%EC%A7%80-%EB%B9%A8%EA%B0%84%EC%83%89-%EB%9D%BC%EC%9A%B4%EB%93%9C-%EC%8A%A4%ED%83%AC%ED%94%84.jpg';
   final int sideSize = 4;
@@ -52,7 +52,8 @@ class PuzzleController extends GetxController
   void initPuzzle() async {
     final Uint8List bytes = await _loadImage();
 
-    final List<imageLib.Image> images = _splitImage(bytes);
+    final List<Uint8List> images =
+        await compute(splitImage, _SplitImageData(bytes, sideSize));
     final Puzzle puzzle = _generatePuzzle(images, sideSize, shuffle: true);
 
     puzzleRx.value = puzzle.sort();
@@ -64,31 +65,9 @@ class PuzzleController extends GetxController
         .then((value) => value.buffer.asUint8List());
   }
 
-  List<imageLib.Image> _splitImage(List<int> input) {
-    // convert to image from image package
-    imageLib.Image image = imageLib.decodeImage(input)!;
-
-    int x = 0, y = 0;
-    int width = (image.width / sideSize).round();
-    int height = (image.height / sideSize).round();
-
-    // split image to parts
-    List<imageLib.Image> parts = [];
-    for (int i = 0; i < sideSize; i++) {
-      for (int j = 0; j < sideSize; j++) {
-        parts.add(imageLib.copyCrop(image, x, y, width, height));
-        x += width;
-      }
-      x = 0;
-      y += height;
-    }
-    print(parts.length);
-    return parts;
-  }
-
   /// Build a randomized, solvable puzzle of the given size.
   Puzzle _generatePuzzle(
-    List<imageLib.Image> images,
+    List<Uint8List> images,
     int size, {
     bool shuffle = true,
   }) {
@@ -139,11 +118,6 @@ class PuzzleController extends GetxController
       }
     }
 
-    puzzle.tiles.forEach((element) {
-      print(
-          'tile ${element.value} ${element.currentPosition} / ${element.currentPosition} / ${element.isWhitespace}');
-    });
-    print('puzzle.tiles = ${puzzle.tiles.length}');
     return puzzle;
   }
 
@@ -151,7 +125,7 @@ class PuzzleController extends GetxController
   /// current position.
   List<Tile> _getTileListFromPositions(
     int size,
-    List<imageLib.Image> images,
+    List<Uint8List> images,
     List<Position> correctPositions,
     List<Position> currentPositions,
   ) {
@@ -160,9 +134,7 @@ class PuzzleController extends GetxController
       for (int i = 1; i <= size * size; i++)
         if (i == size * size)
           Tile(
-            imageBytes: Uint8List.fromList(
-              imageLib.encodeJpg(images[i - 1]),
-            ),
+            imageBytes: images[i - 1],
             value: i,
             correctPosition: whitespacePosition,
             currentPosition: currentPositions[i - 1],
@@ -170,9 +142,7 @@ class PuzzleController extends GetxController
           )
         else
           Tile(
-            imageBytes: Uint8List.fromList(
-              imageLib.encodeJpg(images[i - 1]),
-            ),
+            imageBytes: images[i - 1],
             value: i,
             correctPosition: correctPositions[i - 1],
             currentPosition: currentPositions[i - 1],
@@ -201,3 +171,37 @@ class PuzzleController extends GetxController
   }
 }
 
+List<Uint8List> splitImage(_SplitImageData data) {
+  // convert to image from image package
+  imageLib.Image image = imageLib.decodeImage(data.bytes)!;
+
+  int x = 0, y = 0;
+  int width = (image.width / data.size).round();
+  int height = (image.height / data.size).round();
+
+  // split image to parts
+  List<imageLib.Image> parts = [];
+  for (int i = 0; i < data.size; i++) {
+    for (int j = 0; j < data.size; j++) {
+      parts.add(imageLib.copyCrop(image, x, y, width, height));
+      x += width;
+    }
+    x = 0;
+    y += height;
+  }
+
+  return parts
+      .map(
+        (e) => Uint8List.fromList(
+          imageLib.encodeJpg(e),
+        ),
+      )
+      .toList();
+}
+
+class _SplitImageData {
+  final List<int> bytes;
+  final int size;
+
+  const _SplitImageData(this.bytes, this.size);
+}

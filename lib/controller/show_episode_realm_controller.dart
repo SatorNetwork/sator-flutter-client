@@ -9,6 +9,7 @@ import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
+import 'package:satorio/binding/puzzle_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/binding/video_youtube_binding.dart';
@@ -51,6 +52,7 @@ import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
+import 'package:satorio/ui/page_widget/puzzle_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/video_youtube_page.dart';
@@ -407,6 +409,13 @@ class ShowEpisodeRealmController extends GetxController
       () => NftItemPage(),
       binding: NftItemBinding(),
       arguments: NftItemArgument(nftItem),
+    );
+  }
+
+  void toPuzzle() {
+    Get.to(
+      () => PuzzlePage(),
+      binding: PuzzleBinding(),
     );
   }
 
