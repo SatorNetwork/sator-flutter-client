@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:satorio/domain/puzzle/tile.dart';
+import 'package:satorio/domain/entities/puzzle/tile.dart';
 
 // A 3x3 puzzle board visualization:
 //

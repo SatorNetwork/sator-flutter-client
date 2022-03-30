@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
-import 'package:satorio/domain/puzzle/position.dart';
+import 'package:satorio/domain/entities/puzzle/position.dart';
 
 class Tile extends Equatable {
   const Tile({

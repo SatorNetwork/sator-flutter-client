@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/puzzle_controller.dart';
-import 'package:satorio/domain/puzzle/puzzle.dart';
-import 'package:satorio/domain/puzzle/tile.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle.dart';
+import 'package:satorio/domain/entities/puzzle/tile.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';

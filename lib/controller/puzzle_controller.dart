@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as imageLib;
-import 'package:satorio/domain/puzzle/position.dart';
-import 'package:satorio/domain/puzzle/puzzle.dart';
-import 'package:satorio/domain/puzzle/tile.dart';
+import 'package:satorio/domain/entities/puzzle/position.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle.dart';
+import 'package:satorio/domain/entities/puzzle/tile.dart';
 
 enum PuzzleStatus { incomplete, complete }
 
