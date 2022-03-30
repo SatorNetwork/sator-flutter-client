@@ -18,6 +18,8 @@ import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/puzzle/puzzle_game_model.dart';
+import 'package:satorio/data/model/puzzle/puzzle_unlock_option_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
@@ -59,8 +61,10 @@ import 'package:satorio/data/response/possible_multiplier_response.dart';
 import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
-import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/util/extension.dart';
+
+import '../../request/puzzle_finish_request.dart';
+import '../../request/puzzle_unlock_request.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
@@ -1182,6 +1186,75 @@ class ApiDataSourceImpl implements ApiDataSource {
         .then((Response response) {
       return response.isOk;
       // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<List<PuzzleUnlockOptionModel>> puzzleOptions() {
+    return _getConnect
+        .requestGet('/puzzle-game/unlock-options')
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => PuzzleUnlockOptionModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel> puzzle(String episodeId) {
+    return _getConnect
+        .requestGet('/puzzle-game/episode/$episodeId')
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel> unlockPuzzle(
+    String puzzleGameId,
+    String unlockOption,
+  ) {
+    return _getConnect
+        .requestPost(
+      '/puzzle-game/$puzzleGameId/unlock',
+      PuzzleUnlockRequest(unlockOption),
+    )
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel> startPuzzle(String puzzleGameId) {
+    return _getConnect
+        .requestPost(
+      '/puzzle-game/$puzzleGameId/start',
+      EmptyRequest(),
+    )
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel> finishPuzzle(
+      String puzzleGameId, int result, int stepsTaken) {
+    return _getConnect
+        .requestPost(
+      '/puzzle-game/$puzzleGameId/finish',
+      PuzzleFinishRequest(result, stepsTaken),
+    )
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
     });
   }
 

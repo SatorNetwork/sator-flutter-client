@@ -1,10 +1,10 @@
 import 'package:satorio/data/model/to_json_interface.dart';
 
-class PuzzleResultRequest implements ToJsonInterface {
+class PuzzleFinishRequest implements ToJsonInterface {
   final int result;
   final int stepsTaken;
 
-  const PuzzleResultRequest(
+  const PuzzleFinishRequest(
     this.result,
     this.stepsTaken,
   );
