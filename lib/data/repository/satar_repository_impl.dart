@@ -838,10 +838,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<PuzzleGame> puzzle(String episodeId) {
-    return _apiDataSource
-        .puzzle(episodeId)
-        .catchError((value) => _handleException(value));
+  Future<PuzzleGame?> puzzle(String episodeId) {
+    return _apiDataSource.puzzle(episodeId).catchError((value) => null);
   }
 
   @override

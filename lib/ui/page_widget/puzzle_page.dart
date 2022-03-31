@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/puzzle_controller.dart';
-import 'package:satorio/domain/entities/puzzle/puzzle.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -73,91 +72,111 @@ class PuzzlePage extends GetView<PuzzleController> {
               borderRadius: BorderRadius.vertical(
                 top: Radius.circular(32),
               ),
-              child: Obx(
-                () => controller.puzzleRx.value == null
-                    ? Container(
-                        padding: const EdgeInsets.all(20),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            backgroundColor: SatorioColor.brand,
-                          ),
-                        ),
-                      )
-                    : _puzzleGame(controller.puzzleRx.value!),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _puzzleGame(final Puzzle puzzle) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 48),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          Text(
-            'txt_complete_picture'.tr,
-            style: textTheme.bodyText1!.copyWith(
-              color: SatorioColor.darkAccent,
-              fontSize: 24,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(
-            height: 6 * coefficient,
-          ),
-          Text(
-            'txt_you_will_get'
-                .tr
-                .format([controller.puzzleGame.rewards.toStringAsFixed(2)]),
-            style: textTheme.bodyText1!.copyWith(
-              color: SatorioColor.darkAccent,
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          SizedBox(
-            height: 46 * coefficient,
-          ),
-          SizedBox.square(
-            key: const Key('puzzle_board'),
-            dimension: Get.width - 2 * 20,
-            child: Stack(
-              key: const Key('puzzle_tiles'),
-              children: puzzle.tiles
-                  .map((tile) => _tileWidget(tile, puzzle.getDimension()))
-                  .toList(),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              child: Center(
-                child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                    text: 'txt_steps_taken_of_steps'.tr.format([
-                      controller.numberOfMovesRx.value,
-                      controller.puzzleGame.steps
-                    ]),
-                    style: textTheme.bodyText1!.copyWith(
-                      fontSize: 24 * coefficient,
-                      fontWeight: FontWeight.w700,
-                      color: SatorioColor.darkAccent,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 48,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      'txt_complete_picture'.tr,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: SatorioColor.darkAccent,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: '\n${'txt_steps_left'.tr}',
+                    SizedBox(
+                      height: 6 * coefficient,
+                    ),
+                    Obx(
+                      () => Text(
+                        controller.puzzleGameRx.value == null
+                            ? ''
+                            : 'txt_you_will_get'.tr.format(
+                                [
+                                  controller.puzzleGameRx.value!.rewards
+                                      .toStringAsFixed(2)
+                                ],
+                              ),
                         style: textTheme.bodyText1!.copyWith(
-                          fontSize: 18 * coefficient,
-                          fontWeight: FontWeight.w400,
                           color: SatorioColor.darkAccent,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 46 * coefficient,
+                    ),
+                    Obx(
+                      () => controller.puzzleRx.value == null
+                          ? Container(
+                              width: Get.width - 2 * 20,
+                              height: Get.width - 2 * 20,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  backgroundColor: SatorioColor.brand,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white.withOpacity(0.5),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : SizedBox.square(
+                              key: const Key('puzzle_board'),
+                              dimension: Get.width - 2 * 20,
+                              child: Stack(
+                                key: const Key('puzzle_tiles'),
+                                children: controller.puzzleRx.value!.tiles
+                                    .map(
+                                      (tile) => _tileWidget(
+                                        tile,
+                                        controller.puzzleRx.value!
+                                            .getDimension(),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        child: Center(
+                          child: Obx(
+                            () => RichText(
+                              textAlign: TextAlign.center,
+                              text: TextSpan(
+                                text: controller.puzzleGameRx.value == null
+                                    ? ''
+                                    : 'txt_steps_taken_of_steps'.tr.format([
+                                        controller.stepsTakenRx.value,
+                                        controller.puzzleGameRx.value!.steps
+                                      ]),
+                                style: textTheme.bodyText1!.copyWith(
+                                  fontSize: 24 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                  color: SatorioColor.darkAccent,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: '\n${'txt_steps_left'.tr}',
+                                    style: textTheme.bodyText1!.copyWith(
+                                      fontSize: 18 * coefficient,
+                                      fontWeight: FontWeight.w400,
+                                      color: SatorioColor.darkAccent,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

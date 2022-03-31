@@ -257,7 +257,7 @@ abstract class ApiDataSource {
 
   Future<List<PuzzleUnlockOptionModel>> puzzleOptions();
 
-  Future<PuzzleGameModel> puzzle(String episodeId);
+  Future<PuzzleGameModel?> puzzle(String episodeId);
 
   Future<PuzzleGameModel> unlockPuzzle(
     String puzzleGameId,

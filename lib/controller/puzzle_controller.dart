@@ -10,22 +10,26 @@ import 'package:satorio/domain/entities/puzzle/position.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
+import 'package:satorio/domain/repositories/sator_repository.dart';
 
 enum PuzzleStatus { incomplete, complete }
 
 class PuzzleController extends GetxController with GetTickerProviderStateMixin {
-  late PuzzleGame puzzleGame;
+  final SatorioRepository _satorioRepository = Get.find();
 
   late AnimationController animationController;
   late Animation<double> animationScale;
 
   late PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
 
+  late String puzzleGameId;
+
+  final Rx<PuzzleGame?> puzzleGameRx = Rx(null);
   final Rx<Puzzle?> puzzleRx = Rx(null);
-  final RxInt numberOfMovesRx = 0.obs;
+  final RxInt stepsTakenRx = 0.obs;
 
   PuzzleController() {
-    this.puzzleGame = Get.arguments as PuzzleGame;
+    this.puzzleGameId = (Get.arguments as PuzzleArgument).puzzleGameId;
   }
 
   @override
@@ -49,24 +53,36 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     initPuzzle();
   }
 
+  @override
+  void onClose() {
+    if (puzzleStatus == PuzzleStatus.incomplete) {
+      _finishPuzzle(PuzzleGameResult.notFinished);
+    }
+    super.onClose();
+  }
+
   void back() {
     Get.back();
   }
 
   void initPuzzle() async {
-    final Uint8List bytes = await _loadImage();
+    puzzleGameRx.value = await _satorioRepository.startPuzzle(puzzleGameId);
 
-    final List<Uint8List> images = await compute(
-      splitImage,
-      _SplitImageData(bytes, puzzleGame.xSize),
-    );
-    final Puzzle puzzle = _generatePuzzle(
-      images,
-      puzzleGame.xSize,
-      shuffle: true,
-    );
+    if (puzzleGameRx.value != null) {
+      final Uint8List bytes = await _loadImage(puzzleGameRx.value!.image);
 
-    puzzleRx.value = puzzle.sort();
+      final List<Uint8List> images = await compute(
+        splitImage,
+        _SplitImageData(bytes, puzzleGameRx.value!.xSize),
+      );
+      final Puzzle puzzle = _generatePuzzle(
+        images,
+        puzzleGameRx.value!.xSize,
+        shuffle: true,
+      );
+
+      puzzleRx.value = puzzle.sort();
+    }
   }
 
   void tapTile(Tile tile) {
@@ -76,13 +92,13 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
         final puzzle = mutablePuzzle.moveTiles(tile, []);
 
         puzzleRx.value = puzzle.sort();
-        numberOfMovesRx.value = numberOfMovesRx.value + 1;
+        stepsTakenRx.value = stepsTakenRx.value + 1;
         if (puzzle.isComplete()) {
           puzzleStatus = PuzzleStatus.complete;
+          _finishPuzzle(PuzzleGameResult.userWon);
           ScaffoldMessenger.of(Get.context!).showSnackBar(
             SnackBar(
-              content:
-                  Text('Puzzle complete in ${numberOfMovesRx.value} steps!'),
+              content: Text('Puzzle complete in ${stepsTakenRx.value} steps!'),
             ),
           );
         }
@@ -92,9 +108,10 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
 
   void toInfo() {}
 
-  Future<Uint8List> _loadImage() {
-    return NetworkAssetBundle(Uri.parse(puzzleGame.image))
-        .load(puzzleGame.image)
+  /// Load image from url as bytes
+  Future<Uint8List> _loadImage(String url) {
+    return NetworkAssetBundle(Uri.parse(url))
+        .load(url)
         .then((value) => value.buffer.asUint8List());
   }
 
@@ -182,6 +199,14 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
           )
     ];
   }
+
+  void _finishPuzzle(int puzzleGameResult) {
+    _satorioRepository.finishPuzzle(
+      puzzleGameId,
+      puzzleGameResult,
+      stepsTakenRx.value,
+    );
+  }
 }
 
 List<Uint8List> splitImage(_SplitImageData data, {bool squared = true}) {
@@ -225,4 +250,10 @@ class _SplitImageData {
   final int size;
 
   const _SplitImageData(this.bytes, this.size);
+}
+
+class PuzzleArgument {
+  final String puzzleGameId;
+
+  const PuzzleArgument(this.puzzleGameId);
 }

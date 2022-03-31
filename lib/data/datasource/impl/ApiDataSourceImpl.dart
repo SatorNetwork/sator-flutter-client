@@ -1206,7 +1206,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<PuzzleGameModel> puzzle(String episodeId) {
+  Future<PuzzleGameModel?> puzzle(String episodeId) {
     return _getConnect
         .requestGet('puzzle-game/episode/$episodeId')
         .then((Response response) {

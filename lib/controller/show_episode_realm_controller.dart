@@ -23,6 +23,7 @@ import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/profile_controller.dart';
+import 'package:satorio/controller/puzzle_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/controller/video_youtube_controller.dart';
@@ -74,6 +75,7 @@ class ShowEpisodeRealmController extends GetxController
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
+  final Rx<PuzzleGame?> puzzleGameRx = Rx(null);
   final Rx<List<Review>> reviewsRx = Rx([]);
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
@@ -117,6 +119,7 @@ class ShowEpisodeRealmController extends GetxController
     isProfileRealm = argument.isProfileRealm;
 
     _updateShowEpisode();
+    _loadPuzzleGame();
     _loadReviews();
     _loadNftItems();
 
@@ -414,14 +417,14 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void toPuzzle() {
-    _satorioRepository.puzzle(showEpisodeRx.value.id).then((puzzleGame) {
-      switch (puzzleGame.status) {
+    if (puzzleGameRx.value != null)
+      switch (puzzleGameRx.value!.status) {
         case PuzzleGameStatus.notStarted:
           // if (puzzleGame.steps > 0) {
           Get.to(
             () => PuzzlePage(),
             binding: PuzzleBinding(),
-            arguments: puzzleGame,
+            arguments: PuzzleArgument(puzzleGameRx.value!.id),
           );
           // } else {
           //   // TODO: buy puzzle option
@@ -437,7 +440,6 @@ class ShowEpisodeRealmController extends GetxController
           );
           break;
       }
-    });
   }
 
   void watchVideo() async {
@@ -495,6 +497,14 @@ class ShowEpisodeRealmController extends GetxController
             isRequestedForUnlock.value = false;
           },
         );
+  }
+
+  void _loadPuzzleGame() {
+    _satorioRepository.puzzle(showEpisodeRx.value.id).then(
+      (puzzleGame) {
+        puzzleGameRx.value = puzzleGame;
+      },
+    );
   }
 
   void _loadReviews() {

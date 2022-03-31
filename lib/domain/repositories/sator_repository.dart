@@ -272,7 +272,7 @@ abstract class SatorioRepository {
 
   Future<List<PuzzleUnlockOption>> puzzleOptions();
 
-  Future<PuzzleGame> puzzle(String episodeId);
+  Future<PuzzleGame?> puzzle(String episodeId);
 
   Future<PuzzleGame> unlockPuzzle(
     String puzzleGameId,
