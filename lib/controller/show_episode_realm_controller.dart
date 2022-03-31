@@ -34,6 +34,7 @@ import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -413,10 +414,30 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void toPuzzle() {
-    Get.to(
-      () => PuzzlePage(),
-      binding: PuzzleBinding(),
-    );
+    _satorioRepository.puzzle(showEpisodeRx.value.id).then((puzzleGame) {
+      switch (puzzleGame.status) {
+        case PuzzleGameStatus.notStarted:
+          // if (puzzleGame.steps > 0) {
+          Get.to(
+            () => PuzzlePage(),
+            binding: PuzzleBinding(),
+            arguments: puzzleGame,
+          );
+          // } else {
+          //   // TODO: buy puzzle option
+          // }
+          break;
+        default:
+          Get.dialog(
+            DefaultDialog(
+              'txt_oops'.tr,
+              'txt_cannot_start_puzzle'.tr,
+              'txt_ok'.tr,
+            ),
+          );
+          break;
+      }
+    });
   }
 
   void watchVideo() async {

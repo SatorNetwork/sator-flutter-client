@@ -7,8 +7,8 @@ class PuzzleGame {
   final int xSize;
   final int steps;
   final int stepsTaken;
-  final int status; // 0 - not started, 1 - in progress, 2 - finished
-  final int result; // 0 - not finished, 1 - user won, 2 - user lost
+  final int status;
+  final int result;
   final String image;
 
   const PuzzleGame(
@@ -24,4 +24,16 @@ class PuzzleGame {
     this.result,
     this.image,
   );
+}
+
+class PuzzleGameStatus {
+  static const notStarted = 0;
+  static const inProgress = 1;
+  static const finished = 2;
+}
+
+class PuzzleGameResult {
+  static const notFinished = 0;
+  static const userWon = 1;
+  static const userLost = 2;
 }

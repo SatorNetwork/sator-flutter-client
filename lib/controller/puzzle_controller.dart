@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
@@ -7,22 +8,25 @@ import 'package:get/get.dart';
 import 'package:image/image.dart' as imageLib;
 import 'package:satorio/domain/entities/puzzle/position.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
 
 enum PuzzleStatus { incomplete, complete }
 
 class PuzzleController extends GetxController with GetTickerProviderStateMixin {
-  static const String _imageUrl =
-      'https://previews.123rf.com/images/aquir/aquir1311/aquir131100316/23569861-%EC%83%98%ED%94%8C-%EC%A7%80-%EB%B9%A8%EA%B0%84%EC%83%89-%EB%9D%BC%EC%9A%B4%EB%93%9C-%EC%8A%A4%ED%83%AC%ED%94%84.jpg';
-  final int sideSize = 4;
+  late PuzzleGame puzzleGame;
 
   late AnimationController animationController;
   late Animation<double> animationScale;
 
   late PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
-  int numberOfMoves = 0;
 
   final Rx<Puzzle?> puzzleRx = Rx(null);
+  final RxInt numberOfMovesRx = 0.obs;
+
+  PuzzleController() {
+    this.puzzleGame = Get.arguments as PuzzleGame;
+  }
 
   @override
   void onInit() {
@@ -52,16 +56,45 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   void initPuzzle() async {
     final Uint8List bytes = await _loadImage();
 
-    final List<Uint8List> images =
-        await compute(splitImage, _SplitImageData(bytes, sideSize));
-    final Puzzle puzzle = _generatePuzzle(images, sideSize, shuffle: true);
+    final List<Uint8List> images = await compute(
+      splitImage,
+      _SplitImageData(bytes, puzzleGame.xSize),
+    );
+    final Puzzle puzzle = _generatePuzzle(
+      images,
+      puzzleGame.xSize,
+      shuffle: true,
+    );
 
     puzzleRx.value = puzzle.sort();
   }
 
+  void tapTile(Tile tile) {
+    if (puzzleRx.value != null && puzzleStatus == PuzzleStatus.incomplete) {
+      if (puzzleRx.value!.isTileMovable(tile)) {
+        final mutablePuzzle = Puzzle(tiles: [...puzzleRx.value!.tiles]);
+        final puzzle = mutablePuzzle.moveTiles(tile, []);
+
+        puzzleRx.value = puzzle.sort();
+        numberOfMovesRx.value = numberOfMovesRx.value + 1;
+        if (puzzle.isComplete()) {
+          puzzleStatus = PuzzleStatus.complete;
+          ScaffoldMessenger.of(Get.context!).showSnackBar(
+            SnackBar(
+              content:
+                  Text('Puzzle complete in ${numberOfMovesRx.value} steps!'),
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  void toInfo() {}
+
   Future<Uint8List> _loadImage() {
-    return NetworkAssetBundle(Uri.parse(_imageUrl))
-        .load(_imageUrl)
+    return NetworkAssetBundle(Uri.parse(puzzleGame.image))
+        .load(puzzleGame.image)
         .then((value) => value.buffer.asUint8List());
   }
 
@@ -149,35 +182,23 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
           )
     ];
   }
-
-  void tapTile(Tile tile) {
-    if (puzzleRx.value != null && puzzleStatus == PuzzleStatus.incomplete) {
-      if (puzzleRx.value!.isTileMovable(tile)) {
-        final mutablePuzzle = Puzzle(tiles: [...puzzleRx.value!.tiles]);
-        final puzzle = mutablePuzzle.moveTiles(tile, []);
-
-        puzzleRx.value = puzzle.sort();
-        numberOfMoves = numberOfMoves + 1;
-        if (puzzle.isComplete()) {
-          puzzleStatus = PuzzleStatus.complete;
-          ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(
-              content: Text('Puzzle complete in $numberOfMoves steps!'),
-            ),
-          );
-        }
-      }
-    }
-  }
 }
 
-List<Uint8List> splitImage(_SplitImageData data) {
+List<Uint8List> splitImage(_SplitImageData data, {bool squared = true}) {
   // convert to image from image package
   imageLib.Image image = imageLib.decodeImage(data.bytes)!;
 
   int x = 0, y = 0;
-  int width = (image.width / data.size).round();
-  int height = (image.height / data.size).round();
+
+  int width, height;
+  if (squared) {
+    int squareSize = (min(image.width, image.height) / data.size).round();
+    width = squareSize;
+    height = squareSize;
+  } else {
+    width = (image.width / data.size).round();
+    height = (image.height / data.size).round();
+  }
 
   // split image to parts
   List<imageLib.Image> parts = [];

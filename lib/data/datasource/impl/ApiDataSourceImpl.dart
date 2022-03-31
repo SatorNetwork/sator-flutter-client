@@ -1192,7 +1192,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<List<PuzzleUnlockOptionModel>> puzzleOptions() {
     return _getConnect
-        .requestGet('/puzzle-game/unlock-options')
+        .requestGet('puzzle-game/unlock-options')
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable) {
@@ -1208,7 +1208,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   @override
   Future<PuzzleGameModel> puzzle(String episodeId) {
     return _getConnect
-        .requestGet('/puzzle-game/episode/$episodeId')
+        .requestGet('puzzle-game/episode/$episodeId')
         .then((Response response) {
       return PuzzleGameModel.fromJson(
           json.decode(response.bodyString!)['data']);
@@ -1222,7 +1222,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   ) {
     return _getConnect
         .requestPost(
-      '/puzzle-game/$puzzleGameId/unlock',
+      'puzzle-game/$puzzleGameId/unlock',
       PuzzleUnlockRequest(unlockOption),
     )
         .then((Response response) {
@@ -1235,7 +1235,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<PuzzleGameModel> startPuzzle(String puzzleGameId) {
     return _getConnect
         .requestPost(
-      '/puzzle-game/$puzzleGameId/start',
+      'puzzle-game/$puzzleGameId/start',
       EmptyRequest(),
     )
         .then((Response response) {
@@ -1249,7 +1249,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       String puzzleGameId, int result, int stepsTaken) {
     return _getConnect
         .requestPost(
-      '/puzzle-game/$puzzleGameId/finish',
+      'puzzle-game/$puzzleGameId/finish',
       PuzzleFinishRequest(result, stepsTaken),
     )
         .then((Response response) {
