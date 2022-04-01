@@ -304,4 +304,7 @@ const Map<String, String> en = {
   'txt_you_will_get': 'You will get %s sao',
   'txt_steps_taken_of_steps': '%d of %d',
   'txt_steps_left': 'Steps Left',
+  'txt_unlock_puzzle': 'Unlock the puzzle',
+  'txt_cancel_puzzle': 'Cancel the puzzle',
+  'txt_cancel_puzzle_message': 'Are you sure you want to cancel puzzle? Progress will not be saved.',
 };

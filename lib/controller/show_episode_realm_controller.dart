@@ -36,6 +36,7 @@ import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -43,6 +44,7 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/puzzle_options_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
@@ -416,19 +418,15 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
-  void toPuzzle() {
+  void tryToPuzzle() {
     if (puzzleGameRx.value != null)
       switch (puzzleGameRx.value!.status) {
         case PuzzleGameStatus.notStarted:
-          // if (puzzleGame.steps > 0) {
-          Get.to(
-            () => PuzzlePage(),
-            binding: PuzzleBinding(),
-            arguments: PuzzleArgument(puzzleGameRx.value!.id),
-          );
-          // } else {
-          //   // TODO: buy puzzle option
-          // }
+          if (puzzleGameRx.value!.steps > 0) {
+            _toPuzzle();
+          } else {
+            _toPuzzleOptions();
+          }
           break;
         default:
           Get.dialog(
@@ -598,6 +596,41 @@ class ShowEpisodeRealmController extends GetxController
       barrierColor: Colors.transparent,
       enableDrag: false,
     );
+  }
+
+  void _toPuzzleOptions() {
+    _satorioRepository.puzzleOptions().then((puzzleOptions) {
+      Get.bottomSheet(
+        PuzzleOptionsBottomSheet(
+          puzzleOptions,
+          (puzzleOption) {
+            _puzzleUnlock(puzzleOption);
+          },
+        ),
+        isScrollControlled: true,
+        barrierColor: Colors.transparent,
+      );
+    });
+  }
+
+  void _puzzleUnlock(PuzzleUnlockOption puzzleOption) {
+    if (puzzleGameRx.value != null)
+      _satorioRepository
+          .unlockPuzzle(puzzleGameRx.value!.id, puzzleOption.id)
+          .then((puzzleGame) {
+        puzzleGameRx.value = puzzleGame;
+        _toPuzzle();
+      });
+  }
+
+  void _toPuzzle() async {
+    await Get.to(
+      () => PuzzlePage(),
+      binding: PuzzleBinding(),
+      arguments: PuzzleArgument(puzzleGameRx.value!.id),
+    );
+
+    _loadPuzzleGame();
   }
 
   void _rateEpisode(int rate) {

@@ -1246,7 +1246,10 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<PuzzleGameModel> finishPuzzle(
-      String puzzleGameId, int result, int stepsTaken) {
+    String puzzleGameId,
+    int result,
+    int stepsTaken,
+  ) {
     return _getConnect
         .requestPost(
       'puzzle-game/$puzzleGameId/finish',

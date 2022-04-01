@@ -11,8 +11,9 @@ import 'package:satorio/domain/entities/puzzle/puzzle.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
-enum PuzzleStatus { incomplete, complete }
+enum PuzzleStatus { incomplete, complete, reachedStepLimit }
 
 class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   final SatorioRepository _satorioRepository = Get.find();
@@ -50,19 +51,28 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
 
   @override
   void onReady() {
+    super.onReady();
     initPuzzle();
   }
 
-  @override
-  void onClose() {
-    if (puzzleStatus == PuzzleStatus.incomplete) {
-      _finishPuzzle(PuzzleGameResult.notFinished);
-    }
-    super.onClose();
-  }
-
   void back() {
-    Get.back();
+    if (puzzleStatus == PuzzleStatus.incomplete) {
+      Get.dialog(
+        DefaultDialog(
+          'txt_cancel_puzzle'.tr,
+          'txt_cancel_puzzle_message'.tr,
+          'txt_yes'.tr,
+          icon: Icons.cancel_outlined,
+          onButtonPressed: () {
+            _finishPuzzle(PuzzleGameResult.notFinished)
+                .then((value) => Get.back());
+          },
+          secondaryButtonText: 'txt_no'.tr,
+        ),
+      );
+    } else {
+      Get.back();
+    }
   }
 
   void initPuzzle() async {
@@ -96,11 +106,9 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
         if (puzzle.isComplete()) {
           puzzleStatus = PuzzleStatus.complete;
           _finishPuzzle(PuzzleGameResult.userWon);
-          ScaffoldMessenger.of(Get.context!).showSnackBar(
-            SnackBar(
-              content: Text('Puzzle complete in ${stepsTakenRx.value} steps!'),
-            ),
-          );
+        } else if (stepsTakenRx.value == puzzleGameRx.value?.steps) {
+          puzzleStatus = PuzzleStatus.reachedStepLimit;
+          _finishPuzzle(PuzzleGameResult.userLost);
         }
       }
     }
@@ -200,8 +208,8 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     ];
   }
 
-  void _finishPuzzle(int puzzleGameResult) {
-    _satorioRepository.finishPuzzle(
+  Future<void> _finishPuzzle(int puzzleGameResult) {
+    return _satorioRepository.finishPuzzle(
       puzzleGameId,
       puzzleGameResult,
       stepsTakenRx.value,

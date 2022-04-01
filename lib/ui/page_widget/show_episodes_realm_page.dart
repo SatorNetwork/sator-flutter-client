@@ -576,7 +576,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                       horizontal: 20),
                                   child: InkWell(
                                     onTap: () {
-                                      controller.toPuzzle();
+                                      controller.tryToPuzzle();
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
