@@ -216,8 +216,14 @@ class PuzzlePage extends GetView<PuzzleController> {
                 : () {
                     controller.tapTile(tile);
                   },
-            icon:
-                tile.isWhitespace ? SizedBox() : Image.memory(tile.imageBytes),
+            icon: tile.isWhitespace
+                ? SizedBox()
+                : ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4),
+                    ),
+                    child: Image.memory(tile.imageBytes),
+                  ),
           ),
         ),
       ),
