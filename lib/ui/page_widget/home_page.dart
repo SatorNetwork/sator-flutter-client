@@ -11,6 +11,7 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -135,6 +136,9 @@ class HomePage extends GetView<HomeController> {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 160),
+                constraints: BoxConstraints(
+                  minHeight: Get.height - 160,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(32),
@@ -228,8 +232,20 @@ class HomePage extends GetView<HomeController> {
                 )
               : Container(),
         ),
-        SizedBox(
-          height: 24,
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: 24,
+            horizontal: 20,
+          ),
+          child: BorderedButton(
+            text: 'txt_sator_blog'.tr,
+            textColor: SatorioColor.darkAccent,
+            borderColor: SatorioColor.darkAccent,
+            borderWidth: 1,
+            onPressed: () {
+              controller.toBlog();
+            },
+          ),
         )
       ],
     );
