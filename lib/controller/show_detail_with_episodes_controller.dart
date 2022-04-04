@@ -16,7 +16,7 @@ import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShowDetailWithEpisodesController extends GetxController
-    with SingleGetTickerProviderMixin {
+    with GetTickerProviderStateMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<Show> showRx;
