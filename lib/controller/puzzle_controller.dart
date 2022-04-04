@@ -11,6 +11,7 @@ import 'package:satorio/domain/entities/puzzle/puzzle.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/puzzle_image_sample_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 enum PuzzleStatus { incomplete, complete, reachedStepLimit }
@@ -26,6 +27,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   late String puzzleGameId;
 
   final Rx<PuzzleGame?> puzzleGameRx = Rx(null);
+  final Rx<Uint8List> squareImage = Rx(Uint8List.fromList([]));
   final Rx<Puzzle?> puzzleRx = Rx(null);
   final RxInt stepsTakenRx = 0.obs;
 
@@ -81,9 +83,12 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     if (puzzleGameRx.value != null) {
       final Uint8List bytes = await _loadImage(puzzleGameRx.value!.image);
 
+      final Uint8List squareBytes = await compute(_squareImage, bytes);
+      squareImage.value = squareBytes;
+
       final List<Uint8List> images = await compute(
         splitImage,
-        _SplitImageData(bytes, puzzleGameRx.value!.xSize),
+        _SplitImageData(squareBytes, puzzleGameRx.value!.xSize),
       );
       final Puzzle puzzle = _generatePuzzle(
         images,
@@ -114,7 +119,15 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     }
   }
 
-  void toInfo() {}
+  void toPuzzleImageSample() {
+    if (squareImage.value.isNotEmpty) {
+      Get.bottomSheet(
+        PuzzleImageSampleBottomSheet(squareImage.value),
+        isScrollControlled: true,
+        barrierColor: Colors.transparent,
+      );
+    }
+  }
 
   /// Load image from url as bytes
   Future<Uint8List> _loadImage(String url) {
@@ -217,21 +230,27 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   }
 }
 
-List<Uint8List> splitImage(_SplitImageData data, {bool squared = true}) {
+Uint8List _squareImage(List<int> bytes) {
+  imageLib.Image image = imageLib.decodeImage(bytes)!;
+  int squareSize = min(image.width, image.height);
+
+  imageLib.Image squareImage =
+      imageLib.copyCrop(image, 0, 0, squareSize, squareSize);
+
+  return Uint8List.fromList(
+    imageLib.encodeJpg(squareImage),
+  );
+}
+
+List<Uint8List> splitImage(_SplitImageData data) {
   // convert to image from image package
   imageLib.Image image = imageLib.decodeImage(data.bytes)!;
 
   int x = 0, y = 0;
 
   int width, height;
-  if (squared) {
-    int squareSize = (min(image.width, image.height) / data.size).round();
-    width = squareSize;
-    height = squareSize;
-  } else {
-    width = (image.width / data.size).round();
-    height = (image.height / data.size).round();
-  }
+  width = (image.width / data.size).round();
+  height = (image.height / data.size).round();
 
   // split image to parts
   List<imageLib.Image> parts = [];

@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/puzzle_controller.dart';
@@ -44,20 +42,16 @@ class PuzzlePage extends GetView<PuzzleController> {
             ),
           ),
           actions: [
-            Container(
-              width: kToolbarHeight,
-              height: kToolbarHeight,
-              child: IconButton(
-                onPressed: () {
-                  controller.toInfo();
-                },
-                icon: Icon(
-                  Icons.info_outline_rounded,
-                  color: SatorioColor.darkAccent,
-                  size: 24,
-                ),
+            IconButton(
+              onPressed: () {
+                controller.toPuzzleImageSample();
+              },
+              icon: Icon(
+                Icons.image_outlined,
+                color: SatorioColor.darkAccent,
+                size: 24,
               ),
-            )
+            ),
           ],
         ),
         body: Stack(
