@@ -158,7 +158,7 @@ class HomePage extends GetView<HomeController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
           child: InkWell(
             onTap: () {
               controller.toChallenges();
@@ -246,9 +246,6 @@ class HomePage extends GetView<HomeController> {
               ),
             ),
           ),
-        ),
-        SizedBox(
-          height: 24,
         ),
         Obx(
           () => controller.nftHomeRx.value.length != 0

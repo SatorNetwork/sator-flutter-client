@@ -86,8 +86,6 @@ const Map<String, String> en = {
   'txt_overall_rating': 'Overall rating',
   'txt_review': 'Review',
   'txt_reviews': 'Reviews',
-  'txt_head': 'Head-to-head trivia',
-  'txt_head_text': 'Test your knowledge',
   'txt_unlock_realm': 'Unlock Realm',
   'txt_watch_trailer': 'Watch trailer',
   'txt_challenges_available': 'Challenges available',
