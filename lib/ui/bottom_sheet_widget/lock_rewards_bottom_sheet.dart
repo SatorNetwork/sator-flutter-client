@@ -43,7 +43,7 @@ class LockRewardsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height * 0.5,
+      height: isUnlock ? Get.height * 0.3 : Get.height * 0.5,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 28),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
@@ -56,55 +56,59 @@ class LockRewardsBottomSheet extends StatelessWidget {
           SizedBox(
             height: 20 * coefficient,
           ),
-          Row(
-            children: [
-              Text(
-                text,
-                style: textTheme.bodyText1!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 17.0 * coefficient,
-                    fontWeight: FontWeight.w400),
-              ),
-              Expanded(
-                child: Text(
-                  amountCurrency,
-                  textAlign: TextAlign.end,
-                  style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 17.0 * coefficient,
-                      fontWeight: FontWeight.w600),
+          isUnlock
+              ? SizedBox()
+              : Row(
+                  children: [
+                    Text(
+                      text,
+                      style: textTheme.bodyText1!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 17.0 * coefficient,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    Expanded(
+                      child: Text(
+                        amountCurrency,
+                        textAlign: TextAlign.end,
+                        style: textTheme.bodyText1!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 17.0 * coefficient,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
           SizedBox(
-            height: 20 * coefficient,
+            height: isUnlock ? 0 : 20 * coefficient,
           ),
-          Row(
-            children: [
-              Text(
-                'txt_rewards_multiply'.tr,
-                style: textTheme.bodyText1!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 17.0 * coefficient,
-                    fontWeight: FontWeight.w400),
-              ),
-              Expanded(
-                child: Obx(
-                  () => Text(
-                    _controller.possibleMultiplierRx.value > 0
-                        ? '+${_controller.possibleMultiplierRx.value}%'
-                        : '${_controller.possibleMultiplierRx.value}%',
-                    textAlign: TextAlign.end,
-                    style: textTheme.bodyText1!.copyWith(
-                        color: SatorioColor.interactive,
-                        fontSize: 17.0 * coefficient,
-                        fontWeight: FontWeight.w600),
-                  ),
+          isUnlock
+              ? SizedBox()
+              : Row(
+                  children: [
+                    Text(
+                      'txt_rewards_multiply'.tr,
+                      style: textTheme.bodyText1!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 17.0 * coefficient,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    Expanded(
+                      child: Obx(
+                        () => Text(
+                          _controller.possibleMultiplierRx.value > 0
+                              ? '+${_controller.possibleMultiplierRx.value}%'
+                              : '${_controller.possibleMultiplierRx.value}%',
+                          textAlign: TextAlign.end,
+                          style: textTheme.bodyText1!.copyWith(
+                              color: SatorioColor.interactive,
+                              fontSize: 17.0 * coefficient,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
           SizedBox(
             height: 30 * coefficient,
           ),

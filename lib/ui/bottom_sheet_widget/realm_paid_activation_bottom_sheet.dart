@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
@@ -163,6 +162,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+          height: 50,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(8),

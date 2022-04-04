@@ -3,29 +3,20 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:satorio/domain/entities/episode_activation.dart';
-import 'package:satorio/domain/entities/paid_option.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
-import 'package:satorio/util/extension.dart';
-import 'package:timer_count_down/timer_count_down.dart';
 
-typedef SelectPaidOptionCallback = void Function(PaidOption paidOption);
+class PuzzleOptionsBottomSheet extends StatelessWidget {
+  PuzzleOptionsBottomSheet(this.puzzleOptions, this.onExtend);
 
-class RealmExpiringBottomSheet extends StatelessWidget {
-  RealmExpiringBottomSheet(
-    this.episodeActivation,
-    this.onExtend, {
-    Key? key,
-  }) : super(key: key);
+  final List<PuzzleUnlockOption> puzzleOptions;
+  final Function(PuzzleUnlockOption puzzleOption) onExtend;
 
-  final Rx<PaidOption?> _selectedPaidOptionRx = Rx(null);
-
-  final EpisodeActivation episodeActivation;
-  final SelectPaidOptionCallback onExtend;
+  final Rx<PuzzleUnlockOption?> _selectedPuzzleOptionRx = Rx(null);
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +29,6 @@ class RealmExpiringBottomSheet extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: Center(
@@ -57,9 +46,9 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                         color: SatorioColor.interactive,
                       ),
                       child: Center(
-                        child: Icon(
-                          Icons.watch_later_rounded,
-                          size: 54 * coefficient,
+                        child: SvgPicture.asset(
+                          'images/locked_icon.svg',
+                          width: 54 * coefficient,
                           color: Colors.white,
                         ),
                       ),
@@ -68,7 +57,7 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                       height: 48 * coefficient,
                     ),
                     Text(
-                      'txt_realm_expiring'.tr,
+                      'txt_unlock_puzzle'.tr,
                       textAlign: TextAlign.center,
                       style: textTheme.headline1!.copyWith(
                         color: Colors.white,
@@ -76,40 +65,12 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(
-                      height: 12 * coefficient,
-                    ),
-                    Countdown(
-                      seconds: episodeActivation.leftTimeInSeconds(),
-                      interval: Duration(seconds: 5),
-                      onFinished: () {
-                        Get.back();
-                      },
-                      build: (
-                        BuildContext context,
-                        double time,
-                      ) {
-                        return Text(
-                          'txt_x_left'.tr.format(
-                            [
-                              episodeActivation.leftTimeAsString(),
-                            ],
-                          ),
-                          textAlign: TextAlign.center,
-                          style: textTheme.bodyText1!.copyWith(
-                            color: Colors.white,
-                            fontSize: 18 * coefficient,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        );
-                      },
-                    ),
                   ],
                 ),
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
+              padding: const EdgeInsets.symmetric(vertical: 32),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 color: Colors.white,
@@ -119,7 +80,7 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'txt_extend_realm'.tr,
+                    'txt_unlock_puzzle'.tr,
                     textAlign: TextAlign.center,
                     style: textTheme.headline3!.copyWith(
                       color: SatorioColor.textBlack,
@@ -142,40 +103,51 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                   SizedBox(
                     height: 24 * coefficient,
                   ),
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: PaidOption.available
-                        .map((item) => _itemWidget(item))
-                        .toList(),
+                  SizedBox(
+                    height: 50,
+                    child: ListView.separated(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, index) => SizedBox(
+                        width: 16,
+                      ),
+                      itemCount: puzzleOptions.length,
+                      itemBuilder: (context, index) =>
+                          _itemWidget(puzzleOptions[index]),
+                    ),
                   ),
                   SizedBox(
                     height: 24 * coefficient,
                   ),
-                  Obx(
-                    () => ElevatedGradientButton(
-                      text: 'txt_extend_realm'.tr,
-                      isEnabled: _selectedPaidOptionRx.value != null,
-                      onPressed: () {
-                        Get.back();
-                        if (_selectedPaidOptionRx.value != null) {
-                          onExtend(_selectedPaidOptionRx.value!);
-                        }
-                      },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Obx(
+                      () => ElevatedGradientButton(
+                        text: 'txt_unlock_sao'.tr,
+                        isEnabled: _selectedPuzzleOptionRx.value != null,
+                        onPressed: () {
+                          Get.back();
+                          if (_selectedPuzzleOptionRx.value != null) {
+                            onExtend(_selectedPuzzleOptionRx.value!);
+                          }
+                        },
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 8 * coefficient,
                   ),
-                  BorderedButton(
-                    text: 'txt_no_thanks'.tr,
-                    textColor: SatorioColor.interactive,
-                    borderColor: SatorioColor.interactive,
-                    borderWidth: 2,
-                    onPressed: () {
-                      Get.back();
-                    },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: BorderedButton(
+                      text: 'txt_no_thanks'.tr,
+                      textColor: SatorioColor.interactive,
+                      borderColor: SatorioColor.interactive,
+                      borderWidth: 2,
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -186,12 +158,14 @@ class RealmExpiringBottomSheet extends StatelessWidget {
     );
   }
 
-  Widget _itemWidget(PaidOption paidOption) {
+  Widget _itemWidget(PuzzleUnlockOption puzzleOption) {
     return Obx(
       () => InkWell(
         onTap: () {
-          _selectedPaidOptionRx.value =
-              _selectedPaidOptionRx.value == paidOption ? null : paidOption;
+          _selectedPuzzleOptionRx.value =
+              _selectedPuzzleOptionRx.value == puzzleOption
+                  ? null
+                  : puzzleOption;
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
@@ -200,7 +174,7 @@ class RealmExpiringBottomSheet extends StatelessWidget {
             borderRadius: BorderRadius.all(
               Radius.circular(8),
             ),
-            color: _selectedPaidOptionRx.value == paidOption
+            color: _selectedPuzzleOptionRx.value == puzzleOption
                 ? SatorioColor.interactive.withOpacity(0.5)
                 : SatorioColor.lavender,
           ),
@@ -239,7 +213,7 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    paidOption.text,
+                    '${puzzleOption.steps} steps for',
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 15 * coefficient,
@@ -247,7 +221,7 @@ class RealmExpiringBottomSheet extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    paidOption.amount.toStringAsFixed(2),
+                    puzzleOption.amount.toStringAsFixed(2),
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
                       fontSize: 15 * coefficient,

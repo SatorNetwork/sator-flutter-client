@@ -14,6 +14,7 @@ import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_category.dart';
@@ -25,7 +26,7 @@ import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class HomeController extends GetxController
-    with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
+    with GetTickerProviderStateMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
@@ -49,9 +50,9 @@ class HomeController extends GetxController
         as ValueListenable<Box<AmountCurrency>>;
     _satorioRepository
         .nftsFiltered(
-      page: _initialPage,
-      itemsPerPage: _itemsPerPage,
-    )
+            page: _initialPage,
+            itemsPerPage: _itemsPerPage,
+            orderType: NftOrderOnSaleType.onSale)
         .then((value) {
       nftHomeRx.value = value;
     });

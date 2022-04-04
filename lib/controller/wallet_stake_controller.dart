@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -12,14 +13,18 @@ class WalletStakeController extends GetxController {
 
   late final Rx<WalletDetail> walletDetailRx;
   final Rx<WalletStaking?> walletStakingRx = Rx(null);
+  final Rx<List<StakeLevel>> stakeLevelsRx = Rx([]);
   final RxDouble possibleMultiplierRx = 0.0.obs;
 
   final RxBool tmpState = false.obs;
   final RxBool pmState = false.obs;
+  final RxBool isInProgress = false.obs;
 
   WalletStakeController() {
     WalletStakeArgument argument = Get.arguments as WalletStakeArgument;
     walletDetailRx = Rx(argument.walletDetail);
+
+    _stakeLevels();
 
     _updateWalletStake();
   }
@@ -35,6 +40,27 @@ class WalletStakeController extends GetxController {
       walletStakingRx.value = walletStaking;
       tmpState.value = walletStakingRx.value!.lockedByYou > 0;
       pmState.value = walletStakingRx.value!.currentMultiplier > 0;
+    });
+  }
+
+  // _stakeLevels get loyalty levels and set current as first
+  void _stakeLevels() {
+    _satorioRepository.stakeLevels().then((List<StakeLevel> stakeLevels) {
+      if (stakeLevels.length == 0) return;
+
+      stakeLevelsRx.value = [];
+
+      stakeLevels.forEach((element) {
+        if (!element.isCurrent) {
+          stakeLevelsRx.update((val) {
+            stakeLevelsRx.value.add(element);
+          });
+        } else {
+          stakeLevelsRx.update((val) {
+            stakeLevelsRx.value.insert(0, element);
+          });
+        }
+      });
     });
   }
 
@@ -75,70 +101,96 @@ class WalletStakeController extends GetxController {
       possibleMultiplierRx.value = 0.0;
       return;
     }
-    _satorioRepository.possibleMultiplier(walletDetailRx.value.id, amount).then((value) {
+    _satorioRepository
+        .possibleMultiplier(walletDetailRx.value.id, amount)
+        .then((value) {
       possibleMultiplierRx.value = value;
     });
   }
 
+  //_stakeAmount add tokens to staking pool
   void _stakeAmount(double amount) {
-    _satorioRepository
-        .stake(
-      walletDetailRx.value.id,
-      amount,
-    )
+    Future.value(true)
+        .then((value) {
+          isInProgress.value = true;
+          return value;
+        })
         .then(
-      (bool result) {
-        if (result) {
-          possibleMultiplier(amount);
-          _updateWalletStake();
-          tmpState.value = true;
-        }
-
-        Get.dialog(
-          DefaultDialog(
-            result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result
-                ? 'txt_stake_success'.tr.format(
-                    [
-                      amount.toString(),
-                      walletDetailRx.value.balance[0].currency,
-                      possibleMultiplierRx.value,
-                    ],
-                  )
-                : 'txt_something_wrong'.tr,
-            result ? 'txt_cool'.tr : 'txt_ok'.tr,
-            onButtonPressed: () => result ? _updateWalletStake() : () {},
-            icon: result ? Icons.check_rounded : null,
+          (value) => _satorioRepository.stake(
+            walletDetailRx.value.id,
+            amount,
           ),
-        );
-      },
-    );
+        )
+        .then(
+          (bool result) {
+            if (result) {
+              possibleMultiplier(amount);
+              _updateWalletStake();
+              _stakeLevels();
+              tmpState.value = true;
+              isInProgress.value = false;
+            }
+            Get.dialog(
+              DefaultDialog(
+                result ? 'txt_success'.tr : 'txt_oops'.tr,
+                result
+                    ? 'txt_stake_success'.tr.format(
+                        [
+                          amount.toString(),
+                          walletDetailRx.value.balance[0].currency,
+                          possibleMultiplierRx.value,
+                        ],
+                      )
+                    : 'txt_something_wrong'.tr,
+                result ? 'txt_cool'.tr : 'txt_ok'.tr,
+                onButtonPressed: () => result ? _updateWalletStake() : () {},
+                icon: result ? Icons.check_rounded : null,
+              ),
+            );
+          },
+        )
+        .catchError((error) {
+          isInProgress.value = false;
+        });
   }
 
   void _unstakeAmount() {
-    _satorioRepository.unstake(walletDetailRx.value.id).then(
-      (bool result) {
-        if (result) {
-          _updateWalletStake();
-          tmpState.value = false;
-        }
+    Future.value(true)
+        .then((value) {
+          isInProgress.value = true;
+          return true;
+        })
+        .then(
+          (value) => _satorioRepository.unstake(walletDetailRx.value.id),
+        )
+        .then(
+          (bool result) {
+            if (result) {
+              _updateWalletStake();
+              _stakeLevels();
+              tmpState.value = false;
+              isInProgress.value = false;
+            }
 
-        Get.dialog(
-          DefaultDialog(
-            result ? 'txt_success'.tr : 'txt_oops'.tr,
-            result
-                ? 'txt_unstake_success'.tr.format(
-                    [
-                      walletStakingRx.value?.lockedByYou.toStringAsFixed(2),
-                      walletDetailRx.value.balance[0].currency
-                    ],
-                  )
-                : 'txt_something_wrong'.tr,
-            result ? 'txt_cool'.tr : 'txt_ok'.tr,
-          ),
-        );
-      },
-    );
+            Get.dialog(
+              DefaultDialog(
+                result ? 'txt_success'.tr : 'txt_oops'.tr,
+                result
+                    ? 'txt_unstake_success'.tr.format(
+                        [
+                          walletStakingRx.value?.lockedByYou.toStringAsFixed(2),
+                          walletDetailRx.value.balance[0].currency
+                        ],
+                      )
+                    : 'txt_something_wrong'.tr,
+                result ? 'txt_cool'.tr : 'txt_ok'.tr,
+              ),
+            );
+          },
+        )
+        .catchError((error) {
+          isInProgress.value = false;
+        });
   }
 }
 

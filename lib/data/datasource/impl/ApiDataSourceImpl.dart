@@ -18,6 +18,8 @@ import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/puzzle/puzzle_game_model.dart';
+import 'package:satorio/data/model/puzzle/puzzle_unlock_option_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
@@ -26,6 +28,7 @@ import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
 import 'package:satorio/data/model/show_model.dart';
 import 'package:satorio/data/model/show_season_model.dart';
+import 'package:satorio/data/model/stake_level_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
@@ -59,6 +62,9 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/util/extension.dart';
+
+import '../../request/puzzle_finish_request.dart';
+import '../../request/puzzle_unlock_request.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
@@ -498,11 +504,15 @@ class ApiDataSourceImpl implements ApiDataSource {
 
   @override
   Future<double> possibleMultiplier(String walletId, double amount) {
-    return _getConnect.requestPost(
+    return _getConnect
+        .requestPost(
       'wallets/$walletId/possible-multiplier',
       WalletStakeRequest(amount),
-    ).then((Response response) {
-      return PossibleMultiplierResponse.fromJson(json.decode(response.bodyString!)).possibleMultiplier;
+    )
+        .then((Response response) {
+      return PossibleMultiplierResponse.fromJson(
+              json.decode(response.bodyString!))
+          .possibleMultiplier;
     });
   }
 
@@ -539,6 +549,23 @@ class ApiDataSourceImpl implements ApiDataSource {
         .then((Response response) {
       return WalletStakingModel.fromJson(
           json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<List<StakeLevelModel>> stakeLevels() {
+    return _getConnect
+        .requestGet(
+      'wallets/stake-levels',
+    )
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] != null && jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => StakeLevelModel.fromJson(element))
+            .toList();
+      else
+        return [];
     });
   }
 
@@ -677,31 +704,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<ChallengeSimpleModel>> showChallenges(String showId,
-      {int? page}) {
-    Map<String, String>? query;
-    if (page != null) {
-      query = {};
-      query['page'] = page.toString();
-    }
-
-    return _getConnect
-        .requestGet(
-      'shows/$showId/challenges',
-      query: query,
-    )
-        .then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable)
-        return (jsonData['data'] as Iterable)
-            .map((element) => ChallengeSimpleModel.fromJson(element))
-            .toList();
-      else
-        return [];
-    });
-  }
-
-  @override
   Future<List<ReviewModel>> getReviews(String showId, String episodeId,
       {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
@@ -828,6 +830,33 @@ class ApiDataSourceImpl implements ApiDataSource {
     )
         .then((Response response) {
       return ChallengeModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<List<ChallengeSimpleModel>> challenges(
+      {int? page, int? itemsPerPage}) {
+    Map<String, String>? query;
+    if (page != null || itemsPerPage != null) {
+      query = {};
+      if (page != null) query['page'] = page.toString();
+      if (itemsPerPage != null)
+        query['items_per_page'] = itemsPerPage.toString();
+    }
+
+    return _getConnect
+        .requestGet(
+      'quiz_v2/challenges/sorted_by_players',
+      query: query,
+    )
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable)
+        return (jsonData['data'] as Iterable)
+            .map((element) => ChallengeSimpleModel.fromJson(element))
+            .toList();
+      else
+        return [];
     });
   }
 
@@ -1157,6 +1186,78 @@ class ApiDataSourceImpl implements ApiDataSource {
         .then((Response response) {
       return response.isOk;
       // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<List<PuzzleUnlockOptionModel>> puzzleOptions() {
+    return _getConnect
+        .requestGet('puzzle-game/unlock-options')
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => PuzzleUnlockOptionModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel?> puzzle(String episodeId) {
+    return _getConnect
+        .requestGet('puzzle-game/episode/$episodeId')
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel> unlockPuzzle(
+    String puzzleGameId,
+    String unlockOption,
+  ) {
+    return _getConnect
+        .requestPost(
+      'puzzle-game/$puzzleGameId/unlock',
+      PuzzleUnlockRequest(unlockOption),
+    )
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel> startPuzzle(String puzzleGameId) {
+    return _getConnect
+        .requestPost(
+      'puzzle-game/$puzzleGameId/start',
+      EmptyRequest(),
+    )
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
+  Future<PuzzleGameModel> finishPuzzle(
+    String puzzleGameId,
+    int result,
+    int stepsTaken,
+  ) {
+    return _getConnect
+        .requestPost(
+      'puzzle-game/$puzzleGameId/finish',
+      PuzzleFinishRequest(result, stepsTaken),
+    )
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
     });
   }
 

@@ -29,6 +29,8 @@ import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
@@ -37,6 +39,7 @@ import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
@@ -399,13 +402,6 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<ChallengeSimple>> showChallenges(String showId, {int? page}) {
-    return _apiDataSource
-        .showChallenges(showId, page: page)
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
   Future<Show> loadShow(String showId) {
     return _apiDataSource
         .loadShow(showId)
@@ -448,6 +444,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<Challenge> challenge(String challengeId) {
     return _apiDataSource
         .challenge(challengeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<ChallengeSimple>> challenges({int? page, int? itemsPerPage}) {
+    return _apiDataSource
+        .challenges(page: page, itemsPerPage: itemsPerPage)
         .catchError((value) => _handleException(value));
   }
 
@@ -690,6 +693,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<StakeLevel>> stakeLevels() {
+    return _apiDataSource
+        .stakeLevels()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<Review>> getReviews(String showId, String episodeId,
       {int? page, int? itemsPerPage}) {
     return _apiDataSource
@@ -828,15 +838,51 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<PuzzleUnlockOption>> puzzleOptions() {
+    return _apiDataSource
+        .puzzleOptions()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PuzzleGame> unlockPuzzle(String puzzleGameId, String unlockOption) {
+    return _apiDataSource
+        .unlockPuzzle(puzzleGameId, unlockOption)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PuzzleGame?> puzzle(String episodeId) {
+    return _apiDataSource.puzzle(episodeId).catchError((value) => null);
+  }
+
+  @override
+  Future<PuzzleGame> startPuzzle(String puzzleGameId) {
+    return _apiDataSource
+        .startPuzzle(puzzleGameId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PuzzleGame> finishPuzzle(
+    String puzzleGameId,
+    int result,
+    int stepsTaken,
+  ) {
+    return _apiDataSource
+        .finishPuzzle(puzzleGameId, result, stepsTaken)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<void> updateRssItems() async {
     final lastRssUpdateTime = await _localDataSource.lastRssUpdateTime();
     if (lastRssUpdateTime == null ||
         DateTime.now().difference(lastRssUpdateTime).inDays >= 1) {
       return _feedDataSource.rssItems().then(
             (value) => _localDataSource.saveRssItems(value),
-          );
+      );
     } else {
-      print('Rss Feed already checked not so far');
       return Future.value();
     }
   }

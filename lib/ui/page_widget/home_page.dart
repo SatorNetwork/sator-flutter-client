@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,11 +12,8 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/title_button.dart';
-import 'package:satorio/util/avatar_list.dart';
 
 class HomePage extends GetView<HomeController> {
-  final int avatarIndex = Random().nextInt(avatars.length);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
