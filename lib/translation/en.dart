@@ -18,7 +18,8 @@ const Map<String, String> en = {
   'txt_sign_in': 'Sign In',
   'txt_sign_out': 'Sign out',
   'txt_login': 'Login',
-  'txt_login_refresh_error': 'Please login with email and password or try again',
+  'txt_login_refresh_error':
+      'Please login with email and password or try again',
   'txt_login_biometric': 'Login with biometric',
   'txt_login_biometric_title': 'Biometric',
   'txt_login_biometric_q': 'Do you want turn on biometric?',
@@ -189,7 +190,8 @@ const Map<String, String> en = {
   'txt_reserve_price': 'Reserve price',
   'txt_available': 'Available',
   'txt_you_unlock': 'You unlock: ',
-  'txt_stake_success': '%s %s was locked from your balance. Now you have %s%% multiplier to quiz rewards.',
+  'txt_stake_success':
+      '%s %s was locked from your balance. Now you have %s%% multiplier to quiz rewards.',
   'txt_unstake_success': '%s %s was substracted to a staking pool',
   'txt_no_thanks': 'No thanks',
   'txt_choose_option': 'Choose your option',
@@ -296,4 +298,13 @@ const Map<String, String> en = {
   'txt_min_amount': 'Minimum amount',
   'txt_min_days': 'Minimum days to lock',
   'txt_rewards': 'Rewards',
+  'txt_puzzle': 'Puzzle',
+  'txt_cannot_start_puzzle': 'You cannot start puzzle',
+  'txt_complete_picture': 'Complete this picture',
+  'txt_you_will_get': 'You will get %s sao',
+  'txt_steps_taken_of_steps': '%d of %d',
+  'txt_steps_left': 'Steps Left',
+  'txt_unlock_puzzle': 'Unlock the puzzle',
+  'txt_cancel_puzzle': 'Cancel the puzzle',
+  'txt_cancel_puzzle_message': 'Are you sure you want to cancel puzzle? Progress will not be saved.',
 };
