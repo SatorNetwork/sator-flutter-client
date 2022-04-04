@@ -147,6 +147,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<String> quizHeadTitleText() {
+    return _firebaseDataSource
+        .quizHeadTitleText()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> quizHeadMessageText() {
+    return _firebaseDataSource
+        .quizHeadMessageText()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<int> appVersion() {
     return _firebaseDataSource
         .appVersion()

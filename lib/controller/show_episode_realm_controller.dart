@@ -81,9 +81,11 @@ class ShowEpisodeRealmController extends GetxController
   );
   final RxInt attemptsLeftRx = 100500.obs;
 
-  ScrollController scrollController = ScrollController();
-
+  final ScrollController scrollController = ScrollController();
   final TextEditingController amountController = TextEditingController();
+
+  final RxString quizHeadTitleRx = ''.obs;
+  final RxString quizHeadMessageRx = ''.obs;
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
@@ -148,6 +150,14 @@ class ShowEpisodeRealmController extends GetxController
     _messagesRef.once().then((DataSnapshot snapshot) {
       isMessagesRx.value = snapshot.value != null;
     });
+
+    _satorioRepository
+        .quizHeadTitleText()
+        .then((value) => quizHeadTitleRx.value = value);
+
+    _satorioRepository
+        .quizHeadMessageText()
+        .then((value) => quizHeadMessageRx.value = value);
 
     lastSeenInit();
   }

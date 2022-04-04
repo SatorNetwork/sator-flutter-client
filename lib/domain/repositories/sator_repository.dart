@@ -36,6 +36,10 @@ abstract class SatorioRepository {
 
   Future<String> claimRewardsText();
 
+  Future<String> quizHeadTitleText();
+
+  Future<String> quizHeadMessageText();
+
   Future<int> appVersion();
 
   Future<String> nftsMarketplaceUrl();
