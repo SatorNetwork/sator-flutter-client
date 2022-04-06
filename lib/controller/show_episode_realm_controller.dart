@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -143,18 +144,18 @@ class ShowEpisodeRealmController extends GetxController
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: firebaseUrl)
-        .reference()
-        .child(profile.id)
-        .child(showEpisodeRx.value.id);
+    _timestampsRef = FirebaseDatabase.instanceFor(
+      app: Firebase.app(),
+      databaseURL: firebaseUrl,
+    ).ref().child(profile.id).child(showEpisodeRx.value.id);
 
     _messagesRef = FirebaseDatabase.instance
-        .reference()
+        .ref()
         .child(firebaseChild)
         .child(showEpisodeRx.value.id);
 
-    _messagesRef.once().then((DataSnapshot snapshot) {
-      isMessagesRx.value = snapshot.value != null;
+    _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      isMessagesRx.value = databaseEvent.snapshot.value != null;
     });
 
     lastSeenInit();
@@ -176,14 +177,14 @@ class ShowEpisodeRealmController extends GetxController
 
   Future lastSeenInit() async {
     //TODO: refactor
-    await _timestampsRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value == null) {
+    await _timestampsRef.once().then((DatabaseEvent databaseEvent) {
+      if (databaseEvent.snapshot.value == null) {
         _timestampsRef.set(LastSeenModel(DateTime.now()).toJson());
         lastSeen = LastSeen(DateTime.now());
         return;
       }
 
-      final json = snapshot.value as Map<dynamic, dynamic>;
+      final json = databaseEvent.snapshot.value as Map<dynamic, dynamic>;
       lastSeen = LastSeenModel.fromJson(json);
     });
 
@@ -192,10 +193,11 @@ class ShowEpisodeRealmController extends GetxController
 
   Future _missedMessagesCounter() async {
     List missedMessages = [];
-    await _messagesRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value == null) return;
+    await _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      if (databaseEvent.snapshot.value == null) return;
 
-      Map<dynamic, dynamic> values = snapshot.value;
+      Map<dynamic, dynamic> values =
+          databaseEvent.snapshot.value as Map<dynamic, dynamic>;
 
       values.forEach((key, value) {
         if (DateTime.tryParse(value["createdAt"])!.microsecondsSinceEpoch >

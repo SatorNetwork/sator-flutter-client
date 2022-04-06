@@ -214,7 +214,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
       // ),
     );
 
-    parameters.buildShortLink().then((value) {
+    FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
       print(value.shortUrl);
       Get.dialog(
         SendInviteDialog(value.shortUrl.toString()),

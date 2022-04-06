@@ -72,7 +72,7 @@ class ChallengeController extends GetxController {
         // ),
       );
 
-      parameters.buildShortLink().then((value) {
+      FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
         print(value.shortUrl);
         Share.share(value.shortUrl.toString());
       });

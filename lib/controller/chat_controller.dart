@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,8 +41,8 @@ class ChatController extends GetxController with BackToMainMixin {
   void _saveMessage(MessageModel message) {
     _messagesRef.push().set(message.toJson());
     //TODO: refactor
-    _messagesRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value != null) {
+    _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      if (databaseEvent.snapshot.value != null) {
         isMessagesRx.value = true;
       }
     });
@@ -68,16 +69,16 @@ class ChatController extends GetxController with BackToMainMixin {
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: firebaseUrl)
-        .reference()
-        .child(profile.id)
-        .child(showEpisodeRx.value.id);
+    _timestampsRef = FirebaseDatabase.instanceFor(
+      app: Firebase.app(),
+      databaseURL: firebaseUrl,
+    ).ref().child(profile.id).child(showEpisodeRx.value.id);
 
     _scrollToMissedMessages();
 
     //TODO: refactor
-    _messagesRef.once().then((DataSnapshot snapshot) {
-      isMessagesRx.value = snapshot.value != null;
+    _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      isMessagesRx.value = databaseEvent.snapshot.value != null;
     });
   }
 
@@ -90,8 +91,8 @@ class ChatController extends GetxController with BackToMainMixin {
 
   Future _scrollToMissedMessages() async {
     //TODO: refactor
-    await _timestampsRef.once().then((DataSnapshot snapshot) {
-      final json = snapshot.value as Map<dynamic, dynamic>;
+    await _timestampsRef.once().then((DatabaseEvent databaseEvent) {
+      final json = databaseEvent.snapshot.value as Map<dynamic, dynamic>;
       lastSeen = LastSeenModel.fromJson(json);
     });
 
@@ -105,10 +106,11 @@ class ChatController extends GetxController with BackToMainMixin {
   Future _scroll() async {
     List missedMessages = [];
     scrollIndex = 0;
-    await _messagesRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value == null) return;
+    await _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      if (databaseEvent.snapshot.value == null) return;
 
-      Map<dynamic, dynamic> values = snapshot.value;
+      Map<dynamic, dynamic> values =
+          databaseEvent.snapshot.value as Map<dynamic, dynamic>;
 
       values.forEach((key, value) {
         if (DateTime.tryParse(value["createdAt"])!.microsecondsSinceEpoch >
@@ -135,8 +137,8 @@ class ChatController extends GetxController with BackToMainMixin {
   void back() {
     //TODO: refactor
     ShowEpisodeRealmController showEpisodeRealmController = Get.find();
-    _messagesRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value != null) {
+    _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      if (databaseEvent.snapshot.value != null) {
         showEpisodeRealmController.isMessagesRx.value = true;
       }
 

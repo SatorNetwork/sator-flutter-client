@@ -58,11 +58,9 @@ class SplashController extends GetxController {
 
     _handleDeepLink(data);
 
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-          _handleDeepLink(dynamicLink!);
-        },
-        onError: (OnLinkErrorException e) async {});
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      _handleDeepLink(event);
+    }).onError((error) {});
   }
 
   void _getInstalledAppVersion() async {
