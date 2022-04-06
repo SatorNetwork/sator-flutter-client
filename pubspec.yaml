@@ -23,29 +23,29 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.3
+  cupertino_icons: ^1.0.4
   get: ^4.2.0
   get_storage: ^2.0.2
   hive: ^2.1.0
   hive_flutter: ^1.1.0
   smooth_page_indicator: ^1.0.0+2
-  flutter_svg: ^0.22.0 # update?!
+  flutter_svg: ^1.0.3
   sprintf: ^6.0.0
   circular_countdown_timer: ^0.2.1
   timer_count_down: ^2.2.1
   url_launcher: ^6.0.20
-  pin_code_fields: ^7.3.0
+  pin_code_fields: ^7.4.0
   qr_code_scanner: ^0.7.0
   intl: ^0.17.0
   qr_flutter: ^4.0.0
-  share: ^2.0.4  # replace to share_plus ?!
+  share_plus: ^4.0.3
   firebase_core: ^1.4.0
   firebase_database: ^7.1.2
   firebase_dynamic_links: ^2.0.7
   firebase_messaging: ^10.0.4
   firebase_remote_config: ^0.11.0+2
   grouped_list: ^4.2.0
-  webview_flutter: ^3.0.1
+  webview_flutter: ^3.0.2
   cached_network_image: ^3.2.0
   lottie: ^1.2.2
   visibility_detector: ^0.2.2
@@ -57,7 +57,7 @@ dependencies:
   local_auth: ^1.1.11
   flutter_switch: ^0.3.2
   flutter_idensic_mobile_sdk_plugin: ^1.19.2
-  package_info_plus: ^1.4.0
+  package_info_plus: ^1.4.2
   dart_nats: ^0.3.5
   fast_rsa: ^3.4.6
   cryptography: ^2.0.5
