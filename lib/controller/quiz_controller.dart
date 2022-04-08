@@ -61,7 +61,7 @@ class QuizController extends GetxController {
     Get.until((route) => !Get.isOverlaysOpen);
     if (Get.isRegistered<ShowEpisodeRealmController>()) {
       Get.until((route) {
-        return Get.currentRoute == '/() => ShowEpisodesRealmPage';
+        return Get.currentRoute == '/ShowEpisodesRealmPage';
       });
     } else {
       Get.back();
@@ -77,7 +77,7 @@ class QuizController extends GetxController {
       final ChallengesController challengesController = Get.find();
       challengesController.refreshData();
       Get.until((route) {
-        return Get.currentRoute == '/() => ChallengesPage';
+        return Get.currentRoute == '/ChallengesPage';
       });
     } else {
       // Workaround - cause Get.off here doesn't call onClose hook

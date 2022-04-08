@@ -668,25 +668,35 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              'txt_head'.tr,
-                                              style:
-                                                  textTheme.bodyText1!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 18 * coefficient,
-                                                fontWeight: FontWeight.w700,
+                                            Obx(
+                                              () => Text(
+                                                controller
+                                                    .quizHeadTitleRx.value,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: textTheme.bodyText1!
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 18 * coefficient,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                             SizedBox(
                                               height: 6,
                                             ),
-                                            Text(
-                                              'txt_head_text'.tr,
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
+                                            Obx(
+                                              () => Text(
+                                                controller
+                                                    .quizHeadMessageRx.value,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: textTheme.bodyText2!
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 14 * coefficient,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
                                               ),
                                             ),
                                           ],

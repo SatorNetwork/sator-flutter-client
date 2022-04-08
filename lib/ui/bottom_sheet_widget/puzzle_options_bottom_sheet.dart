@@ -159,12 +159,6 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
   }
 
   Widget _itemWidget(PuzzleUnlockOption puzzleOption) {
-    // Icons.lock_outline_rounded.to
-    // Icon(
-    //   ,
-    //   color: SatorioColor.darkAccent,
-    //   size: 32,
-    // ),
     return Obx(
       () => InkWell(
         onTap: () {

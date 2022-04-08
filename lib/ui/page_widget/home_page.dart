@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
@@ -156,6 +157,96 @@ class HomePage extends GetView<HomeController> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
+          child: InkWell(
+            onTap: () {
+              controller.toChallenges();
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(13),
+                ),
+                color: SatorioColor.interactive,
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 52,
+                          width: 52,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8),
+                            ),
+                            color: SatorioColor.free_speech_blue,
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'images/sator_logo.svg',
+                              color: Colors.white,
+                              height: 23,
+                              width: 23,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Obx(
+                              () => Text(
+                                controller.quizHeadTitleRx.value,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: textTheme.bodyText1!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 18 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 6,
+                            ),
+                            Obx(
+                              () => Text(
+                                controller.quizHeadMessageRx.value,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: textTheme.bodyText2!.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 14 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          size: 32,
+                          color: Colors.white,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
         Obx(
           () => controller.nftHomeRx.value.length != 0
               ? Padding(

@@ -88,7 +88,7 @@ class PasswordRecoveryController extends GetxController with ValidationMixin {
         .then(
       (bool isSuccess) {
         if (isSuccess) {
-          Get.until((route) => Get.currentRoute == '/() => LoginPage');
+          Get.until((route) => Get.currentRoute == '/LoginPage');
 
           ScaffoldMessenger.of(Get.context!).showSnackBar(
             SnackBar(

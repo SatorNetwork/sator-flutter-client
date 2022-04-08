@@ -64,6 +64,14 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
     return _remoteConfig.getString('claim_reward_text');
   }
 
+  Future<String> quizHeadTitleText() async {
+    return _remoteConfig.getString('quiz_head_title_text');
+  }
+
+  Future<String> quizHeadMessageText() async {
+    return _remoteConfig.getString('quiz_head_message_text');
+  }
+
   Future<String?> fcmToken() async {
     return _firebaseMessaging.getToken();
   }

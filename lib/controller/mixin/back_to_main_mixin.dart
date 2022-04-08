@@ -8,6 +8,6 @@ mixin BackToMainMixin {
       satorioRepository.updateWalletBalance();
     }
     Get.until((route) => !Get.isOverlaysOpen);
-    Get.until((route) => Get.currentRoute == '/() => MainPage');
+    Get.until((route) => Get.currentRoute == '/MainPage');
   }
 }

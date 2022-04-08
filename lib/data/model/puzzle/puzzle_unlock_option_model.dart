@@ -28,5 +28,6 @@ class PuzzleUnlockOptionModel extends PuzzleUnlockOption
         'id': id,
         'amount': amount,
         'steps': steps,
+        'is_locked': isLocked,
       };
 }
