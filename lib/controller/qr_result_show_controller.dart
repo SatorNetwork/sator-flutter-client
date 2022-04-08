@@ -37,7 +37,7 @@ class QrResultShowController extends GetxController with BackToMainMixin {
                 claimReward,
                 () {
                   if (Get.isRegistered<MainController>()) {
-                    if (Get.currentRoute != '/() => MainPage') {
+                    if (Get.currentRoute != '/MainPage') {
                       MainController mainController = Get.find();
                       mainController.selectedBottomTabIndex.value =
                           MainController.TabWallet;

@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
@@ -20,13 +21,14 @@ import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/challenges_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 
 class HomeController extends GetxController
-    with SingleGetTickerProviderMixin, NonWorkingFeatureMixin {
+    with GetTickerProviderStateMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
@@ -38,6 +40,9 @@ class HomeController extends GetxController
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
+
+  final RxString quizHeadTitleRx = ''.obs;
+  final RxString quizHeadMessageRx = ''.obs;
 
   late ValueListenable<Box<Profile>> profileListenable;
   late ValueListenable<Box<AmountCurrency>> walletBalanceListenable;
@@ -64,6 +69,14 @@ class HomeController extends GetxController
     _loadAllShows();
     _loadCategories();
 
+    _satorioRepository
+        .quizHeadTitleText()
+        .then((value) => quizHeadTitleRx.value = value);
+
+    _satorioRepository
+        .quizHeadMessageText()
+        .then((value) => quizHeadMessageRx.value = value);
+
     _profileListener();
     profileListenable.addListener(_profileListener);
 
@@ -89,6 +102,13 @@ class HomeController extends GetxController
 
     _loadCategories();
     _loadAllShows();
+  }
+
+  void toChallenges() {
+    Get.to(
+      () => ChallengesPage(),
+      binding: ChallengesBinding(),
+    );
   }
 
   void _loadCategories() {

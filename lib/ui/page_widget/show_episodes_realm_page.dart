@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/message_model.dart';
 import 'package:satorio/domain/entities/message.dart';
@@ -565,6 +566,47 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         SizedBox(
                           height: 32,
                         ),
+                        Obx(
+                          () => controller.puzzleGameRx.value == null
+                              ? SizedBox(
+                                  height: 0,
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: InkWell(
+                                    onTap: () {
+                                      controller.tryToPuzzle();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            SatorioColor.pale_cornflower_blue,
+                                            SatorioColor.lavender3,
+                                          ],
+                                        ),
+                                      ),
+                                      child: Lottie.asset(
+                                        'lottie-anim/puzzle.json',
+                                        repeat: true,
+                                        width: Get.width - 2 * 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                        ),
+                        Obx(
+                          () => SizedBox(
+                            height:
+                                controller.puzzleGameRx.value == null ? 0 : 32,
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
@@ -626,25 +668,35 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              'txt_head'.tr,
-                                              style:
-                                                  textTheme.bodyText1!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 18 * coefficient,
-                                                fontWeight: FontWeight.w700,
+                                            Obx(
+                                              () => Text(
+                                                controller
+                                                    .quizHeadTitleRx.value,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: textTheme.bodyText1!
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 18 * coefficient,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                             SizedBox(
                                               height: 6,
                                             ),
-                                            Text(
-                                              'txt_head_text'.tr,
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
+                                            Obx(
+                                              () => Text(
+                                                controller
+                                                    .quizHeadMessageRx.value,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: textTheme.bodyText2!
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 14 * coefficient,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
                                               ),
                                             ),
                                           ],

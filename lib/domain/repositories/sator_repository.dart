@@ -12,6 +12,8 @@ import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
@@ -35,6 +37,10 @@ abstract class SatorioRepository {
   Future<String> firebaseUrl();
 
   Future<String> claimRewardsText();
+
+  Future<String> quizHeadTitleText();
+
+  Future<String> quizHeadMessageText();
 
   Future<int> appVersion();
 
@@ -267,4 +273,21 @@ abstract class SatorioRepository {
   });
 
   Future<NftItem> nft(String mintAddress);
+
+  Future<List<PuzzleUnlockOption>> puzzleOptions();
+
+  Future<PuzzleGame?> puzzle(String episodeId);
+
+  Future<PuzzleGame> unlockPuzzle(
+    String puzzleGameId,
+    String unlockOption,
+  );
+
+  Future<PuzzleGame> startPuzzle(String puzzleGameId);
+
+  Future<PuzzleGame> finishPuzzle(
+    String puzzleGameId,
+    int result,
+    int stepsTaken,
+  );
 }

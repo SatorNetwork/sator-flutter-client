@@ -10,6 +10,8 @@ import 'package:satorio/data/model/nft_home_model.dart';
 import 'package:satorio/data/model/nft_item_model.dart';
 import 'package:satorio/data/model/payload/payload_question_model.dart';
 import 'package:satorio/data/model/profile_model.dart';
+import 'package:satorio/data/model/puzzle/puzzle_game_model.dart';
+import 'package:satorio/data/model/puzzle/puzzle_unlock_option_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
@@ -248,6 +250,27 @@ abstract class ApiDataSource {
   Future<NftItemModel> nftItem(String nftItemId);
 
   Future<bool> buyNftItem(String nftItemId);
+
+// endregion
+
+// region Puzzle
+
+  Future<List<PuzzleUnlockOptionModel>> puzzleOptions();
+
+  Future<PuzzleGameModel?> puzzle(String episodeId);
+
+  Future<PuzzleGameModel> unlockPuzzle(
+    String puzzleGameId,
+    String unlockOption,
+  );
+
+  Future<PuzzleGameModel> startPuzzle(String puzzleGameId);
+
+  Future<PuzzleGameModel> finishPuzzle(
+    String puzzleGameId,
+    int result,
+    int stepsTaken,
+  );
 
 // endregion
 
