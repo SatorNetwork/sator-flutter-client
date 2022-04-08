@@ -8,16 +8,19 @@ class PuzzleUnlockOptionModel extends PuzzleUnlockOption
     String id,
     double amount,
     int steps,
+    bool isLocked,
   ) : super(
           id,
           amount,
           steps,
+          isLocked,
         );
 
   factory PuzzleUnlockOptionModel.fromJson(Map json) => PuzzleUnlockOptionModel(
         json.parseValueAsString('id'),
         json.parseValueAsDouble('amount'),
         json.parseValueAsInt('steps'),
+        json.parseValueAsBool('is_locked'),
       );
 
   @override
@@ -25,5 +28,6 @@ class PuzzleUnlockOptionModel extends PuzzleUnlockOption
         'id': id,
         'amount': amount,
         'steps': steps,
+        'is_locked': isLocked,
       };
 }
