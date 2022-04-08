@@ -200,7 +200,7 @@ class PuzzlePage extends GetView<PuzzleController> {
       curve: Curves.easeInOut,
       child: SizedBox.square(
         key: Key('puzzle_tile_${tile.value}'),
-        dimension: Get.width / size,
+        dimension: (Get.width - 2 * 20) / size + 2 * size,
         child: ScaleTransition(
           key: Key('puzzle_tile_scale_${tile.value}'),
           scale: controller.animationScale,

@@ -159,79 +159,105 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
   }
 
   Widget _itemWidget(PuzzleUnlockOption puzzleOption) {
+    // Icons.lock_outline_rounded.to
+    // Icon(
+    //   ,
+    //   color: SatorioColor.darkAccent,
+    //   size: 32,
+    // ),
     return Obx(
       () => InkWell(
         onTap: () {
-          _selectedPuzzleOptionRx.value =
-              _selectedPuzzleOptionRx.value == puzzleOption
-                  ? null
-                  : puzzleOption;
+          if (!puzzleOption.isLocked) {
+            _selectedPuzzleOptionRx.value =
+                _selectedPuzzleOptionRx.value == puzzleOption
+                    ? null
+                    : puzzleOption;
+          }
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-          height: 50,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(8),
-            ),
-            color: _selectedPuzzleOptionRx.value == puzzleOption
-                ? SatorioColor.interactive.withOpacity(0.5)
-                : SatorioColor.lavender,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                width: 20 * coefficient,
-                height: 20 * coefficient,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      SatorioColor.razzle_dazzle_rose,
-                      SatorioColor.dodger_blue
-                    ],
-                  ),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+              height: 50,
+              foregroundDecoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8),
                 ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    'images/sator_logo.svg',
-                    width: 10 * coefficient,
-                    height: 10 * coefficient,
-                    color: Colors.white,
-                  ),
+                color:
+                    Colors.white.withOpacity(puzzleOption.isLocked ? 0.8 : 0.0),
+              ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8),
                 ),
+                color: _selectedPuzzleOptionRx.value == puzzleOption
+                    ? SatorioColor.interactive.withOpacity(0.5)
+                    : SatorioColor.lavender,
               ),
-              SizedBox(
-                width: 6 * coefficient,
-              ),
-              Column(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    '${puzzleOption.steps} steps for',
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 15 * coefficient,
-                      fontWeight: FontWeight.w400,
+                  Container(
+                    width: 20 * coefficient,
+                    height: 20 * coefficient,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          SatorioColor.razzle_dazzle_rose,
+                          SatorioColor.dodger_blue
+                        ],
+                      ),
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'images/sator_logo.svg',
+                        width: 10 * coefficient,
+                        height: 10 * coefficient,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                  Text(
-                    puzzleOption.amount.toStringAsFixed(2),
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 15 * coefficient,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  SizedBox(
+                    width: 6 * coefficient,
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${puzzleOption.steps} steps for',
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Text(
+                        puzzleOption.amount.toStringAsFixed(2),
+                        style: textTheme.bodyText2!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 15 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            if (puzzleOption.isLocked)
+              Icon(
+                Icons.lock_rounded,
+                color: SatorioColor.comet,
+                size: 32,
+              ),
+          ],
         ),
       ),
     );
