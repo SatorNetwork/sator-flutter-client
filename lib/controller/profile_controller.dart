@@ -257,7 +257,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
       Get.to(
         () => NftListPage(),
         binding: NftListBinding(),
-        arguments: NftListArgument(NftFilterType.User, profileRx.value!.id),
+        arguments: NftListArgument(NftFilterType.User, solanaAddressRx.value),
       );
     }
   }
