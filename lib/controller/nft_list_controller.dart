@@ -7,6 +7,7 @@ import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
@@ -15,7 +16,6 @@ import 'package:satorio/util/extension.dart';
 import 'nft_item_controller.dart';
 
 class NftListController extends GetxController with BackToMainMixin {
-
   final SatorioRepository _satorioRepository = Get.find();
 
   late final String _objectId;
@@ -80,14 +80,7 @@ class NftListController extends GetxController with BackToMainMixin {
           _isLoadingRx.value = true;
           return value;
         })
-        .then(
-          (value) => _satorioRepository.nftItems(
-            _filterType,
-            _objectId,
-            page: _pageRx.value,
-            itemsPerPage: _itemsPerPage,
-          ),
-        )
+        .then((value) => _loadNftsByType())
         .then(
           (List<NftItem> nftItems) {
             nftItemsRx.update((value) {
@@ -103,6 +96,32 @@ class NftListController extends GetxController with BackToMainMixin {
             _isLoadingRx.value = false;
           },
         );
+  }
+
+  Future<List<NftItem>> _loadNftsByType() {
+    switch (_filterType) {
+      case NftFilterType.Show:
+        return _loadShowNfts();
+      case NftFilterType.User:
+        return _loadUserNfts();
+      default:
+        return _loadShowNfts();
+    }
+  }
+
+  Future<List<NftItem>> _loadUserNfts() {
+    return _satorioRepository.nftsFiltered(
+        page: _initialPage,
+        itemsPerPage: _itemsPerPage,
+        owner: _objectId);
+  }
+
+  Future<List<NftItem>> _loadShowNfts() {
+    return _satorioRepository.nftsFiltered(
+        page: _initialPage,
+        itemsPerPage: _itemsPerPage,
+        orderType: NftOrderOnSaleType.onSale,
+        showIds: [_objectId]);
   }
 
   void _updateTitle() {

@@ -5,6 +5,7 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/binding/transaction_preview_binding.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
 import 'package:satorio/controller/transaction_preview_controller.dart';
 import 'package:satorio/domain/entities/qr/qr_data.dart';
@@ -17,7 +18,7 @@ import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/transaction_preview_page.dart';
 import 'package:satorio/util/extension.dart';
 
-class WalletSendController extends GetxController with NonWorkingFeatureMixin {
+class WalletSendController extends GetxController with NonWorkingFeatureMixin, ValidationMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final TextEditingController amountController = TextEditingController();
@@ -97,6 +98,7 @@ class WalletSendController extends GetxController with NonWorkingFeatureMixin {
           .catchError(
             (value) {
               isRequested.value = false;
+              handleValidationException(value);
             },
           );
     }

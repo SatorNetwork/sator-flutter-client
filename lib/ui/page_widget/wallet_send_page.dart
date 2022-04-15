@@ -164,6 +164,8 @@ class WalletSendPage extends GetView<WalletSendController> {
                                 controller: controller.toAddressController,
                                 inputFormatters: [restrictSpace],
                                 inputTitle: 'txt_send_to'.tr,
+                                errorText:
+                                    controller.validationRx.value['recipient_address'],
                                 icon: Icon(
                                   Icons.close_rounded,
                                   color:
