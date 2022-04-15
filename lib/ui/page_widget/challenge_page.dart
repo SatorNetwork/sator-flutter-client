@@ -110,7 +110,8 @@ class ChallengePage extends GetView<ChallengeController> {
                       Expanded(
                         child: Obx(
                           () => Text(
-                            controller.challengeRx.value?.prizePool ?? '',
+                            controller.challengeRx.value?.currentPrizePool ??
+                                '',
                             textAlign: TextAlign.end,
                             style: textTheme.bodyText1!.copyWith(
                               color: SatorioColor.textBlack,
@@ -279,7 +280,9 @@ class ChallengePage extends GetView<ChallengeController> {
       return '';
     else if (!challenge.isRealmActivated)
       return 'txt_unlock_realm'.tr;
-    else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0)
+    else if (challenge.attemptsLeft == 0 ||
+        challenge.receivedReward > 0 ||
+        challenge.currentPrizePoolAmount <= 0)
       return 'txt_back_realm'.tr;
     else
       return 'txt_play'.tr;
@@ -290,7 +293,9 @@ class ChallengePage extends GetView<ChallengeController> {
       // nothing...
     } else if (!challenge.isRealmActivated) {
       controller.toEpisodeRealmDialog();
-    } else if (challenge.attemptsLeft == 0 || challenge.receivedReward != 0) {
+    } else if (challenge.attemptsLeft == 0 ||
+        challenge.receivedReward > 0 ||
+        challenge.currentPrizePoolAmount <= 0) {
       controller.back();
     } else {
       controller.playChallenge();
