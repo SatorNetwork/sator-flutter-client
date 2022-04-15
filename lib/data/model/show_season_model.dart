@@ -41,8 +41,8 @@ class ShowSeasonModel extends ShowSeason implements ToJsonInterface {
         'season_number': seasonNumber,
         'title': title,
         'episodes': episodes
-            .where((element) => element is ToJsonInterface)
-            .map((element) => (element as ToJsonInterface).toJson())
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
             .toList(),
       };
 }

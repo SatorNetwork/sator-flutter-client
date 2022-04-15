@@ -248,7 +248,7 @@ class QuizController extends GetxController {
         'txt_back_realm'.tr,
         icon: Icons.sentiment_dissatisfied_rounded,
         onButtonPressed: () {
-          backToEpisode();
+          Get.until((route) => !Get.isOverlaysOpen);
         },
       ),
       barrierDismissible: false,
