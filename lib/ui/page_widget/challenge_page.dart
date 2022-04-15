@@ -214,7 +214,6 @@ class ChallengePage extends GetView<ChallengeController> {
                       isInProgress: controller.isRequested.value,
                       onPressed: () {
                         _buttonClick(controller.challengeRx.value);
-                        // controller.playChallenge();
                       },
                     ),
                   ),
