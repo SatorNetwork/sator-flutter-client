@@ -8,13 +8,13 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
     implements ToJsonInterface {
   const PayloadChallengeResultModel(
     String challengeId,
-    String prizePool,
+    String currentPrizePool,
     String showTransactionUrl,
     List<PayloadPlayer> winners,
     List<PayloadPlayer> losers,
   ) : super(
           challengeId,
-          prizePool,
+          currentPrizePool,
           showTransactionUrl,
           winners,
           losers,
@@ -23,7 +23,7 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
   factory PayloadChallengeResultModel.fromJson(Map json) =>
       PayloadChallengeResultModel(
         json.parseValueAsString('challenge_id'),
-        json.parseValueAsString('prize_pool'),
+        json.parseValueAsString('current_prize_pool'),
         json.parseValueAsString('show_transaction_url'),
         (json['winners'] == null || !(json['winners'] is Iterable))
             ? []
@@ -42,7 +42,7 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
   @override
   Map toJson() => {
         'challenge_id': challengeId,
-        'prize_pool': prizePool,
+        'current_prize_pool': currentPrizePool,
         'show_transaction_url': showTransactionUrl,
         'winners': winners
             .whereType<ToJsonInterface>()
