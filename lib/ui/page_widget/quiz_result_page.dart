@@ -39,7 +39,7 @@ class QuizResultPage extends GetView<QuizResultController> {
                         Expanded(
                           child: Obx(
                             () => Text(
-                              controller.resultRx.value?.prizePool ?? '',
+                              controller.resultRx.value?.currentPrizePool ?? '',
                               textAlign: TextAlign.end,
                               style: textTheme.bodyText1!.copyWith(
                                 color: SatorioColor.darkAccent,
