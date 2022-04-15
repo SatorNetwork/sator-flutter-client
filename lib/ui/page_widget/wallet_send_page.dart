@@ -162,6 +162,7 @@ class WalletSendPage extends GetView<WalletSendController> {
                         () => controller.toAddressVisibility.value
                             ? InputTextField(
                                 controller: controller.toAddressController,
+                                inputFormatters: [restrictSpace],
                                 inputTitle: 'txt_send_to'.tr,
                                 icon: Icon(
                                   Icons.close_rounded,
