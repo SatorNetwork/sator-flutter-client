@@ -44,8 +44,8 @@ class PayloadQuestionModel extends PayloadQuestion implements ToJsonInterface {
         'total_questions': totalQuestions,
         'question_number': questionNumber,
         'answer_options': answerOptions
-            .where((element) => element is ToJsonInterface)
-            .map((element) => (element as ToJsonInterface).toJson())
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
             .toList(),
       };
 }

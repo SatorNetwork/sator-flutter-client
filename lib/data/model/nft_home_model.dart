@@ -30,8 +30,8 @@ class NftHomeModel extends NftHome implements ToJsonInterface {
         'id': id,
         'title': title,
         'items': items
-            .where((element) => element is ToJsonInterface)
-            .map((element) => (element as ToJsonInterface).toJson())
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
             .toList(),
       };
 }

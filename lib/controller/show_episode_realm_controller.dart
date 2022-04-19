@@ -33,6 +33,7 @@ import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/last_seen.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -83,15 +84,18 @@ class ShowEpisodeRealmController extends GetxController
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
   final RxBool isRequestedForUnlock = false.obs;
+  final RxBool isRequestedForPuzzleOptions = false.obs;
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
   );
   final RxInt attemptsLeftRx = 100500.obs;
 
-  ScrollController scrollController = ScrollController();
-
+  final ScrollController scrollController = ScrollController();
   final TextEditingController amountController = TextEditingController();
+
+  final RxString quizHeadTitleRx = ''.obs;
+  final RxString quizHeadMessageRx = ''.obs;
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
@@ -157,6 +161,14 @@ class ShowEpisodeRealmController extends GetxController
     _messagesRef.once().then((DatabaseEvent databaseEvent) {
       isMessagesRx.value = databaseEvent.snapshot.value != null;
     });
+
+    _satorioRepository
+        .quizHeadTitleText()
+        .then((value) => quizHeadTitleRx.value = value);
+
+    _satorioRepository
+        .quizHeadMessageText()
+        .then((value) => quizHeadMessageRx.value = value);
 
     lastSeenInit();
   }
@@ -524,6 +536,7 @@ class ShowEpisodeRealmController extends GetxController
     _satorioRepository.nftsFiltered(
         page: _initialPage,
         itemsPerPage: _itemsPerPage,
+        orderType: NftOrderOnSaleType.onSale,
         showIds: [showDetailRx.value.id]).then(
       (List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
@@ -601,18 +614,32 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _toPuzzleOptions() {
-    _satorioRepository.puzzleOptions().then((puzzleOptions) {
-      Get.bottomSheet(
-        PuzzleOptionsBottomSheet(
-          puzzleOptions,
-          (puzzleOption) {
-            _puzzleUnlock(puzzleOption);
-          },
-        ),
-        isScrollControlled: true,
-        barrierColor: Colors.transparent,
-      );
-    });
+    if (!isRequestedForPuzzleOptions.value) {
+      Future.value(true)
+          .then((value) {
+            isRequestedForPuzzleOptions.value = true;
+            return value;
+          })
+          .then((value) => _satorioRepository.puzzleOptions())
+          .then((puzzleOptions) {
+            isRequestedForPuzzleOptions.value = false;
+            Get.bottomSheet(
+              PuzzleOptionsBottomSheet(
+                puzzleOptions,
+                (puzzleOption) {
+                  _puzzleUnlock(puzzleOption);
+                },
+              ),
+              isScrollControlled: true,
+              barrierColor: Colors.transparent,
+            );
+          })
+          .catchError(
+            (value) {
+              isRequestedForPuzzleOptions.value = false;
+            },
+          );
+    }
   }
 
   void _puzzleUnlock(PuzzleUnlockOption puzzleOption) {

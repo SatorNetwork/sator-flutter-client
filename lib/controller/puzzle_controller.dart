@@ -11,7 +11,9 @@ import 'package:satorio/domain/entities/puzzle/puzzle.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/puzzle_image_sample_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/quiz_winner_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
 enum PuzzleStatus { incomplete, complete, reachedStepLimit }
@@ -61,8 +63,8 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     if (puzzleStatus == PuzzleStatus.incomplete) {
       Get.dialog(
         DefaultDialog(
-          'txt_cancel_puzzle'.tr,
-          'txt_cancel_puzzle_message'.tr,
+          'txt_exit_puzzle'.tr,
+          'txt_exit_puzzle_message'.tr,
           'txt_yes'.tr,
           icon: Icons.cancel_outlined,
           onButtonPressed: () {
@@ -87,7 +89,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
       squareImage.value = squareBytes;
 
       final List<Uint8List> images = await compute(
-        splitImage,
+        _splitImage,
         _SplitImageData(squareBytes, puzzleGameRx.value!.xSize),
       );
       final Puzzle puzzle = _generatePuzzle(
@@ -110,10 +112,31 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
         stepsTakenRx.value = stepsTakenRx.value + 1;
         if (puzzle.isComplete()) {
           puzzleStatus = PuzzleStatus.complete;
-          _finishPuzzle(PuzzleGameResult.userWon);
+          _finishPuzzle(PuzzleGameResult.userWon).then((puzzleGame) {
+            Get.bottomSheet(
+              puzzleGame.rewards > 0
+                  ? QuizWinnerBottomSheet(
+                      '${puzzleGame.rewards.toStringAsFixed(2)} SAO',
+                      puzzleGame.bonusRewards > 0
+                          ? '${puzzleGame.bonusRewards.toStringAsFixed(2)} SAO'
+                          : '',
+                    )
+                  : DefaultBottomSheet(
+                      'txt_success'.tr,
+                      'txt_puzzle_win'.tr,
+                      'txt_ok'.tr,
+                    ),
+            );
+          });
         } else if (stepsTakenRx.value == puzzleGameRx.value?.steps) {
           puzzleStatus = PuzzleStatus.reachedStepLimit;
-          _finishPuzzle(PuzzleGameResult.userLost);
+          _finishPuzzle(PuzzleGameResult.userLost).then((puzzleGame) {
+            DefaultBottomSheet(
+              'txt_failure'.tr,
+              'txt_puzzle_steps_reached'.tr,
+              'txt_ok'.tr,
+            );
+          });
         }
       }
     }
@@ -221,7 +244,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     ];
   }
 
-  Future<void> _finishPuzzle(int puzzleGameResult) {
+  Future<PuzzleGame> _finishPuzzle(int puzzleGameResult) {
     return _satorioRepository.finishPuzzle(
       puzzleGameId,
       puzzleGameResult,
@@ -242,7 +265,7 @@ Uint8List _squareImage(List<int> bytes) {
   );
 }
 
-List<Uint8List> splitImage(_SplitImageData data) {
+List<Uint8List> _splitImage(_SplitImageData data) {
   // convert to image from image package
   imageLib.Image image = imageLib.decodeImage(data.bytes)!;
 

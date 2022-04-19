@@ -34,7 +34,7 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
         json.parseValueAsString('episode_id'),
         json.parseValueAsDouble('prize_pool'),
         json.parseValueAsDouble('rewards'),
-        json.parseValueAsDouble('rewards'),
+        json.parseValueAsDouble('bonus_rewards'),
         json.parseValueAsInt('parts_x'),
         json.parseValueAsInt('steps'),
         json.parseValueAsInt('steps_taken'),
