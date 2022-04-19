@@ -83,6 +83,7 @@ class ShowEpisodeRealmController extends GetxController
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
   final RxBool isRequestedForUnlock = false.obs;
+  final RxBool isRequestedForPuzzleOptions = false.obs;
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
@@ -611,18 +612,32 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void _toPuzzleOptions() {
-    _satorioRepository.puzzleOptions().then((puzzleOptions) {
-      Get.bottomSheet(
-        PuzzleOptionsBottomSheet(
-          puzzleOptions,
-          (puzzleOption) {
-            _puzzleUnlock(puzzleOption);
-          },
-        ),
-        isScrollControlled: true,
-        barrierColor: Colors.transparent,
-      );
-    });
+    if (!isRequestedForPuzzleOptions.value) {
+      Future.value(true)
+          .then((value) {
+            isRequestedForPuzzleOptions.value = true;
+            return value;
+          })
+          .then((value) => _satorioRepository.puzzleOptions())
+          .then((puzzleOptions) {
+            isRequestedForPuzzleOptions.value = false;
+            Get.bottomSheet(
+              PuzzleOptionsBottomSheet(
+                puzzleOptions,
+                (puzzleOption) {
+                  _puzzleUnlock(puzzleOption);
+                },
+              ),
+              isScrollControlled: true,
+              barrierColor: Colors.transparent,
+            );
+          })
+          .catchError(
+            (value) {
+              isRequestedForPuzzleOptions.value = false;
+            },
+          );
+    }
   }
 
   void _puzzleUnlock(PuzzleUnlockOption puzzleOption) {
