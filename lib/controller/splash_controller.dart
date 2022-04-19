@@ -58,11 +58,9 @@ class SplashController extends GetxController {
 
     _handleDeepLink(data);
 
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-          _handleDeepLink(dynamicLink!);
-        },
-        onError: (OnLinkErrorException e) async {});
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      _handleDeepLink(event);
+    }).onError((error) {});
   }
 
   void _getInstalledAppVersion() async {
@@ -190,13 +188,13 @@ class SplashController extends GetxController {
   void _toOnBoarding() {
     precachePicture(
       ExactAssetPicture(
-          SvgPicture.svgStringDecoder, 'images/bg/onboarding.svg'),
+          SvgPicture.svgStringDecoderBuilder, 'images/bg/onboarding.svg'),
       null,
     );
 
     onBoardings.forEach((data) {
       precachePicture(
-        ExactAssetPicture(SvgPicture.svgStringDecoder, data.assetName),
+        ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, data.assetName),
         null,
       );
     });

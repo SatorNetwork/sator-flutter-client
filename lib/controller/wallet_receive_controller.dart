@@ -15,7 +15,7 @@ import 'package:satorio/data/model/qr/qr_payload_wallet_send_model.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class WalletReceiveController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
