@@ -111,45 +111,33 @@ extension GetConnectHttpMethods on GetConnect {
         );
   }
 
-  //TODO: refactor
   Response processResponse(Response response) {
-    Response utf8Response = response;
-    // Response utf8Response = Response(
-    //   request: response.request,
-    //   statusCode: response.statusCode,
-    //   bodyBytes: response.bodyBytes,
-    //   bodyString: utf8.decode(response.bodyString!.runes.toList()),
-    //   statusText: response.statusText,
-    //   headers: response.headers,
-    //   body: response.body,
-    // );
+    _logResponse(response);
 
-    _logResponse(utf8Response);
-
-    if (utf8Response.hasError) {
-      switch (utf8Response.statusCode) {
+    if (response.hasError) {
+      switch (response.statusCode) {
         // 422
         case HttpStatus.unprocessableEntity:
           ErrorValidationResponse errorValidationResponse =
               ErrorValidationResponse.fromJson(
-                  json.decode(utf8Response.bodyString!));
+                  json.decode(response.bodyString!));
           throw ApiValidationException(errorValidationResponse.validation);
         // 401
         case HttpStatus.unauthorized:
           ErrorResponse errorResponse =
-              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
+              ErrorResponse.fromJson(json.decode(response.bodyString!));
           throw ApiUnauthorizedException(errorResponse.error);
         // 407
         case HttpStatus.proxyAuthenticationRequired:
           throw ApiKycException();
         default:
           ErrorResponse errorResponse =
-              ErrorResponse.fromJson(json.decode(utf8Response.bodyString!));
+              ErrorResponse.fromJson(json.decode(response.bodyString!));
           throw ApiErrorException(errorResponse.error);
       }
     }
 
-    return utf8Response;
+    return response;
   }
 
   void _logResponse(Response response) {
