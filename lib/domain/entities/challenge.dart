@@ -4,8 +4,8 @@ class Challenge {
   final String episodeId;
   final String title;
   final String description;
-  final String prizePool;
-  final double prizePoolAmount;
+  final String currentPrizePool;
+  final double currentPrizePoolAmount;
   final int players;
   final String winners;
   final String timePerQuestion;
@@ -27,8 +27,8 @@ class Challenge {
     this.episodeId,
     this.title,
     this.description,
-    this.prizePool,
-    this.prizePoolAmount,
+    this.currentPrizePool,
+    this.currentPrizePoolAmount,
     this.players,
     this.winners,
     this.timePerQuestion,

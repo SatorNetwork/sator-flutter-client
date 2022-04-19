@@ -86,8 +86,6 @@ const Map<String, String> en = {
   'txt_overall_rating': 'Overall rating',
   'txt_review': 'Review',
   'txt_reviews': 'Reviews',
-  'txt_head': 'Head-to-head trivia',
-  'txt_head_text': 'Test your knowledge',
   'txt_unlock_realm': 'Unlock Realm',
   'txt_watch_trailer': 'Watch trailer',
   'txt_challenges_available': 'Challenges available',
@@ -305,7 +303,11 @@ const Map<String, String> en = {
   'txt_steps_taken_of_steps': '%d of %d',
   'txt_steps_left': 'Steps Left',
   'txt_unlock_puzzle': 'Unlock the puzzle',
-  'txt_cancel_puzzle': 'Cancel the puzzle',
-  'txt_cancel_puzzle_message': 'Are you sure you want to cancel puzzle? Progress will not be saved.',
+  'txt_exit_puzzle': 'Exit the puzzle',
+  'txt_exit_puzzle_message':
+      'Are you sure you want to exit puzzle? Progress will not be saved.',
+  'txt_puzzle_win': 'You have successfully completed the puzzle',
+  'txt_failure': 'Failure',
+  'txt_puzzle_steps_reached': 'You ran out of available steps',
   'txt_sator_blog': 'Sator Blog',
 };

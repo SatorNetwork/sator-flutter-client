@@ -13,6 +13,10 @@ abstract class FirebaseDataSource {
 
   Future<String> claimRewardText();
 
+  Future<String> quizHeadTitleText();
+
+  Future<String> quizHeadMessageText();
+
   Future<String?> fcmToken();
 
   Future<void> initNotifications();

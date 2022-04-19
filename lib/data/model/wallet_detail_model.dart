@@ -53,12 +53,12 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
         'solana_account_address': solanaAccountAddress,
         'order': order,
         'balance': balance
-            .where((element) => element is ToJsonInterface)
-            .map((element) => (element as ToJsonInterface).toJson())
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
             .toList(),
         'actions': actions
-            .where((element) => element is ToJsonInterface)
-            .map((element) => (element as ToJsonInterface).toJson())
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
             .toList(),
       };
 }
