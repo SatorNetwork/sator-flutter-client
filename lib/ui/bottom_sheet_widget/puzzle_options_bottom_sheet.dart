@@ -32,40 +32,22 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 128 * coefficient,
-                      height: 128 * coefficient,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(24),
-                        ),
-                        color: SatorioColor.interactive,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          'images/locked_icon.svg',
-                          width: 54 * coefficient,
-                          color: Colors.white,
-                        ),
-                      ),
+                child: Container(
+                  width: 128 * coefficient,
+                  height: 128 * coefficient,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(24),
                     ),
-                    SizedBox(
-                      height: 48 * coefficient,
+                    color: SatorioColor.interactive,
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'images/locked_icon.svg',
+                      width: 54 * coefficient,
+                      color: Colors.white,
                     ),
-                    Text(
-                      'txt_unlock_puzzle'.tr,
-                      textAlign: TextAlign.center,
-                      style: textTheme.headline1!.copyWith(
-                        color: Colors.white,
-                        fontSize: 34 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -174,7 +156,7 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-              height: 50,
+              height: 56 * coefficient,
               foregroundDecoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(8),
