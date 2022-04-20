@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:satorio/controller/profile_controller.dart';
@@ -79,9 +78,15 @@ class ProfilePage extends GetView<ProfileController> {
             child: Column(
               children: [
                 Container(
-                  margin: const EdgeInsets.only(top: 60),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
+                  margin: EdgeInsets.only(
+                    top: Get.mediaQuery.padding.top + kToolbarHeight,
+                  ),
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 34,
+                    left: 20,
+                    right: 20,
+                  ),
                   width: Get.width,
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
