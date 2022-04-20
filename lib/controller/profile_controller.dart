@@ -8,6 +8,7 @@ import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
+import 'package:satorio/binding/settings_binding.dart';
 import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
@@ -35,6 +36,7 @@ import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
+import 'package:satorio/ui/page_widget/settings_page.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 
 class ProfileController extends GetxController with NonWorkingFeatureMixin {
@@ -45,8 +47,8 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   static const int _initialPage = 1;
 
   final Rx<Profile?> profileRx = Rx(null);
-  final Rx<List<Review?>> reviewsRx = Rx([]);
-  final Rx<List<ActivatedRealm?>> activatedRealmsRx = Rx([]);
+  final Rx<List<Review>> reviewsRx = Rx([]);
+  final Rx<List<ActivatedRealm>> activatedRealmsRx = Rx([]);
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
   Map<String, Wallet> wallets = {};
@@ -85,6 +87,17 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
     _walletDetailsListenable?.removeListener(_walletDetailsListener);
 
     super.onClose();
+  }
+
+  void toSettings() {
+    Get.to(
+      () => SettingsPage(),
+      binding: SettingsBinding(),
+    );
+  }
+
+  void toNotificationSettings() {
+    toNonWorkingFeatureDialog();
   }
 
   void _solanaAddress() {
