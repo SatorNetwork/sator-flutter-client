@@ -108,6 +108,10 @@ class LoginController extends GetxController with ValidationMixin {
               Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
               isRequested.value = false;
             }
+          }).catchError((value) {
+              //TODO
+            isBiometric.value = false;
+            isRequested.value = false;
           });
         } else {
           Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
