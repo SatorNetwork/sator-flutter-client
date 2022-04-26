@@ -64,12 +64,11 @@ class ShowEpisodeQuizController extends GetxController {
 
     Get.snackbar(
       'txt_oops'.tr,
-      'txt_attempts_left_alert'.tr,
+      'txt_time_expire'.tr,
       backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
       colorText: SatorioColor.darkAccent,
       duration: Duration(seconds: 4),
       snackbarStatus: (SnackbarStatus? status) {
-        print('SnackbarStatus $status');
         if (status == SnackbarStatus.CLOSED) {
           Get.back(closeOverlays: true);
         }
