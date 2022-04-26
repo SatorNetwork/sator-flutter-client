@@ -84,5 +84,8 @@ class ShowEpisodeQuizArgument {
   final PayloadQuestion payloadQuestion;
 
   const ShowEpisodeQuizArgument(
-      this.showSeason, this.showEpisode, this.payloadQuestion);
+    this.showSeason,
+    this.showEpisode,
+    this.payloadQuestion,
+  );
 }
