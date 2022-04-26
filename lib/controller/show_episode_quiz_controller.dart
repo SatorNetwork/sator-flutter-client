@@ -62,6 +62,7 @@ class ShowEpisodeQuizController extends GetxController {
   void timeExpire() {
     if (isAnswerSentRx.value) return;
 
+    isAnswerSentRx.value = true;
     Get.snackbar(
       'txt_oops'.tr,
       'txt_time_expire'.tr,
