@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/lock_rewards_bottom_sheet.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/extension.dart';
 
 class WalletStakeController extends GetxController {
@@ -69,13 +68,18 @@ class WalletStakeController extends GetxController {
     possibleMultiplierRx.value = 0.0;
     Get.bottomSheet(
       LockRewardsBottomSheet(
-          'txt_available_lock'.tr,
-          walletDetailRx.value.balance[0].displayedValue,
-          walletStakingRx.value!,
-          walletDetailRx.value,
-          'txt_add'.tr, (double value) {
-        _stakeAmount(value);
-      }, () {}, false, this),
+        'txt_available_lock'.tr,
+        walletDetailRx.value.balance[0].displayedValue,
+        walletStakingRx.value!,
+        walletDetailRx.value,
+        'txt_add'.tr,
+        (double value) {
+          _stakeAmount(value);
+        },
+        () {},
+        false,
+        this,
+      ),
       isScrollControlled: true,
     );
   }
@@ -84,14 +88,18 @@ class WalletStakeController extends GetxController {
     if (walletDetailRx.value.balance.length <= 0) return;
     Get.bottomSheet(
       LockRewardsBottomSheet(
-          'txt_unlock'.tr,
-          walletDetailRx.value.balance[0].displayedValue,
-          walletStakingRx.value!,
-          walletDetailRx.value,
-          'txt_unlock'.tr,
-          (double value) {}, () {
-        _unstakeAmount();
-      }, true, this),
+        'txt_unlock'.tr,
+        walletDetailRx.value.balance[0].displayedValue,
+        walletStakingRx.value!,
+        walletDetailRx.value,
+        'txt_unlock'.tr,
+        (double value) {},
+        () {
+          _unstakeAmount();
+        },
+        true,
+        this,
+      ),
       isScrollControlled: true,
     );
   }
@@ -130,22 +138,21 @@ class WalletStakeController extends GetxController {
               tmpState.value = true;
               isInProgress.value = false;
             }
-            Get.dialog(
-              DefaultDialog(
-                result ? 'txt_success'.tr : 'txt_oops'.tr,
-                result
-                    ? 'txt_stake_success'.tr.format(
-                        [
-                          amount.toString(),
-                          walletDetailRx.value.balance[0].currency,
-                          possibleMultiplierRx.value,
-                        ],
-                      )
-                    : 'txt_something_wrong'.tr,
-                result ? 'txt_cool'.tr : 'txt_ok'.tr,
-                onButtonPressed: () => result ? _updateWalletStake() : () {},
-                icon: result ? Icons.check_rounded : null,
-              ),
+
+            Get.snackbar(
+              result ? 'txt_success'.tr : 'txt_oops'.tr,
+              result
+                  ? 'txt_stake_success'.tr.format(
+                      [
+                        amount.toString(),
+                        walletDetailRx.value.balance[0].currency,
+                        possibleMultiplierRx.value,
+                      ],
+                    )
+                  : 'txt_something_wrong'.tr,
+              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+              colorText: SatorioColor.darkAccent,
+              duration: Duration(seconds: 4),
             );
           },
         )
@@ -172,19 +179,19 @@ class WalletStakeController extends GetxController {
               isInProgress.value = false;
             }
 
-            Get.dialog(
-              DefaultDialog(
-                result ? 'txt_success'.tr : 'txt_oops'.tr,
-                result
-                    ? 'txt_unstake_success'.tr.format(
-                        [
-                          walletStakingRx.value?.lockedByYou.toStringAsFixed(2),
-                          walletDetailRx.value.balance[0].currency
-                        ],
-                      )
-                    : 'txt_something_wrong'.tr,
-                result ? 'txt_cool'.tr : 'txt_ok'.tr,
-              ),
+            Get.snackbar(
+              result ? 'txt_success'.tr : 'txt_oops'.tr,
+              result
+                  ? 'txt_unstake_success'.tr.format(
+                      [
+                        walletStakingRx.value?.lockedByYou.toStringAsFixed(2),
+                        walletDetailRx.value.balance[0].currency
+                      ],
+                    )
+                  : 'txt_something_wrong'.tr,
+              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+              colorText: SatorioColor.darkAccent,
+              duration: Duration(seconds: 4),
             );
           },
         )
