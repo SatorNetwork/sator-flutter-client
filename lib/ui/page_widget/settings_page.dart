@@ -64,36 +64,12 @@ class SettingsPage extends GetView<SettingsController> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                  ),
-                  //TODO: add singleChildScroll, remove padding
-                  Padding(
-                    padding: EdgeInsets.all(24),
-                    child: _settingsContent(),
-                  ),
-                  //TODO: uncomment
-                  // Align(
-                  //   alignment: Alignment.topCenter,
-                  //   child: Container(
-                  //     height: 40,
-                  //     width: Get.width,
-                  //     decoration: BoxDecoration(
-                  //       gradient: LinearGradient(
-                  //         begin: Alignment.topCenter,
-                  //         end: Alignment.bottomCenter,
-                  //         colors: [
-                  //           Colors.white.withOpacity(1),
-                  //           Colors.white.withOpacity(0.1),
-                  //         ],
-                  //       ),
-                  //       borderRadius: BorderRadius.circular(8),
-                  //     ),
-                  //   ),
-                  // ),
-                ],
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(24),
+                  width: Get.width,
+                  child: _settingsContent(),
+                ),
               ),
             ),
           ),
@@ -103,36 +79,34 @@ class SettingsPage extends GetView<SettingsController> {
   }
 
   Widget _settingsContent() {
-    return Container(
-      height: Get.height,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _settingsTitle('txt_profile'.tr),
-          SizedBox(
-            height: 14,
-          ),
-          _profileGroup(),
-          SizedBox(
-            height: 32,
-          ),
-          _settingsTitle('txt_app'.tr),
-          SizedBox(
-            height: 14,
-          ),
-          _appGroup(),
-          // SizedBox(
-          //   height: 85,
-          // ),
-          Spacer(),
-          _buttonsGroup()
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _settingsTitle('txt_profile'.tr),
+        SizedBox(
+          height: 14,
+        ),
+        _profileGroup(),
+        SizedBox(
+          height: 32,
+        ),
+        _settingsTitle('txt_app'.tr),
+        SizedBox(
+          height: 14,
+        ),
+        _appGroup(),
+        SizedBox(
+          height: 14,
+        ),
+        _buttonsGroup()
+      ],
     );
   }
 
   Widget _profileGroup() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         _settingsButton('txt_user_name'.tr, 'images/profile',
             () => controller.toChangeInfo(ChangeInfoType.username)),
@@ -144,17 +118,13 @@ class SettingsPage extends GetView<SettingsController> {
         SizedBox(
           height: 12,
         ),
-        _settingsButton(
-            'txt_settings_email'.tr,
-            'images/settings/ico_email',
+        _settingsButton('txt_settings_email'.tr, 'images/settings/ico_email',
             () => controller.toChangeInfo(ChangeInfoType.email)),
         SizedBox(
           height: 12,
         ),
-        _settingsButton(
-            'txt_password'.tr,
-            'images/settings/ico_pass',
-                () => controller.toChangeInfo(ChangeInfoType.password)),
+        _settingsButton('txt_password'.tr, 'images/settings/ico_pass',
+            () => controller.toChangeInfo(ChangeInfoType.password)),
         SizedBox(
           height: 12,
         ),
@@ -209,6 +179,7 @@ class SettingsPage extends GetView<SettingsController> {
 
   Widget _buttonsGroup() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         BorderedButton(
           text: 'txt_log_out'.tr,
@@ -243,6 +214,7 @@ class SettingsPage extends GetView<SettingsController> {
 
   Widget _appGroup() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         //TODO: uncomment
         // _settingsButton('txt_rate_sator'.tr, 'images/settings/ico_star',

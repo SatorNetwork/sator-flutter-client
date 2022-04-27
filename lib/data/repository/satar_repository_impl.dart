@@ -30,6 +30,8 @@ import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
@@ -152,6 +154,20 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<String> claimRewardsText() {
     return _firebaseDataSource
         .claimRewardText()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> quizHeadTitleText() {
+    return _firebaseDataSource
+        .quizHeadTitleText()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String> quizHeadMessageText() {
+    return _firebaseDataSource
+        .quizHeadMessageText()
         .catchError((value) => _handleException(value));
   }
 
@@ -827,6 +843,43 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<NftItem> nft(String mintAddress) {
     return _nftsDataSource
         .nft(mintAddress)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<PuzzleUnlockOption>> puzzleOptions() {
+    return _apiDataSource
+        .puzzleOptions()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PuzzleGame> unlockPuzzle(String puzzleGameId, String unlockOption) {
+    return _apiDataSource
+        .unlockPuzzle(puzzleGameId, unlockOption)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PuzzleGame?> puzzle(String episodeId) {
+    return _apiDataSource.puzzle(episodeId).catchError((value) => null);
+  }
+
+  @override
+  Future<PuzzleGame> startPuzzle(String puzzleGameId) {
+    return _apiDataSource
+        .startPuzzle(puzzleGameId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<PuzzleGame> finishPuzzle(
+    String puzzleGameId,
+    int result,
+    int stepsTaken,
+  ) {
+    return _apiDataSource
+        .finishPuzzle(puzzleGameId, result, stepsTaken)
         .catchError((value) => _handleException(value));
   }
 

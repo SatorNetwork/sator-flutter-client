@@ -17,7 +17,7 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/quiz_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ChallengeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -72,7 +72,7 @@ class ChallengeController extends GetxController {
         // ),
       );
 
-      parameters.buildShortLink().then((value) {
+      FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
         print(value.shortUrl);
         Share.share(value.shortUrl.toString());
       });

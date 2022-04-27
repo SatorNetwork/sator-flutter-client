@@ -54,9 +54,6 @@ class ShowEpisodeQuizController extends GetxController {
               icon: Icons.sentiment_dissatisfied_rounded,
               onButtonPressed: () {
                 Get.back(closeOverlays: true);
-                // Get.until((route) => !Get.isOverlaysOpen);
-                // Get.until((route) =>
-                //     Get.currentRoute == '/() => ShowEpisodesRealmPage');
               },
             ),
             barrierDismissible: false,
@@ -77,9 +74,6 @@ class ShowEpisodeQuizController extends GetxController {
         icon: Icons.sentiment_dissatisfied_rounded,
         onButtonPressed: () {
           Get.back(closeOverlays: true);
-          // Get.until((route) => !Get.isOverlaysOpen);
-          // Get.until(
-          //     (route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
         },
       ),
       barrierDismissible: false,

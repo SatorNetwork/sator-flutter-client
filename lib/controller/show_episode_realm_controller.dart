@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:satorio/binding/challenge_binding.dart';
 import 'package:satorio/binding/chat_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
+import 'package:satorio/binding/puzzle_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
 import 'package:satorio/binding/video_youtube_binding.dart';
@@ -22,6 +24,7 @@ import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/profile_controller.dart';
+import 'package:satorio/controller/puzzle_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/controller/video_youtube_controller.dart';
@@ -30,9 +33,12 @@ import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/last_seen.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/paid_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -40,6 +46,7 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
+import 'package:satorio/ui/bottom_sheet_widget/puzzle_options_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
@@ -51,6 +58,7 @@ import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
+import 'package:satorio/ui/page_widget/puzzle_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/video_youtube_page.dart';
@@ -71,19 +79,23 @@ class ShowEpisodeRealmController extends GetxController
   late final Rx<ShowDetail> showDetailRx;
   late final Rx<ShowSeason> showSeasonRx;
   late final Rx<ShowEpisode> showEpisodeRx;
+  final Rx<PuzzleGame?> puzzleGameRx = Rx(null);
   final Rx<List<Review>> reviewsRx = Rx([]);
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
   final RxBool isRequestedForUnlock = false.obs;
+  final RxBool isRequestedForPuzzleOptions = false.obs;
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),
   );
   final RxInt attemptsLeftRx = 100500.obs;
 
-  ScrollController scrollController = ScrollController();
-
+  final ScrollController scrollController = ScrollController();
   final TextEditingController amountController = TextEditingController();
+
+  final RxString quizHeadTitleRx = ''.obs;
+  final RxString quizHeadMessageRx = ''.obs;
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
@@ -114,6 +126,7 @@ class ShowEpisodeRealmController extends GetxController
     isProfileRealm = argument.isProfileRealm;
 
     _updateShowEpisode();
+    _loadPuzzleGame();
     _loadReviews();
     _loadNftItems();
 
@@ -135,19 +148,27 @@ class ShowEpisodeRealmController extends GetxController
 
     profile = profileListenable.value.getAt(0)!;
 
-    _timestampsRef = FirebaseDatabase(databaseURL: firebaseUrl)
-        .reference()
-        .child(profile.id)
-        .child(showEpisodeRx.value.id);
+    _timestampsRef = FirebaseDatabase.instanceFor(
+      app: Firebase.app(),
+      databaseURL: firebaseUrl,
+    ).ref().child(profile.id).child(showEpisodeRx.value.id);
 
     _messagesRef = FirebaseDatabase.instance
-        .reference()
+        .ref()
         .child(firebaseChild)
         .child(showEpisodeRx.value.id);
 
-    _messagesRef.once().then((DataSnapshot snapshot) {
-      isMessagesRx.value = snapshot.value != null;
+    _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      isMessagesRx.value = databaseEvent.snapshot.value != null;
     });
+
+    _satorioRepository
+        .quizHeadTitleText()
+        .then((value) => quizHeadTitleRx.value = value);
+
+    _satorioRepository
+        .quizHeadMessageText()
+        .then((value) => quizHeadMessageRx.value = value);
 
     lastSeenInit();
   }
@@ -168,14 +189,14 @@ class ShowEpisodeRealmController extends GetxController
 
   Future lastSeenInit() async {
     //TODO: refactor
-    await _timestampsRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value == null) {
+    await _timestampsRef.once().then((DatabaseEvent databaseEvent) {
+      if (databaseEvent.snapshot.value == null) {
         _timestampsRef.set(LastSeenModel(DateTime.now()).toJson());
         lastSeen = LastSeen(DateTime.now());
         return;
       }
 
-      final json = snapshot.value as Map<dynamic, dynamic>;
+      final json = databaseEvent.snapshot.value as Map<dynamic, dynamic>;
       lastSeen = LastSeenModel.fromJson(json);
     });
 
@@ -184,10 +205,11 @@ class ShowEpisodeRealmController extends GetxController
 
   Future _missedMessagesCounter() async {
     List missedMessages = [];
-    await _messagesRef.once().then((DataSnapshot snapshot) {
-      if (snapshot.value == null) return;
+    await _messagesRef.once().then((DatabaseEvent databaseEvent) {
+      if (databaseEvent.snapshot.value == null) return;
 
-      Map<dynamic, dynamic> values = snapshot.value;
+      Map<dynamic, dynamic> values =
+          databaseEvent.snapshot.value as Map<dynamic, dynamic>;
 
       values.forEach((key, value) {
         if (DateTime.tryParse(value["createdAt"])!.microsecondsSinceEpoch >
@@ -410,6 +432,28 @@ class ShowEpisodeRealmController extends GetxController
     );
   }
 
+  void tryToPuzzle() {
+    if (puzzleGameRx.value != null)
+      switch (puzzleGameRx.value!.status) {
+        case PuzzleGameStatus.notStarted:
+          if (puzzleGameRx.value!.steps > 0) {
+            _toPuzzle();
+          } else {
+            _toPuzzleOptions();
+          }
+          break;
+        default:
+          Get.dialog(
+            DefaultDialog(
+              'txt_oops'.tr,
+              'txt_cannot_start_puzzle'.tr,
+              'txt_ok'.tr,
+            ),
+          );
+          break;
+      }
+  }
+
   void watchVideo() async {
     String url = showEpisodeRx.value.watch;
     if (YoutubePlayer.convertUrlToId(url) != null) {
@@ -467,6 +511,14 @@ class ShowEpisodeRealmController extends GetxController
         );
   }
 
+  void _loadPuzzleGame() {
+    _satorioRepository.puzzle(showEpisodeRx.value.id).then(
+      (puzzleGame) {
+        puzzleGameRx.value = puzzleGame;
+      },
+    );
+  }
+
   void _loadReviews() {
     _satorioRepository
         .getReviews(showDetailRx.value.id, showEpisodeRx.value.id)
@@ -484,6 +536,7 @@ class ShowEpisodeRealmController extends GetxController
     _satorioRepository.nftsFiltered(
         page: _initialPage,
         itemsPerPage: _itemsPerPage,
+        orderType: NftOrderOnSaleType.onSale,
         showIds: [showDetailRx.value.id]).then(
       (List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
@@ -558,6 +611,55 @@ class ShowEpisodeRealmController extends GetxController
       barrierColor: Colors.transparent,
       enableDrag: false,
     );
+  }
+
+  void _toPuzzleOptions() {
+    if (!isRequestedForPuzzleOptions.value) {
+      Future.value(true)
+          .then((value) {
+            isRequestedForPuzzleOptions.value = true;
+            return value;
+          })
+          .then((value) => _satorioRepository.puzzleOptions())
+          .then((puzzleOptions) {
+            isRequestedForPuzzleOptions.value = false;
+            Get.bottomSheet(
+              PuzzleOptionsBottomSheet(
+                puzzleOptions,
+                (puzzleOption) {
+                  _puzzleUnlock(puzzleOption);
+                },
+              ),
+              isScrollControlled: true,
+              barrierColor: Colors.transparent,
+            );
+          })
+          .catchError(
+            (value) {
+              isRequestedForPuzzleOptions.value = false;
+            },
+          );
+    }
+  }
+
+  void _puzzleUnlock(PuzzleUnlockOption puzzleOption) {
+    if (puzzleGameRx.value != null)
+      _satorioRepository
+          .unlockPuzzle(puzzleGameRx.value!.id, puzzleOption.id)
+          .then((puzzleGame) {
+        puzzleGameRx.value = puzzleGame;
+        _toPuzzle();
+      });
+  }
+
+  void _toPuzzle() async {
+    await Get.to(
+      () => PuzzlePage(),
+      binding: PuzzleBinding(),
+      arguments: PuzzleArgument(puzzleGameRx.value!.id),
+    );
+
+    _loadPuzzleGame();
   }
 
   void _rateEpisode(int rate) {

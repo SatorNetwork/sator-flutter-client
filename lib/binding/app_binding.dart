@@ -23,8 +23,6 @@ class AppBinding extends Bindings {
   void dependencies() {
     Get.put<EncryptManager>(EncryptManagerImpl(), permanent: true);
 
-    Get.put<EncryptManager>(EncryptManagerImpl(), permanent: true);
-
     Get.put<LocalDataSource>(LocalDataSourceImpl(), permanent: true);
     Get.put<AuthDataSource>(AuthDataSourceImpl(), permanent: true);
     Get.put<FirebaseDataSource>(FirebaseDataSourceImpl(), permanent: true);

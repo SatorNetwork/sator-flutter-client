@@ -214,7 +214,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
       // ),
     );
 
-    parameters.buildShortLink().then((value) {
+    FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
       print(value.shortUrl);
       Get.dialog(
         SendInviteDialog(value.shortUrl.toString()),
@@ -257,7 +257,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
       Get.to(
         () => NftListPage(),
         binding: NftListBinding(),
-        arguments: NftListArgument(NftFilterType.User, profileRx.value!.id),
+        arguments: NftListArgument(NftFilterType.User, solanaAddressRx.value),
       );
     }
   }

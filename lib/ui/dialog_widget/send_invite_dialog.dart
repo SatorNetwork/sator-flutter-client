@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -6,12 +5,12 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class SendInviteDialog extends StatelessWidget {
   final String referralLink;
 
-  SendInviteDialog(this.referralLink);
+  const SendInviteDialog(this.referralLink);
 
   @override
   Widget build(BuildContext context) {
