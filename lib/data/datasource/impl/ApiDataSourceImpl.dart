@@ -65,6 +65,7 @@ import 'package:satorio/util/extension.dart';
 
 import '../../request/puzzle_finish_request.dart';
 import '../../request/puzzle_unlock_request.dart';
+import '../../request/tap_tile_request.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
@@ -1242,6 +1243,19 @@ class ApiDataSourceImpl implements ApiDataSource {
       return PuzzleGameModel.fromJson(
           json.decode(response.bodyString!)['data']);
     });
+  }
+
+  @override
+  Future<PuzzleGameModel> tapTile(String puzzleGameId, int x, int y) {
+    return _getConnect
+        .requestPost(
+      'puzzle-game/$puzzleGameId/tap-tile',
+      TapTileRequest(x, y),
+    )
+        .then((Response response) {
+      return PuzzleGameModel.fromJson(
+          json.decode(response.bodyString!)['data']);
+    },);
   }
 
   @override

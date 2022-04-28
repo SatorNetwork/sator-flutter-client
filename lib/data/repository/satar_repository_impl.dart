@@ -864,6 +864,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<PuzzleGame> tapTile(String puzzleGameId, int x, int y) {
+    return _apiDataSource
+        .tapTile(puzzleGameId, x, y)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<PuzzleGame> finishPuzzle(
     String puzzleGameId,
     int result,
