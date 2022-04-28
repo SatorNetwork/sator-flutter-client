@@ -152,8 +152,9 @@ class PuzzlePage extends GetView<PuzzleController> {
                                 () => Text(
                                   controller.puzzleGameRx.value == null
                                       ? ''
-                                      : 'txt_steps_taken_of_steps'.tr.format([
-                                          controller.stepsTakenRx.value,
+                                      : 'txt_steps_left_of_steps'.tr.format([
+                                          controller.puzzleGameRx.value!.steps -
+                                              controller.stepsTakenRx.value,
                                           controller.puzzleGameRx.value!.steps
                                         ]),
                                   style: textTheme.bodyText1!.copyWith(

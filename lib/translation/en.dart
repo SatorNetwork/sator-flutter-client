@@ -300,7 +300,7 @@ const Map<String, String> en = {
   'txt_cannot_start_puzzle': 'You cannot start puzzle',
   'txt_complete_picture': 'Complete this picture',
   'txt_you_will_get': 'You will get %s sao',
-  'txt_steps_taken_of_steps': '%d of %d',
+  'txt_steps_left_of_steps': '%d of %d',
   'txt_steps_left': 'Steps Left',
   'txt_unlock_puzzle': 'Unlock the puzzle',
   'txt_exit_puzzle': 'Exit the puzzle',
