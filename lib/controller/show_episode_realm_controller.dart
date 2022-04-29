@@ -435,7 +435,7 @@ class ShowEpisodeRealmController extends GetxController
   void tryToPuzzle() {
     if (puzzleGameRx.value != null)
       switch (puzzleGameRx.value!.status) {
-        case PuzzleGameStatus.notStarted:
+        case PuzzleGameStatus.newGame:
           if (puzzleGameRx.value!.steps > 0) {
             _toPuzzle();
           } else {

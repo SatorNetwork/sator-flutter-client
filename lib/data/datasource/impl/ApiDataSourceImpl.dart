@@ -63,7 +63,6 @@ import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/util/extension.dart';
 
-import '../../request/puzzle_finish_request.dart';
 import '../../request/puzzle_unlock_request.dart';
 import '../../request/tap_tile_request.dart';
 
@@ -1252,27 +1251,12 @@ class ApiDataSourceImpl implements ApiDataSource {
       'puzzle-game/$puzzleGameId/tap-tile',
       TapTileRequest(x, y),
     )
-        .then((Response response) {
-      return PuzzleGameModel.fromJson(
-          json.decode(response.bodyString!)['data']);
-    },);
-  }
-
-  @override
-  Future<PuzzleGameModel> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  ) {
-    return _getConnect
-        .requestPost(
-      'puzzle-game/$puzzleGameId/finish',
-      PuzzleFinishRequest(result, stepsTaken),
-    )
-        .then((Response response) {
-      return PuzzleGameModel.fromJson(
-          json.decode(response.bodyString!)['data']);
-    });
+        .then(
+      (Response response) {
+        return PuzzleGameModel.fromJson(
+            json.decode(response.bodyString!)['data']);
+      },
+    );
   }
 
 // endregion

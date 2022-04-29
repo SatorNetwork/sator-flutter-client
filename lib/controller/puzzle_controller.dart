@@ -14,15 +14,11 @@ import 'package:satorio/ui/bottom_sheet_widget/puzzle_image_sample_bottom_sheet.
 import 'package:satorio/ui/bottom_sheet_widget/quiz_winner_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
-enum PuzzleStatus { incomplete, complete, reachedStepLimit }
-
 class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late AnimationController animationController;
   late Animation<double> animationScale;
-
-  late PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
 
   late String puzzleGameId;
 
@@ -57,7 +53,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void back() {
-    if (puzzleStatus == PuzzleStatus.incomplete) {
+    if (puzzleGameRx.value?.status == PuzzleGameStatus.inProgress) {
       Get.dialog(
         DefaultDialog(
           'txt_exit_puzzle'.tr,
@@ -65,8 +61,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
           'txt_yes'.tr,
           icon: Icons.cancel_outlined,
           onButtonPressed: () {
-            _finishPuzzle(PuzzleGameResult.notFinished)
-                .then((value) => Get.back());
+            Get.back(closeOverlays: true);
           },
           secondaryButtonText: 'txt_no'.tr,
         ),
@@ -92,47 +87,26 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     imagesRx.value = images;
 
     puzzleGameRx.value = puzzleGame;
-
-    print('${puzzleGameRx.value?.tiles.length} == ${imagesRx.value.length}');
-    print('${puzzleGameRx.value?.image}');
-
-    // if (puzzleGameRx.value != null) {
-    //   final Uint8List bytes = await _loadImage(puzzleGameRx.value!.image);
-    //
-    //   final Uint8List squareBytes = await compute(_squareImage, bytes);
-    //   squareImage.value = squareBytes;
-    //
-    //   final List<Uint8List> images = await compute(
-    //     _splitImage,
-    //     _SplitImageData(squareBytes, puzzleGameRx.value!.xSize),
-    //   );
-    //   final Puzzle puzzle = _generatePuzzle(
-    //     images,
-    //     puzzleGameRx.value!.xSize,
-    //     shuffle: true,
-    //   );
-    //
-    //   puzzleRx.value = puzzle.sort();
-    // }
   }
 
   void tapTile(Tile tile) async {
-    print('${tile.value} ${tile.currentPosition.x}/${tile.currentPosition.y}');
     puzzleGameRx.value = await _satorioRepository.tapTile(
       puzzleGameId,
       tile.currentPosition.x,
       tile.currentPosition.y,
     );
-    if (puzzleGameRx.value != null)
-      switch (puzzleGameRx.value!.result) {
-        case PuzzleGameResult.userLost:
-          DefaultBottomSheet(
-            'txt_failure'.tr,
-            'txt_puzzle_steps_reached'.tr,
-            'txt_ok'.tr,
+    if (puzzleGameRx.value != null) {
+      switch (puzzleGameRx.value!.status) {
+        case PuzzleGameStatus.stepLimit:
+          Get.bottomSheet(
+            DefaultBottomSheet(
+              'txt_failure'.tr,
+              'txt_puzzle_steps_reached'.tr,
+              'txt_ok'.tr,
+            ),
           );
           break;
-        case PuzzleGameResult.userWon:
+        case PuzzleGameStatus.finished:
           Get.bottomSheet(
             puzzleGameRx.value!.rewards > 0
                 ? QuizWinnerBottomSheet(
@@ -149,44 +123,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
           );
           break;
       }
-
-    // if (puzzleRx.value != null && puzzleStatus == PuzzleStatus.incomplete) {
-    //   if (puzzleRx.value!.isTileMovable(tile)) {
-    //     final mutablePuzzle = Puzzle(tiles: [...puzzleRx.value!.tiles]);
-    //     final puzzle = mutablePuzzle.moveTiles(tile, []);
-    //
-    //     puzzleRx.value = puzzle.sort();
-    //     stepsTakenRx.value = stepsTakenRx.value + 1;
-    //     if (puzzle.isComplete()) {
-    //       puzzleStatus = PuzzleStatus.complete;
-    //       _finishPuzzle(PuzzleGameResult.userWon).then((puzzleGame) {
-    //         Get.bottomSheet(
-    //           puzzleGame.rewards > 0
-    //               ? QuizWinnerBottomSheet(
-    //                   '${puzzleGame.rewards.toStringAsFixed(2)} SAO',
-    //                   puzzleGame.bonusRewards > 0
-    //                       ? '${puzzleGame.bonusRewards.toStringAsFixed(2)} SAO'
-    //                       : '',
-    //                 )
-    //               : DefaultBottomSheet(
-    //                   'txt_success'.tr,
-    //                   'txt_puzzle_win'.tr,
-    //                   'txt_ok'.tr,
-    //                 ),
-    //         );
-    //       });
-    //     } else if (stepsTakenRx.value == puzzleGameRx.value?.steps) {
-    //       puzzleStatus = PuzzleStatus.reachedStepLimit;
-    //       _finishPuzzle(PuzzleGameResult.userLost).then((puzzleGame) {
-    //         DefaultBottomSheet(
-    //           'txt_failure'.tr,
-    //           'txt_puzzle_steps_reached'.tr,
-    //           'txt_ok'.tr,
-    //         );
-    //       });
-    //     }
-    //   }
-    // }
+    }
   }
 
   void toPuzzleImageSample() {
@@ -204,100 +141,6 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     return NetworkAssetBundle(Uri.parse(url))
         .load(url)
         .then((value) => value.buffer.asUint8List());
-  }
-
-  // /// Build a randomized, solvable puzzle of the given size.
-  // Puzzle _generatePuzzle(
-  //   List<Uint8List> images,
-  //   int size, {
-  //   bool shuffle = true,
-  // }) {
-  //   final correctPositions = <Position>[];
-  //   final currentPositions = <Position>[];
-  //   final whitespacePosition = Position(size, size);
-  //
-  //   // Create all possible board positions.
-  //   for (var y = 1; y <= size; y++) {
-  //     for (var x = 1; x <= size; x++) {
-  //       if (x == size && y == size) {
-  //         correctPositions.add(whitespacePosition);
-  //         currentPositions.add(whitespacePosition);
-  //       } else {
-  //         final position = Position(x, y);
-  //         correctPositions.add(position);
-  //         currentPositions.add(position);
-  //       }
-  //     }
-  //   }
-  //
-  //   if (shuffle) {
-  //     // Randomize only the current tile positions.
-  //     currentPositions.shuffle();
-  //   }
-  //
-  //   var tiles = _getTileListFromPositions(
-  //     size,
-  //     images,
-  //     correctPositions,
-  //     currentPositions,
-  //   );
-  //
-  //   var puzzle = Puzzle(tiles: tiles);
-  //
-  //   if (shuffle) {
-  //     // Assign the tiles new current positions until the puzzle is solvable and
-  //     // zero tiles are in their correct position.
-  //     while (!puzzle.isSolvable() || puzzle.getNumberOfCorrectTiles() != 0) {
-  //       currentPositions.shuffle();
-  //       tiles = _getTileListFromPositions(
-  //         size,
-  //         images,
-  //         correctPositions,
-  //         currentPositions,
-  //       );
-  //       puzzle = Puzzle(tiles: tiles);
-  //     }
-  //   }
-  //
-  //   return puzzle;
-  // }
-
-  // /// Build a list of tiles - giving each tile their correct position and a
-  // /// current position.
-  // List<Tile> _getTileListFromPositions(
-  //   int size,
-  //   List<Uint8List> images,
-  //   List<Position> correctPositions,
-  //   List<Position> currentPositions,
-  // ) {
-  //   final whitespacePosition = Position(size, size);
-  //   return [
-  //     for (int i = 1; i <= size * size; i++)
-  //       if (i == size * size)
-  //         Tile(
-  //           images[i - 1],
-  //           i,
-  //           whitespacePosition,
-  //           currentPositions[i - 1],
-  //           true,
-  //         )
-  //       else
-  //         Tile(
-  //           images[i - 1],
-  //           i,
-  //           correctPositions[i - 1],
-  //           currentPositions[i - 1],
-  //           false,
-  //         )
-  //   ];
-  // }
-
-  Future<PuzzleGame> _finishPuzzle(int puzzleGameResult) {
-    return _satorioRepository.finishPuzzle(
-      puzzleGameId,
-      puzzleGameResult,
-      puzzleGameRx.value?.stepsTaken ?? 0,
-    );
   }
 }
 

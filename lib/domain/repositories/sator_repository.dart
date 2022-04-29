@@ -286,10 +286,4 @@ abstract class SatorioRepository {
   Future<PuzzleGame> startPuzzle(String puzzleGameId);
 
   Future<PuzzleGame> tapTile(String puzzleGameId, int x, int y);
-
-  Future<PuzzleGame> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  );
 }

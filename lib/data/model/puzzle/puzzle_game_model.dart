@@ -14,7 +14,6 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
     int steps,
     int stepsTaken,
     int status,
-    int result,
     String image,
     List<TileModel> tiles,
   ) : super(
@@ -27,7 +26,6 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
           steps,
           stepsTaken,
           status,
-          result,
           image,
           tiles,
         );
@@ -42,7 +40,6 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
         json.parseValueAsInt('steps'),
         json.parseValueAsInt('steps_taken'),
         json.parseValueAsInt('status'),
-        json.parseValueAsInt('result'),
         json.parseValueAsString('image'),
         json['tiles'] != null && json['tiles'] is Iterable
             ? (json['tiles'] as Iterable)
@@ -63,7 +60,6 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
         'steps': steps,
         'steps_taken': stepsTaken,
         'status': status,
-        'result': result,
         'image': image,
         'tiles': tiles
             .whereType<ToJsonInterface>()
