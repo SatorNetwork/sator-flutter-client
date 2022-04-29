@@ -86,7 +86,7 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
                     height: 24 * coefficient,
                   ),
                   SizedBox(
-                    height: 50,
+                    height: 56 * coefficient,
                     child: ListView.separated(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       scrollDirection: Axis.horizontal,
