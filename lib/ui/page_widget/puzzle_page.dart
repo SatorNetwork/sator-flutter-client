@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/puzzle_controller.dart';
@@ -112,7 +114,7 @@ class PuzzlePage extends GetView<PuzzleController> {
                         height: 46 * coefficient,
                       ),
                       Obx(
-                        () => controller.puzzleRx.value == null
+                        () => controller.puzzleGameRx.value == null
                             ? Container(
                                 width: Get.width - 2 * 20,
                                 height: Get.width - 2 * 20,
@@ -130,12 +132,13 @@ class PuzzlePage extends GetView<PuzzleController> {
                                 dimension: Get.width - 2 * 20,
                                 child: Stack(
                                   key: const Key('puzzle_tiles'),
-                                  children: controller.puzzleRx.value!.tiles
+                                  children: controller.puzzleGameRx.value!.tiles
                                       .map(
                                         (tile) => _tileWidget(
                                           tile,
-                                          controller.puzzleRx.value!
-                                              .getDimension(),
+                                          controller
+                                              .imagesRx.value[tile.value - 1],
+                                          controller.puzzleGameRx.value!.xSize,
                                         ),
                                       )
                                       .toList(),
@@ -154,13 +157,15 @@ class PuzzlePage extends GetView<PuzzleController> {
                                       ? ''
                                       : 'txt_steps_left_of_steps'.tr.format([
                                           controller.puzzleGameRx.value!.steps -
-                                              controller.stepsTakenRx.value,
+                                              controller.puzzleGameRx.value!
+                                                  .stepsTaken,
                                           controller.puzzleGameRx.value!.steps
                                         ]),
                                   style: textTheme.bodyText1!.copyWith(
                                     fontSize: 24 * coefficient,
                                     fontWeight: FontWeight.w700,
-                                    color: controller.stepsTakenRx.value ==
+                                    color: controller.puzzleGameRx.value
+                                                ?.stepsTaken ==
                                             controller.puzzleGameRx.value?.steps
                                         ? SatorioColor.error
                                         : SatorioColor.darkAccent,
@@ -190,7 +195,8 @@ class PuzzlePage extends GetView<PuzzleController> {
     );
   }
 
-  Widget _tileWidget(final Tile tile, final int size) {
+  Widget _tileWidget(
+      final Tile tile, final Uint8List imageBytes, final int size) {
     return AnimatedAlign(
       key: Key('puzzle_tile_align_${tile.value}'),
       alignment: FractionalOffset(
@@ -217,7 +223,7 @@ class PuzzlePage extends GetView<PuzzleController> {
                     borderRadius: BorderRadius.all(
                       Radius.circular(4),
                     ),
-                    child: Image.memory(tile.imageBytes),
+                    child: Image.memory(imageBytes),
                   ),
           ),
         ),

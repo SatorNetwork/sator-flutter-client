@@ -1,3 +1,5 @@
+import 'package:satorio/domain/entities/puzzle/tile.dart';
+
 class PuzzleGame {
   final String id;
   final String episodeId;
@@ -10,6 +12,7 @@ class PuzzleGame {
   final int status;
   final int result;
   final String image;
+  final List<Tile> tiles;
 
   const PuzzleGame(
     this.id,
@@ -23,6 +26,7 @@ class PuzzleGame {
     this.status,
     this.result,
     this.image,
+    this.tiles,
   );
 }
 
