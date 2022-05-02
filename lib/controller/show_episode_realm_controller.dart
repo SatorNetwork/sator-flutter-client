@@ -675,9 +675,6 @@ class ShowEpisodeRealmController extends GetxController
               'txt_rate_success'.tr.format([rate]),
               'txt_awesome'.tr,
               icon: Icons.check_rounded,
-              onPressed: () {
-                Get.back();
-              },
             ),
           );
         }
