@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/web_binding.dart';
@@ -10,6 +15,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/checkout_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_nft_bought_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,6 +27,12 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
   final RxBool isBuyRequested = false.obs;
   final RxBool termsOfUseCheck = false.obs;
+
+  final Rx<List<IAPItem>> productsRx = Rx([]);
+
+  late final StreamSubscription _purchaseUpdatedSubscription;
+  late final StreamSubscription _purchaseErrorSubscription;
+  late final StreamSubscription _connectionSubscription;
 
   late final String marketplaceUrl;
 
@@ -36,6 +48,8 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
   void onInit() async {
     super.onInit();
 
+    _initializeInApp();
+
     marketplaceUrl = await _satorioRepository.nftsMarketplaceUrl();
   }
 
@@ -47,6 +61,100 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
     await canLaunch('$marketplaceUrl/nft-item?id=$id')
         ? await launch('$marketplaceUrl/nft-item?id=$id')
         : throw '$marketplaceUrl/nft-item?id=$id';
+  }
+
+  Future<void> _initializeInApp() async {
+    try {
+      _satorioRepository.initializePurchase();
+
+      _getInAppProducts();
+
+      List<PurchasedItem>? purchasedList;
+
+      if (productsRx.value.isNotEmpty) {
+        if (isAndroid) {
+          purchasedList = await _satorioRepository.purchaseHistory();
+
+          if (purchasedList != null &&
+              purchasedList.contains(PurchasedItem) &&
+              purchasedList.isNotEmpty) {
+            await _satorioRepository.consumeAll();
+          }
+        }
+      }
+
+      _connectionSubscription =
+          FlutterInappPurchase.connectionUpdated.listen((connected) {
+            //TODO: remove after tests
+            print('connected: $connected');
+          });
+
+      _purchaseUpdatedSubscription =
+          FlutterInappPurchase.purchaseUpdated.listen((product) async {
+            //TODO: remove after tests
+            print('purchase-product: $product');
+            Map<String, dynamic> json = {};
+
+            await _satorioRepository.consumeAll();
+
+            if (isAndroid && product != null) {
+              json = jsonDecode(product.transactionReceipt!);
+            }
+
+            await verifyTransaction(
+              data: product!.transactionReceipt!,
+              signature: isAndroid ? product.signatureAndroid! : '',
+              json: isAndroid ? json : {},
+              token: isAndroid ? product.purchaseToken! : '',
+              purchasedItemIOS: product,
+            );
+          });
+
+      _purchaseErrorSubscription =
+          FlutterInappPurchase.purchaseError.listen((purchaseError) async {
+            _purchaseErrorSubscription.pause();
+            _purchaseErrorSubscription.resume();
+          });
+    } on PlatformException catch (err) {
+      //TODO: remove after tests and add response after API callback
+      print(err);
+    }
+  }
+
+  void _getInAppProducts() {
+    _satorioRepository.inAppProductsIds().then((ids) {
+      if (ids == null) return;
+
+      _satorioRepository.getProducts(ids).then((value) {
+        productsRx.value = value;
+      });
+    });
+  }
+
+  Future<void> buyInAppProduct(String id) async {
+    if (id.isEmpty) return;
+
+    _satorioRepository.buyInAppProduct(id);
+  }
+
+  Future<void> verifyTransaction({
+    required String data,
+    required String signature,
+    required Map<String, dynamic> json,
+    required String token,
+    required PurchasedItem purchasedItemIOS,
+  }) async {
+    await _satorioRepository
+        .finishTransaction(purchasedItemIOS, true)
+        .then((value) {
+      if (value != null) {
+        //TODO: add response after API callback
+        Get.back();
+      }
+    }).catchError((error) {
+      //TODO: remove after tests and add response after API callback
+      print(error);
+    });
   }
 
   void addToFavourite() {}

@@ -67,8 +67,10 @@ class WalletInAppPurchaseController extends GetxController {
           json = jsonDecode(product.transactionReceipt!);
         }
 
+        print('transactionReceipt === ${product!.transactionReceipt!}');
+
         await verifyTransaction(
-          data: product!.transactionReceipt!,
+          data: product.transactionReceipt!,
           signature: isAndroid ? product.signatureAndroid! : '',
           json: isAndroid ? json : {},
           token: isAndroid ? product.purchaseToken! : '',
@@ -89,9 +91,10 @@ class WalletInAppPurchaseController extends GetxController {
 
   void _getInAppProducts() {
     _satorioRepository.inAppProductsIds().then((ids) {
+      print(ids);
       if (ids == null) return;
 
-      _satorioRepository.getProducts(ids).then((value) {
+      _satorioRepository.getProducts(["sat1"]).then((value) {
         productsRx.value = value;
       });
     });
