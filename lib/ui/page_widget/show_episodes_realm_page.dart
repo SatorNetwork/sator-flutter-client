@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/message_model.dart';
 import 'package:satorio/domain/entities/message.dart';
@@ -626,25 +627,35 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              'txt_head'.tr,
-                                              style:
-                                                  textTheme.bodyText1!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 18 * coefficient,
-                                                fontWeight: FontWeight.w700,
+                                            Obx(
+                                              () => Text(
+                                                controller
+                                                    .quizHeadTitleRx.value,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: textTheme.bodyText1!
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 18 * coefficient,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
                                             ),
                                             SizedBox(
                                               height: 6,
                                             ),
-                                            Text(
-                                              'txt_head_text'.tr,
-                                              style:
-                                                  textTheme.bodyText2!.copyWith(
-                                                color: Colors.white,
-                                                fontSize: 14 * coefficient,
-                                                fontWeight: FontWeight.w400,
+                                            Obx(
+                                              () => Text(
+                                                controller
+                                                    .quizHeadMessageRx.value,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: textTheme.bodyText2!
+                                                    .copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 14 * coefficient,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -738,6 +749,47 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               ),
                             ),
                           ),
+                        ),
+                        Obx(
+                          () => SizedBox(
+                            height:
+                                controller.puzzleGameRx.value == null ? 0 : 32,
+                          ),
+                        ),
+                        Obx(
+                          () => controller.puzzleGameRx.value == null
+                              ? SizedBox(
+                                  height: 0,
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: InkWell(
+                                    onTap: () {
+                                      controller.tryToPuzzle();
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            SatorioColor.pale_cornflower_blue,
+                                            SatorioColor.lavender3,
+                                          ],
+                                        ),
+                                      ),
+                                      child: Lottie.asset(
+                                        'lottie-anim/puzzle.json',
+                                        repeat: true,
+                                        width: Get.width - 2 * 20,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                         ),
                         SizedBox(
                           height: 32,
@@ -1138,7 +1190,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Image.network(
-                nftItem.imageLink,
+                nftItem.nftPreview.isEmpty
+                    ? nftItem.nftLink
+                    : nftItem.nftPreview,
                 height: height,
                 width: width,
                 fit: BoxFit.cover,
@@ -1153,7 +1207,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     children: [
                       Expanded(
                         child: Text(
-                          nftItem.name,
+                          nftItem.nftMetadata.name,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: textTheme.bodyText2!.copyWith(
@@ -1344,7 +1398,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   }
 
   Widget _reviewItem(Review review) {
-    final double reviewContainerHeight = 230.0 * coefficient;
+    final double reviewContainerHeight = 235.0 * coefficient;
 
     String avatarAsset =
         review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
@@ -1353,11 +1407,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
     final RxBool isLikedRx = review.isLiked.obs;
     final RxBool isDislikedRx = review.isDisliked.obs;
 
-    var formattedLikes = NumberFormat.compact(
-    ).format(review.likes);
+    var formattedLikes = NumberFormat.compact().format(review.likes);
 
-    var formattedDislikes = NumberFormat.compact(
-    ).format(review.dislikes);
+    var formattedDislikes = NumberFormat.compact().format(review.dislikes);
 
     return Obx(
       () => Container(
@@ -1380,10 +1432,10 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                 children: [
                   ClipOval(
                       child: AvatarImage(
-                        avatarAsset,
-                        width: 20,
-                        height: 20,
-                      )),
+                    avatarAsset,
+                    width: 20,
+                    height: 20,
+                  )),
                   SizedBox(
                     width: 6,
                   ),
@@ -1469,10 +1521,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
-                      onTap: () {
-                        if (isLikedRx.value) return;
-                        controller.rateReview(review.id, RatingType.like);
-                      },
+                      onTap: () => controller.isEnabledRx.value
+                          ? controller.rateReview(review.id, RatingType.like)
+                          : null,
                       child: SvgPicture.asset(
                         'images/${isLikedRx.value ? 'like_icon.svg' : 'outline_like_icon.svg'}',
                         color: SatorioColor.interactive,
@@ -1495,12 +1546,11 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       width: 15 * coefficient,
                     ),
                     InkWell(
-                      onTap: () {
-                        if (isDislikedRx.value) return;
-                        controller.rateReview(review.id, RatingType.dislike);
-                      },
+                      onTap: () => controller.isEnabledRx.value
+                          ? controller.rateReview(review.id, RatingType.dislike)
+                          : null,
                       child: SvgPicture.asset(
-                         'images/${isDislikedRx.value ? 'dislike_icon.svg' : 'outline_dislike_icon.svg'}',
+                        'images/${isDislikedRx.value ? 'dislike_icon.svg' : 'outline_dislike_icon.svg'}',
                         color: SatorioColor.interactive,
                         height: 20,
                         width: 20,
@@ -1518,43 +1568,45 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ),
                     ),
                     Spacer(),
-                    controller.profile.id != review.userId ?
-                    InkWell(
-                      onTap: () {
-                        controller.toTransactingTipsDialog(review.userName, review);
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: SatorioColor.interactive,
+                    controller.profile.id != review.userId
+                        ? InkWell(
+                            onTap: () {
+                              controller.toTransactingTipsDialog(
+                                  review.userName, review);
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 24,
+                                  width: 24,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: SatorioColor.interactive,
+                                  ),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      'images/sator_logo.svg',
+                                      width: 12,
+                                      height: 12,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  'txt_tip'.tr,
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 14 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                'images/sator_logo.svg',
-                                width: 12,
-                                height: 12,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            'txt_tip'.tr,
-                            style: textTheme.bodyText2!.copyWith(
-                              color: SatorioColor.interactive,
-                              fontSize: 14 * coefficient,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ) : Container(),
+                          )
+                        : Container(),
                   ],
                 ),
               ),

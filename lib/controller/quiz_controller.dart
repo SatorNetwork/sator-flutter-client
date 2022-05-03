@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
+import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/challenges_binding.dart';
+import 'package:satorio/controller/challenges_controller.dart';
 import 'package:satorio/controller/quiz_counter_controller.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/controller/quiz_question_controller.dart';
@@ -9,6 +13,7 @@ import 'package:satorio/controller/quiz_result_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/model/payload/socket_message_factory.dart';
 import 'package:satorio/domain/entities/challenge.dart';
+import 'package:satorio/domain/entities/nats_config.dart';
 import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/domain/entities/payload/payload_countdown.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
@@ -20,10 +25,15 @@ import 'package:satorio/domain/entities/quiz_screen_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/page_widget/challenges_page.dart';
 
 class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
-  GetSocket? _socket;
+  late final NatsConfig natsConfig;
+
+  late final Subscription _subscription;
+  late final StreamSubscription<Message>? _streamSubscription;
+  late final Timer _pingTimer;
 
   final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
 
@@ -32,15 +42,17 @@ class QuizController extends GetxController {
   QuizController() {
     QuizArgument argument = Get.arguments as QuizArgument;
     challengeRx = Rx(argument.challenge);
-    _initSocket(argument.socketUrl);
+    natsConfig = argument.natsConfig;
+
+    _initConnection();
   }
 
   @override
   void onClose() {
-    if (_socket != null) {
-      _socket!.close();
-      _socket = null;
-    }
+    _pingTimer.cancel();
+    _streamSubscription?.cancel();
+    _satorioRepository.unsubscribeNats(_subscription);
+
     super.onClose();
   }
 
@@ -48,7 +60,11 @@ class QuizController extends GetxController {
     _satorioRepository.updateWalletBalance();
     Get.until((route) => !Get.isOverlaysOpen);
     if (Get.isRegistered<ShowEpisodeRealmController>()) {
-      Get.until((route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+      Get.until((route) {
+        return Get.currentRoute == '/ShowEpisodesRealmPage';
+      });
+    } else {
+      Get.back();
     }
   }
 
@@ -56,65 +72,105 @@ class QuizController extends GetxController {
     Get.back();
   }
 
-  Future<void> sendAnswer(String questionId, String answerId) {
-    return _satorioRepository.sendAnswer(_socket, questionId, answerId);
+  void toChallenges() {
+    if (Get.isRegistered<ChallengesController>()) {
+      final ChallengesController challengesController = Get.find();
+      challengesController.refreshData();
+      Get.until((route) {
+        return Get.currentRoute == '/ChallengesPage';
+      });
+    } else {
+      // Workaround - cause Get.off here doesn't call onClose hook
+      Get.back();
+      Get.to(
+        () => ChallengesPage(),
+        binding: ChallengesBinding(),
+      );
+    }
   }
 
-  void _initSocket(String socketUrl) async {
-    _socket = await _satorioRepository.createQuizSocket(socketUrl);
+  Future<void> sendAnswer(String questionId, String answerId) {
+    return _satorioRepository.sendAnswer(
+      natsConfig.sendSubj,
+      natsConfig.serverPublicKey,
+      questionId,
+      answerId,
+    );
+  }
 
-    _socket?.onOpen(() {
-      print('Socket onOpen ${_socket?.url}');
+  void _initConnection() async {
+    _subscription = await _satorioRepository.subscribeNats(
+        natsConfig.baseQuizWsUrl, natsConfig.receiveSubj);
+
+    _streamSubscription = _subscription.stream?.listen((Message message) {
+      String data = message.string;
+      _handleReceivedMessage(data);
     });
-    _socket?.onClose((close) {
-      print('Socket onClose $close');
+
+    _pingTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _satorioRepository.sendPing(
+          natsConfig.sendSubj, natsConfig.serverPublicKey);
     });
-    _socket?.onError((e) {
-      print('Socket onError $e');
-    });
-    _socket?.onMessage((data) {
-      print('onMessage $data');
-      if (data is String) {
-        SocketMessage socketMessage =
-            SocketMessageModelFactory.createSocketMessage(json.decode(data));
-        switch (socketMessage.type) {
-          case Type.player_connected:
-            _handlePayloadUser(socketMessage.payload as PayloadUser, true);
-            break;
-          case Type.player_disconnected:
-            _handlePayloadUser(socketMessage.payload as PayloadUser, false);
-            break;
-          case Type.countdown:
-            _handlePayloadCountdown(socketMessage.payload as PayloadCountdown);
-            break;
-          case Type.question:
-            _handlePayloadQuestion(socketMessage.payload as PayloadQuestion);
-            break;
-          case Type.question_result:
-            _handlePayloadQuestionResult(
-                socketMessage.payload as PayloadQuestionResult);
-            break;
-          case Type.challenge_result:
-            _handlePayloadChallengeResult(
-                socketMessage.payload as PayloadChallengeResult);
-            break;
-          case Type.time_out:
-            _handleTimeOut(socketMessage.payload as PayloadTimeOut);
-            break;
-        }
+  }
+
+  void _handleReceivedMessage(String message) {
+    _satorioRepository.decryptData(message).then((String value) {
+      SocketMessage socketMessage =
+          SocketMessageModelFactory.createSocketMessage(json.decode(value));
+
+      if (_isMessageExpired(socketMessage)) {
+        print('Message EXPIRED !!!');
+        return;
+      }
+
+      switch (socketMessage.type) {
+        case Type.player_connected:
+          _handlePayloadUser(socketMessage.payload as PayloadUser, true);
+          break;
+        case Type.player_disconnected:
+          _handlePayloadUser(socketMessage.payload as PayloadUser, false);
+          break;
+        case Type.countdown:
+          _handlePayloadCountdown(socketMessage.payload as PayloadCountdown);
+          break;
+        case Type.question:
+          _handlePayloadQuestion(socketMessage.payload as PayloadQuestion);
+          break;
+        case Type.question_result:
+          _handlePayloadQuestionResult(
+              socketMessage.payload as PayloadQuestionResult);
+          break;
+        case Type.challenge_result:
+          _handlePayloadChallengeResult(
+              socketMessage.payload as PayloadChallengeResult);
+          break;
+        case Type.time_out:
+          _handleTimeOut(socketMessage.payload as PayloadTimeOut);
+          break;
       }
     });
-    _socket?.connect();
+  }
+
+  bool _isMessageExpired(SocketMessage message) {
+    if (message.date == null) {
+      return true;
+    } else {
+      return DateTime.now().difference(message.date!).inMilliseconds >
+          message.ttl;
+    }
   }
 
   void _handlePayloadUser(PayloadUser payloadUser, bool isAdd) {
     QuizLobbyController lobbyController = Get.find();
     lobbyController.usersRx.update((value) {
       if (value != null) {
-        if (isAdd)
-          value.add(payloadUser);
-        else
+        if (isAdd) {
+          if (value.indexWhere(
+                  (element) => element.userId == payloadUser.userId) ==
+              -1) value.add(payloadUser);
+        } else {
           value.removeWhere((element) => element.userId == payloadUser.userId);
+        }
       }
     });
   }
@@ -132,7 +188,7 @@ class QuizController extends GetxController {
     bool isDialogOpen = Get.isDialogOpen ?? false;
     bool isBottomSheetOpen = Get.isBottomSheetOpen ?? false;
     if (isDialogOpen || isBottomSheetOpen) {
-      Get.back();
+      Get.until((route) => !Get.isOverlaysOpen);
     }
     bool restart = true;
     if (screenTypeRx.value == QuizScreenType.countdown) {
@@ -157,13 +213,13 @@ class QuizController extends GetxController {
         DefaultDialog(
           'txt_oops'.tr,
           'txt_wrong_answer'.tr,
-          'txt_back_realm'.tr,
+          'txt_keep_going'.tr,
           icon: Icons.sentiment_dissatisfied_rounded,
           onButtonPressed: () {
-            backToEpisode();
+            Get.until((route) => !Get.isOverlaysOpen);
           },
         ),
-        barrierDismissible: false,
+        barrierDismissible: true,
       );
     }
   }
@@ -174,14 +230,14 @@ class QuizController extends GetxController {
     bool isDialogOpen = Get.isDialogOpen ?? false;
     bool isBottomSheetOpen = Get.isBottomSheetOpen ?? false;
     if (isDialogOpen || isBottomSheetOpen) {
-      Get.back();
+      Get.until((route) => !Get.isOverlaysOpen);
     }
     if (screenTypeRx.value == QuizScreenType.question) {
       screenTypeRx.value = QuizScreenType.result;
     }
 
     QuizResultController quizResultController = Get.find();
-    quizResultController.resultRx.value = payloadChallengeResult;
+    quizResultController.updateQuizResult(payloadChallengeResult);
   }
 
   _handleTimeOut(PayloadTimeOut payloadTimeOut) {
@@ -192,7 +248,7 @@ class QuizController extends GetxController {
         'txt_back_realm'.tr,
         icon: Icons.sentiment_dissatisfied_rounded,
         onButtonPressed: () {
-          backToEpisode();
+          Get.until((route) => !Get.isOverlaysOpen);
         },
       ),
       barrierDismissible: false,
@@ -202,7 +258,7 @@ class QuizController extends GetxController {
 
 class QuizArgument {
   final Challenge challenge;
-  final String socketUrl;
+  final NatsConfig natsConfig;
 
-  const QuizArgument(this.challenge, this.socketUrl);
+  const QuizArgument(this.challenge, this.natsConfig);
 }

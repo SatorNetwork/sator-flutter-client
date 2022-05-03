@@ -40,7 +40,9 @@ class SplashController extends GetxController {
   void onReady() {
     super.onReady();
     _handleDynamicLinks();
-    _checkToken();
+    _satorioRepository.isInited.listen((value) {
+      if (value) _checkToken();
+    });
   }
 
   Future _handleDynamicLinks() async {
@@ -52,13 +54,13 @@ class SplashController extends GetxController {
       deepLink = data.link;
     }
 
+    print('SplashController deepLink: $deepLink');
+
     _handleDeepLink(data);
 
-    FirebaseDynamicLinks.instance.onLink(
-        onSuccess: (PendingDynamicLinkData? dynamicLink) async {
-          _handleDeepLink(dynamicLink!);
-        },
-        onError: (OnLinkErrorException e) async {});
+    FirebaseDynamicLinks.instance.onLink.listen((event) {
+      _handleDeepLink(event);
+    }).onError((error) {});
   }
 
   void _getInstalledAppVersion() async {
@@ -81,7 +83,7 @@ class SplashController extends GetxController {
       () {
         if (_installedAppVersion >= _minAppVersion) {
           _satorioRepository.validateToken().then(
-                (bool isTokenValid) {
+            (bool isTokenValid) {
               if (isTokenValid) {
                 _checkIsVerified();
               } else {
@@ -89,7 +91,7 @@ class SplashController extends GetxController {
               }
             },
           ).catchError(
-                (value) {
+            (value) {
               _checkIsOnBoarding();
             },
           );
@@ -102,28 +104,27 @@ class SplashController extends GetxController {
 
   void _toUpdateAppDialog() {
     Get.dialog(
-      WillPopScope(
-        onWillPop: () async {
-          if (_installedAppVersion >= _minAppVersion) {
-            Get.back(closeOverlays: true);
-            return true;
-          } else {
-            return false;
-          }
-        },
-        child: DefaultDialog(
-          'txt_update_app'.tr,
-          'txt_update_app_text'.tr,
-          'txt_update'.tr,
-          icon: Icons.update,
-          isBack: false,
-          onButtonPressed: () {
-            _updateApp();
+        WillPopScope(
+          onWillPop: () async {
+            if (_installedAppVersion >= _minAppVersion) {
+              Get.back(closeOverlays: true);
+              return true;
+            } else {
+              return false;
+            }
           },
+          child: DefaultDialog(
+            'txt_update_app'.tr,
+            'txt_update_app_text'.tr,
+            'txt_update'.tr,
+            icon: Icons.update,
+            isBack: false,
+            onButtonPressed: () {
+              _updateApp();
+            },
+          ),
         ),
-      ),
-      barrierDismissible: false
-    );
+        barrierDismissible: false);
   }
 
   void _updateApp() {
@@ -138,7 +139,6 @@ class SplashController extends GetxController {
     await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
 
-
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {
       if (isVerified) {
@@ -147,7 +147,11 @@ class SplashController extends GetxController {
         Get.offAll(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
-          arguments: EmailVerificationArgument('txt_your_email'.tr, false),
+          arguments: EmailVerificationArgument(
+            'txt_your_email'.tr,
+            false,
+            deepLink,
+          ),
         );
       }
     }).catchError(
@@ -184,13 +188,13 @@ class SplashController extends GetxController {
   void _toOnBoarding() {
     precachePicture(
       ExactAssetPicture(
-          SvgPicture.svgStringDecoder, 'images/bg/onboarding.svg'),
+          SvgPicture.svgStringDecoderBuilder, 'images/bg/onboarding.svg'),
       null,
     );
 
     onBoardings.forEach((data) {
       precachePicture(
-        ExactAssetPicture(SvgPicture.svgStringDecoder, data.assetName),
+        ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, data.assetName),
         null,
       );
     });

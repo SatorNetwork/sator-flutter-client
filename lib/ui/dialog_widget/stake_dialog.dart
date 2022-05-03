@@ -24,6 +24,7 @@ class StakeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RxDouble amountRx = 0.0.obs;
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(32),
@@ -61,6 +62,9 @@ class StakeDialog extends StatelessWidget {
             TextFormField(
               controller: _amountController,
               textAlign: TextAlign.start,
+              onChanged: (value) {
+                amountRx.value = value.tryParse()!.toDouble();
+              },
               inputFormatters: [
                 DecimalTextInputFormatter(decimalRange: 6),
                 FilteringTextInputFormatter.allow(RegExp(amountPattern))
@@ -83,15 +87,17 @@ class StakeDialog extends StatelessWidget {
             SizedBox(
               height: 32 * coefficient,
             ),
-            ElevatedGradientButton(
-              text: buttonText,
-              onPressed: () {
-                double? amount = _amountController.text.tryParse();
-                if (amount != null) {
-                  Get.back();
-                  onPressed(amount);
-                }
-              },
+            Obx(
+              () => ElevatedGradientButton(
+                text: buttonText,
+                isEnabled: amountRx.value > 0,
+                onPressed: () {
+                  if (amountRx.value > 0) {
+                    Get.back();
+                    onPressed(amountRx.value);
+                  }
+                },
+              ),
             ),
           ],
         ),

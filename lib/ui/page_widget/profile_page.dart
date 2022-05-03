@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:satorio/controller/profile_controller.dart';
@@ -21,313 +19,382 @@ class ProfilePage extends GetView<ProfileController> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      color: SatorioColor.brand,
-      onRefresh: () async {
-        controller.refreshPage();
-      },
-      child: Column(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          icon: Icon(
+            Icons.settings_outlined,
+            color: SatorioColor.textBlack,
+          ),
+          onPressed: () {
+            controller.toSettings();
+          },
+        ),
+        //TODO: uncomment
+        actions: [
+          // Container(
+          //   width: kToolbarHeight,
+          //   height: kToolbarHeight,
+          //   child: Stack(
+          //     children: [
+          //       IconButton(
+          //         icon: Icon(
+          //           Icons.notifications_none_rounded,
+          //           color: SatorioColor.textBlack,
+          //         ),
+          //         onPressed: () {
+          //           controller.toNotificationSettings();
+          //         },
+          //       ),
+          //       Positioned(
+          //         right: 22,
+          //         top: 14,
+          //         child: Container(
+          //           width: 7,
+          //           height: 7,
+          //           decoration: BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: SatorioColor.brand,
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // )
+        ],
+      ),
+      body: Stack(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 20),
-            width: Get.width,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          backgroundImage('images/bg/gradient.svg'),
+          RefreshIndicator(
+            color: SatorioColor.brand,
+            onRefresh: () async {
+              controller.refreshPage();
+            },
+            child: Column(
               children: [
-                SizedBox(
-                  width: 100 * coefficient,
-                  height: 72 * coefficient,
-                  child: Stack(
+                Container(
+                  margin: EdgeInsets.only(
+                    top: Get.mediaQuery.padding.top + kToolbarHeight,
+                  ),
+                  padding: const EdgeInsets.only(
+                    top: 10,
+                    bottom: 34,
+                    left: 20,
+                    right: 20,
+                  ),
+                  width: Get.width,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: InkWell(
-                          onTap: () => {controller.toSelectAvatar()},
-                          child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(16 * coefficient),
-                            child: Obx(() => AvatarImage(
-                                  controller.profileRx.value?.avatarPath,
-                                  width: 72,
-                                  height: 72,
-                                )),
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          width: 40 * coefficient,
-                          height: 40 * coefficient,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                                color: SatorioColor.magic_mint,
-                                width: 3 * coefficient),
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                            child: Image.asset(
-                              'images/tmp_shuriken.png',
-                              height: 24 * coefficient,
-                              width: 24 * coefficient,
+                      SizedBox(
+                        width: 100 * coefficient,
+                        height: 72 * coefficient,
+                        child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: InkWell(
+                                onTap: () => {controller.toSelectAvatar()},
+                                child: ClipRRect(
+                                  borderRadius:
+                                      BorderRadius.circular(16 * coefficient),
+                                  child: Obx(() => AvatarImage(
+                                        controller.profileRx.value?.avatarPath,
+                                        width: 72,
+                                        height: 72,
+                                      )),
+                                ),
+                              ),
                             ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                width: 40 * coefficient,
+                                height: 40 * coefficient,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: SatorioColor.magic_mint,
+                                      width: 3 * coefficient),
+                                  color: Colors.white,
+                                ),
+                                child: Center(
+                                  child: Image.asset(
+                                    'images/tmp_shuriken.png',
+                                    height: 24 * coefficient,
+                                    width: 24 * coefficient,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(
+                                () => Text(
+                                  controller.profileRx.value?.displayedName ??
+                                      '',
+                                  style: textTheme.headline6!.copyWith(
+                                    color: SatorioColor.textBlack,
+                                    fontSize: 18.0 * coefficient,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                              // ElevatedButton(
+                              //   onPressed: () {
+                              //     controller.toNonWorkingFeatureDialog();
+                              //     //TODO: uncomment
+                              //     // controller.getReferralCode();
+                              //   },
+                              //   style: ElevatedButton.styleFrom(
+                              //     minimumSize: Size(24, 24),
+                              //     padding: const EdgeInsets.symmetric(
+                              //       horizontal: 8,
+                              //       vertical: 4,
+                              //     ),
+                              //     primary: SatorioColor.brand,
+                              //     shape: RoundedRectangleBorder(
+                              //       borderRadius: BorderRadius.circular(12),
+                              //     ),
+                              //   ),
+                              //   child: Text(
+                              //     'txt_invite_friends'.tr.toUpperCase(),
+                              //     style: textTheme.bodyText2!.copyWith(
+                              //       color: Colors.white,
+                              //       fontSize: 12.0 * coefficient,
+                              //       fontWeight: FontWeight.w700,
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
                           ),
                         ),
                       ),
+                      IconButton(
+                        icon: Icon(
+                          SatorIcons.exit,
+                          size: 24,
+                        ),
+                        onPressed: () {
+                          controller.toLogoutDialog();
+                        },
+                      )
                     ],
                   ),
                 ),
                 Expanded(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Obx(
-                          () => Text(
-                            controller.profileRx.value?.displayedName ?? '',
-                            style: textTheme.headline6!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 18.0 * coefficient,
-                              fontWeight: FontWeight.w700,
-                            ),
+                    width: Get.width,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(32)),
+                      color: Colors.white,
+                    ),
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(32)),
+                      child: SingleChildScrollView(
+                        child: Container(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  if (controller.nftItemsRx.value.isEmpty)
+                                    controller.toNftsMarketplace();
+                                  else
+                                    controller.toMyNfts();
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 28, bottom: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'txt_nfts'.tr,
+                                        style: textTheme.headline3!.copyWith(
+                                          color: SatorioColor.textBlack,
+                                          fontSize: 24.0 * coefficient,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        size: 32 * coefficient,
+                                        color: SatorioColor.textBlack,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              _nftsBlock(),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(
+                              //     left: 20,
+                              //     right: 20,
+                              //     top: 32,
+                              //     bottom: 16,
+                              //   ),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Text(
+                              //         'txt_your_activity'.tr,
+                              //         style: textTheme.headline3!.copyWith(
+                              //           color: SatorioColor.textBlack,
+                              //           fontSize: 24.0 * coefficient,
+                              //           fontWeight: FontWeight.w700,
+                              //         ),
+                              //       ),
+                              //       Icon(
+                              //         Icons.chevron_right_rounded,
+                              //         size: 32 * coefficient,
+                              //         color: SatorioColor.textBlack,
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
+                              // ListView.separated(
+                              //   shrinkWrap: true,
+                              //   physics: NeverScrollableScrollPhysics(),
+                              //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                              //   separatorBuilder: (context, index) => SizedBox(
+                              //     height: 8 * coefficient,
+                              //   ),
+                              //   itemCount: _activities.length,
+                              //   itemBuilder: (context, index) {
+                              //     ActivitySimpleTmp activity = _activities[index];
+                              //     return _activityItem(activity);
+                              //   },
+                              // ),
+                              InkWell(
+                                onTap: () => controller
+                                        .activatedRealmsRx.value.isNotEmpty
+                                    ? controller.toActiveRealmsPage()
+                                    : {},
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 28, bottom: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'txt_realms_open'.tr,
+                                        style: textTheme.headline3!.copyWith(
+                                          color: SatorioColor.textBlack,
+                                          fontSize: 24.0 * coefficient,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        size: 32 * coefficient,
+                                        color: SatorioColor.textBlack,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              _activatedRealms(),
+                              //TODO: uncomment
+                              // Padding(
+                              //   padding: const EdgeInsets.only(
+                              //       left: 20, right: 20, top: 28, bottom: 16),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Text(
+                              //         'txt_badges'.tr,
+                              //         style: textTheme.headline3!.copyWith(
+                              //           color: SatorioColor.textBlack,
+                              //           fontSize: 24.0 * coefficient,
+                              //           fontWeight: FontWeight.w700,
+                              //         ),
+                              //       ),
+                              //       Icon(
+                              //         Icons.chevron_right_rounded,
+                              //         size: 32 * coefficient,
+                              //         color: SatorioColor.textBlack,
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
+                              // SizedBox(
+                              //   height: 121 * coefficient,
+                              //   child: ListView.separated(
+                              //     scrollDirection: Axis.horizontal,
+                              //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                              //     separatorBuilder: (context, index) => SizedBox(
+                              //       width: 12 * coefficient,
+                              //     ),
+                              //     itemCount: _badges.length,
+                              //     itemBuilder: (context, index) {
+                              //       BadgeTmp badge = _badges[index];
+                              //       return _badgeItem(badge);
+                              //     },
+                              //   ),
+                              // ),
+                              InkWell(
+                                onTap: () =>
+                                    controller.reviewsRx.value.isNotEmpty
+                                        ? controller.toReviewsPage()
+                                        : {},
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 28, bottom: 16),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'txt_reviews'.tr,
+                                        style: textTheme.headline3!.copyWith(
+                                          color: SatorioColor.textBlack,
+                                          fontSize: 24.0 * coefficient,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        size: 32 * coefficient,
+                                        color: SatorioColor.textBlack,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              _reviews(),
+                              SizedBox(
+                                height: 16,
+                              ),
+                            ],
                           ),
                         ),
-                        // ElevatedButton(
-                        //   onPressed: () {
-                        //     controller.toNonWorkingFeatureDialog();
-                        //     //TODO: uncomment
-                        //     // controller.getReferralCode();
-                        //   },
-                        //   style: ElevatedButton.styleFrom(
-                        //     minimumSize: Size(24, 24),
-                        //     padding: const EdgeInsets.symmetric(
-                        //       horizontal: 8,
-                        //       vertical: 4,
-                        //     ),
-                        //     primary: SatorioColor.brand,
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(12),
-                        //     ),
-                        //   ),
-                        //   child: Text(
-                        //     'txt_invite_friends'.tr.toUpperCase(),
-                        //     style: textTheme.bodyText2!.copyWith(
-                        //       color: Colors.white,
-                        //       fontSize: 12.0 * coefficient,
-                        //       fontWeight: FontWeight.w700,
-                        //     ),
-                        //   ),
-                        // ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(
-                    SatorIcons.exit,
-                    size: 24,
-                  ),
-                  onPressed: () {
-                    controller.toLogoutDialog();
-                  },
                 )
               ],
             ),
           ),
-          Expanded(
-            child: Container(
-              width: Get.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-                color: Colors.white,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
-                child: SingleChildScrollView(
-                  child: Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            if (controller.nftItemsRx.value.isEmpty)
-                              controller.toNftsMarketplace();
-                            else
-                              controller.toMyNfts();
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 28, bottom: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'txt_nfts'.tr,
-                                  style: textTheme.headline3!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 24.0 * coefficient,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.chevron_right_rounded,
-                                  size: 32 * coefficient,
-                                  color: SatorioColor.textBlack,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        _nftsBlock(),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(
-                        //     left: 20,
-                        //     right: 20,
-                        //     top: 32,
-                        //     bottom: 16,
-                        //   ),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Text(
-                        //         'txt_your_activity'.tr,
-                        //         style: textTheme.headline3!.copyWith(
-                        //           color: SatorioColor.textBlack,
-                        //           fontSize: 24.0 * coefficient,
-                        //           fontWeight: FontWeight.w700,
-                        //         ),
-                        //       ),
-                        //       Icon(
-                        //         Icons.chevron_right_rounded,
-                        //         size: 32 * coefficient,
-                        //         color: SatorioColor.textBlack,
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
-                        // ListView.separated(
-                        //   shrinkWrap: true,
-                        //   physics: NeverScrollableScrollPhysics(),
-                        //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                        //   separatorBuilder: (context, index) => SizedBox(
-                        //     height: 8 * coefficient,
-                        //   ),
-                        //   itemCount: _activities.length,
-                        //   itemBuilder: (context, index) {
-                        //     ActivitySimpleTmp activity = _activities[index];
-                        //     return _activityItem(activity);
-                        //   },
-                        // ),
-                        InkWell(
-                          onTap: () =>
-                              controller.activatedRealmsRx.value.length != 0
-                                  ? controller.toActiveRealmsPage()
-                                  : {},
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 28, bottom: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'txt_realms_open'.tr,
-                                  style: textTheme.headline3!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 24.0 * coefficient,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.chevron_right_rounded,
-                                  size: 32 * coefficient,
-                                  color: SatorioColor.textBlack,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        _activatedRealms(),
-                        //TODO: uncomment
-                        // Padding(
-                        //   padding: const EdgeInsets.only(
-                        //       left: 20, right: 20, top: 28, bottom: 16),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Text(
-                        //         'txt_badges'.tr,
-                        //         style: textTheme.headline3!.copyWith(
-                        //           color: SatorioColor.textBlack,
-                        //           fontSize: 24.0 * coefficient,
-                        //           fontWeight: FontWeight.w700,
-                        //         ),
-                        //       ),
-                        //       Icon(
-                        //         Icons.chevron_right_rounded,
-                        //         size: 32 * coefficient,
-                        //         color: SatorioColor.textBlack,
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   height: 121 * coefficient,
-                        //   child: ListView.separated(
-                        //     scrollDirection: Axis.horizontal,
-                        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-                        //     separatorBuilder: (context, index) => SizedBox(
-                        //       width: 12 * coefficient,
-                        //     ),
-                        //     itemCount: _badges.length,
-                        //     itemBuilder: (context, index) {
-                        //       BadgeTmp badge = _badges[index];
-                        //       return _badgeItem(badge);
-                        //     },
-                        //   ),
-                        // ),
-                        InkWell(
-                          onTap: () => controller.reviewsRx.value.length != 0
-                              ? controller.toReviewsPage()
-                              : {},
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 28, bottom: 16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'txt_reviews'.tr,
-                                  style: textTheme.headline3!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 24.0 * coefficient,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.chevron_right_rounded,
-                                  size: 32 * coefficient,
-                                  color: SatorioColor.textBlack,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        Obx(() => _reviews(controller.reviewsRx.value)),
-                        SizedBox(
-                          height: 16,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );
@@ -364,7 +431,9 @@ class ProfilePage extends GetView<ProfileController> {
                                         Radius.circular(17 * coefficient),
                                       ),
                                       child: Image.network(
-                                        nfts[0].imageLink,
+                                        nfts[0].nftPreview.isNotEmpty
+                                            ? nfts[0].nftPreview
+                                            : nfts[0].nftLink,
                                         width: nftsLargestImageSize,
                                         height: nftsLargestImageSize,
                                         fit: BoxFit.cover,
@@ -394,7 +463,9 @@ class ProfilePage extends GetView<ProfileController> {
                                               Radius.circular(17 * coefficient),
                                             ),
                                             child: Image.network(
-                                              nfts[1].imageLink,
+                                              nfts[1].nftPreview.isNotEmpty
+                                                  ? nfts[1].nftPreview
+                                                  : nfts[1].nftLink,
                                               width: nftsLargestImageSize,
                                               height: nftsLargestImageSize,
                                               fit: BoxFit.cover,
@@ -427,7 +498,11 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[2].imageLink,
+                                                      nfts[2]
+                                                              .nftPreview
+                                                              .isNotEmpty
+                                                          ? nfts[2].nftPreview
+                                                          : nfts[2].nftLink,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -451,7 +526,11 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[3].imageLink,
+                                                      nfts[3]
+                                                              .nftPreview
+                                                              .isNotEmpty
+                                                          ? nfts[3].nftPreview
+                                                          : nfts[3].nftLink,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -469,7 +548,7 @@ class ProfilePage extends GetView<ProfileController> {
                       ),
                     ),
                     Text(
-                      nfts.length > 0 ? nfts[0].name : '',
+                      nfts.length > 0 ? nfts[0].nftMetadata.name : '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.headline3!.copyWith(
@@ -485,79 +564,13 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _badgeItem(BadgeTmp badge) {
-    return InkWell(
-      onTap: () {
-        controller.toNonWorkingFeatureDialog();
-      },
-      child: Container(
-        height: 121 * coefficient,
-        width: 100 * coefficient,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 100 * coefficient,
-              height: 100 * coefficient,
-              decoration: BoxDecoration(
-                borderRadius:
-                    BorderRadius.all(Radius.circular(17 * coefficient)),
-                color: SatorioColor.alice_blue,
-              ),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      badge.asset,
-                      width: 60 * coefficient,
-                      height: 60 * coefficient,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  if (badge.count > 0)
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 6 * coefficient,
-                            horizontal: 8 * coefficient),
-                        child: Text(
-                          badge.count.toString(),
-                          style: textTheme.headline6!.copyWith(
-                            color: SatorioColor.interactive,
-                            fontSize: 18.0 * coefficient,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            Text(
-              badge.name,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: textTheme.bodyText2!.copyWith(
-                color: SatorioColor.interactive,
-                fontSize: 14.0 * coefficient,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _activatedRealms() {
     return Obx(
       () => SizedBox(
-        height: controller.activatedRealmsRx.value.length != 0
+        height: controller.activatedRealmsRx.value.isNotEmpty
             ? 180
             : 60 * coefficient,
-        child: controller.activatedRealmsRx.value.length != 0
+        child: controller.activatedRealmsRx.value.isNotEmpty
             ? ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -566,9 +579,9 @@ class ProfilePage extends GetView<ProfileController> {
                 ),
                 itemCount: controller.activatedRealmsRx.value.length,
                 itemBuilder: (context, index) {
-                  ActivatedRealm? realm =
+                  final ActivatedRealm realm =
                       controller.activatedRealmsRx.value[index];
-                  return _realmItem(realm!);
+                  return _realmItem(realm);
                 },
               )
             : _emptyState('txt_null_realms'.tr),
@@ -576,55 +589,7 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _activityItem(ActivitySimpleTmp activity) {
-    return InkWell(
-      onTap: () {
-        controller.toNonWorkingFeatureDialog();
-      },
-      child: Container(
-        height: 74 * coefficient,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(17 * coefficient)),
-          color: SatorioColor.alice_blue,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              width: 110 * coefficient,
-              padding: EdgeInsets.symmetric(horizontal: 13 * coefficient),
-              child: Center(
-                child: Image.asset(
-                  activity.asset,
-                ),
-              ),
-            ),
-            VerticalDivider(
-              width: 1,
-              color: Colors.black.withOpacity(0.08),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16 * coefficient),
-                child: Text(
-                  activity.text,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodyText2!.copyWith(
-                    color: SatorioColor.darkAccent,
-                    fontSize: 15.0 * coefficient,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _realmItem(ActivatedRealm realm) {
+  Widget _realmItem(final ActivatedRealm realm) {
     final double itemWidth = Get.width - 2 * 20 - 16 * coefficient;
     final double borderWidth = 5 * coefficient;
 
@@ -710,7 +675,7 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _emptyState(String message) {
+  Widget _emptyState(final String message) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Container(
@@ -734,32 +699,31 @@ class ProfilePage extends GetView<ProfileController> {
     );
   }
 
-  Widget _reviews(List<Review?> reviews) {
-    List<Widget> reviewsList =
-        reviews.map((review) => _reviewItem(review)).toList();
-
-    return reviews.length != 0
+  Widget _reviews() {
+    return Obx(() => controller.reviewsRx.value.isNotEmpty
         ? SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: reviewsList,
+                children: controller.reviewsRx.value
+                    .map((review) => _reviewItem(review))
+                    .toList(),
               ),
             ),
           )
-        : _emptyState('txt_null_reviews'.tr);
+        : _emptyState('txt_null_reviews'.tr));
   }
 
-  Widget _reviewItem(Review? review) {
+  Widget _reviewItem(final Review review) {
     final double reviewContainerHeight = 230.0 * coefficient;
     final double itemWidth = Get.width - 20 - 2 * 16 * coefficient;
     final EdgeInsets padding =
         EdgeInsets.symmetric(horizontal: 16 * coefficient, vertical: 2);
     final formatter = DateFormat('dd MMMM yyyy');
     String avatarAsset =
-        review!.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
+        review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
 
     Rx<bool> isExpandedRx = Rx(false);
 
@@ -945,45 +909,4 @@ class ProfilePage extends GetView<ProfileController> {
       ),
     );
   }
-
-  final List<BadgeTmp> _badges = [
-    BadgeTmp('images/tmp_badge_1.png', 'Genesis', 0),
-    BadgeTmp('images/tmp_badge_2.png', 'Big Binger', 2),
-    BadgeTmp('images/tmp_badge_3.png', 'Speed Demon', 4),
-    BadgeTmp('images/tmp_badge_4.png', 'Collector', 0),
-  ];
-
-  final List<ActivitySimpleTmp> _activities = [
-    ActivitySimpleTmp(
-      'images/tmp_stranger_things.png',
-      'You scored top 50 in S1. E4 realm.',
-    ),
-    ActivitySimpleTmp(
-      'images/tmp_breaking_bad.png',
-      'Finished all of 2nd season.',
-    ),
-    ActivitySimpleTmp(
-      'images/tmp_stranger_things.png',
-      'Beat @jerry24 in 1-1 super challenge.',
-    ),
-    ActivitySimpleTmp(
-      'images/tmp_stranger_things.png',
-      'Beat @jerry in 1-1 super challenge.',
-    ),
-  ];
-}
-
-class BadgeTmp {
-  const BadgeTmp(this.asset, this.name, this.count);
-
-  final String asset;
-  final String name;
-  final int count;
-}
-
-class ActivitySimpleTmp {
-  const ActivitySimpleTmp(this.asset, this.text);
-
-  final String asset;
-  final String text;
 }

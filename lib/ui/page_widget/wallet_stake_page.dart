@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/wallet_stake_controller.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -37,6 +38,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
           backgroundImage('images/bg/gradient.svg'),
           Container(
             width: Get.width,
+            height: Get.height - kToolbarHeight,
             margin: EdgeInsets.only(
                 top: Get.mediaQuery.padding.top + kToolbarHeight),
             decoration: BoxDecoration(
@@ -50,27 +52,32 @@ class WalletStakePage extends GetView<WalletStakeController> {
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 28, bottom: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 28),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Obx(
-                        () => WalletDetailContainer(
-                          controller.walletDetailRx.value,
-                          height: 200,
+                        () => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: WalletDetailContainer(
+                            controller.walletDetailRx.value,
+                            height: 200,
+                          ),
                         ),
                       ),
                       SizedBox(
                         height: 32 * coefficient,
                       ),
-                      Text(
-                        'txt_staking'.tr,
-                        style: textTheme.headline3!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 28 * coefficient,
-                          fontWeight: FontWeight.w700,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'txt_lock_rewards'.tr,
+                          style: textTheme.headline3!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 28 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -84,18 +91,24 @@ class WalletStakePage extends GetView<WalletStakeController> {
                       SizedBox(
                         height: 32 * coefficient,
                       ),
-                      Text(
-                        'txt_loyalty_levels'.tr,
-                        style: textTheme.headline3!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 28 * coefficient,
-                          fontWeight: FontWeight.w700,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'txt_loyalty_levels'.tr,
+                          style: textTheme.headline3!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 28 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                       SizedBox(
                         height: 16 * coefficient,
                       ),
-                      _loyaltyLevelCard(),
+                      _loyaltyLevels(),
+                      SizedBox(
+                        height: 30 * coefficient,
+                      ),
                     ],
                   ),
                 ),
@@ -108,105 +121,121 @@ class WalletStakePage extends GetView<WalletStakeController> {
   }
 
   Widget _stackingCard1() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'txt_auto_sator'.tr,
-                      style: textTheme.headline5!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 20 * coefficient,
-                        fontWeight: FontWeight.w700,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: SatorioColor.alice_blue,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'txt_multiply_rewards'.tr,
+                        style: textTheme.headline5!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 20 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'txt_automatic_restaking'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.black.withOpacity(0.7),
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                      Obx(
+                        () => RichText(
+                          text: TextSpan(
+                            text: 'txt_total_locked'.tr,
+                            style: textTheme.bodyText1!.copyWith(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 12 * coefficient,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    ' ${controller.walletStakingRx.value?.totalLocked ?? ''}',
+                                style: textTheme.bodyText1!.copyWith(
+                                  color: Colors.black.withOpacity(0.7),
+                                  fontSize: 12 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 48 * coefficient,
-                height: 48 * coefficient,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: SatorioColor.mauve,
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    'images/sator_logo.svg',
-                    width: 24 * coefficient,
-                    height: 24 * coefficient,
-                    color: SatorioColor.brand,
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          Row(
-            children: [
-              Text(
-                'txt_apy'.tr,
-                style: textTheme.bodyText2!.copyWith(
-                  color: Colors.black,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w400,
+                Container(
+                  width: 48 * coefficient,
+                  height: 48 * coefficient,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: SatorioColor.mauve,
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'images/sator_logo.svg',
+                      width: 24 * coefficient,
+                      height: 24 * coefficient,
+                      color: SatorioColor.brand,
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                  child: Obx(
-                () => Text(
-                  '${controller.walletStakeRx.value?.walletStaking?.apy.toStringAsFixed(2) ?? ''}%',
-                  textAlign: TextAlign.end,
+              ],
+            ),
+            SizedBox(
+              height: 20 * coefficient,
+            ),
+            Row(
+              children: [
+                Text(
+                  'txt_locked_by'.tr,
                   style: textTheme.bodyText2!.copyWith(
                     color: Colors.black,
                     fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-              )),
-            ],
-          ),
-          SizedBox(
-            height: 8 * coefficient,
-          ),
-          Row(
-            children: [
-              Text(
-                'txt_total_staked'.tr,
-                style: textTheme.bodyText2!.copyWith(
-                  color: Colors.black,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w400,
+                Expanded(
+                  child: Obx(
+                    () => Text(
+                      '${controller.walletStakingRx.value?.lockedByYou ?? ''}',
+                      textAlign: TextAlign.end,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: Colors.black,
+                        fontSize: 15 * coefficient,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Obx(
+              ],
+            ),
+            SizedBox(
+              height: 8 * coefficient,
+            ),
+            Row(
+              children: [
+                Text(
+                  'txt_multiplier'.tr,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Expanded(
+                    child: Obx(
                   () => Text(
-                    controller.walletStakeRx.value?.walletStaking?.totalStaked
-                            .toStringAsFixed(2) ??
-                        '',
+                    '${controller.walletStakingRx.value?.currentMultiplier ?? ''}%',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
                       color: Colors.black,
@@ -214,97 +243,145 @@ class WalletStakePage extends GetView<WalletStakeController> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
+                )),
+              ],
+            ),
+            SizedBox(
+              height: 20 * coefficient,
+            ),
+            Obx(
+              () => ElevatedGradientButton(
+                text: 'txt_add'.tr,
+                isInProgress: controller.isInProgress.value,
+                onPressed: () {
+                  controller.toLockRewardsBottomSheet();
+                },
               ),
-            ],
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          ElevatedGradientButton(
-            text: 'txt_stake'.tr,
-            onPressed: () {
-              controller.toStakeDialog();
-            },
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _stackingCard2() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: SatorioColor.alice_blue,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'txt_auto_sator'.tr,
-                      style: textTheme.headline5!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 20 * coefficient,
-                        fontWeight: FontWeight.w700,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: SatorioColor.alice_blue,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'txt_multiply_rewards'.tr,
+                        style: textTheme.headline5!.copyWith(
+                          color: SatorioColor.textBlack,
+                          fontSize: 20 * coefficient,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'txt_automatic_restaking'.tr,
-                      style: textTheme.bodyText1!.copyWith(
-                        color: Colors.black.withOpacity(0.7),
-                        fontSize: 12 * coefficient,
-                        fontWeight: FontWeight.w400,
+                      Obx(
+                        () => RichText(
+                          text: TextSpan(
+                            text: 'txt_total_locked'.tr,
+                            style: textTheme.bodyText1!.copyWith(
+                              color: Colors.black.withOpacity(0.7),
+                              fontSize: 12 * coefficient,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    ' ${controller.walletStakingRx.value?.totalLocked}',
+                                style: textTheme.bodyText1!.copyWith(
+                                  color: Colors.black.withOpacity(0.7),
+                                  fontSize: 12 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 48 * coefficient,
-                height: 48 * coefficient,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: SatorioColor.mauve,
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    'images/sator_logo.svg',
-                    width: 24 * coefficient,
-                    height: 24 * coefficient,
-                    color: SatorioColor.brand,
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          Row(
-            children: [
-              Text(
-                'txt_staked'.tr,
-                style: textTheme.bodyText2!.copyWith(
-                  color: Colors.black,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w400,
+                Container(
+                  width: 48 * coefficient,
+                  height: 48 * coefficient,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: SatorioColor.mauve,
+                  ),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'images/sator_logo.svg',
+                      width: 24 * coefficient,
+                      height: 24 * coefficient,
+                      color: SatorioColor.brand,
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Obx(
+              ],
+            ),
+            SizedBox(
+              height: 20 * coefficient,
+            ),
+            Row(
+              children: [
+                Text(
+                  'txt_locked_by'.tr,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Expanded(
+                  child: Obx(
+                    () => Text(
+                      '${controller.walletStakingRx.value?.lockedByYou ?? ''}',
+                      textAlign: TextAlign.end,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: Colors.black,
+                        fontSize: 15 * coefficient,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 8 * coefficient,
+            ),
+            Row(
+              children: [
+                Text(
+                  'txt_multiplier'.tr,
+                  style: textTheme.bodyText2!.copyWith(
+                    color: Colors.black,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Expanded(
+                    child: Obx(
                   () => Text(
-                    controller.walletStakeRx.value?.walletStaking?.staked
-                            .toStringAsFixed(2) ??
-                        '',
+                    controller.pmState.value
+                        ? '+${controller.walletStakingRx.value?.currentMultiplier}%'
+                        : '${controller.walletStakingRx.value?.currentMultiplier}%',
                     textAlign: TextAlign.end,
                     style: textTheme.bodyText2!.copyWith(
                       color: Colors.black,
@@ -312,138 +389,137 @@ class WalletStakePage extends GetView<WalletStakeController> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8 * coefficient,
-          ),
-          Row(
-            children: [
-              Text(
-                'txt_your_share'.tr,
-                style: textTheme.bodyText2!.copyWith(
-                  color: Colors.black,
-                  fontSize: 15 * coefficient,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              Expanded(
-                child: Obx(
-                  () => Text(
-                    '${controller.walletStakeRx.value?.walletStaking?.yourShare.toStringAsFixed(2) ?? ''}%',
-                    textAlign: TextAlign.end,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: Colors.black,
-                      fontSize: 15 * coefficient,
-                      fontWeight: FontWeight.w600,
+                )),
+              ],
+            ),
+            SizedBox(
+              height: 20 * coefficient,
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Obx(
+                  () => Expanded(
+                    child: BorderedButton(
+                      text: 'txt_unlock'.tr,
+                      isInProgress: controller.isInProgress.value,
+                      onPressed: () {
+                        controller.toUnLockRewardsBottomSheet();
+                      },
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 20 * coefficient,
-          ),
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Expanded(
-                child: BorderedButton(
-                  text: 'txt_substract'.tr,
-                  onPressed: () {
-                    controller.toUnStakeDialog();
-                  },
+                SizedBox(
+                  width: 12 * coefficient,
                 ),
-              ),
-              SizedBox(
-                width: 12 * coefficient,
-              ),
-              Expanded(
-                child: ElevatedGradientButton(
-                  text: 'txt_add'.tr,
-                  onPressed: () {
-                    controller.toStakeDialog();
-                  },
+                Obx(
+                  () => Expanded(
+                    child: ElevatedGradientButton(
+                      text: 'txt_add'.tr,
+                      isInProgress: controller.isInProgress.value,
+                      onPressed: () {
+                        controller.toLockRewardsBottomSheet();
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _loyaltyLevelCard() {
+  Widget _loyaltyLevels() {
+    return Obx(
+      () => Container(
+        height: 235 * coefficient,
+        child: ListView.separated(
+          separatorBuilder: (context, index) => SizedBox(
+            width: 12,
+          ),
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          itemCount: controller.stakeLevelsRx.value.length,
+          itemBuilder: (context, index) {
+            final StakeLevel stakeLevel = controller.stakeLevelsRx.value[index];
+            return _loyaltyLevelCard(stakeLevel);
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _loyaltyLevelCard(StakeLevel stakeLevel) {
     return Container(
+      width: 323 * coefficient,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           width: 2,
-          color: SatorioColor.interactive,
+          color: stakeLevel.isCurrent
+              ? SatorioColor.interactive
+              : SatorioColor.alice_blue,
         ),
         color: SatorioColor.alice_blue,
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             padding:
                 const EdgeInsets.only(top: 30, left: 20, right: 20, bottom: 20),
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Obx(
-                            () => Text(
-                              controller.walletStakeRx.value?.walletLoyalty
-                                      ?.levelTitle ??
-                                  '',
-                              style: textTheme.headline5!.copyWith(
-                                color: SatorioColor.textBlack,
-                                fontSize: 20 * coefficient,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          stakeLevel.title,
+                          style: textTheme.headline5!.copyWith(
+                            color: SatorioColor.textBlack,
+                            fontSize: 20 * coefficient,
+                            fontWeight: FontWeight.w700,
                           ),
-                          Obx(
-                            () => Text(
-                              controller.walletStakeRx.value?.walletLoyalty
-                                      ?.levelSubtitle ??
-                                  '',
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.manatee,
-                                fontSize: 12 * coefficient,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
+                        ),
+                        Text(
+                          stakeLevel.subTitle,
+                          style: textTheme.bodyText1!.copyWith(
+                            color: SatorioColor.manatee,
+                            fontSize: 12 * coefficient,
+                            fontWeight: FontWeight.w400,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    // Expanded(child: Container()),
                     Container(
                       width: 48 * coefficient,
                       height: 48 * coefficient,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: SatorioColor.royal_blue_2,
+                          color: stakeLevel.isCurrent
+                              ? SatorioColor.royal_blue_2
+                              : SatorioColor.alice_blue2,
                           width: 2,
                         ),
-                        color: SatorioColor.interactive,
+                        color: stakeLevel.isCurrent
+                            ? SatorioColor.interactive
+                            : SatorioColor.alice_blue,
                       ),
                       child: Center(
                         child: Icon(
                           Icons.star_rounded,
                           size: 32 * coefficient,
-                          color: Colors.white,
+                          color: stakeLevel.isCurrent
+                              ? Colors.white
+                              : SatorioColor.alice_blue2,
                         ),
                       ),
                     ),
@@ -455,7 +531,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 Row(
                   children: [
                     Text(
-                      'txt_data'.tr,
+                      'txt_min_amount'.tr,
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 15 * coefficient,
@@ -464,7 +540,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                     ),
                     Expanded(
                       child: Text(
-                        '138.7% ',
+                        '${stakeLevel.minAmount}',
                         textAlign: TextAlign.end,
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
@@ -480,28 +556,22 @@ class WalletStakePage extends GetView<WalletStakeController> {
                 ),
                 Row(
                   children: [
+                    Text(
+                      'txt_min_days'.tr,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 15 * coefficient,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                     Expanded(
                       child: Text(
-                        'txt_dividends'.tr,
+                        '${stakeLevel.minDaysToStake.toStringAsFixed(0)}',
+                        textAlign: TextAlign.end,
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
                           fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 24 * coefficient,
-                      height: 24 * coefficient,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: SatorioColor.lavender_blue,
-                      ),
-                      child: Center(
-                        child: Icon(
-                          Icons.check_rounded,
-                          size: 18 * coefficient,
-                          color: SatorioColor.interactive,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -511,9 +581,10 @@ class WalletStakePage extends GetView<WalletStakeController> {
                   height: 8 * coefficient,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'txt_number'.tr,
+                      'txt_rewards'.tr,
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 15 * coefficient,
@@ -522,7 +593,7 @@ class WalletStakePage extends GetView<WalletStakeController> {
                     ),
                     Expanded(
                       child: Text(
-                        '138,256.75',
+                        '${stakeLevel.rewards}',
                         textAlign: TextAlign.end,
                         style: textTheme.bodyText2!.copyWith(
                           color: SatorioColor.textBlack,
@@ -536,24 +607,30 @@ class WalletStakePage extends GetView<WalletStakeController> {
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(18),
-                  bottomLeft: Radius.circular(18)),
-              color: SatorioColor.interactive,
-            ),
-            child: Center(
-              child: Text(
-                'txt_current'.tr,
-                textAlign: TextAlign.end,
-                style: textTheme.bodyText1!.copyWith(
-                  color: Colors.white,
-                  fontSize: 17 * coefficient,
-                  fontWeight: FontWeight.w600,
-                ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(18),
+                    bottomLeft: Radius.circular(18)),
+                color: stakeLevel.isCurrent
+                    ? SatorioColor.interactive
+                    : SatorioColor.alice_blue2,
               ),
+              child: stakeLevel.isCurrent
+                  ? Center(
+                      child: Text(
+                        'txt_current'.tr,
+                        textAlign: TextAlign.end,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: Colors.white,
+                          fontSize: 17 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    )
+                  : Center(child: SizedBox()),
             ),
           )
         ],

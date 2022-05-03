@@ -16,12 +16,10 @@ class EpisodeRealmBottomSheet extends StatelessWidget {
     Key? key,
     this.onQuizPressed,
     this.onPaidUnlockPressed,
-    this.isZeroSeason = false,
   }) : super(key: key);
 
   final VoidCallback? onQuizPressed;
   final VoidCallback? onPaidUnlockPressed;
-  final bool isZeroSeason;
 
   @override
   Widget build(BuildContext context) {

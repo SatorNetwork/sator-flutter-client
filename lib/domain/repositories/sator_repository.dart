@@ -1,3 +1,4 @@
+import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
@@ -5,23 +6,30 @@ import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
+import 'package:satorio/domain/entities/nats_config.dart';
 import 'package:satorio/domain/entities/nft_category.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_home.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
+import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet.dart';
-import 'package:satorio/domain/entities/wallet_stake.dart';
+import 'package:satorio/domain/entities/wallet_staking.dart';
 
 abstract class SatorioRepository {
+  final RxBool isInited = false.obs;
+
   Future<void> initRemoteConfig();
 
   Future<String> firebaseChatChild();
@@ -30,7 +38,13 @@ abstract class SatorioRepository {
 
   Future<String> claimRewardsText();
 
+  Future<String> quizHeadTitleText();
+
+  Future<String> quizHeadMessageText();
+
   Future<int> appVersion();
+
+  Future<String> nftsMarketplaceUrl();
 
   Future<void> clearDBandAccessToken();
 
@@ -108,13 +122,22 @@ abstract class SatorioRepository {
 
   Future<bool> confirmTransfer(String fromWalletId, String txHash);
 
+  Future<double> possibleMultiplier(String walletId, double amount);
+
   Future<bool> stake(String walletId, double amount);
 
-  Future<bool> unstake(String walletId, double amount);
+  Future<bool> unstake(String walletId);
 
-  Future<WalletStake> getStake(String walletId);
+  Future<WalletStaking> getStake(String walletId);
+
+  Future<List<StakeLevel>> stakeLevels();
 
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage});
+
+  Future<List<ShowCategory>> showsCategoryList({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<List<Show>> showsFromCategory(
     String category, {
@@ -128,8 +151,6 @@ abstract class SatorioRepository {
 
   Future<ShowEpisode> showEpisode(String showId, String episodeId);
 
-  Future<List<ChallengeSimple>> showChallenges(String showId, {int page});
-
   Future<Show> loadShow(String showId);
 
   Future<QrShow> getShowEpisodeByQR(String qrCodeId);
@@ -137,6 +158,11 @@ abstract class SatorioRepository {
   Future<bool> clapShow(String showId);
 
   Future<Challenge> challenge(String challengeId);
+
+  Future<List<ChallengeSimple>> challenges({
+    int? page,
+    int? itemsPerPage,
+  });
 
   Future<EpisodeActivation> isEpisodeActivated(String episodeId);
 
@@ -167,15 +193,25 @@ abstract class SatorioRepository {
 
   Future<void> logout();
 
-  Future<String> quizSocketUrl(String challengeId);
+  Future<NatsConfig> quizNats(String challengeId);
 
-  Future<GetSocket> createQuizSocket(String socketUrl);
+  Future<Subscription> subscribeNats(String url, String subject);
+
+  Future<void> unsubscribeNats(Subscription subscription);
 
   Future<void> sendAnswer(
-    GetSocket? socket,
+    String subject,
+    String serverPublicKey,
     String questionId,
     String answerId,
   );
+
+  Future<void> sendPing(
+    String subject,
+    String serverPublicKey,
+  );
+
+  Future<String> decryptData(String data);
 
   Future<ClaimReward> claimReward([String? claimRewardsPath]);
 
@@ -191,6 +227,11 @@ abstract class SatorioRepository {
   Future<List<Review>> getUserReviews({int? page, int? itemsPerPage});
 
   Future<List<ActivatedRealm>> getActivatedRealms({
+    int? page,
+    int? itemsPerPage,
+  });
+
+  Future<List<NftItem>> allNfts({
     int? page,
     int? itemsPerPage,
   });
@@ -221,4 +262,32 @@ abstract class SatorioRepository {
   ValueListenable walletDetailsListenable(List<String>? ids);
 
   ValueListenable transactionsListenable();
+
+  //TODO: move to region
+  Future<List<NftItem>> nftsFiltered({
+    int? page,
+    int? itemsPerPage,
+    List<String>? showIds,
+    String? orderType,
+    String? owner,
+  });
+
+  Future<NftItem> nft(String mintAddress);
+
+  Future<List<PuzzleUnlockOption>> puzzleOptions();
+
+  Future<PuzzleGame?> puzzle(String episodeId);
+
+  Future<PuzzleGame> unlockPuzzle(
+    String puzzleGameId,
+    String unlockOption,
+  );
+
+  Future<PuzzleGame> startPuzzle(String puzzleGameId);
+
+  Future<PuzzleGame> finishPuzzle(
+    String puzzleGameId,
+    int result,
+    int stepsTaken,
+  );
 }

@@ -6,7 +6,7 @@ import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/domain/show_category.dart';
+import 'package:satorio/domain/entities/show_category_type.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 
@@ -33,6 +33,10 @@ class ShowsCategoryController extends GetxController {
     _categoryName = argument.categoryName;
     showsType = argument.showsType;
 
+    if (argument.categoryTitle != null) {
+      titleRx.value = argument.categoryTitle!;
+    }
+
     loadShows();
     _updateTitle();
   }
@@ -43,10 +47,10 @@ class ShowsCategoryController extends GetxController {
 
   void loadShows() {
     switch (_categoryName) {
-      case ShowCategory.all:
+      case ShowCategoryType.all:
         _loadAllShows();
         break;
-      case ShowCategory.withNfts:
+      case ShowCategoryType.withNfts:
         _loadShowsWithNfts();
         break;
       default:
@@ -73,22 +77,22 @@ class ShowsCategoryController extends GetxController {
 
   void _updateTitle() {
     switch (_categoryName) {
-      case ShowCategory.all:
+      case ShowCategoryType.all:
         titleRx.value = 'txt_all_realms'.tr;
         break;
-      case ShowCategory.highestRewarding:
+      case ShowCategoryType.highestRewarding:
         titleRx.value = 'txt_highest_rewards'.tr;
         break;
-      case ShowCategory.mostSocializing:
+      case ShowCategoryType.mostSocializing:
         titleRx.value = 'txt_most_social'.tr;
         break;
-      case ShowCategory.newestAdded:
+      case ShowCategoryType.newestAdded:
         titleRx.value = 'txt_newest_added'.tr;
         break;
-      case ShowCategory.popularMovies:
+      case ShowCategoryType.popularMovies:
         titleRx.value = 'txt_popular_movies'.tr;
         break;
-      case ShowCategory.musicRealms:
+      case ShowCategoryType.musicRealms:
         titleRx.value = 'txt_music_realms'.tr;
         break;
     }
@@ -172,7 +176,8 @@ class ShowsCategoryController extends GetxController {
 
 class ShowsCategoryArgument {
   final String categoryName;
+  final String? categoryTitle;
   final ShowsType showsType;
 
-  const ShowsCategoryArgument(this.categoryName, this.showsType);
+  const ShowsCategoryArgument(this.categoryName, this.categoryTitle, this.showsType);
 }

@@ -11,8 +11,8 @@ import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 class ShowEpisodeQuizController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
-  late final Rx<ShowSeason> showSeasonRx;
-  late final Rx<ShowEpisode> showEpisodeRx;
+  late final Rx<ShowSeason?> showSeasonRx;
+  late final Rx<ShowEpisode?> showEpisodeRx;
   late final Rx<PayloadQuestion> questionRx;
 
   final Rx<String> answerIdRx = Rx('');
@@ -53,9 +53,7 @@ class ShowEpisodeQuizController extends GetxController {
               'txt_ok'.tr,
               icon: Icons.sentiment_dissatisfied_rounded,
               onButtonPressed: () {
-                Get.until((route) => !Get.isOverlaysOpen);
-                Get.until((route) =>
-                    Get.currentRoute == '/() => ShowEpisodesRealmPage');
+                Get.back(closeOverlays: true);
               },
             ),
             barrierDismissible: false,
@@ -75,9 +73,7 @@ class ShowEpisodeQuizController extends GetxController {
         'txt_ok'.tr,
         icon: Icons.sentiment_dissatisfied_rounded,
         onButtonPressed: () {
-          Get.until((route) => !Get.isOverlaysOpen);
-          Get.until(
-              (route) => Get.currentRoute == '/() => ShowEpisodesRealmPage');
+          Get.back(closeOverlays: true);
         },
       ),
       barrierDismissible: false,
@@ -86,8 +82,8 @@ class ShowEpisodeQuizController extends GetxController {
 }
 
 class ShowEpisodeQuizArgument {
-  final ShowSeason showSeason;
-  final ShowEpisode showEpisode;
+  final ShowSeason? showSeason;
+  final ShowEpisode? showEpisode;
   final PayloadQuestion payloadQuestion;
 
   const ShowEpisodeQuizArgument(

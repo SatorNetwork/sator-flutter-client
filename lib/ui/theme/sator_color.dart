@@ -42,4 +42,8 @@ class SatorioColor {
   static const Color geraldine = Color(0xFFE87373);
   static const Color acadia = Color(0xFFC4C4C);
   static const Color mischka = Color(0xFFA3A6B3);
+  static const Color smalt = Color(0xFF002A97);
+  static const Color lavender2 = Color(0xFFEEEDFC);
+  static const Color lavender3 = Color(0xFFF4E3FC);
+  static const Color pale_cornflower_blue = Color(0xFFB6CBF0);
 }

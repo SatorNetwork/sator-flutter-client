@@ -8,6 +8,7 @@ import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/reviews_binding.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
+import 'package:satorio/binding/settings_binding.dart';
 import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
@@ -25,6 +26,8 @@ import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/dialog_widget/send_invite_dialog.dart';
@@ -33,6 +36,7 @@ import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
+import 'package:satorio/ui/page_widget/settings_page.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 
 class ProfileController extends GetxController with NonWorkingFeatureMixin {
@@ -43,15 +47,22 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   static const int _initialPage = 1;
 
   final Rx<Profile?> profileRx = Rx(null);
-  final Rx<List<Review?>> reviewsRx = Rx([]);
-  final Rx<List<ActivatedRealm?>> activatedRealmsRx = Rx([]);
+  final Rx<List<Review>> reviewsRx = Rx([]);
+  final Rx<List<ActivatedRealm>> activatedRealmsRx = Rx([]);
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
-  late final ValueListenable<Box<Profile>> profileListenable;
+  Map<String, Wallet> wallets = {};
+  Rx<List<WalletDetail>> walletDetailsRx = Rx([]);
+  RxString solanaAddressRx = ''.obs;
 
-  final Rx<Uri?> referralLinkRx = Rx(null);
+  late final ValueListenable<Box<Profile>> profileListenable;
+  late ValueListenable<Box<Wallet>> _walletsListenable;
+  ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
 
   ProfileController() {
+    _walletsListenable =
+        _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
+
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
   }
@@ -60,25 +71,92 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void onInit() {
     super.onInit();
 
+    _walletsListenable.addListener(_walletsListener);
+
     _profileListener();
     profileListenable.addListener(_profileListener);
 
     _loadUserReviews();
     _loadActivatedRealms();
-    _loadNfts();
   }
 
   @override
   void onClose() {
     profileListenable.removeListener(_profileListener);
+    _walletsListenable.removeListener(_walletsListener);
+    _walletDetailsListenable?.removeListener(_walletDetailsListener);
+
     super.onClose();
+  }
+
+  void toSettings() {
+    Get.to(
+      () => SettingsPage(),
+      binding: SettingsBinding(),
+    );
+  }
+
+  void toNotificationSettings() {
+    toNonWorkingFeatureDialog();
+  }
+
+  void _solanaAddress() {
+    walletDetailsRx.value.forEach((element) {
+      solanaAddressRx.update((val) {
+        if (element.solanaAccountAddress.isNotEmpty) {
+          solanaAddressRx.value = element.solanaAccountAddress;
+          _loadNfts();
+        }
+      });
+    });
+  }
+
+  void _walletsListener() {
+    // Update wallets map
+    Map<String, Wallet> walletsNew = {};
+    _walletsListenable.value.values.forEach((wallet) {
+      walletsNew[wallet.id] = wallet;
+    });
+    wallets = walletsNew;
+
+    // Ids of wallets
+    List<String> ids = wallets.values.map((wallet) => wallet.id).toList();
+
+    // Re-subscribe to new actual ids
+    _walletDetailsListenable?.removeListener(_walletDetailsListener);
+    _walletDetailsListenable = _satorioRepository.walletDetailsListenable(ids)
+        as ValueListenable<Box<WalletDetail>>;
+    _walletDetailsListenable?.addListener(_walletDetailsListener);
+  }
+
+  void _walletDetailsListener() {
+    List<WalletDetail> walletDetails =
+        _walletDetailsListenable!.value.values.toList();
+    walletDetails.sort((a, b) => a.order.compareTo(b.order));
+    walletDetailsRx.value = walletDetails;
+    _solanaAddress();
   }
 
   void refreshPage() {
     _satorioRepository.updateProfile();
     _loadUserReviews();
     _loadActivatedRealms();
-    _loadNfts();
+    _refreshAllWallets();
+    _solanaAddress();
+  }
+
+  void _updateWalletDetail(Wallet? wallet) {
+    if (wallet != null) {
+      _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+    }
+  }
+
+  void _refreshAllWallets() {
+    _satorioRepository.updateWallets().then((List<Wallet> wallets) {
+      wallets.forEach((wallet) {
+        _updateWalletDetail(wallet);
+      });
+    });
   }
 
   void toReviewsPage() {
@@ -149,22 +227,20 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
       // ),
     );
 
-    parameters.buildShortLink().then((value) {
-      referralLinkRx.update((val) {
-        referralLinkRx.value = value.shortUrl;
-        print(referralLinkRx.value);
-
-        Get.dialog(
-          SendInviteDialog(referralLinkRx.value.toString()),
-        );
-      });
+    FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
+      print(value.shortUrl);
+      Get.dialog(
+        SendInviteDialog(value.shortUrl.toString()),
+      );
     });
   }
 
   void toSelectAvatar() {
-    Get.to(() => SelectAvatarPage(),
-        binding: SelectAvatarBinding(),
-        arguments: SelectAvatarArgument(SelectAvatarType.settings));
+    Get.to(
+      () => SelectAvatarPage(),
+      binding: SelectAvatarBinding(),
+      arguments: SelectAvatarArgument(SelectAvatarType.settings, null),
+    );
   }
 
   void toLogoutDialog() {
@@ -194,7 +270,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
       Get.to(
         () => NftListPage(),
         binding: NftListBinding(),
-        arguments: NftListArgument(NftFilterType.User, profileRx.value!.id),
+        arguments: NftListArgument(NftFilterType.User, solanaAddressRx.value),
       );
     }
   }
@@ -215,12 +291,10 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void _loadNfts() {
     if (profileRx.value != null) {
       _satorioRepository
-          .nftItems(
-        NftFilterType.User,
-        profileRx.value!.id,
-        page: _initialPage,
-        itemsPerPage: _itemsPerPageNft,
-      )
+          .nftsFiltered(
+              page: _initialPage,
+              itemsPerPage: _itemsPerPageNft,
+              owner: solanaAddressRx.value)
           .then((List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       });

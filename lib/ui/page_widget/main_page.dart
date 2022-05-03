@@ -6,7 +6,7 @@ import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/page_widget/empty_page.dart';
 import 'package:satorio/ui/page_widget/home_page.dart';
 import 'package:satorio/ui/page_widget/nfts_categories_page.dart';
-import 'package:satorio/ui/page_widget/personal_profile_page.dart';
+import 'package:satorio/ui/page_widget/profile_page.dart';
 import 'package:satorio/ui/page_widget/wallet_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
@@ -143,6 +143,6 @@ class MainPage extends GetView<MainController> {
     EmptyPage(),
     NftCategoriesPage(),
     WalletPage(),
-    PersonalProfilePage(),
+    ProfilePage(),
   ];
 }

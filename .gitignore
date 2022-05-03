@@ -49,5 +49,4 @@ app.*.map.json
 /android/app/gradle.properties
 /android/app/sator-release.jks
 
-# Unity
-ios/UnityLibrary
+/ios/storeKit.storekit

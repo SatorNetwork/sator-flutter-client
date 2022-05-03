@@ -16,16 +16,17 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]).then((_) {
     precachePicture(
-      ExactAssetPicture(SvgPicture.svgStringDecoder, 'images/bg/splash.svg'),
-      null,
-    );
-    precachePicture(
-      ExactAssetPicture(SvgPicture.svgStringDecoder, 'images/splash.svg'),
+      ExactAssetPicture(
+        SvgPicture.svgStringDecoderBuilder,
+        'images/bg/splash.svg',
+      ),
       null,
     );
     precachePicture(
       ExactAssetPicture(
-          SvgPicture.svgStringDecoder, 'images/sator_colored.svg'),
+        SvgPicture.svgStringDecoderBuilder,
+        'images/sator_colored.svg',
+      ),
       null,
     );
 
