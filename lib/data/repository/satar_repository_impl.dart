@@ -847,6 +847,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress) {
+    return _apiDataSource
+        .buyNftIap(transactionReceipt, mintAddress)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<PuzzleUnlockOption>> puzzleOptions() {
     return _apiDataSource
         .puzzleOptions()

@@ -275,6 +275,8 @@ abstract class SatorioRepository {
 
   Future<NftItem> nft(String mintAddress);
 
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress);
+
   Future<List<PuzzleUnlockOption>> puzzleOptions();
 
   Future<PuzzleGame?> puzzle(String episodeId);

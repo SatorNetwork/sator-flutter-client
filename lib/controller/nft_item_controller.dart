@@ -28,7 +28,8 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
   final RxBool isBuyRequested = false.obs;
   final RxBool termsOfUseCheck = false.obs;
 
-  final Rx<List<IAPItem>> productsRx = Rx([]);
+  String productId = "";
+  List<IAPItem> products = [];
 
   late final StreamSubscription _purchaseUpdatedSubscription;
   late final StreamSubscription _purchaseErrorSubscription;
@@ -40,6 +41,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
     NftItemArgument argument = Get.arguments as NftItemArgument;
 
     nftItemRx = Rx(argument.nftItem);
+
     _checkOwner();
     _refreshNftItem(argument.nftItem.mintAddress);
   }
@@ -71,7 +73,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
       List<PurchasedItem>? purchasedList;
 
-      if (productsRx.value.isNotEmpty) {
+      if (products.isNotEmpty) {
         if (isAndroid) {
           purchasedList = await _satorioRepository.purchaseHistory();
 
@@ -126,15 +128,30 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
       if (ids == null) return;
 
       _satorioRepository.getProducts(ids).then((value) {
-        productsRx.value = value;
+        products = value;
+
+        products.sort((a, b) => a.price!.compareTo(b.price!));
+
+        _setInAppProduct();
       });
     });
   }
 
-  Future<void> buyInAppProduct(String id) async {
-    if (id.isEmpty) return;
+  void _setInAppProduct() {
+    for (int i = 0; i < products.length; i++) {
+      double inAppPrice = double.parse(products[i].price!);
 
-    _satorioRepository.buyInAppProduct(id);
+      if (nftItemRx.value.priceInUsd <= inAppPrice) {
+        productId = products[i].productId!;
+        break;
+      }
+    }
+  }
+
+  Future<void> buyInAppProduct() async {
+    if (productId.isEmpty || productId == "") return;
+
+    _satorioRepository.buyInAppProduct(productId);
   }
 
   Future<void> verifyTransaction({
@@ -148,8 +165,12 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
         .finishTransaction(purchasedItemIOS, true)
         .then((value) {
       if (value != null) {
-        //TODO: add response after API callback
-        Get.back();
+        _satorioRepository.buyNftIap(
+            purchasedItemIOS.transactionReceipt!, nftItemRx.value.mintAddress).then((value) {
+              if (value) {
+                Get.back();
+              }
+        });
       }
     }).catchError((error) {
       //TODO: remove after tests and add response after API callback
@@ -168,7 +189,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
   void toTermsOfUse() {
     Get.to(
-      () => WebPage(),
+          () => WebPage(),
       binding: WebBinding(),
       arguments: WebArgument(
         linkTermsOfUse,
@@ -191,29 +212,29 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
     Future.value(true)
         .then(
           (value) {
-            isBuyRequested.value = true;
-            return value;
-          },
-        )
+        isBuyRequested.value = true;
+        return value;
+      },
+    )
         .then(
           (value) => _satorioRepository.buyNftItem(nftItemRx.value.mintAddress),
-        )
+    )
         .then(
           (isSuccess) {
-            if (isSuccess) {
-              Get.bottomSheet(
-                SuccessNftBoughtBottomSheet(
-                    nftItemRx.value.nftMetadata.name, profile!.id),
-              );
-            }
-            isBuyRequested.value = false;
-          },
-        )
+        if (isSuccess) {
+          Get.bottomSheet(
+            SuccessNftBoughtBottomSheet(
+                nftItemRx.value.nftMetadata.name, profile!.id),
+          );
+        }
+        isBuyRequested.value = false;
+      },
+    )
         .catchError(
           (value) {
-            isBuyRequested.value = false;
-          },
-        );
+        isBuyRequested.value = false;
+      },
+    );
   }
 
   void _refreshNftItem(String mintAddress) {
@@ -232,7 +253,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
   Profile? _getProfile() {
     return (_satorioRepository.profileListenable()
-            as ValueListenable<Box<Profile>>)
+    as ValueListenable<Box<Profile>>)
         .value
         .getAt(0);
   }

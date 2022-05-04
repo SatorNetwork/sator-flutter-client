@@ -42,6 +42,7 @@ import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/paid_unlock_request.dart';
 import 'package:satorio/data/request/public_key_request.dart';
 import 'package:satorio/data/request/rate_request.dart';
+import 'package:satorio/data/request/register_iap_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
@@ -1186,6 +1187,18 @@ class ApiDataSourceImpl implements ApiDataSource {
         .then((Response response) {
       return response.isOk;
       // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+  @override
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress) {
+    return _getConnect
+        .requestPost(
+      'iap/register',
+      RegisterIapRequest(transactionReceipt, mintAddress),
+    )
+        .then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
