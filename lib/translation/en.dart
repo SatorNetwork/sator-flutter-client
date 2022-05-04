@@ -309,4 +309,7 @@ const Map<String, String> en = {
   'txt_puzzle_win': 'You have successfully completed the puzzle',
   'txt_failure': 'Failure',
   'txt_puzzle_steps_reached': 'You ran out of available steps',
+  'txt_no_internet_connection': 'No Internet Connection',
+  'txt_check_your_connection': 'Please check your connection',
+  'txt_to_settings': 'To Settings',
 };
