@@ -3,23 +3,25 @@ import 'dart:async';
 import 'package:app_settings/app_settings.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class ConnectivityService extends GetxService {
-  late StreamSubscription _subscriptionon;
+  late StreamSubscription _subscription;
   SnackbarController? _snackbarController;
 
   @override
   void onInit() {
     super.onInit();
 
-    _subscriptionon = Connectivity()
+    _subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       switch (result) {
         case ConnectivityResult.none:
+          _changeStatusBarColor(SatorioColor.error);
           _snackbarController = Get.snackbar(
             'txt_no_internet_connection'.tr, 'txt_check_your_connection'.tr,
             icon: const Icon(
@@ -40,6 +42,7 @@ class ConnectivityService extends GetxService {
           );
           break;
         default:
+          _changeStatusBarColor(Colors.black.withOpacity(0.25));
           _snackbarController?.close();
           break;
       }
@@ -49,7 +52,7 @@ class ConnectivityService extends GetxService {
   @override
   void onClose() {
     _snackbarController?.close();
-    _subscriptionon.cancel();
+    _subscription.cancel();
     super.onClose();
   }
 
@@ -66,7 +69,9 @@ class ConnectivityService extends GetxService {
         ),
         style: TextButton.styleFrom(
           shape: const RoundedRectangleBorder(
-            borderRadius: const BorderRadius.all(Radius.circular(6)),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(6),
+            ),
             side: const BorderSide(
               color: Colors.white,
               width: 1,
@@ -74,4 +79,10 @@ class ConnectivityService extends GetxService {
           ),
         ),
       );
+
+  void _changeStatusBarColor(final Color color) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle.light.copyWith(statusBarColor: color),
+    );
+  }
 }
