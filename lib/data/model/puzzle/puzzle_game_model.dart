@@ -1,3 +1,4 @@
+import 'package:satorio/data/model/puzzle/tile_model.dart';
 import 'package:satorio/data/model/to_json_interface.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/util/extension.dart';
@@ -13,8 +14,8 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
     int steps,
     int stepsTaken,
     int status,
-    int result,
     String image,
+    List<TileModel> tiles,
   ) : super(
           id,
           episodeId,
@@ -25,8 +26,8 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
           steps,
           stepsTaken,
           status,
-          result,
           image,
+          tiles,
         );
 
   factory PuzzleGameModel.fromJson(Map json) => PuzzleGameModel(
@@ -39,8 +40,13 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
         json.parseValueAsInt('steps'),
         json.parseValueAsInt('steps_taken'),
         json.parseValueAsInt('status'),
-        json.parseValueAsInt('result'),
         json.parseValueAsString('image'),
+        json['tiles'] != null && json['tiles'] is Iterable
+            ? (json['tiles'] as Iterable)
+                .where((element) => element != null)
+                .map((element) => TileModel.fromJson(element))
+                .toList()
+            : [],
       );
 
   @override
@@ -54,7 +60,10 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
         'steps': steps,
         'steps_taken': stepsTaken,
         'status': status,
-        'result': result,
         'image': image,
+        'tiles': tiles
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
+            .toList(),
       };
 }

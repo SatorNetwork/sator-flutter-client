@@ -1,3 +1,5 @@
+import 'package:satorio/domain/entities/puzzle/tile.dart';
+
 class PuzzleGame {
   final String id;
   final String episodeId;
@@ -8,8 +10,8 @@ class PuzzleGame {
   final int steps;
   final int stepsTaken;
   final int status;
-  final int result;
   final String image;
+  final List<Tile> tiles;
 
   const PuzzleGame(
     this.id,
@@ -21,19 +23,14 @@ class PuzzleGame {
     this.steps,
     this.stepsTaken,
     this.status,
-    this.result,
     this.image,
+    this.tiles,
   );
 }
 
 class PuzzleGameStatus {
-  static const notStarted = 0;
+  static const newGame = 0;
   static const inProgress = 1;
   static const finished = 2;
-}
-
-class PuzzleGameResult {
-  static const notFinished = 0;
-  static const userWon = 1;
-  static const userLost = 2;
+  static const stepLimit = 3;
 }

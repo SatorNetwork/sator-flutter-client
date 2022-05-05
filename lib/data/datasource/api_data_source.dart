@@ -266,11 +266,7 @@ abstract class ApiDataSource {
 
   Future<PuzzleGameModel> startPuzzle(String puzzleGameId);
 
-  Future<PuzzleGameModel> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  );
+  Future<PuzzleGameModel> tapTile(String puzzleGameId, int x, int y);
 
 // endregion
 
