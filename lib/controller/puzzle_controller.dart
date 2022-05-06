@@ -61,8 +61,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
           'txt_yes'.tr,
           icon: Icons.cancel_outlined,
           onButtonPressed: () {
-            _finishPuzzle(PuzzleGameResult.notFinished)
-                .then((value) => Get.back(closeOverlays: true));
+            Get.back(closeOverlays: true);
           },
           secondaryButtonText: 'txt_no'.tr,
         ),
