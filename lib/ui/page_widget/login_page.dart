@@ -46,6 +46,7 @@ class LoginPage extends GetView<LoginController> {
                         () => InputTextField(
                             inputTitle: 'txt_email_address'.tr,
                             controller: controller.emailController,
+                            inputFormatters: [restrictSpace],
                             obscureText: false,
                             keyboardType: TextInputType.emailAddress,
                             enableSuggestions: false,
@@ -63,6 +64,7 @@ class LoginPage extends GetView<LoginController> {
                               () => InputTextField(
                                 inputTitle: 'txt_password'.tr,
                                 controller: controller.passwordController,
+                                inputFormatters: [restrictSpace],
                                 hintText: 'txt_password_hint'.tr,
                                 obscureText: controller.passwordObscured.value,
                                 keyboardType: TextInputType.emailAddress,
