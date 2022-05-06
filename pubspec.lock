@@ -388,7 +388,7 @@ packages:
       name: flutter_unity_widget
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.5+1"
+    version: "2022.1.0+2"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -681,6 +681,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  pointer_interceptor:
+    dependency: transitive
+    description:
+      name: pointer_interceptor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.3+1"
   process:
     dependency: transitive
     description:
@@ -993,7 +1000,7 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.2"
+    version: "2.8.0"
   webview_flutter_android:
     dependency: transitive
     description:
@@ -1015,6 +1022,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.7.1"
+  webviewx:
+    dependency: transitive
+    description:
+      name: webviewx
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   win32:
     dependency: transitive
     description:

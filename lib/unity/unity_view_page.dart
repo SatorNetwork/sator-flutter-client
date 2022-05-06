@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
+import 'package:get/get.dart';
+import 'package:satorio/data/datasource/auth_data_source.dart';
 
 class UnityViewPage extends StatefulWidget {
   UnityViewPage() : super();
@@ -83,6 +85,14 @@ class _UnityViewPageState extends State<UnityViewPage> {
           () async {
         await this._unityWidgetController.resume();
       },
+    );
+
+    var tkn = await Get.find<AuthDataSource>().getAuthToken() as String;
+
+    _unityWidgetController.postMessage(
+        'GameStarter',
+        'Initialize',
+        tkn.substring(tkn.length - 3)
     );
   }
 }
