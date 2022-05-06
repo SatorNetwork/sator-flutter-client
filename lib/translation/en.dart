@@ -300,7 +300,7 @@ const Map<String, String> en = {
   'txt_cannot_start_puzzle': 'You cannot start puzzle',
   'txt_complete_picture': 'Complete this picture',
   'txt_you_will_get': 'You will get %s sao',
-  'txt_steps_taken_of_steps': '%d of %d',
+  'txt_steps_left_of_steps': '%d of %d',
   'txt_steps_left': 'Steps Left',
   'txt_unlock_puzzle': 'Unlock the puzzle',
   'txt_exit_puzzle': 'Exit the puzzle',
@@ -309,4 +309,7 @@ const Map<String, String> en = {
   'txt_puzzle_win': 'You have successfully completed the puzzle',
   'txt_failure': 'Failure',
   'txt_puzzle_steps_reached': 'You ran out of available steps',
+  'txt_no_internet_connection': 'No Internet Connection',
+  'txt_check_your_connection': 'Please check your connection',
+  'txt_to_settings': 'To Settings',
 };

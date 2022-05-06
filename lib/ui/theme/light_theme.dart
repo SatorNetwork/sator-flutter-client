@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -38,3 +39,5 @@ Widget backgroundImage(String imagePath) {
 
 final bool isAndroid = GetPlatform.isAndroid;
 
+final FilteringTextInputFormatter restrictSpace =
+    FilteringTextInputFormatter.deny(RegExp(r'\s'));

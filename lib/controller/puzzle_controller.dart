@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image/image.dart' as imageLib;
-import 'package:satorio/domain/entities/puzzle/position.dart';
-import 'package:satorio/domain/entities/puzzle/puzzle.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -16,22 +14,17 @@ import 'package:satorio/ui/bottom_sheet_widget/puzzle_image_sample_bottom_sheet.
 import 'package:satorio/ui/bottom_sheet_widget/quiz_winner_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 
-enum PuzzleStatus { incomplete, complete, reachedStepLimit }
-
 class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late AnimationController animationController;
   late Animation<double> animationScale;
 
-  late PuzzleStatus puzzleStatus = PuzzleStatus.incomplete;
-
   late String puzzleGameId;
 
   final Rx<PuzzleGame?> puzzleGameRx = Rx(null);
   final Rx<Uint8List> squareImage = Rx(Uint8List.fromList([]));
-  final Rx<Puzzle?> puzzleRx = Rx(null);
-  final RxInt stepsTakenRx = 0.obs;
+  final Rx<List<Uint8List>> imagesRx = Rx([]);
 
   PuzzleController() {
     this.puzzleGameId = (Get.arguments as PuzzleArgument).puzzleGameId;
@@ -60,7 +53,7 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void back() {
-    if (puzzleStatus == PuzzleStatus.incomplete) {
+    if (puzzleGameRx.value?.status == PuzzleGameStatus.inProgress) {
       Get.dialog(
         DefaultDialog(
           'txt_exit_puzzle'.tr,
@@ -80,64 +73,56 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void initPuzzle() async {
-    puzzleGameRx.value = await _satorioRepository.startPuzzle(puzzleGameId);
+    final PuzzleGame puzzleGame =
+        await _satorioRepository.startPuzzle(puzzleGameId);
 
-    if (puzzleGameRx.value != null) {
-      final Uint8List bytes = await _loadImage(puzzleGameRx.value!.image);
+    final Uint8List bytes = await _loadImage(puzzleGame.image);
 
-      final Uint8List squareBytes = await compute(_squareImage, bytes);
-      squareImage.value = squareBytes;
+    final Uint8List squareBytes = await compute(_squareImage, bytes);
+    squareImage.value = squareBytes;
 
-      final List<Uint8List> images = await compute(
-        _splitImage,
-        _SplitImageData(squareBytes, puzzleGameRx.value!.xSize),
-      );
-      final Puzzle puzzle = _generatePuzzle(
-        images,
-        puzzleGameRx.value!.xSize,
-        shuffle: true,
-      );
+    final List<Uint8List> images = await compute(
+      _splitImage,
+      _SplitImageData(squareBytes, puzzleGame.xSize),
+    );
+    imagesRx.value = images;
 
-      puzzleRx.value = puzzle.sort();
-    }
+    puzzleGameRx.value = puzzleGame;
   }
 
-  void tapTile(Tile tile) {
-    if (puzzleRx.value != null && puzzleStatus == PuzzleStatus.incomplete) {
-      if (puzzleRx.value!.isTileMovable(tile)) {
-        final mutablePuzzle = Puzzle(tiles: [...puzzleRx.value!.tiles]);
-        final puzzle = mutablePuzzle.moveTiles(tile, []);
-
-        puzzleRx.value = puzzle.sort();
-        stepsTakenRx.value = stepsTakenRx.value + 1;
-        if (puzzle.isComplete()) {
-          puzzleStatus = PuzzleStatus.complete;
-          _finishPuzzle(PuzzleGameResult.userWon).then((puzzleGame) {
-            Get.bottomSheet(
-              puzzleGame.rewards > 0
-                  ? QuizWinnerBottomSheet(
-                      '${puzzleGame.rewards.toStringAsFixed(2)} SAO',
-                      puzzleGame.bonusRewards > 0
-                          ? '${puzzleGame.bonusRewards.toStringAsFixed(2)} SAO'
-                          : '',
-                    )
-                  : DefaultBottomSheet(
-                      'txt_success'.tr,
-                      'txt_puzzle_win'.tr,
-                      'txt_ok'.tr,
-                    ),
-            );
-          });
-        } else if (stepsTakenRx.value == puzzleGameRx.value?.steps) {
-          puzzleStatus = PuzzleStatus.reachedStepLimit;
-          _finishPuzzle(PuzzleGameResult.userLost).then((puzzleGame) {
+  void tapTile(Tile tile) async {
+    puzzleGameRx.value = await _satorioRepository.tapTile(
+      puzzleGameId,
+      tile.currentPosition.x,
+      tile.currentPosition.y,
+    );
+    if (puzzleGameRx.value != null) {
+      switch (puzzleGameRx.value!.status) {
+        case PuzzleGameStatus.stepLimit:
+          Get.bottomSheet(
             DefaultBottomSheet(
               'txt_failure'.tr,
               'txt_puzzle_steps_reached'.tr,
               'txt_ok'.tr,
-            );
-          });
-        }
+            ),
+          );
+          break;
+        case PuzzleGameStatus.finished:
+          Get.bottomSheet(
+            puzzleGameRx.value!.rewards > 0
+                ? QuizWinnerBottomSheet(
+                    '${puzzleGameRx.value!.rewards.toStringAsFixed(2)} SAO',
+                    puzzleGameRx.value!.bonusRewards > 0
+                        ? '${puzzleGameRx.value!.bonusRewards.toStringAsFixed(2)} SAO'
+                        : '',
+                  )
+                : DefaultBottomSheet(
+                    'txt_success'.tr,
+                    'txt_puzzle_win'.tr,
+                    'txt_ok'.tr,
+                  ),
+          );
+          break;
       }
     }
   }
@@ -157,99 +142,6 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
     return NetworkAssetBundle(Uri.parse(url))
         .load(url)
         .then((value) => value.buffer.asUint8List());
-  }
-
-  /// Build a randomized, solvable puzzle of the given size.
-  Puzzle _generatePuzzle(
-    List<Uint8List> images,
-    int size, {
-    bool shuffle = true,
-  }) {
-    final correctPositions = <Position>[];
-    final currentPositions = <Position>[];
-    final whitespacePosition = Position(x: size, y: size);
-
-    // Create all possible board positions.
-    for (var y = 1; y <= size; y++) {
-      for (var x = 1; x <= size; x++) {
-        if (x == size && y == size) {
-          correctPositions.add(whitespacePosition);
-          currentPositions.add(whitespacePosition);
-        } else {
-          final position = Position(x: x, y: y);
-          correctPositions.add(position);
-          currentPositions.add(position);
-        }
-      }
-    }
-
-    if (shuffle) {
-      // Randomize only the current tile positions.
-      currentPositions.shuffle();
-    }
-
-    var tiles = _getTileListFromPositions(
-      size,
-      images,
-      correctPositions,
-      currentPositions,
-    );
-
-    var puzzle = Puzzle(tiles: tiles);
-
-    if (shuffle) {
-      // Assign the tiles new current positions until the puzzle is solvable and
-      // zero tiles are in their correct position.
-      while (!puzzle.isSolvable() || puzzle.getNumberOfCorrectTiles() != 0) {
-        currentPositions.shuffle();
-        tiles = _getTileListFromPositions(
-          size,
-          images,
-          correctPositions,
-          currentPositions,
-        );
-        puzzle = Puzzle(tiles: tiles);
-      }
-    }
-
-    return puzzle;
-  }
-
-  /// Build a list of tiles - giving each tile their correct position and a
-  /// current position.
-  List<Tile> _getTileListFromPositions(
-    int size,
-    List<Uint8List> images,
-    List<Position> correctPositions,
-    List<Position> currentPositions,
-  ) {
-    final whitespacePosition = Position(x: size, y: size);
-    return [
-      for (int i = 1; i <= size * size; i++)
-        if (i == size * size)
-          Tile(
-            imageBytes: images[i - 1],
-            value: i,
-            correctPosition: whitespacePosition,
-            currentPosition: currentPositions[i - 1],
-            isWhitespace: true,
-          )
-        else
-          Tile(
-            imageBytes: images[i - 1],
-            value: i,
-            correctPosition: correctPositions[i - 1],
-            currentPosition: currentPositions[i - 1],
-          )
-    ];
-  }
-
-  Future<PuzzleGame> _finishPuzzle(int puzzleGameResult) {
-    return _satorioRepository.finishPuzzle(
-      puzzleGameId,
-      puzzleGameResult,
-      stepsTakenRx.value,
-    );
   }
 }
 

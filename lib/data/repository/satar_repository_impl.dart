@@ -440,6 +440,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .then(
           (value) => clearDBandAllTokens(),
         )
+        .then((value) => markIsBiometricUserDisabled())
         .then(
       (value) {
         Get.offAll(
@@ -870,13 +871,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<PuzzleGame> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  ) {
-    return _apiDataSource
-        .finishPuzzle(puzzleGameId, result, stepsTaken)
-        .catchError((value) => _handleException(value));
+  Future<PuzzleGame> tapTile(String puzzleGameId, int x, int y) {
+    return _apiDataSource.tapTile(puzzleGameId, x, y);
   }
 }
