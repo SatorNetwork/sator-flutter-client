@@ -43,16 +43,11 @@ class ShowEpisodeQuizController extends GetxController {
           .then(
         (bool result) {
           isAnswerSentRx.value = true;
+          countdownController.pause();
           if (result) {
             Get.back(closeOverlays: true, result: true);
           } else {
-            Get.snackbar(
-              'txt_oops'.tr,
-              'txt_wrong_answer'.tr,
-              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-              colorText: SatorioColor.darkAccent,
-              duration: Duration(seconds: 4),
-            );
+            _showSnackbar('txt_oops'.tr, 'txt_wrong_answer'.tr);
           }
         },
       );
@@ -63,9 +58,13 @@ class ShowEpisodeQuizController extends GetxController {
     if (isAnswerSentRx.value) return;
 
     isAnswerSentRx.value = true;
+    _showSnackbar('txt_oops'.tr, 'txt_time_expire'.tr);
+  }
+
+  void _showSnackbar(String title, String message) {
     Get.snackbar(
-      'txt_oops'.tr,
-      'txt_time_expire'.tr,
+      title,
+      message,
       backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
       colorText: SatorioColor.darkAccent,
       duration: Duration(seconds: 4),
