@@ -11,7 +11,6 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
-import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/wallet_detail_container.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -67,7 +66,7 @@ class WalletPage extends GetView<WalletController> {
                 height: 22,
               ),
               Container(
-                height: 270,
+                height: 200,
                 child: Obx(
                   () => PageView.builder(
                     controller: controller.pageController,
@@ -75,18 +74,12 @@ class WalletPage extends GetView<WalletController> {
                     itemBuilder: (context, index) {
                       WalletDetail walletDetail =
                           controller.walletDetailsRx.value[index];
-                      return Column(
-                        children: [
-                          WalletDetailContainer(
-                            walletDetail,
-                            height: 200,
-                            margin: EdgeInsets.symmetric(
-                              horizontal: _separatorSize / _viewportFraction,
-                            ),
-                          ),
-                          SizedBox(height: 20,),
-                          _walletButtons(walletDetail.type, walletDetail),
-                        ],
+                      return WalletDetailContainer(
+                        walletDetail,
+                        height: 200,
+                        margin: EdgeInsets.symmetric(
+                          horizontal: _separatorSize / _viewportFraction,
+                        ),
                       );
                       // return _walletItem(walletDetail);
                     },
@@ -147,29 +140,9 @@ class WalletPage extends GetView<WalletController> {
     );
   }
 
-  Widget _walletButtons(String walletType, WalletDetail walletDetail) {
-    switch (walletType) {
-      case 'sao':
-        return _buttonItem('txt_get_sao'.tr, () => controller.toTopUp());
-      default:
-        return _buttonItem('txt_to_challenges'.tr, () => controller.toChallenges());
-    }
-  }
-
-  Widget _buttonItem(String label, Function() onPressed) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: BorderedButton(
-        text: label,
-        borderRadius: 60,
-        onPressed: onPressed,
-      ),
-    );
-  }
-
   Widget _transactionContent() {
     final double minSize =
-        (Get.height - (520 * coefficient) - kBottomNavigationBarHeight) / Get.height;
+        (Get.height - 453 - kBottomNavigationBarHeight) / Get.height;
     final double maxSize =
         (Get.height - Get.mediaQuery.padding.top - 1) / Get.height;
 
