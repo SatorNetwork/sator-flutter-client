@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:satorio/data/connectivity/connectivity_service.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
@@ -21,8 +22,11 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 class AppBinding extends Bindings {
   @override
   void dependencies() {
+    // Managers & Services
+    Get.put<ConnectivityService>(ConnectivityService(), permanent: true);
     Get.put<EncryptManager>(EncryptManagerImpl(), permanent: true);
 
+    // Data Sources
     Get.put<LocalDataSource>(LocalDataSourceImpl(), permanent: true);
     Get.put<AuthDataSource>(AuthDataSourceImpl(), permanent: true);
     Get.put<FirebaseDataSource>(FirebaseDataSourceImpl(), permanent: true);
@@ -33,12 +37,12 @@ class AppBinding extends Bindings {
       permanent: true,
     );
     Get.put<NftsDataSource>(NftsDataSourceImpl(Get.find()), permanent: true);
-
     Get.put<NatsDataSource>(
       NatsDataSourceImpl(Get.find()),
       permanent: true,
     );
 
+    // Repository
     Get.put<SatorioRepository>(
       SatorioRepositoryImpl(
         Get.find(),

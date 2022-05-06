@@ -47,8 +47,8 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
@@ -87,12 +87,12 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   void _handleApiErrorException(ApiErrorException exception) {
-    Get.dialog(
-      DefaultDialog(
-        'txt_oops'.tr,
-        exception.errorMessage,
-        'txt_ok'.tr,
-      ),
+    Get.snackbar(
+      'txt_oops'.tr,
+      exception.errorMessage,
+      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+      colorText: SatorioColor.darkAccent,
+      duration: Duration(seconds: 4),
     );
   }
 
@@ -104,7 +104,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
           binding: LoginBinding(),
           arguments: LoginArgument(null),
         );
-        Get.snackbar('txt_oops'.tr, exception.errorMessage);
+        Get.snackbar(
+          'txt_oops'.tr,
+          exception.errorMessage,
+          backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+          colorText: SatorioColor.darkAccent,
+          duration: Duration(seconds: 4),
+        );
       },
     );
   }
@@ -443,6 +449,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .then(
           (value) => clearDBandAllTokens(),
         )
+        .then((value) => markIsBiometricUserDisabled())
         .then(
       (value) {
         Get.offAll(
@@ -880,14 +887,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<PuzzleGame> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  ) {
-    return _apiDataSource
-        .finishPuzzle(puzzleGameId, result, stepsTaken)
-        .catchError((value) => _handleException(value));
+  Future<PuzzleGame> tapTile(String puzzleGameId, int x, int y) {
+    return _apiDataSource.tapTile(puzzleGameId, x, y);
   }
 
   @override

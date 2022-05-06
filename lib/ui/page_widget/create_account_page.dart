@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/create_account_controller.dart';
@@ -48,6 +49,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                           obscureText: false,
                           enableSuggestions: false,
                           autocorrect: false,
+                          inputFormatters: [restrictSpace],
                           errorText: controller.validationRx.value['email'],
                           keyboardType: TextInputType.emailAddress,
                         ),
@@ -71,6 +73,7 @@ class CreateAccountPage extends GetView<CreateAccountController> {
                         () => InputTextField(
                           inputTitle: 'txt_password'.tr,
                           controller: controller.passwordController,
+                          inputFormatters: [restrictSpace],
                           hintText: 'txt_password_hint'.tr,
                           enableSuggestions: false,
                           autocorrect: false,

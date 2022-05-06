@@ -41,6 +41,7 @@ import 'package:satorio/data/request/empty_request.dart';
 import 'package:satorio/data/request/forgot_password_request.dart';
 import 'package:satorio/data/request/paid_unlock_request.dart';
 import 'package:satorio/data/request/public_key_request.dart';
+import 'package:satorio/data/request/puzzle_unlock_request.dart';
 import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/register_iap_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
@@ -49,6 +50,7 @@ import 'package:satorio/data/request/send_invite_request.dart';
 import 'package:satorio/data/request/send_tip_request.dart';
 import 'package:satorio/data/request/sign_in_request.dart';
 import 'package:satorio/data/request/sign_up_request.dart';
+import 'package:satorio/data/request/tap_tile_request.dart';
 import 'package:satorio/data/request/update_email_request.dart';
 import 'package:satorio/data/request/update_username_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
@@ -63,9 +65,6 @@ import 'package:satorio/data/response/refresh_response.dart';
 import 'package:satorio/data/response/result_response.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/util/extension.dart';
-
-import '../../request/puzzle_finish_request.dart';
-import '../../request/puzzle_unlock_request.dart';
 
 class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
@@ -1258,20 +1257,18 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<PuzzleGameModel> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  ) {
+  Future<PuzzleGameModel> tapTile(String puzzleGameId, int x, int y) {
     return _getConnect
         .requestPost(
-      'puzzle-game/$puzzleGameId/finish',
-      PuzzleFinishRequest(result, stepsTaken),
+      'puzzle-game/$puzzleGameId/tap-tile',
+      TapTileRequest(x, y),
     )
-        .then((Response response) {
-      return PuzzleGameModel.fromJson(
-          json.decode(response.bodyString!)['data']);
-    });
+        .then(
+      (Response response) {
+        return PuzzleGameModel.fromJson(
+            json.decode(response.bodyString!)['data']);
+      },
+    );
   }
 
 // endregion
