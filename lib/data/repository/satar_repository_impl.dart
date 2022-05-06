@@ -434,6 +434,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .then(
           (value) => clearDBandAllTokens(),
         )
+        .then((value) => markIsBiometricUserDisabled())
         .then(
       (value) {
         Get.offAll(
