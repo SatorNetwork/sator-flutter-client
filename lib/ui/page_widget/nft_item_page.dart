@@ -327,9 +327,14 @@ class NftItemPage extends GetView<NftItemController> {
                     () => controller.isOwner.value
                         ? Container()
                         : ElevatedGradientButton(
-                            text: 'txt_buy_nfts'.tr,
+                            text: isAndroid
+                                ? 'txt_to_marketplace'.tr
+                                : 'txt_buy_nfts'.tr,
                             onPressed: () {
-                              controller.buyInAppProduct();
+                              isAndroid
+                                  ? controller.toMarketplace(
+                                      controller.nftItemRx.value.mintAddress)
+                                  : controller.buyInAppProduct();
                             },
                           ),
                   ),
