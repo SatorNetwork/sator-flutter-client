@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_nats/dart_nats.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/controller/challenges_controller.dart';
@@ -24,8 +23,8 @@ import 'package:satorio/domain/entities/payload/socket_message.dart';
 import 'package:satorio/domain/entities/quiz_screen_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/challenges_page.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
 
 class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
@@ -209,17 +208,12 @@ class QuizController extends GetxController {
       );
     } else {
       // wrong answer
-      Get.dialog(
-        DefaultDialog(
-          'txt_oops'.tr,
-          'txt_wrong_answer'.tr,
-          'txt_keep_going'.tr,
-          icon: Icons.sentiment_dissatisfied_rounded,
-          onButtonPressed: () {
-            Get.until((route) => !Get.isOverlaysOpen);
-          },
-        ),
-        barrierDismissible: true,
+      Get.snackbar(
+        'txt_oops'.tr,
+        'txt_wrong_answer'.tr,
+        backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+        colorText: SatorioColor.darkAccent,
+        duration: Duration(seconds: 4),
       );
     }
   }
@@ -241,17 +235,12 @@ class QuizController extends GetxController {
   }
 
   _handleTimeOut(PayloadTimeOut payloadTimeOut) {
-    Get.dialog(
-      DefaultDialog(
-        'txt_oops'.tr,
-        payloadTimeOut.message,
-        'txt_back_realm'.tr,
-        icon: Icons.sentiment_dissatisfied_rounded,
-        onButtonPressed: () {
-          Get.until((route) => !Get.isOverlaysOpen);
-        },
-      ),
-      barrierDismissible: false,
+    Get.snackbar(
+      'txt_oops'.tr,
+      payloadTimeOut.message,
+      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+      colorText: SatorioColor.darkAccent,
+      duration: Duration(seconds: 4),
     );
   }
 }
