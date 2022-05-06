@@ -33,7 +33,7 @@ dependencies:
   sprintf: ^6.0.0
   circular_countdown_timer: ^0.2.1
   timer_count_down: ^2.2.1
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.0
   pin_code_fields: ^7.4.0
   qr_code_scanner: ^0.7.0
   intl: ^0.17.0

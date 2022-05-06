@@ -44,9 +44,8 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
   }
 
   void toMarketplace(String id) async {
-    await canLaunch('$marketplaceUrl/nft-item?id=$id')
-        ? await launch('$marketplaceUrl/nft-item?id=$id')
-        : throw '$marketplaceUrl/nft-item?id=$id';
+    final Uri url = Uri.parse('$marketplaceUrl/nft-item?id=$id');
+    if (!await launchUrl(url)) throw 'Could not launch $url';
   }
 
   void addToFavourite() {}

@@ -455,15 +455,16 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void watchVideo() async {
-    String url = showEpisodeRx.value.watch;
-    if (YoutubePlayer.convertUrlToId(url) != null) {
+    final String urlString = showEpisodeRx.value.watch;
+    if (YoutubePlayer.convertUrlToId(urlString) != null) {
       Get.to(
         () => VideoYoutubePage(),
         binding: VideoYoutubeBinding(),
-        arguments: VideoYoutubeArgument(url),
+        arguments: VideoYoutubeArgument(urlString),
       );
     } else {
-      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+      final Uri url = Uri.parse(urlString);
+      if (!await launchUrl(url)) throw 'Could not launch $url';
     }
   }
 
