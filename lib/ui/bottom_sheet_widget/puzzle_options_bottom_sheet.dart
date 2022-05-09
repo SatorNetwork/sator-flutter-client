@@ -212,12 +212,12 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(6),
                 ),
-                border: _selectedPuzzleOptionRx.value == puzzleOption
-                    ? Border.all(
-                        color: SatorioColor.interactive,
-                        width: 1,
-                      )
-                    : null,
+                border: Border.all(
+                  color: _selectedPuzzleOptionRx.value == puzzleOption
+                      ? SatorioColor.interactive
+                      : SatorioColor.alice_blue,
+                  width: 1,
+                ),
                 color: _selectedPuzzleOptionRx.value == puzzleOption
                     ? SatorioColor.ghost_white
                     : SatorioColor.alice_blue,
