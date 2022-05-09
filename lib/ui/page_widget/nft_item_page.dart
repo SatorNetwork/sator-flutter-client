@@ -295,30 +295,32 @@ class NftItemPage extends GetView<NftItemController> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'txt_current_price'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.charcoal,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w600,
+                controller.isOwner.value
+                    ? Container()
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'txt_current_price'.tr,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.charcoal,
+                              fontSize: 15 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Obx(
+                            () => Text(
+                              '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
+                              style: textTheme.bodyText2!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 15 * coefficient,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Obx(
-                      () => Text(
-                        '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(
                   width: 36 * coefficient,
                 ),

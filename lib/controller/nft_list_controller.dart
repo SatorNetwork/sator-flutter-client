@@ -127,24 +127,16 @@ class NftListController extends GetxController with BackToMainMixin {
   void _updateTitle() {
     switch (_filterType) {
       case NftFilterType.NftCategory:
-        titleRx.value = 'Category NFTs';
+        titleRx.value = 'NFT gallery';
         break;
       case NftFilterType.Show:
-        titleRx.value = 'Show NFTs';
+        titleRx.value = 'NFT gallery';
         break;
       case NftFilterType.Episode:
-        titleRx.value = 'ShowEpisode NFTs';
+        titleRx.value = 'NFT gallery';
         break;
       case NftFilterType.User:
-        Profile? profile = (_satorioRepository.profileListenable()
-                as ValueListenable<Box<Profile>>)
-            .value
-            .getAt(0);
-        if (profile != null) {
-          titleRx.value = _objectId == profile.id
-              ? 'txt_my_nfts'.tr
-              : 'txt_not_my_nfts'.tr.format([profile.username]);
-        }
+        titleRx.value = 'NFT gallery';
         break;
     }
   }
