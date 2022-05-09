@@ -15,6 +15,7 @@ class WalletDetailAdapter extends TypeAdapter<WalletDetail> {
         reader.readInt(),
         reader.readList().map((e) => e as AmountCurrency).toList(),
         reader.readList().map((e) => e as WalletAction).toList(),
+        reader.readString(),
       );
 
   @override
@@ -24,5 +25,6 @@ class WalletDetailAdapter extends TypeAdapter<WalletDetail> {
     writer.writeInt(walletDetail.order);
     writer.writeList(walletDetail.balance);
     writer.writeList(walletDetail.actions);
+    writer.writeString(walletDetail.type);
   }
 }

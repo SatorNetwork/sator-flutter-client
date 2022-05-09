@@ -254,6 +254,8 @@ abstract class ApiDataSource {
 
   Future<bool> buyNftItem(String nftItemId);
 
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress);
+
 // endregion
 
 // region Puzzle

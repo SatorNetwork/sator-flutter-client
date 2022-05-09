@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/main_controller.dart';
+import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/controller/wallet_controller.dart';
 import 'package:satorio/ui/page_widget/empty_page.dart';
@@ -44,6 +45,12 @@ class MainPage extends GetView<MainController> {
                 if (Get.isRegistered<WalletController>()) {
                   ProfileController profileController = Get.find();
                   profileController.refreshPage();
+                }
+                break;
+              case MainController.TabNfts:
+                if (Get.isRegistered<NftCategoriesController>()) {
+                  NftCategoriesController nftCategoriesController = Get.find();
+                  nftCategoriesController.refreshData();
                 }
                 break;
               default:

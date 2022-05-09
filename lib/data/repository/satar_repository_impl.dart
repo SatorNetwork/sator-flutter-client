@@ -4,6 +4,7 @@ import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
@@ -12,6 +13,7 @@ import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
@@ -55,14 +57,21 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
+  final InAppPurchaseDataSource _inAppPurchaseDataSource;
   final RxBool _init = false.obs;
 
-  SatorioRepositoryImpl(this._apiDataSource, this._nftsDataSource,
-      this._localDataSource, this._firebaseDataSource, this._natsDataSource) {
+  SatorioRepositoryImpl(
+      this._apiDataSource,
+      this._nftsDataSource,
+      this._localDataSource,
+      this._firebaseDataSource,
+      this._natsDataSource,
+      this._inAppPurchaseDataSource) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
         .then((value) => _nftsDataSource.init())
+        .then((value) => _inAppPurchaseDataSource.init())
         .then((value) => _init.value = true);
   }
 
@@ -853,6 +862,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress) {
+    return _apiDataSource
+        .buyNftIap(transactionReceipt, mintAddress)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<PuzzleUnlockOption>> puzzleOptions() {
     return _apiDataSource
         .puzzleOptions()
@@ -881,5 +897,55 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<PuzzleGame> tapTile(String puzzleGameId, int x, int y) {
     return _apiDataSource.tapTile(puzzleGameId, x, y);
+  }
+
+  @override
+  Future<List<IAPItem>> getProducts(List<String> productsIds) {
+    return _inAppPurchaseDataSource
+        .getProducts(productsIds)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> buyInAppProduct(String id) {
+    return _inAppPurchaseDataSource
+        .buyInAppProduct(id)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> initializePurchase() {
+    return _inAppPurchaseDataSource
+        .initializePurchase()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<PurchasedItem>?> purchaseHistory() {
+    return _inAppPurchaseDataSource
+        .purchaseHistory()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> consumeAll() {
+    return _inAppPurchaseDataSource
+        .consumeAll()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> finishTransaction(
+      PurchasedItem purchasedItem, bool isConsumable) {
+    return _inAppPurchaseDataSource
+        .finishTransaction(purchasedItem, isConsumable)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future inAppProductsIds() {
+    return _firebaseDataSource
+        .inAppProductsIds()
+        .catchError((value) => _handleException(value));
   }
 }
