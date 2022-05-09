@@ -105,7 +105,7 @@ class NftListPage extends GetView<NftListController> {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(12)),
               child: Image.network(
-                nftItem.nftPreview,
+                nftItem.nftPreview.isEmpty ? nftItem.nftLink : nftItem.nftPreview,
                 fit: BoxFit.cover,
               ),
             ),
