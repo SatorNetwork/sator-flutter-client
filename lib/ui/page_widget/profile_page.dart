@@ -6,6 +6,7 @@ import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/review.dart';
+import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';
@@ -403,7 +404,7 @@ class ProfilePage extends GetView<ProfileController> {
   Widget _nftsBlock() {
     return Obx(
       () {
-        List<NftItem> nfts = controller.nftItemsRx.value;
+        List<UserNftItem> nfts = controller.nftItemsRx.value;
         return nfts.isEmpty
             ? InkWell(
                 onTap: () {
@@ -424,16 +425,14 @@ class ProfilePage extends GetView<ProfileController> {
                             child: nfts.length > 0
                                 ? InkWell(
                                     onTap: () {
-                                      controller.toNftItem(nfts[0]);
+                                      // controller.toNftItem(nfts[0]);
                                     },
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(17 * coefficient),
                                       ),
                                       child: Image.network(
-                                        nfts[0].nftPreview.isNotEmpty
-                                            ? nfts[0].nftPreview
-                                            : nfts[0].nftLink,
+                                        nfts[0].image,
                                         width: nftsLargestImageSize,
                                         height: nftsLargestImageSize,
                                         fit: BoxFit.cover,
@@ -456,16 +455,14 @@ class ProfilePage extends GetView<ProfileController> {
                                   child: nfts.length > 1
                                       ? InkWell(
                                           onTap: () {
-                                            controller.toNftItem(nfts[1]);
+                                            // controller.toNftItem(nfts[1]);
                                           },
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(17 * coefficient),
                                             ),
                                             child: Image.network(
-                                              nfts[1].nftPreview.isNotEmpty
-                                                  ? nfts[1].nftPreview
-                                                  : nfts[1].nftLink,
+                                              nfts[1].image,
                                               width: nftsLargestImageSize,
                                               height: nftsLargestImageSize,
                                               fit: BoxFit.cover,
@@ -488,8 +485,8 @@ class ProfilePage extends GetView<ProfileController> {
                                           child: nfts.length > 2
                                               ? InkWell(
                                                   onTap: () {
-                                                    controller
-                                                        .toNftItem(nfts[2]);
+                                                    // controller
+                                                    //     .toNftItem(nfts[2]);
                                                   },
                                                   child: ClipRRect(
                                                     borderRadius:
@@ -498,11 +495,7 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[2]
-                                                              .nftPreview
-                                                              .isNotEmpty
-                                                          ? nfts[2].nftPreview
-                                                          : nfts[2].nftLink,
+                                                      nfts[2].image,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -516,8 +509,8 @@ class ProfilePage extends GetView<ProfileController> {
                                           child: nfts.length > 3
                                               ? InkWell(
                                                   onTap: () {
-                                                    controller
-                                                        .toNftItem(nfts[3]);
+                                                    // controller
+                                                    //     .toNftItem(nfts[3]);
                                                   },
                                                   child: ClipRRect(
                                                     borderRadius:
@@ -526,11 +519,7 @@ class ProfilePage extends GetView<ProfileController> {
                                                           17 * coefficient),
                                                     ),
                                                     child: Image.network(
-                                                      nfts[3]
-                                                              .nftPreview
-                                                              .isNotEmpty
-                                                          ? nfts[3].nftPreview
-                                                          : nfts[3].nftLink,
+                                                      nfts[3].image,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -548,7 +537,7 @@ class ProfilePage extends GetView<ProfileController> {
                       ),
                     ),
                     Text(
-                      nfts.length > 0 ? nfts[0].nftMetadata.name : '',
+                      nfts.length > 0 ? nfts[0].name : '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.headline3!.copyWith(

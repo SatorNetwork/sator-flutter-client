@@ -130,7 +130,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 }
 
 class NftItemArgument {
-  final NftItem nftItem;
+  final  NftItem nftItem;
 
   const NftItemArgument(this.nftItem);
 }
