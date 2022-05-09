@@ -5,6 +5,7 @@ class NftItem {
   final String owner;
   final bool onSale;
   final double buyNowPrice;
+  final double priceInUsd;
   final String collectionId;
   final NftMetadata nftMetadata;
   final String nftLink;
@@ -15,6 +16,7 @@ class NftItem {
     this.owner,
     this.onSale,
     this.buyNowPrice,
+    this.priceInUsd,
     this.collectionId,
     this.nftMetadata,
     this.nftLink,
