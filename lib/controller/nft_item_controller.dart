@@ -7,7 +7,9 @@ import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/web_binding.dart';
+import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/controller/web_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -19,7 +21,8 @@ import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class NftItemController extends GetxController with NonWorkingFeatureMixin {
+class NftItemController extends GetxController
+    with NonWorkingFeatureMixin, BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<NftItem> nftItemRx;
@@ -87,36 +90,52 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
       _connectionSubscription =
           FlutterInappPurchase.connectionUpdated.listen((connected) {
-            //TODO: remove after tests
-            print('connected: $connected');
-          });
+        //TODO: remove after tests
+        print('connected: $connected');
+      });
 
       _purchaseUpdatedSubscription =
           FlutterInappPurchase.purchaseUpdated.listen((product) async {
-            //TODO: remove after tests
-            print('purchase-product: $product');
-            Map<String, dynamic> json = {};
+        Map<String, dynamic> json = {};
 
-            await _satorioRepository.consumeAll();
+        await _satorioRepository.consumeAll();
 
-            if (isAndroid && product != null) {
-              json = jsonDecode(product.transactionReceipt!);
+        if (isAndroid && product != null) {
+          json = jsonDecode(product.transactionReceipt!);
+        }
+
+        await verifyTransaction(
+          data: product!.transactionReceipt!,
+          signature: isAndroid ? product.signatureAndroid! : '',
+          json: isAndroid ? json : {},
+          token: isAndroid ? product.purchaseToken! : '',
+          purchasedItemIOS: product,
+        ).then((value) {
+          _purchaseUpdatedSubscription.cancel();
+          _connectionSubscription.cancel();
+          _purchaseErrorSubscription.cancel();
+
+          _satorioRepository
+              .buyNftIap(
+                  product.transactionReceipt!, nftItemRx.value.mintAddress)
+              .then((value) {
+            if (value) {
+              if (Get.isRegistered<NftCategoriesController>()) {
+                NftCategoriesController nftCategoriesController = Get.find();
+                nftCategoriesController.refreshData();
+              }
+
+              Get.back();
             }
-
-            await verifyTransaction(
-              data: product!.transactionReceipt!,
-              signature: isAndroid ? product.signatureAndroid! : '',
-              json: isAndroid ? json : {},
-              token: isAndroid ? product.purchaseToken! : '',
-              purchasedItemIOS: product,
-            );
           });
+        });
+      });
 
       _purchaseErrorSubscription =
           FlutterInappPurchase.purchaseError.listen((purchaseError) async {
-            _purchaseErrorSubscription.pause();
-            _purchaseErrorSubscription.resume();
-          });
+        _purchaseErrorSubscription.pause();
+        _purchaseErrorSubscription.resume();
+      });
     } on PlatformException catch (err) {
       //TODO: remove after tests and add response after API callback
       print(err);
@@ -161,21 +180,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
     required String token,
     required PurchasedItem purchasedItemIOS,
   }) async {
-    await _satorioRepository
-        .finishTransaction(purchasedItemIOS, true)
-        .then((value) {
-      if (value != null) {
-        _satorioRepository.buyNftIap(
-            purchasedItemIOS.transactionReceipt!, nftItemRx.value.mintAddress).then((value) {
-              if (value) {
-                Get.back();
-              }
-        });
-      }
-    }).catchError((error) {
-      //TODO: remove after tests and add response after API callback
-      print(error);
-    });
+      await _satorioRepository.finishTransaction(purchasedItemIOS, true);
   }
 
   void addToFavourite() {}
@@ -189,7 +194,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
   void toTermsOfUse() {
     Get.to(
-          () => WebPage(),
+      () => WebPage(),
       binding: WebBinding(),
       arguments: WebArgument(
         linkTermsOfUse,
@@ -197,44 +202,44 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
     );
   }
 
-  // void toNetworkVideo() {
-  //   if (nftItemRx.value.isVideoNft()) {
-  //     Get.to(
-  //       () => VideoNetworkPage(),
-  //       binding: VideoNetworkBinding(),
-  //       arguments: VideoNetworkArgument(nftItemRx.value.tokenUri),
-  //     );
-  //   }
-  // }
+// void toNetworkVideo() {
+//   if (nftItemRx.value.isVideoNft()) {
+//     Get.to(
+//       () => VideoNetworkPage(),
+//       binding: VideoNetworkBinding(),
+//       arguments: VideoNetworkArgument(nftItemRx.value.tokenUri),
+//     );
+//   }
+// }
 
   void buy() {
     Profile? profile = _getProfile();
     Future.value(true)
         .then(
           (value) {
-        isBuyRequested.value = true;
-        return value;
-      },
-    )
+            isBuyRequested.value = true;
+            return value;
+          },
+        )
         .then(
           (value) => _satorioRepository.buyNftItem(nftItemRx.value.mintAddress),
-    )
+        )
         .then(
           (isSuccess) {
-        if (isSuccess) {
-          Get.bottomSheet(
-            SuccessNftBoughtBottomSheet(
-                nftItemRx.value.nftMetadata.name, profile!.id),
-          );
-        }
-        isBuyRequested.value = false;
-      },
-    )
+            if (isSuccess) {
+              Get.bottomSheet(
+                SuccessNftBoughtBottomSheet(
+                    nftItemRx.value.nftMetadata.name, profile!.id),
+              );
+            }
+            isBuyRequested.value = false;
+          },
+        )
         .catchError(
           (value) {
-        isBuyRequested.value = false;
-      },
-    );
+            isBuyRequested.value = false;
+          },
+        );
   }
 
   void _refreshNftItem(String mintAddress) {
@@ -253,7 +258,7 @@ class NftItemController extends GetxController with NonWorkingFeatureMixin {
 
   Profile? _getProfile() {
     return (_satorioRepository.profileListenable()
-    as ValueListenable<Box<Profile>>)
+            as ValueListenable<Box<Profile>>)
         .value
         .getAt(0);
   }
