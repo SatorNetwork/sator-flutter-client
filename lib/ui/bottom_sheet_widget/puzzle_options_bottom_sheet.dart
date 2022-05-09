@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -11,8 +10,9 @@ import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class PuzzleOptionsBottomSheet extends StatelessWidget {
-  PuzzleOptionsBottomSheet(this.puzzleOptions, this.onExtend);
+  PuzzleOptionsBottomSheet(this.reward, this.puzzleOptions, this.onExtend);
 
+  final double reward;
   final List<PuzzleUnlockOption> puzzleOptions;
   final Function(PuzzleUnlockOption puzzleOption) onExtend;
 
@@ -31,28 +31,10 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              child: Center(
-                child: Container(
-                  width: 128 * coefficient,
-                  height: 128 * coefficient,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(24),
-                    ),
-                    color: SatorioColor.interactive,
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      'images/locked_icon.svg',
-                      width: 54 * coefficient,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
+              child: Container(),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 32),
+              padding: const EdgeInsets.symmetric(vertical: 38),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 color: Colors.white,
@@ -62,31 +44,92 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'txt_unlock_puzzle'.tr,
+                    'txt_puzzle_game'.tr,
                     textAlign: TextAlign.center,
                     style: textTheme.headline3!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 28 * coefficient,
+                      color: SatorioColor.darkAccent,
+                      fontSize: 24 * coefficient,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   SizedBox(
-                    height: 8 * coefficient,
+                    height: 6 * coefficient,
                   ),
                   Text(
-                    'txt_choose_option'.tr,
+                    'txt_complete_picture'.tr,
                     textAlign: TextAlign.center,
-                    style: textTheme.bodyText1!.copyWith(
-                      color: SatorioColor.textBlack,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.darkAccent,
                       fontSize: 18 * coefficient,
                       fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 32 * coefficient,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20 * coefficient,
+                    ),
+                    height: 53 * coefficient,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      color: SatorioColor.alice_blue,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          'txt_reward'.tr,
+                          style: textTheme.bodyText2!.copyWith(
+                            color: SatorioColor.darkAccent,
+                            fontSize: 14 * coefficient,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            '${reward.toStringAsFixed(2)} SAO',
+                            textAlign: TextAlign.right,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.interactive,
+                              fontSize: 14 * coefficient,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 12 * coefficient,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Divider(
+                      thickness: 3 * coefficient,
+                      color: SatorioColor.alice_blue,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16 * coefficient,
+                  ),
+                  Text(
+                    'txt_choose_step_amount'.tr,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.darkAccent,
+                      fontSize: 14 * coefficient,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   SizedBox(
                     height: 24 * coefficient,
                   ),
                   SizedBox(
-                    height: 56 * coefficient,
+                    height: 86 * coefficient,
                     child: ListView.separated(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       scrollDirection: Axis.horizontal,
@@ -99,13 +142,13 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 24 * coefficient,
+                    height: 38 * coefficient,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Obx(
                       () => ElevatedGradientButton(
-                        text: 'txt_unlock_sao'.tr,
+                        text: 'txt_play'.tr,
                         isEnabled: _selectedPuzzleOptionRx.value != null,
                         onPressed: () {
                           Get.back();
@@ -125,7 +168,7 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
                       text: 'txt_no_thanks'.tr,
                       textColor: SatorioColor.interactive,
                       borderColor: SatorioColor.interactive,
-                      borderWidth: 2,
+                      borderWidth: 1,
                       onPressed: () {
                         Get.back();
                       },
@@ -156,75 +199,57 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-              height: 56 * coefficient,
+              height: 86 * coefficient,
+              // width: 83 * coefficient,
               foregroundDecoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
                   Radius.circular(8),
                 ),
-                color:
-                    Colors.white.withOpacity(puzzleOption.isLocked ? 0.8 : 0.0),
+                color: Colors.white
+                    .withOpacity(puzzleOption.isLocked ? 0.75 : 0.0),
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(
-                  Radius.circular(8),
+                  Radius.circular(6),
                 ),
+                border: _selectedPuzzleOptionRx.value == puzzleOption
+                    ? Border.all(
+                        color: SatorioColor.interactive,
+                        width: 1,
+                      )
+                    : null,
                 color: _selectedPuzzleOptionRx.value == puzzleOption
-                    ? SatorioColor.interactive.withOpacity(0.5)
-                    : SatorioColor.lavender,
+                    ? SatorioColor.ghost_white
+                    : SatorioColor.alice_blue,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 20 * coefficient,
-                    height: 20 * coefficient,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          SatorioColor.razzle_dazzle_rose,
-                          SatorioColor.dodger_blue
-                        ],
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      puzzleOption.steps.toString(),
+                      maxLines: 1,
+                      style: textTheme.bodyText1!.copyWith(
+                        color: SatorioColor.interactive,
+                        fontSize: 24 * coefficient,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'images/sator_logo.svg',
-                        width: 10 * coefficient,
-                        height: 10 * coefficient,
-                        color: Colors.white,
+                    SizedBox(
+                      height: 6 * coefficient,
+                    ),
+                    Text(
+                      '${puzzleOption.amount.toStringAsFixed(2)} SAO',
+                      maxLines: 1,
+                      style: textTheme.bodyText2!.copyWith(
+                        color: SatorioColor.textBlack,
+                        fontSize: 12 * coefficient,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 6 * coefficient,
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${puzzleOption.steps} steps for',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        puzzleOption.amount.toStringAsFixed(2),
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             if (puzzleOption.isLocked)
