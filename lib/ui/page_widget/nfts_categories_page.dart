@@ -214,7 +214,9 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           ),
           RichText(
             text: TextSpan(
-              text: '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+              text: isAndroid
+                  ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
+                  : '${nftItem.priceInUsd.toStringAsFixed(2)} USD',
               style: TextStyle(
                 color: SatorioColor.textBlack,
                 fontSize: 12.0 * coefficient,
@@ -428,7 +430,9 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
-              text: nftItem.buyNowPrice.toStringAsFixed(2),
+              text: isAndroid
+                  ? '${nftItem.buyNowPrice.toStringAsFixed(2)}'
+                  : '${nftItem.priceInUsd.toStringAsFixed(2)}',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 14.0 * coefficient,
@@ -438,7 +442,9 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
               children: <TextSpan>[
                 TextSpan(text: ' '),
                 TextSpan(
-                  text: 'SAO',
+                  text: isAndroid
+                      ? 'SAO'
+                      : 'USD',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.0 * coefficient,

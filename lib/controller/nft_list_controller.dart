@@ -19,7 +19,7 @@ class NftListController extends GetxController with BackToMainMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final String _objectId;
-  late final NftFilterType _filterType;
+  late final NftFilterType filterType;
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
@@ -33,7 +33,7 @@ class NftListController extends GetxController with BackToMainMixin {
 
   NftListController() {
     NftListArgument argument = Get.arguments as NftListArgument;
-    _filterType = argument.filterType;
+    filterType = argument.filterType;
     _objectId = argument.objectId;
 
     loadNfts();
@@ -41,7 +41,7 @@ class NftListController extends GetxController with BackToMainMixin {
   }
 
   void back() {
-    if (_filterType == NftFilterType.User) {
+    if (filterType == NftFilterType.User) {
       _toProfile();
       return;
     }
@@ -99,7 +99,7 @@ class NftListController extends GetxController with BackToMainMixin {
   }
 
   Future<List<NftItem>> _loadNftsByType() {
-    switch (_filterType) {
+    switch (filterType) {
       case NftFilterType.Show:
         return _loadShowNfts();
       case NftFilterType.User:
@@ -111,9 +111,11 @@ class NftListController extends GetxController with BackToMainMixin {
 
   Future<List<NftItem>> _loadUserNfts() {
     return _satorioRepository.nftsFiltered(
-        page: _initialPage,
-        itemsPerPage: _itemsPerPage,
-        owner: _objectId);
+        owner: _objectId).then((value) {
+          nftItemsRx.value = value;
+          print('bbbbb');
+          return nftItemsRx.value;
+    });
   }
 
   Future<List<NftItem>> _loadShowNfts() {
@@ -125,7 +127,7 @@ class NftListController extends GetxController with BackToMainMixin {
   }
 
   void _updateTitle() {
-    switch (_filterType) {
+    switch (filterType) {
       case NftFilterType.NftCategory:
         titleRx.value = 'NFT gallery';
         break;

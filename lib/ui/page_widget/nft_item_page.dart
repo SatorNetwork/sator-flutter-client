@@ -295,7 +295,7 @@ class NftItemPage extends GetView<NftItemController> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                controller.isOwner.value
+                !controller.nftItemRx.value.onSale
                     ? Container()
                     : Column(
                         mainAxisSize: MainAxisSize.min,
@@ -311,7 +311,9 @@ class NftItemPage extends GetView<NftItemController> {
                           ),
                           Obx(
                             () => Text(
-                              '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
+                              isAndroid
+                                  ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
+                                  : '${controller.nftItemRx.value.priceInUsd.toStringAsFixed(2)} USD',
                               style: textTheme.bodyText2!.copyWith(
                                 color: SatorioColor.textBlack,
                                 fontSize: 15 * coefficient,

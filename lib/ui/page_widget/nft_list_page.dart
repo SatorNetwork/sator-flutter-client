@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
+import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -61,7 +62,9 @@ class NftListPage extends GetView<NftListController> {
                 onNotification: (notification) {
                   if (notification.metrics.pixels >=
                       notification.metrics.maxScrollExtent - _threshHold)
-                    controller.loadNfts();
+                    if (controller.filterType != NftFilterType.User) {
+                      controller.loadNfts();
+                    }
                   return true;
                 },
                 child: _nftList(),
@@ -130,28 +133,32 @@ class NftListPage extends GetView<NftListController> {
           SizedBox(
             height: 8 * coefficient,
           ),
-          RichText(
-            text: TextSpan(
-              text: '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
-              style: TextStyle(
-                color: SatorioColor.textBlack,
-                fontSize: 12.0 * coefficient,
-                fontWeight: FontWeight.w500,
-                backgroundColor: Colors.transparent,
-              ),
-              // children: <TextSpan>[
-              //   TextSpan(
-              //     text: '/ \$1,300',
-              //     style: TextStyle(
-              //       color: SatorioColor.comet,
-              //       fontSize: 12.0 * coefficient,
-              //       fontWeight: FontWeight.w500,
-              //       backgroundColor: Colors.transparent,
-              //     ),
-              //   ),
-              // ],
-            ),
-          ),
+          nftItem.onSale
+              ? RichText(
+                  text: TextSpan(
+                    text: isAndroid
+                        ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
+                        : '${nftItem.priceInUsd.toStringAsFixed(2)} USD',
+                    style: TextStyle(
+                      color: SatorioColor.textBlack,
+                      fontSize: 12.0 * coefficient,
+                      fontWeight: FontWeight.w500,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    // children: <TextSpan>[
+                    //   TextSpan(
+                    //     text: '/ \$1,300',
+                    //     style: TextStyle(
+                    //       color: SatorioColor.comet,
+                    //       fontSize: 12.0 * coefficient,
+                    //       fontWeight: FontWeight.w500,
+                    //       backgroundColor: Colors.transparent,
+                    //     ),
+                    //   ),
+                    // ],
+                  ),
+                )
+              : Container(),
         ],
       ),
     );
