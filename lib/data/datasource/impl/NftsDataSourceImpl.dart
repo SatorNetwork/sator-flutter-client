@@ -22,6 +22,7 @@ class NftsDataSourceImpl implements NftsDataSource {
 
     _getConnect = GetConnect();
     _getConnect.baseUrl = nftsUrl;
+    _getConnect.timeout = Duration(seconds: 30);
   }
 
   // region NFT

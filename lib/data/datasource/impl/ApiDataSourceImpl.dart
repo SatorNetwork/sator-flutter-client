@@ -84,6 +84,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect = GetConnect();
 
     _getConnect.baseUrl = baseUrl;
+    _getConnect.timeout = Duration(seconds: 30);
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
       String? fcmToken = await _firebaseDataSource.fcmToken();
