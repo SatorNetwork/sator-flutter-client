@@ -626,6 +626,7 @@ class ShowEpisodeRealmController extends GetxController
             isRequestedForPuzzleOptions.value = false;
             Get.bottomSheet(
               PuzzleOptionsBottomSheet(
+                puzzleGameRx.value?.prizePool ?? 0.0,
                 puzzleOptions,
                 (puzzleOption) {
                   _puzzleUnlock(puzzleOption);
