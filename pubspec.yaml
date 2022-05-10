@@ -67,6 +67,7 @@ dependencies:
   flutter_inapp_purchase: ^5.1.2
   connectivity_plus: ^2.3.0
   app_settings: ^4.1.6
+  solana: ^0.23.0
 
 dev_dependencies:
   flutter_test:
