@@ -7,6 +7,7 @@ import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/web_binding.dart';
+import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_categories_controller.dart';
@@ -119,13 +120,14 @@ class NftItemController extends GetxController
                   product.transactionReceipt!, nftItemRx.value.mintAddress)
               .then((value) {
             if (value) {
-              if (Get.isRegistered<NftCategoriesController>()) {
-                NftCategoriesController nftCategoriesController = Get.find();
-                nftCategoriesController.refreshData();
-              }
-
+              _refreshNftsData();
               Get.back();
+              isBuyRequested.value = false;
             }
+          }).catchError((error) {
+            _refreshNftsData();
+            Get.back();
+            isBuyRequested.value = false;
           });
         });
       });
@@ -134,10 +136,23 @@ class NftItemController extends GetxController
           FlutterInappPurchase.purchaseError.listen((purchaseError) async {
         _purchaseErrorSubscription.pause();
         _purchaseErrorSubscription.resume();
+        isBuyRequested.value = false;
       });
     } on PlatformException catch (err) {
       //TODO: remove after tests and add response after API callback
-      print(err);
+      print('error === $err');
+    }
+  }
+
+  void _refreshNftsData() {
+    if (Get.isRegistered<NftCategoriesController>()) {
+      NftCategoriesController nftCategoriesController = Get.find();
+      nftCategoriesController.refreshData();
+    }
+
+    if (Get.isRegistered<HomeController>()) {
+      HomeController homeController = Get.find();
+      homeController.refreshHomePage();
     }
   }
 
@@ -168,6 +183,8 @@ class NftItemController extends GetxController
 
   Future<void> buyInAppProduct() async {
     if (productId.isEmpty || productId == "") return;
+
+    isBuyRequested.value = true;
 
     _satorioRepository.buyInAppProduct(productId);
   }
@@ -264,7 +281,7 @@ class NftItemController extends GetxController
 }
 
 class NftItemArgument {
-  final NftItem nftItem;
+  final  NftItem nftItem;
 
   const NftItemArgument(this.nftItem);
 }

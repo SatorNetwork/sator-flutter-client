@@ -295,30 +295,34 @@ class NftItemPage extends GetView<NftItemController> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'txt_current_price'.tr,
-                      style: textTheme.bodyText2!.copyWith(
-                        color: SatorioColor.charcoal,
-                        fontSize: 15 * coefficient,
-                        fontWeight: FontWeight.w600,
+                !controller.nftItemRx.value.onSale
+                    ? Container()
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'txt_current_price'.tr,
+                            style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.charcoal,
+                              fontSize: 15 * coefficient,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Obx(
+                            () => Text(
+                              isAndroid
+                                  ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
+                                  : '${controller.nftItemRx.value.priceInUsd.toStringAsFixed(2)} USD',
+                              style: textTheme.bodyText2!.copyWith(
+                                color: SatorioColor.textBlack,
+                                fontSize: 15 * coefficient,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Obx(
-                      () => Text(
-                        '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO',
-                        style: textTheme.bodyText2!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15 * coefficient,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(
                   width: 36 * coefficient,
                 ),
@@ -331,6 +335,7 @@ class NftItemPage extends GetView<NftItemController> {
                                   text: isAndroid
                                       ? 'txt_to_marketplace'.tr
                                       : 'txt_buy_nfts'.tr,
+                                  isInProgress: controller.isBuyRequested.value,
                                   onPressed: () {
                                     isAndroid
                                         ? controller.toMarketplace(controller

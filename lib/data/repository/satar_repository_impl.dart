@@ -43,6 +43,7 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
+import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
@@ -752,6 +753,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }) {
     return _nftsDataSource
         .allNfts(page: page, itemsPerPage: itemsPerPage)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<NftItem>> userNfts(String walletAddress) {
+    return _apiDataSource
+        .userNfts(walletAddress)
         .catchError((value) => _handleException(value));
   }
 

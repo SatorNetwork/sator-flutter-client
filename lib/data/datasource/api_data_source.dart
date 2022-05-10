@@ -23,6 +23,7 @@ import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/stake_level_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
+import 'package:satorio/data/model/user_nft_item_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_staking_model.dart';
@@ -235,6 +236,8 @@ abstract class ApiDataSource {
     int? page,
     int? itemsPerPage,
   });
+
+  Future<List<NftItemModel>> userNfts(String walletAddress);
 
   Future<NftHomeModel> nftHome();
 

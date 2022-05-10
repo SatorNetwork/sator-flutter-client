@@ -20,14 +20,11 @@ class MainController extends GetxController {
 
   final RxInt selectedBottomTabIndex = 0.obs;
 
-  final Rx<List<NftItem>> nftHomeRx = Rx([]);
-
   @override
   void onInit() {
     super.onInit();
     _loadProfile();
     _loadWalletBalance();
-    loadNftHome();
   }
 
   @override
@@ -67,14 +64,6 @@ class MainController extends GetxController {
 
   void _loadWalletBalance() {
     _satorioRepository.updateWalletBalance();
-  }
-
-  void loadNftHome() {
-    _satorioRepository.nftsFiltered(
-        orderType: NftOrderOnSaleType.onSale
-    ).then((value) {
-      nftHomeRx.value = value;
-    });
   }
 
   void toQrScanner() {
