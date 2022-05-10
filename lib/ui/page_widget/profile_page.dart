@@ -6,7 +6,6 @@ import 'package:satorio/controller/profile_controller.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/review.dart';
-import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/sator_icons.dart';

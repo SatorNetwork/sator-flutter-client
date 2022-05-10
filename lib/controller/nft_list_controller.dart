@@ -83,12 +83,16 @@ class NftListController extends GetxController with BackToMainMixin {
         .then((value) => _loadNftsByType())
         .then(
           (List<NftItem> nftItems) {
-            nftItemsRx.update((value) {
-              if (value != null) value.addAll(nftItems);
-            });
-            _isAllLoadedRx.value = nftItems.isEmpty;
-            _isLoadingRx.value = false;
-            _pageRx.value = _pageRx.value + 1;
+            if (filterType != NftFilterType.User) {
+              nftItemsRx.update((value) {
+                if (value != null) value.addAll(nftItems);
+              });
+              _isAllLoadedRx.value = nftItems.isEmpty;
+              _isLoadingRx.value = false;
+              _pageRx.value = _pageRx.value + 1;
+            } else if (filterType == NftFilterType.User) {
+              nftItemsRx.value = nftItems;
+            }
           },
         )
         .catchError(
