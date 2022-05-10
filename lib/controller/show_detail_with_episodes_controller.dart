@@ -82,13 +82,8 @@ class ShowDetailWithEpisodesController extends GetxController
 
   void watchShow() async {
     if (showDetailRx.value != null) {
-      String url = showDetailRx.value!.watchUrl;
-      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
-      //   Get.dialog(
-      //     NetflixDialog(
-      //       showDetailRx.value!.title,
-      //     ),
-      //   );
+      final Uri url = Uri.parse(showDetailRx.value!.watchUrl);
+      if (!await launchUrl(url)) throw 'Could not launch $url';
     }
   }
 

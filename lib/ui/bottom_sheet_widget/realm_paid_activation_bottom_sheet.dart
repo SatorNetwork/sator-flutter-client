@@ -162,7 +162,7 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
         },
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
-          height: 50,
+          height: 56 * coefficient,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(
               Radius.circular(8),

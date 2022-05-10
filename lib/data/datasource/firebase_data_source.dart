@@ -22,4 +22,6 @@ abstract class FirebaseDataSource {
   Future<void> initNotifications();
 
   Future<int> appVersion();
+
+  Future inAppProductsIds();
 }

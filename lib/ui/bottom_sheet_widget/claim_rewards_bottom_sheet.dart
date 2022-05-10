@@ -103,6 +103,8 @@ class ClaimRewardsBottomSheet extends StatelessWidget with BackToMainMixin {
     );
   }
 
-  void _launchURL(String url) async =>
-      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+  void _launchURL(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) throw 'Could not launch $url';
+  }
 }

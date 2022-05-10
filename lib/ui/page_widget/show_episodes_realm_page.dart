@@ -684,7 +684,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                   //       end: Alignment.bottomCenter,
                                   //       colors: [
                                   //         SatorioColor.medium_slate_blue,
-                                  //         SatorioColor.medium_slate_blue_2
+                                  //         SatorioColor.interactive
                                   //       ],
                                   //     ),
                                   //   ),

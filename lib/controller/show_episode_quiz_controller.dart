@@ -1,12 +1,11 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/payload/payload_answer_option.dart';
 import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
 
 class ShowEpisodeQuizController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -41,42 +40,39 @@ class ShowEpisodeQuizController extends GetxController {
     if (answerIdRx.value.isNotEmpty && !isAnswerSentRx.value) {
       _satorioRepository
           .showEpisodeQuizAnswer(questionRx.value.questionId, answerIdRx.value)
-          .then((bool result) {
-        isAnswerSentRx.value = true;
-        if (result) {
-          Get.back(closeOverlays: true, result: true);
-        } else {
-          Get.dialog(
-            DefaultDialog(
-              'txt_oops'.tr,
-              'txt_wrong_answer'.tr,
-              'txt_ok'.tr,
-              icon: Icons.sentiment_dissatisfied_rounded,
-              onButtonPressed: () {
-                Get.back(closeOverlays: true);
-              },
-            ),
-            barrierDismissible: false,
-          );
-        }
-      });
+          .then(
+        (bool result) {
+          isAnswerSentRx.value = true;
+          countdownController.pause();
+          if (result) {
+            Get.back(closeOverlays: true, result: true);
+          } else {
+            _showSnackbar('txt_oops'.tr, 'txt_wrong_answer'.tr);
+          }
+        },
+      );
     }
   }
 
   void timeExpire() {
     if (isAnswerSentRx.value) return;
 
-    Get.dialog(
-      DefaultDialog(
-        'txt_oops'.tr,
-        'txt_time_expire'.tr,
-        'txt_ok'.tr,
-        icon: Icons.sentiment_dissatisfied_rounded,
-        onButtonPressed: () {
+    isAnswerSentRx.value = true;
+    _showSnackbar('txt_oops'.tr, 'txt_time_expire'.tr);
+  }
+
+  void _showSnackbar(String title, String message) {
+    Get.snackbar(
+      title,
+      message,
+      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+      colorText: SatorioColor.darkAccent,
+      duration: Duration(seconds: 4),
+      snackbarStatus: (SnackbarStatus? status) {
+        if (status == SnackbarStatus.CLOSED) {
           Get.back(closeOverlays: true);
-        },
-      ),
-      barrierDismissible: false,
+        }
+      },
     );
   }
 }
@@ -87,5 +83,8 @@ class ShowEpisodeQuizArgument {
   final PayloadQuestion payloadQuestion;
 
   const ShowEpisodeQuizArgument(
-      this.showSeason, this.showEpisode, this.payloadQuestion);
+    this.showSeason,
+    this.showEpisode,
+    this.payloadQuestion,
+  );
 }

@@ -16,6 +16,7 @@ import 'package:satorio/ui/page_widget/create_account_page.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/forgot_password_page.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
 
 class LoginController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
@@ -81,9 +82,19 @@ class LoginController extends GetxController with ValidationMixin {
       if (canCheckBiometrics) {
         _authWithBiometric();
       } else {
-        Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+        _showRefreshError();
       }
     });
+  }
+
+  void _showRefreshError() {
+    Get.snackbar(
+      'txt_oops'.tr,
+      'txt_login_refresh_error'.tr,
+      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+      colorText: SatorioColor.darkAccent,
+      duration: Duration(seconds: 4),
+    );
   }
 
   void _authWithBiometric() {
@@ -105,17 +116,23 @@ class LoginController extends GetxController with ValidationMixin {
             if (isTokenValid) {
               _checkIsVerified();
             } else {
-              Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+              _showRefreshError();
               isRequested.value = false;
             }
+          }).catchError((value) {
+            return _satorioRepository.logout().then((value) {
+              Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+              isBiometric.value = false;
+              isRequested.value = false;
+            });
           });
         } else {
-          Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+          _showRefreshError();
           isBiometric.value = false;
           isRequested.value = false;
         }
       }).catchError((error) {
-        Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+        _showRefreshError();
         _satorioRepository.markIsBiometricUserDisabled();
         isBiometric.value = false;
         isRequested.value = false;

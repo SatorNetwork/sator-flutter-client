@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/route_manager.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -70,9 +70,11 @@ class DefaultBottomSheet extends StatelessWidget {
           ),
           SizedBox(height: 16),
           ElevatedGradientButton(
-            text: buttonText,
-            onPressed: onPressed,
-          ),
+              text: buttonText,
+              onPressed: () {
+                Get.back();
+                onPressed?.call();
+              }),
         ],
       ),
     );

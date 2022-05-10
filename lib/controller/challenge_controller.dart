@@ -14,10 +14,10 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/quiz_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
-import 'package:share/share.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ChallengeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -72,7 +72,7 @@ class ChallengeController extends GetxController {
         // ),
       );
 
-      parameters.buildShortLink().then((value) {
+      FirebaseDynamicLinks.instance.buildShortLink(parameters).then((value) {
         print(value.shortUrl);
         Share.share(value.shortUrl.toString());
       });
@@ -87,12 +87,12 @@ class ChallengeController extends GetxController {
             if (challengeRx.value!.attemptsLeft > 0) {
               _loadQuizQuestion();
             } else {
-              Get.dialog(
-                DefaultDialog(
-                  'txt_oops'.tr,
-                  'txt_attempts_left_alert'.tr,
-                  'txt_ok'.tr,
-                ),
+              Get.snackbar(
+                'txt_oops'.tr,
+                'txt_attempts_left_alert'.tr,
+                backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+                colorText: SatorioColor.darkAccent,
+                duration: Duration(seconds: 4),
               );
             }
           },
