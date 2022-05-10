@@ -237,7 +237,7 @@ abstract class ApiDataSource {
     int? itemsPerPage,
   });
 
-  Future<List<UserNftItemModel>> userNfts(String walletAddress);
+  Future<List<NftItemModel>> userNfts(String walletAddress);
 
   Future<NftHomeModel> nftHome();
 

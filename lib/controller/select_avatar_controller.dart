@@ -4,9 +4,9 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
+import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
-import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -18,7 +18,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
 
   final Rx<String?> avatarRx = Rx(null);
   final Rx<Profile?> profileRx = Rx(null);
-  final Rx<List<UserNftItem>> nftItemsRx = Rx([]);
+  final Rx<List<NftItem>> nftItemsRx = Rx([]);
   final Rx<AvatarsListType> avatarsListType = Rx(AvatarsListType.local);
 
   Map<String, Wallet> wallets = {};
@@ -54,7 +54,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
     if (avatarsListType.value == AvatarsListType.local) {
       avatarRx.value = avatars[index];
     } else {
-      avatarRx.value = nftItemsRx.value[index].image;
+      avatarRx.value = nftItemsRx.value[index].nftPreview;
     }
   }
 
@@ -159,7 +159,6 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
   }
 
   void _solanaAddress() {
-    print('solana');
     walletDetailsRx.value.forEach((element) {
       solanaAddressRx.update((val) {
         if (element.solanaAccountAddress.isNotEmpty) {
@@ -174,7 +173,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
     if (profileRx.value != null) {
       _satorioRepository
           .userNfts(solanaAddressRx.value)
-          .then((List<UserNftItem> nftItems) {
+          .then((List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       });
     }

@@ -190,7 +190,10 @@ class SelectAvatarPage extends GetView<SelectAvatarController> {
                 height: 51,
                 width: 51,
                 child: Image.network(
-                    controller.nftItemsRx.value[index].image))));
+                  controller.nftItemsRx.value[index].nftPreview.isNotEmpty
+                      ? controller.nftItemsRx.value[index].nftPreview
+                      : controller.nftItemsRx.value[index].nftLink,
+                ))));
   }
 
   Widget _topPanel() {

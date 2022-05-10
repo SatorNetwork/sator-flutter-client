@@ -238,7 +238,7 @@ abstract class SatorioRepository {
     int? itemsPerPage,
   });
 
-  Future<List<UserNftItem>> userNfts(String walletAddress);
+  Future<List<NftItem>> userNfts(String walletAddress);
 
   Future<NftHome> nftHome();
 

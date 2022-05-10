@@ -110,12 +110,7 @@ class NftListController extends GetxController with BackToMainMixin {
   }
 
   Future<List<NftItem>> _loadUserNfts() {
-    return _satorioRepository.nftsFiltered(
-        owner: _objectId).then((value) {
-          nftItemsRx.value = value;
-          print('bbbbb');
-          return nftItemsRx.value;
-    });
+    return _satorioRepository.userNfts(_objectId);
   }
 
   Future<List<NftItem>> _loadShowNfts() {

@@ -757,7 +757,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<List<UserNftItem>> userNfts(String walletAddress) {
+  Future<List<NftItem>> userNfts(String walletAddress) {
     return _apiDataSource
         .userNfts(walletAddress)
         .catchError((value) => _handleException(value));

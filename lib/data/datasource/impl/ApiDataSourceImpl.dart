@@ -1088,7 +1088,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<List<UserNftItemModel>> userNfts(String walletAddress) {
+  Future<List<NftItemModel>> userNfts(String walletAddress) {
     return _getConnect
         .requestGet(
       'nft/by_wallet_address/$walletAddress',
@@ -1097,7 +1097,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] != null && jsonData['data'] is Iterable) {
         return (jsonData['data'] as Iterable)
-            .map((element) => UserNftItemModel.fromJson(element))
+            .map((element) => NftItemModel.fromJson(element))
             .toList();
       } else {
         return [];

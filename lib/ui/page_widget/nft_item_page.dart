@@ -335,6 +335,7 @@ class NftItemPage extends GetView<NftItemController> {
                                   text: isAndroid
                                       ? 'txt_to_marketplace'.tr
                                       : 'txt_buy_nfts'.tr,
+                                  isInProgress: controller.isBuyRequested.value,
                                   onPressed: () {
                                     isAndroid
                                         ? controller.toMarketplace(controller

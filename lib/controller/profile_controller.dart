@@ -26,7 +26,6 @@ import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
-import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -50,7 +49,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   final Rx<Profile?> profileRx = Rx(null);
   final Rx<List<Review>> reviewsRx = Rx([]);
   final Rx<List<ActivatedRealm>> activatedRealmsRx = Rx([]);
-  final Rx<List<UserNftItem>> nftItemsRx = Rx([]);
+  final Rx<List<NftItem>> nftItemsRx = Rx([]);
 
   Map<String, Wallet> wallets = {};
   Rx<List<WalletDetail>> walletDetailsRx = Rx([]);
@@ -293,7 +292,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
     if (profileRx.value != null) {
       _satorioRepository
           .userNfts(solanaAddressRx.value)
-          .then((List<UserNftItem> nftItems) {
+          .then((List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       });
     }
