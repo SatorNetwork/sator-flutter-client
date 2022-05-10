@@ -31,6 +31,7 @@ import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/stake_level_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
+import 'package:satorio/data/model/user_nft_item_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_staking_model.dart';
@@ -1078,6 +1079,24 @@ class ApiDataSourceImpl implements ApiDataSource {
         .then((Response response) {
       Map jsonData = json.decode(response.bodyString!);
       if (jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => NftItemModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<List<NftItemModel>> userNfts(String walletAddress) {
+    return _getConnect
+        .requestGet(
+      'nft/by_wallet_address/$walletAddress',
+    )
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] != null && jsonData['data'] is Iterable) {
         return (jsonData['data'] as Iterable)
             .map((element) => NftItemModel.fromJson(element))
             .toList();

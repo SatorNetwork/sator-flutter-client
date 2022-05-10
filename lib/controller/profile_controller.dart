@@ -291,10 +291,7 @@ class ProfileController extends GetxController with NonWorkingFeatureMixin {
   void _loadNfts() {
     if (profileRx.value != null) {
       _satorioRepository
-          .nftsFiltered(
-              page: _initialPage,
-              itemsPerPage: _itemsPerPageNft,
-              owner: solanaAddressRx.value)
+          .userNfts(solanaAddressRx.value)
           .then((List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       });
