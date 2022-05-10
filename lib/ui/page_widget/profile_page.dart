@@ -412,7 +412,7 @@ class ProfilePage extends GetView<ProfileController> {
                 child: _emptyState('txt_you_havent_nfts'.tr),
               )
             : Container(
-                height: nftsLargestImageSize + 21 * coefficient,
+                height: nftsLargestImageSize,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
