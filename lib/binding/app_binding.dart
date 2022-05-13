@@ -10,10 +10,12 @@ import 'package:satorio/data/datasource/impl/InAppPurchaseDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/LocalDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/NftsDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/nats_data_source_impl.dart';
+import 'package:satorio/data/datasource/impl/solana_data_source_impl.dart';
 import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
+import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/data/encrypt/encrypt_manager_impl.dart';
 import 'package:satorio/data/repository/satar_repository_impl.dart';
@@ -41,10 +43,12 @@ class AppBinding extends Bindings {
       NatsDataSourceImpl(Get.find()),
       permanent: true,
     );
+    Get.put<SolanaDataSource>(SolanaDataSourceImpl(), permanent: true);
 
     // Repository
     Get.put<SatorioRepository>(
       SatorioRepositoryImpl(
+        Get.find(),
         Get.find(),
         Get.find(),
         Get.find(),

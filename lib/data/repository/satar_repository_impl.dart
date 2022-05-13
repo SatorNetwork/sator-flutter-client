@@ -43,13 +43,14 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
-import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+
+import '../datasource/solana_data_source.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
@@ -58,15 +59,18 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
   final InAppPurchaseDataSource _inAppPurchaseDataSource;
+  final SolanaDataSource _solanaDataSource;
   final RxBool _init = false.obs;
 
   SatorioRepositoryImpl(
-      this._apiDataSource,
-      this._nftsDataSource,
-      this._localDataSource,
-      this._firebaseDataSource,
-      this._natsDataSource,
-      this._inAppPurchaseDataSource) {
+    this._apiDataSource,
+    this._nftsDataSource,
+    this._localDataSource,
+    this._firebaseDataSource,
+    this._natsDataSource,
+    this._inAppPurchaseDataSource,
+    this._solanaDataSource,
+  ) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
