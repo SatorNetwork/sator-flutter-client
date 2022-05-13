@@ -6,6 +6,7 @@ import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
@@ -61,7 +62,8 @@ class ShowDetailWithEpisodesController extends GetxController
   }
 
   void _loadNftItems() {
-    _satorioRepository.nftsFiltered(showIds: [showRx.value.id]).then(
+    _satorioRepository.nftsFiltered(
+        orderType: NftOrderOnSaleType.onSale, showIds: [showRx.value.id]).then(
       (List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       },
