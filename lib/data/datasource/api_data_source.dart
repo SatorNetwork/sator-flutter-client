@@ -275,4 +275,8 @@ abstract class ApiDataSource {
 
 // endregion
 
+// region Firebase
+  Future<bool> registerToken(String deviceId, String token);
+// endregion
+
 }

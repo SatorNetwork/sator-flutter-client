@@ -307,4 +307,8 @@ abstract class SatorioRepository {
       PurchasedItem purchasedItem, bool isConsumable);
 
   Future inAppProductsIds();
+
+  Future<bool> registerToken(String deviceId, String token);
+
+  Future<String?> fcmToken();
 }

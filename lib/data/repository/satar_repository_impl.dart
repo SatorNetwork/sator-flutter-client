@@ -948,4 +948,18 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .inAppProductsIds()
         .catchError((value) => _handleException(value));
   }
+
+  @override
+  Future<bool> registerToken(String deviceId, String token) {
+    return _apiDataSource
+        .registerToken(deviceId, token)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> fcmToken() {
+    return _firebaseDataSource
+        .fcmToken()
+        .catchError((value) => _handleException(value));
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -16,6 +17,7 @@ import 'package:satorio/ui/page_widget/create_account_page.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/forgot_password_page.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
 class LoginController extends GetxController with ValidationMixin {
@@ -217,14 +219,43 @@ class LoginController extends GetxController with ValidationMixin {
     });
   }
 
+  Future<void> _registerToken() async {
+    var deviceInfo = DeviceInfoPlugin();
+
+    var _deviceOsInfo;
+
+    String _deviceId;
+
+    if (!isAndroid) {
+      _deviceOsInfo = await deviceInfo.iosInfo;
+      _deviceId = _deviceOsInfo.identifierForVendor;
+      _getFcmToken(_deviceId);
+    } else if(isAndroid) {
+      _deviceOsInfo = await deviceInfo.androidInfo;
+      _deviceId = _deviceOsInfo.androidId;
+      _getFcmToken(_deviceId);
+    }
+  }
+
+  void _getFcmToken(String deviceId) async {
+    _satorioRepository.fcmToken().then((token) {
+      _satorioRepository.registerToken(deviceId, token!).then((value) {
+        //TODO: handle it
+      });
+    });
+  }
+
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {
-      if (isVerified)
+      if (isVerified) {
+        _registerToken();
         Get.offAll(
-          () => MainPage(),
+              () => MainPage(),
           binding: MainBinding(),
           arguments: MainArgument(deepLink),
         );
+      }
+
       else
         Get.to(
           () => EmailVerificationPage(),
