@@ -220,6 +220,7 @@ class LoginController extends GetxController with ValidationMixin {
   }
 
   Future<void> _registerToken() async {
+    //TODO: refactor
     var deviceInfo = DeviceInfoPlugin();
 
     var _deviceOsInfo;
