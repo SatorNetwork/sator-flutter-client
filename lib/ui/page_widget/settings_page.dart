@@ -108,23 +108,35 @@ class SettingsPage extends GetView<SettingsController> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _settingsButton('txt_user_name'.tr, 'images/profile',
-            () => controller.toChangeInfo(ChangeInfoType.username)),
+        _settingsButton(
+          'txt_user_name'.tr,
+          'images/profile',
+          () => controller.toChangeInfo(ChangeInfoType.username),
+        ),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_avatar'.tr, 'images/settings/ico_avatar',
-            () => controller.toSelectAvatar()),
+        _settingsButton(
+          'txt_avatar'.tr,
+          'images/settings/ico_avatar',
+          () => controller.toSelectAvatar(),
+        ),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_settings_email'.tr, 'images/settings/ico_email',
-            () => controller.toChangeInfo(ChangeInfoType.email)),
+        _settingsButton(
+          'txt_settings_email'.tr,
+          'images/settings/ico_email',
+          () => controller.toChangeInfo(ChangeInfoType.email),
+        ),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_password'.tr, 'images/settings/ico_pass',
-            () => controller.toChangeInfo(ChangeInfoType.password)),
+        _settingsButton(
+          'txt_password'.tr,
+          'images/settings/ico_pass',
+          () => controller.toChangeInfo(ChangeInfoType.password),
+        ),
         SizedBox(
           height: 12,
         ),
@@ -217,23 +229,35 @@ class SettingsPage extends GetView<SettingsController> {
       mainAxisSize: MainAxisSize.min,
       children: [
         //TODO: uncomment
-        // _settingsButton('txt_rate_sator'.tr, 'images/settings/ico_star',
-        //     () => controller.toNonWorkingDialog()),
+        // _settingsButton(
+        //   'txt_rate_sator'.tr,
+        //   'images/settings/ico_star',
+        //   () => controller.toNonWorkingDialog(),
+        // ),
         // SizedBox(
         //   height: 12,
         // ),
-        // _settingsButton('txt_report_bug'.tr, 'images/settings/ico_danger',
-        //     () => controller.toNonWorkingDialog()),
+        // _settingsButton(
+        //   'txt_report_bug'.tr,
+        //   'images/settings/ico_danger',
+        //   () => controller.toNonWorkingDialog(),
+        // ),
         // SizedBox(
         //   height: 12,
         // ),
-        _settingsButton('txt_help'.tr, 'images/settings/ico_help',
-            () => controller.sendEmailToSupport()),
+        _settingsButton(
+          'txt_help'.tr,
+          'images/settings/ico_help',
+          () => controller.sendEmailToSupport(),
+        ),
         SizedBox(
           height: 12,
         ),
-        _settingsButton('txt_about'.tr, 'images/settings/ico_document',
-            () => controller.toAbout()),
+        _settingsButton(
+          'txt_about'.tr,
+          'images/settings/ico_document',
+          () => controller.toAbout(),
+        ),
       ],
     );
   }

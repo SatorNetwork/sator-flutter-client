@@ -1,5 +1,6 @@
 import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -24,6 +25,7 @@ import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transfer.dart';
+import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 
@@ -236,6 +238,8 @@ abstract class SatorioRepository {
     int? itemsPerPage,
   });
 
+  Future<List<NftItem>> userNfts(String walletAddress);
+
   Future<NftHome> nftHome();
 
   Future<List<NftCategory>> nftCategories();
@@ -276,6 +280,8 @@ abstract class SatorioRepository {
 
   Future<NftItem> nft(String mintAddress);
 
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress);
+
   Future<List<PuzzleUnlockOption>> puzzleOptions();
 
   Future<PuzzleGame?> puzzle(String episodeId);
@@ -287,12 +293,22 @@ abstract class SatorioRepository {
 
   Future<PuzzleGame> startPuzzle(String puzzleGameId);
 
-  Future<PuzzleGame> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  );
+  Future<PuzzleGame> tapTile(String puzzleGameId, int x, int y);
 
+  Future<List<IAPItem>> getProducts(List<String> productsIds);
+
+  Future<void> buyInAppProduct(String id);
+
+  Future<String?> initializePurchase();
+
+  Future<List<PurchasedItem>?> purchaseHistory();
+
+  Future<void> consumeAll();
+
+  Future<String?> finishTransaction(
+      PurchasedItem purchasedItem, bool isConsumable);
+
+  Future inAppProductsIds();
 
   Future<void> updateRssItems();
 }

@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/binding/wallet_receive_binding.dart';
 import 'package:satorio/binding/wallet_send_binding.dart';
 import 'package:satorio/binding/wallet_stake_binding.dart';
+import 'package:satorio/binding/wallet_in_app_purchase_binding.dart';
 import 'package:satorio/controller/wallet_receive_controller.dart';
 import 'package:satorio/controller/wallet_send_controller.dart';
 import 'package:satorio/controller/wallet_stake_controller.dart';
@@ -14,9 +16,11 @@ import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
+import 'package:satorio/ui/page_widget/challenges_page.dart';
 import 'package:satorio/ui/page_widget/wallet_receive_page.dart';
 import 'package:satorio/ui/page_widget/wallet_send_page.dart';
 import 'package:satorio/ui/page_widget/wallet_stake_page.dart';
+import 'package:satorio/ui/page_widget/wallet_in_app_purchase_page.dart';
 
 class WalletController extends GetxController {
   static const _initPage = 0;
@@ -163,6 +167,13 @@ class WalletController extends GetxController {
     }
   }
 
+  void toTopUp() {
+    Get.to(
+          () => WalletInAppPurchasePage(),
+      binding: WalletInAppPurchaseBinding(),
+    );
+  }
+
   void toReceive(WalletDetail walletDetail) {
     Get.to(
       () => WalletReceivePage(),
@@ -176,6 +187,13 @@ class WalletController extends GetxController {
       () => WalletSendPage(),
       binding: WalletSendBinding(),
       arguments: WalletSendArgument(walletDetail, null),
+    );
+  }
+
+  void toChallenges() {
+    Get.to(
+          () => ChallengesPage(),
+      binding: ChallengesBinding(),
     );
   }
 

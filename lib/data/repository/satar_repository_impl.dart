@@ -4,6 +4,7 @@ import 'package:dart_nats/dart_nats.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_idensic_mobile_sdk_plugin/flutter_idensic_mobile_sdk_plugin.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
@@ -13,6 +14,7 @@ import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/data/datasource/feed_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
@@ -42,12 +44,13 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
+import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
@@ -55,6 +58,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final FirebaseDataSource _firebaseDataSource;
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
+  final InAppPurchaseDataSource _inAppPurchaseDataSource;
   final FeedDataSource _feedDataSource;
 
   final RxBool _init = false.obs;
@@ -65,12 +69,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
     this._localDataSource,
     this._firebaseDataSource,
     this._natsDataSource,
+    this._inAppPurchaseDataSource,
     this._feedDataSource,
   ) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
         .then((value) => _nftsDataSource.init())
+        .then((value) => _inAppPurchaseDataSource.init())
         .then((value) => _init.value = true);
   }
 
@@ -87,12 +93,12 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   void _handleApiErrorException(ApiErrorException exception) {
-    Get.dialog(
-      DefaultDialog(
-        'txt_oops'.tr,
-        exception.errorMessage,
-        'txt_ok'.tr,
-      ),
+    Get.snackbar(
+      'txt_oops'.tr,
+      exception.errorMessage,
+      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+      colorText: SatorioColor.darkAccent,
+      duration: Duration(seconds: 4),
     );
   }
 
@@ -104,7 +110,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
           binding: LoginBinding(),
           arguments: LoginArgument(null),
         );
-        Get.snackbar('txt_oops'.tr, exception.errorMessage);
+        Get.snackbar(
+          'txt_oops'.tr,
+          exception.errorMessage,
+          backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+          colorText: SatorioColor.darkAccent,
+          duration: Duration(seconds: 4),
+        );
       },
     );
   }
@@ -443,6 +455,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .then(
           (value) => clearDBandAllTokens(),
         )
+        .then((value) => markIsBiometricUserDisabled())
         .then(
       (value) {
         Get.offAll(
@@ -749,6 +762,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<List<NftItem>> userNfts(String walletAddress) {
+    return _apiDataSource
+        .userNfts(walletAddress)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<NftHome> nftHome() {
     return _apiDataSource
         .nftHome()
@@ -852,6 +872,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress) {
+    return _apiDataSource
+        .buyNftIap(transactionReceipt, mintAddress)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<PuzzleUnlockOption>> puzzleOptions() {
     return _apiDataSource
         .puzzleOptions()
@@ -878,13 +905,57 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<PuzzleGame> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  ) {
-    return _apiDataSource
-        .finishPuzzle(puzzleGameId, result, stepsTaken)
+  Future<PuzzleGame> tapTile(String puzzleGameId, int x, int y) {
+    return _apiDataSource.tapTile(puzzleGameId, x, y);
+  }
+
+  @override
+  Future<List<IAPItem>> getProducts(List<String> productsIds) {
+    return _inAppPurchaseDataSource
+        .getProducts(productsIds)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> buyInAppProduct(String id) {
+    return _inAppPurchaseDataSource
+        .buyInAppProduct(id)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> initializePurchase() {
+    return _inAppPurchaseDataSource
+        .initializePurchase()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<List<PurchasedItem>?> purchaseHistory() {
+    return _inAppPurchaseDataSource
+        .purchaseHistory()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> consumeAll() {
+    return _inAppPurchaseDataSource
+        .consumeAll()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> finishTransaction(
+      PurchasedItem purchasedItem, bool isConsumable) {
+    return _inAppPurchaseDataSource
+        .finishTransaction(purchasedItem, isConsumable)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future inAppProductsIds() {
+    return _firebaseDataSource
+        .inAppProductsIds()
         .catchError((value) => _handleException(value));
   }
 

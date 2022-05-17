@@ -52,7 +52,6 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_expiring_bottom_sheet.dart'
 import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
-import 'package:satorio/ui/dialog_widget/default_dialog.dart';
 import 'package:satorio/ui/dialog_widget/success_tip_dialog.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/chat_page.dart';
@@ -63,6 +62,7 @@ import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/video_youtube_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
+import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -292,12 +292,12 @@ class ShowEpisodeRealmController extends GetxController
           if (attemptsLeftRx.value > 0) {
             _loadQuizQuestion();
           } else {
-            Get.dialog(
-              DefaultDialog(
-                'txt_oops'.tr,
-                'txt_attempts_left_alert'.tr,
-                'txt_ok'.tr,
-              ),
+            Get.snackbar(
+              'txt_oops'.tr,
+              'txt_attempts_left_alert'.tr,
+              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+              colorText: SatorioColor.darkAccent,
+              duration: Duration(seconds: 4),
             );
           }
         },
@@ -435,7 +435,7 @@ class ShowEpisodeRealmController extends GetxController
   void tryToPuzzle() {
     if (puzzleGameRx.value != null)
       switch (puzzleGameRx.value!.status) {
-        case PuzzleGameStatus.notStarted:
+        case PuzzleGameStatus.newGame:
           if (puzzleGameRx.value!.steps > 0) {
             _toPuzzle();
           } else {
@@ -443,27 +443,28 @@ class ShowEpisodeRealmController extends GetxController
           }
           break;
         default:
-          Get.dialog(
-            DefaultDialog(
-              'txt_oops'.tr,
-              'txt_cannot_start_puzzle'.tr,
-              'txt_ok'.tr,
-            ),
+          Get.snackbar(
+            'txt_oops'.tr,
+            'txt_cannot_start_puzzle'.tr,
+            backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
+            colorText: SatorioColor.darkAccent,
+            duration: Duration(seconds: 4),
           );
           break;
       }
   }
 
   void watchVideo() async {
-    String url = showEpisodeRx.value.watch;
-    if (YoutubePlayer.convertUrlToId(url) != null) {
+    final String urlString = showEpisodeRx.value.watch;
+    if (YoutubePlayer.convertUrlToId(urlString) != null) {
       Get.to(
         () => VideoYoutubePage(),
         binding: VideoYoutubeBinding(),
-        arguments: VideoYoutubeArgument(url),
+        arguments: VideoYoutubeArgument(urlString),
       );
     } else {
-      await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+      final Uri url = Uri.parse(urlString);
+      if (!await launchUrl(url)) throw 'Could not launch $url';
     }
   }
 
@@ -625,6 +626,7 @@ class ShowEpisodeRealmController extends GetxController
             isRequestedForPuzzleOptions.value = false;
             Get.bottomSheet(
               PuzzleOptionsBottomSheet(
+                puzzleGameRx.value?.prizePool ?? 0.0,
                 puzzleOptions,
                 (puzzleOption) {
                   _puzzleUnlock(puzzleOption);
@@ -675,9 +677,6 @@ class ShowEpisodeRealmController extends GetxController
               'txt_rate_success'.tr.format([rate]),
               'txt_awesome'.tr,
               icon: Icons.check_rounded,
-              onPressed: () {
-                Get.back();
-              },
             ),
           );
         }

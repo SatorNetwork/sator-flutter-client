@@ -10,6 +10,7 @@ class BorderedButton extends StatelessWidget {
     this.backgroundColor = Colors.transparent,
     this.borderColor = SatorioColor.darkAccent,
     this.borderWidth = 1.0,
+    this.borderRadius,
     this.icon,
     this.onPressed,
     this.isInProgress = false,
@@ -20,6 +21,7 @@ class BorderedButton extends StatelessWidget {
   final Color backgroundColor;
   final Color borderColor;
   final double borderWidth;
+  final double? borderRadius;
   final VoidCallback? onPressed;
   final Widget? icon;
   final bool isInProgress;
@@ -35,7 +37,7 @@ class BorderedButton extends StatelessWidget {
         minimumSize: Size.fromHeight(minHeight),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(8),
+            Radius.circular(borderRadius == null ? 8 : borderRadius!),
           ),
         ),
         side: BorderSide(color: borderColor, width: borderWidth),

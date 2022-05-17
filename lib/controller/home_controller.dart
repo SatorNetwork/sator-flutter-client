@@ -9,6 +9,7 @@ import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
@@ -55,14 +56,8 @@ class HomeController extends GetxController
 
     this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
-    _satorioRepository
-        .nftsFiltered(
-            page: _initialPage,
-            itemsPerPage: _itemsPerPage,
-            orderType: NftOrderOnSaleType.onSale)
-        .then((value) {
-      nftHomeRx.value = value;
-    });
+
+    _loadNfts();
   }
 
   @override
@@ -94,16 +89,24 @@ class HomeController extends GetxController
   }
 
   void refreshHomePage() {
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      mainController.loadNftHome();
-    }
+    _loadNfts();
 
     _satorioRepository.updateProfile();
     _satorioRepository.updateWalletBalance();
 
     _loadCategories();
     _loadAllShows();
+  }
+
+  void _loadNfts() {
+    _satorioRepository
+        .nftsFiltered(
+            page: _initialPage,
+            itemsPerPage: _itemsPerPage,
+            orderType: NftOrderOnSaleType.onSale)
+        .then((value) {
+      nftHomeRx.value = value;
+    });
   }
 
   void toChallenges() {
@@ -197,6 +200,11 @@ class HomeController extends GetxController
   }
 
   void toNfts() {
+    if (Get.isRegistered<NftCategoriesController>()) {
+      NftCategoriesController nftCategoriesController = Get.find();
+      nftCategoriesController.refreshData();
+    }
+
     _toTab(MainController.TabNfts);
   }
 

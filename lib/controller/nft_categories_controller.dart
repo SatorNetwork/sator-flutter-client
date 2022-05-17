@@ -65,12 +65,11 @@ class NftCategoriesController extends GetxController
   }
 
   void refreshData() {
-    if (Get.isRegistered<MainController>()) {
-      MainController mainController = Get.find();
-      mainController.loadNftHome();
-    }
-    //TODO: uncomment with categories
-    // _loadNftCategories();
+    _satorioRepository.nftsFiltered(
+        orderType: NftOrderOnSaleType.onSale
+    ).then((value) {
+      allNftsRx.value = value;
+    });
   }
 
   void _loadShowsWithNfts() {

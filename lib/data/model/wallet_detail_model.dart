@@ -7,18 +7,15 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/util/extension.dart';
 
 class WalletDetailModel extends WalletDetail implements ToJsonInterface {
-  const WalletDetailModel(
-    String id,
-    String solanaAccountAddress,
-    int order,
-    List<AmountCurrency> balance,
-    List<WalletAction> actions,
-  ) : super(
+  const WalletDetailModel(String id, String solanaAccountAddress, int order,
+      List<AmountCurrency> balance, List<WalletAction> actions, String type)
+      : super(
           id,
           solanaAccountAddress,
           order,
           balance,
           actions,
+          type,
         );
 
   factory WalletDetailModel.fromJson(Map json) {
@@ -44,6 +41,7 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
       json.parseValueAsInt('order'),
       balance,
       actions,
+      json.parseValueAsString('type'),
     );
   }
 
@@ -60,5 +58,6 @@ class WalletDetailModel extends WalletDetail implements ToJsonInterface {
             .whereType<ToJsonInterface>()
             .map((element) => element.toJson())
             .toList(),
+        'type': type,
       };
 }
