@@ -4,10 +4,11 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/main_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
-import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
+import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
 import 'package:satorio/util/avatar_list.dart';
@@ -20,10 +21,16 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
   final Rx<List<NftItem>> nftItemsRx = Rx([]);
   final Rx<AvatarsListType> avatarsListType = Rx(AvatarsListType.local);
 
-  final int _itemsPerPageNft = 4;
-  static const int _initialPage = 1;
+  Map<String, Wallet> wallets = {};
+  Rx<List<WalletDetail>> walletDetailsRx = Rx([]);
+  RxString solanaAddressRx = ''.obs;
 
   late final ValueListenable<Box<Profile>> profileListenable;
+  late ValueListenable<Box<Wallet>> _walletsListenable;
+  ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
+
+  final int _itemsPerPageNft = 4;
+  static const int _initialPage = 1;
 
   late final SelectAvatarType type;
   late final Uri? deepLink;
@@ -34,6 +41,9 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
     deepLink = argument.deepLink;
     this.profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
+
+    _walletsListenable =
+        _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
   }
 
   void toggle(AvatarsListType value) {
@@ -44,7 +54,9 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
     if (avatarsListType.value == AvatarsListType.local) {
       avatarRx.value = avatars[index];
     } else {
-      avatarRx.value = nftItemsRx.value[index].nftPreview;
+      avatarRx.value = nftItemsRx.value[index].nftPreview.isEmpty
+          ? nftItemsRx.value[index].nftLink
+          : nftItemsRx.value[index].nftPreview;
     }
   }
 
@@ -91,13 +103,42 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
 
     _profileListener();
     profileListenable.addListener(_profileListener);
-    _loadNfts();
+    _walletsListenable.addListener(_walletsListener);
+    _refreshAllWallets();
   }
 
   @override
   void onClose() {
     profileListenable.removeListener(_profileListener);
+    _walletsListenable.removeListener(_walletsListener);
+    _walletDetailsListenable?.removeListener(_walletDetailsListener);
     super.onClose();
+  }
+
+  void _walletsListener() {
+    // Update wallets map
+    Map<String, Wallet> walletsNew = {};
+    _walletsListenable.value.values.forEach((wallet) {
+      walletsNew[wallet.id] = wallet;
+    });
+    wallets = walletsNew;
+
+    // Ids of wallets
+    List<String> ids = wallets.values.map((wallet) => wallet.id).toList();
+
+    // Re-subscribe to new actual ids
+    _walletDetailsListenable?.removeListener(_walletDetailsListener);
+    _walletDetailsListenable = _satorioRepository.walletDetailsListenable(ids)
+        as ValueListenable<Box<WalletDetail>>;
+    _walletDetailsListenable?.addListener(_walletDetailsListener);
+  }
+
+  void _walletDetailsListener() {
+    List<WalletDetail> walletDetails =
+        _walletDetailsListenable!.value.values.toList();
+    walletDetails.sort((a, b) => a.order.compareTo(b.order));
+    walletDetailsRx.value = walletDetails;
+    _solanaAddress();
   }
 
   void _profileListener() {
@@ -105,15 +146,35 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
       profileRx.value = profileListenable.value.getAt(0);
   }
 
+  void _refreshAllWallets() {
+    _satorioRepository.updateWallets().then((List<Wallet> wallets) {
+      wallets.forEach((wallet) {
+        _updateWalletDetail(wallet);
+      });
+    });
+  }
+
+  void _updateWalletDetail(Wallet? wallet) {
+    if (wallet != null) {
+      _satorioRepository.updateWalletDetail(wallet.detailsUrl);
+    }
+  }
+
+  void _solanaAddress() {
+    walletDetailsRx.value.forEach((element) {
+      solanaAddressRx.update((val) {
+        if (element.solanaAccountAddress.isNotEmpty) {
+          solanaAddressRx.value = element.solanaAccountAddress;
+          _loadNfts();
+        }
+      });
+    });
+  }
+
   void _loadNfts() {
     if (profileRx.value != null) {
       _satorioRepository
-          .nftItems(
-        NftFilterType.User,
-        profileRx.value!.id,
-        page: _initialPage,
-        itemsPerPage: _itemsPerPageNft,
-      )
+          .userNfts(solanaAddressRx.value)
           .then((List<NftItem> nftItems) {
         nftItemsRx.value = nftItems;
       });

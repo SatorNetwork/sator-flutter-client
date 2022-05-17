@@ -7,7 +7,8 @@ class WalletDetail {
   final int order;
   final List<AmountCurrency> balance;
   final List<WalletAction> actions;
+  final String type;
 
-  const WalletDetail(
-      this.id, this.solanaAccountAddress, this.order, this.balance, this.actions);
+  const WalletDetail(this.id, this.solanaAccountAddress, this.order,
+      this.balance, this.actions, this.type);
 }

@@ -23,6 +23,7 @@ import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/stake_level_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
+import 'package:satorio/data/model/user_nft_item_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_staking_model.dart';
@@ -236,6 +237,8 @@ abstract class ApiDataSource {
     int? itemsPerPage,
   });
 
+  Future<List<NftItemModel>> userNfts(String walletAddress);
+
   Future<NftHomeModel> nftHome();
 
   Future<List<NftCategoryModel>> nftCategories();
@@ -250,6 +253,8 @@ abstract class ApiDataSource {
   Future<NftItemModel> nftItem(String nftItemId);
 
   Future<bool> buyNftItem(String nftItemId);
+
+  Future<bool> buyNftIap(String transactionReceipt, String mintAddress);
 
 // endregion
 
@@ -266,11 +271,7 @@ abstract class ApiDataSource {
 
   Future<PuzzleGameModel> startPuzzle(String puzzleGameId);
 
-  Future<PuzzleGameModel> finishPuzzle(
-    String puzzleGameId,
-    int result,
-    int stepsTaken,
-  );
+  Future<PuzzleGameModel> tapTile(String puzzleGameId, int x, int y);
 
 // endregion
 

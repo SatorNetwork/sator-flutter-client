@@ -4,6 +4,7 @@ import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/qr_scanner_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
+import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
@@ -19,14 +20,11 @@ class MainController extends GetxController {
 
   final RxInt selectedBottomTabIndex = 0.obs;
 
-  final Rx<List<NftItem>> nftHomeRx = Rx([]);
-
   @override
   void onInit() {
     super.onInit();
     _loadProfile();
     _loadWalletBalance();
-    loadNftHome();
   }
 
   @override
@@ -66,12 +64,6 @@ class MainController extends GetxController {
 
   void _loadWalletBalance() {
     _satorioRepository.updateWalletBalance();
-  }
-
-  void loadNftHome() {
-    _satorioRepository.nftsFiltered().then((value) {
-      nftHomeRx.value = value;
-    });
   }
 
   void toQrScanner() {

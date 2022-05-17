@@ -68,12 +68,11 @@ class SettingsController extends GetxController
   }
 
   void sendEmailToSupport() async {
-    final Uri params = Uri(
+    final Uri url = Uri(
       scheme: 'mailto',
       path: linkSupportEmail,
     );
-    String url = params.toString();
-    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
+    if (!await launchUrl(url)) throw 'Could not launch $url';
   }
 
   void toLogoutDialog() {
