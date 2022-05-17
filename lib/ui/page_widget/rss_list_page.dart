@@ -55,12 +55,16 @@ class RssListPage extends GetView<RssListController> {
                 () => ListView.separated(
                   padding: const EdgeInsets.all(20),
                   separatorBuilder: (context, index) => SizedBox(
-                    height: 14 * coefficient,
+                    height: 24 * coefficient,
                   ),
                   itemCount: controller.rssItemsRx.value.length,
                   itemBuilder: (context, index) {
                     final RssItem rssItem = controller.rssItemsRx.value[index];
-                    return _rssItem(rssItem);
+                    if (index % 2 == 0)
+                      // if (rssItem.content?.images.isEmpty ?? true)
+                      return _rssItemWithoutImages(rssItem);
+                    else
+                      return _rssItem(rssItem);
                   },
                 ),
               ),
@@ -71,106 +75,191 @@ class RssListPage extends GetView<RssListController> {
     );
   }
 
-  Widget _rssItem(RssItem rssItem) {
-    final double itemHeight = 180.0 * coefficient;
-    final double imageHeight = 90.0 * coefficient;
+  Widget _rssItemWithoutImages(RssItem rssItem) {
     return InkWell(
       onTap: () {
         controller.toRssItem(rssItem);
       },
-      child: Container(
-        height: itemHeight,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: SatorioColor.interactive,
-            width: 1,
-          ),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        // color: Colors.green,
-        child: Column(
-          children: [
-            ClipRRect(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: Get.width - 2 * 20,
+            padding: EdgeInsets.symmetric(
+              horizontal: 24 * coefficient,
+              vertical: 18 * coefficient,
+            ),
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.vertical(
-                top: Radius.circular(15),
+                top: Radius.circular(12),
               ),
-              child: Image.network(
-                rssItem.content!.images.first,
-                height: imageHeight,
-                width: Get.width - 2 * 20,
-                fit: BoxFit.cover,
+              color: SatorioColor.alice_blue,
+            ),
+            child: Text(
+              rssItem.title ?? '',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+              style: textTheme.headline3!.copyWith(
+                color: SatorioColor.textBlack,
+                fontSize: 16 * coefficient,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                    horizontal: 8 * coefficient, vertical: 8 * coefficient),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(16),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      rssItem.title ?? '',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
-                      style: textTheme.headline3!.copyWith(
-                        color: SatorioColor.textBlack,
-                        fontSize: 18 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 6 * coefficient,
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 20 * coefficient,
-                          height: 20 * coefficient,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                SatorioColor.yellow_orange,
-                                SatorioColor.tomato,
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10 * coefficient,
-                        ),
-                        Expanded(
-                          child: Text(
-                            rssItem.author ?? (rssItem.dc?.creator ?? ''),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.start,
-                            style: textTheme.bodyText2!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 15 * coefficient,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+          ),
+          Container(
+            width: Get.width - 2 * 20,
+            padding: EdgeInsets.symmetric(
+              horizontal: 24 * coefficient,
+              vertical: 20 * coefficient,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(12),
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 20 * coefficient,
+                  height: 20 * coefficient,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        SatorioColor.yellow_orange,
+                        SatorioColor.tomato,
                       ],
                     ),
-                  ],
+                  ),
                 ),
+                SizedBox(
+                  width: 6 * coefficient,
+                ),
+                Expanded(
+                  child: Text(
+                    rssItem.author ?? (rssItem.dc?.creator ?? ''),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _rssItem(RssItem rssItem) {
+    final double imageHeight = 135.0 * coefficient;
+    return InkWell(
+      onTap: () {
+        controller.toRssItem(rssItem);
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(12),
+            ),
+            child: Image.network(
+              rssItem.content!.images.first,
+              height: imageHeight,
+              width: Get.width - 2 * 20,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Container(
+            width: Get.width - 2 * 20,
+            padding: EdgeInsets.symmetric(
+              horizontal: 24 * coefficient,
+              vertical: 24 * coefficient,
+            ),
+            color: SatorioColor.alice_blue,
+            child: Text(
+              rssItem.title ?? '',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+              style: textTheme.headline3!.copyWith(
+                color: SatorioColor.textBlack,
+                fontSize: 16 * coefficient,
+                fontWeight: FontWeight.w700,
               ),
             ),
-          ],
-        ),
+          ),
+          Container(
+            width: Get.width - 2 * 20,
+            padding: EdgeInsets.symmetric(
+              horizontal: 24 * coefficient,
+              vertical: 20 * coefficient,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.vertical(
+                bottom: Radius.circular(12),
+              ),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 20 * coefficient,
+                  height: 20 * coefficient,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [
+                        SatorioColor.yellow_orange,
+                        SatorioColor.tomato,
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 6 * coefficient,
+                ),
+                Expanded(
+                  child: Text(
+                    rssItem.author ?? (rssItem.dc?.creator ?? ''),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.textBlack,
+                      fontSize: 15 * coefficient,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

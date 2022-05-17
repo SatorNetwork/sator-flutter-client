@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -10,10 +9,6 @@ import 'package:satorio/ui/theme/text_theme.dart';
 
 class RssItemPage extends GetView<RssItemController> {
   get _appBarHeight => 370 * coefficient;
-
-  get _hasImages =>
-      controller.rssItem.content != null &&
-      controller.rssItem.content!.images.isNotEmpty;
 
   final Rx<Color> backBgColor = Rx(Colors.white);
 
@@ -29,6 +24,7 @@ class RssItemPage extends GetView<RssItemController> {
               controller.rssItem.content!.images.first,
               width: Get.width,
               height: _appBarHeight + Get.mediaQuery.padding.top + 32,
+              fit: BoxFit.cover,
             ),
           ),
           NotificationListener<ScrollNotification>(

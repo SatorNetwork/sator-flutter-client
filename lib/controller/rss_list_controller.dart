@@ -22,6 +22,7 @@ class RssListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    _rssItemsListener();
     _rssItemsListenable.addListener(_rssItemsListener);
 
     _satorioRepository.updateRssItems();
@@ -39,6 +40,7 @@ class RssListController extends GetxController {
 
   void _rssItemsListener() {
     rssItemsRx.value = _rssItemsListenable.value.values.toList();
+    print(rssItemsRx.value.length.toString());
   }
 
   void toRssItem(RssItem rssItem) {

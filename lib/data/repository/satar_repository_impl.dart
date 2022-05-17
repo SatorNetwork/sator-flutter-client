@@ -44,7 +44,6 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
-import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
@@ -966,7 +965,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
         DateTime.now().difference(lastRssUpdateTime).inDays >= 1) {
       return _feedDataSource.rssItems().then(
             (value) => _localDataSource.saveRssItems(value),
-      );
+          );
     } else {
       return Future.value();
     }

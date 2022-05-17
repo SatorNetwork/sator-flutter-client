@@ -326,5 +326,5 @@ const Map<String, String> en = {
   'txt_no_internet_connection': 'No Internet Connection',
   'txt_check_your_connection': 'Please check your connection',
   'txt_to_settings': 'To Settings',
-  'txt_sator_blog': 'Sator Blog',
+  'txt_sator_blog': 'Blog',
 };
