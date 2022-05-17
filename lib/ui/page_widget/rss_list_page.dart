@@ -60,8 +60,7 @@ class RssListPage extends GetView<RssListController> {
                   itemCount: controller.rssItemsRx.value.length,
                   itemBuilder: (context, index) {
                     final RssItem rssItem = controller.rssItemsRx.value[index];
-                    if (index % 2 == 0)
-                      // if (rssItem.content?.images.isEmpty ?? true)
+                    if (rssItem.content?.images.isEmpty ?? true)
                       return _rssItemWithoutImages(rssItem);
                     else
                       return _rssItem(rssItem);
