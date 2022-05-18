@@ -1,9 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -13,6 +12,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/title_button.dart';
+import 'package:satorio/util/extension.dart';
 
 class HomePage extends GetView<HomeController> {
   @override
@@ -136,6 +136,9 @@ class HomePage extends GetView<HomeController> {
               ),
               Container(
                 margin: const EdgeInsets.only(top: 160),
+                constraints: BoxConstraints(
+                  minHeight: Get.height - 160,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(32),
@@ -258,7 +261,9 @@ class HomePage extends GetView<HomeController> {
                     },
                   ),
                 )
-              : Container(),
+              : SizedBox(
+                  height: 0,
+                ),
         ),
         Obx(
           () => controller.nftHomeRx.value.length != 0
@@ -281,7 +286,9 @@ class HomePage extends GetView<HomeController> {
                     ),
                   ),
                 )
-              : Container(),
+              : SizedBox(
+                  height: 0,
+                ),
         ),
         _categories(),
         Obx(
@@ -295,7 +302,9 @@ class HomePage extends GetView<HomeController> {
                     },
                   ),
                 )
-              : Container(),
+              : SizedBox(
+                  height: 0,
+                ),
         ),
         Obx(
           () => controller.allShowsRx.value.length != 0
@@ -317,11 +326,137 @@ class HomePage extends GetView<HomeController> {
                     ),
                   ),
                 )
-              : Container(),
+              : SizedBox(
+                  height: 0,
+                ),
         ),
-        SizedBox(
-          height: 24,
-        )
+        Obx(
+          () => controller.rssItemRx.value == null
+              ? SizedBox(
+                  height: 0,
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 20,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TitleWithButton(
+                        textCode: 'txt_sator_blog',
+                        onTap: () {
+                          controller.toBlog();
+                        },
+                      ),
+                      InkWell(
+                        onTap: () {
+                          controller.toRssItem();
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 24 * coefficient,
+                            vertical: 20 * coefficient,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                SatorioColor.alice_blue,
+                                SatorioColor.alice_blue2
+                              ],
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                controller.rssItemRx.value?.pubDate == null
+                                    ? ''
+                                    : '${DateFormat('MMMM d, yyyy').format(controller.rssItemRx.value!.pubDate!)}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: textTheme.bodyText2!.copyWith(
+                                  color: Colors.black,
+                                  fontSize: 12 * coefficient,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 14 * coefficient,
+                              ),
+                              Text(
+                                controller.rssItemRx.value?.title ?? '',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: textTheme.headline3!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 18 * coefficient,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 18 * coefficient,
+                              ),
+                              Text(
+                                controller.rssItemRx.value?.content?.value
+                                        .removeAllHtmlTags() ??
+                                    '',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: textTheme.headline3!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 15 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 18 * coefficient,
+                              ),
+                              Divider(
+                                thickness: 1,
+                                color: Colors.black.withOpacity(0.08),
+                              ),
+                              SizedBox(
+                                height: 18 * coefficient,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'txt_read_more'.tr,
+                                      textAlign: TextAlign.start,
+                                      style: textTheme.bodyText2!.copyWith(
+                                        color: SatorioColor.textBlack,
+                                        fontSize: 15 * coefficient,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.chevron_right,
+                                    size: 30,
+                                    color: SatorioColor.textBlack,
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+        ),
       ],
     );
   }
@@ -354,7 +489,9 @@ class HomePage extends GetView<HomeController> {
                               },
                             ),
                           )
-                        : Container(),
+                        : SizedBox(
+                            height: 0,
+                          ),
               ),
               Obx(
                 () => controller
@@ -380,7 +517,9 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                       )
-                    : Container(),
+                    : SizedBox(
+                        height: 0,
+                      ),
               ),
             ],
           );
@@ -467,7 +606,9 @@ class HomePage extends GetView<HomeController> {
                                 ),
                               ),
                             )
-                          : Container()
+                          : SizedBox(
+                              height: 0,
+                            ),
                     ],
                   ),
                 ),
