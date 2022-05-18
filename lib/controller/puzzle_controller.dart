@@ -137,9 +137,9 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
               'txt_failure'.tr,
               'txt_puzzle_steps_reached'.tr,
               'txt_ok'.tr,
-              onPressed: () => Get.back(closeOverlays: true),
             ),
-            enableDrag: false,
+          ).whenComplete(
+            () => Get.back(),
           );
           break;
         case PuzzleGameStatus.finished:
@@ -150,15 +150,14 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
                     puzzleGameRx.value!.bonusRewards > 0
                         ? '${puzzleGameRx.value!.bonusRewards.toStringAsFixed(2)} SAO'
                         : '',
-                    onPressed: () => Get.back(closeOverlays: true),
                   )
                 : DefaultBottomSheet(
                     'txt_success'.tr,
                     'txt_puzzle_win'.tr,
                     'txt_ok'.tr,
-                    onPressed: () => Get.back(closeOverlays: true),
                   ),
-            enableDrag: false,
+          ).whenComplete(
+            () => Get.back(),
           );
           break;
       }
