@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:satorio/controller/rss_list_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -61,7 +62,7 @@ class RssListPage extends GetView<RssListController> {
                   itemCount: controller.rssItemsRx.value.length,
                   itemBuilder: (context, index) {
                     final RssItem rssItem = controller.rssItemsRx.value[index];
-                    return _rssItemWithoutImage(rssItem);
+                    return _rssItem(rssItem);
                   },
                 ),
               ),
@@ -72,199 +73,87 @@ class RssListPage extends GetView<RssListController> {
     );
   }
 
-  Widget _rssItemWithoutImage(RssItem rssItem) {
-    return InkWell(
-      onTap: () {
-        controller.toRssItem(rssItem);
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: Get.width - 2 * 20,
-            padding: EdgeInsets.symmetric(
-              horizontal: 24 * coefficient,
-              vertical: 18 * coefficient,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(12),
-              ),
-              color: SatorioColor.alice_blue,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  rssItem.title ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: textTheme.headline3!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 16 * coefficient,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                SizedBox(
-                  height: 16 * coefficient,
-                ),
-                Text(
-                  rssItem.content?.value.removeAllHtmlTags() ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.start,
-                  style: textTheme.headline3!.copyWith(
-                    color: SatorioColor.textBlack,
-                    fontSize: 15 * coefficient,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: Get.width - 2 * 20,
-            padding: EdgeInsets.symmetric(
-              horizontal: 24 * coefficient,
-              vertical: 20 * coefficient,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(12),
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
-              ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 20 * coefficient,
-                  height: 20 * coefficient,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        SatorioColor.yellow_orange,
-                        SatorioColor.tomato,
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 6 * coefficient,
-                ),
-                Expanded(
-                  child: Text(
-                    rssItem.author ?? (rssItem.dc?.creator ?? ''),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.start,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 15 * coefficient,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _rssItem(RssItem rssItem) {
-    final double imageHeight = 135.0 * coefficient;
     return InkWell(
       onTap: () {
         controller.toRssItem(rssItem);
       },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(12),
-            ),
-            child: Image.network(
-              rssItem.content!.images.first,
-              height: imageHeight,
-              width: Get.width - 2 * 20,
-              fit: BoxFit.cover,
-            ),
+      child: Container(
+        margin: const EdgeInsets.only(top: 16),
+        padding: EdgeInsets.symmetric(
+          horizontal: 24 * coefficient,
+          vertical: 20 * coefficient,
+        ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
           ),
-          Container(
-            width: Get.width - 2 * 20,
-            padding: EdgeInsets.symmetric(
-              horizontal: 24 * coefficient,
-              vertical: 24 * coefficient,
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [SatorioColor.alice_blue, SatorioColor.alice_blue2],
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              rssItem.pubDate == null
+                  ? ''
+                  : '${DateFormat('MMMM d, yyyy').format(rssItem.pubDate!)}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+              style: textTheme.bodyText2!.copyWith(
+                color: Colors.black,
+                fontSize: 12 * coefficient,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            color: SatorioColor.alice_blue,
-            child: Text(
+            SizedBox(
+              height: 14 * coefficient,
+            ),
+            Text(
               rssItem.title ?? '',
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.start,
               style: textTheme.headline3!.copyWith(
                 color: SatorioColor.textBlack,
-                fontSize: 16 * coefficient,
+                fontSize: 18 * coefficient,
                 fontWeight: FontWeight.w700,
               ),
             ),
-          ),
-          Container(
-            width: Get.width - 2 * 20,
-            padding: EdgeInsets.symmetric(
-              horizontal: 24 * coefficient,
-              vertical: 20 * coefficient,
+            SizedBox(
+              height: 18 * coefficient,
             ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(12),
-              ),
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+            Text(
+              rssItem.content?.value.removeAllHtmlTags() ?? '',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+              style: textTheme.headline3!.copyWith(
+                color: SatorioColor.textBlack,
+                fontSize: 15 * coefficient,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            SizedBox(
+              height: 18 * coefficient,
+            ),
+            Divider(
+              thickness: 1,
+              color: Colors.black.withOpacity(0.08),
+            ),
+            SizedBox(
+              height: 18 * coefficient,
+            ),
+            Row(
               children: [
-                Container(
-                  width: 20 * coefficient,
-                  height: 20 * coefficient,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [
-                        SatorioColor.yellow_orange,
-                        SatorioColor.tomato,
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 6 * coefficient,
-                ),
                 Expanded(
                   child: Text(
-                    rssItem.author ?? (rssItem.dc?.creator ?? ''),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    'txt_read_more'.tr,
                     textAlign: TextAlign.start,
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.textBlack,
@@ -273,11 +162,225 @@ class RssListPage extends GetView<RssListController> {
                     ),
                   ),
                 ),
+                Icon(
+                  Icons.chevron_right,
+                  size: 30,
+                  color: SatorioColor.textBlack,
+                ),
               ],
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
+
+// Widget _rssItemWithoutImage(RssItem rssItem) {
+//   return InkWell(
+//     onTap: () {
+//       controller.toRssItem(rssItem);
+//     },
+//     child: Column(
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         Container(
+//           width: Get.width - 2 * 20,
+//           padding: EdgeInsets.symmetric(
+//             horizontal: 24 * coefficient,
+//             vertical: 18 * coefficient,
+//           ),
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.vertical(
+//               top: Radius.circular(12),
+//             ),
+//             color: SatorioColor.alice_blue,
+//           ),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 rssItem.title ?? '',
+//                 maxLines: 2,
+//                 overflow: TextOverflow.ellipsis,
+//                 textAlign: TextAlign.start,
+//                 style: textTheme.headline3!.copyWith(
+//                   color: SatorioColor.textBlack,
+//                   fontSize: 16 * coefficient,
+//                   fontWeight: FontWeight.w700,
+//                 ),
+//               ),
+//               SizedBox(
+//                 height: 16 * coefficient,
+//               ),
+//               Text(
+//                 rssItem.content?.value.removeAllHtmlTags() ?? '',
+//                 maxLines: 2,
+//                 overflow: TextOverflow.ellipsis,
+//                 textAlign: TextAlign.start,
+//                 style: textTheme.headline3!.copyWith(
+//                   color: SatorioColor.textBlack,
+//                   fontSize: 15 * coefficient,
+//                   fontWeight: FontWeight.w400,
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//         Container(
+//           width: Get.width - 2 * 20,
+//           padding: EdgeInsets.symmetric(
+//             horizontal: 24 * coefficient,
+//             vertical: 20 * coefficient,
+//           ),
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.vertical(
+//               bottom: Radius.circular(12),
+//             ),
+//             gradient: LinearGradient(
+//               begin: Alignment.topCenter,
+//               end: Alignment.bottomCenter,
+//               colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+//             ),
+//           ),
+//           child: Row(
+//             mainAxisSize: MainAxisSize.max,
+//             crossAxisAlignment: CrossAxisAlignment.center,
+//             children: [
+//               Container(
+//                 width: 20 * coefficient,
+//                 height: 20 * coefficient,
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   gradient: LinearGradient(
+//                     begin: Alignment.topRight,
+//                     end: Alignment.bottomLeft,
+//                     colors: [
+//                       SatorioColor.yellow_orange,
+//                       SatorioColor.tomato,
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//               SizedBox(
+//                 width: 6 * coefficient,
+//               ),
+//               Expanded(
+//                 child: Text(
+//                   rssItem.author ?? (rssItem.dc?.creator ?? ''),
+//                   maxLines: 1,
+//                   overflow: TextOverflow.ellipsis,
+//                   textAlign: TextAlign.start,
+//                   style: textTheme.bodyText2!.copyWith(
+//                     color: SatorioColor.textBlack,
+//                     fontSize: 15 * coefficient,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
+
+// Widget _rssItem(RssItem rssItem) {
+//   final double imageHeight = 135.0 * coefficient;
+//   return InkWell(
+//     onTap: () {
+//       controller.toRssItem(rssItem);
+//     },
+//     child: Column(
+//       mainAxisSize: MainAxisSize.min,
+//       children: [
+//         ClipRRect(
+//           borderRadius: BorderRadius.vertical(
+//             top: Radius.circular(12),
+//           ),
+//           child: Image.network(
+//             rssItem.content!.images.first,
+//             height: imageHeight,
+//             width: Get.width - 2 * 20,
+//             fit: BoxFit.cover,
+//           ),
+//         ),
+//         Container(
+//           width: Get.width - 2 * 20,
+//           padding: EdgeInsets.symmetric(
+//             horizontal: 24 * coefficient,
+//             vertical: 24 * coefficient,
+//           ),
+//           color: SatorioColor.alice_blue,
+//           child: Text(
+//             rssItem.title ?? '',
+//             maxLines: 2,
+//             overflow: TextOverflow.ellipsis,
+//             textAlign: TextAlign.start,
+//             style: textTheme.headline3!.copyWith(
+//               color: SatorioColor.textBlack,
+//               fontSize: 16 * coefficient,
+//               fontWeight: FontWeight.w700,
+//             ),
+//           ),
+//         ),
+//         Container(
+//           width: Get.width - 2 * 20,
+//           padding: EdgeInsets.symmetric(
+//             horizontal: 24 * coefficient,
+//             vertical: 20 * coefficient,
+//           ),
+//           decoration: BoxDecoration(
+//             borderRadius: BorderRadius.vertical(
+//               bottom: Radius.circular(12),
+//             ),
+//             gradient: LinearGradient(
+//               begin: Alignment.topCenter,
+//               end: Alignment.bottomCenter,
+//               colors: [SatorioColor.alice_blue2, SatorioColor.alice_blue],
+//             ),
+//           ),
+//           child: Row(
+//             mainAxisSize: MainAxisSize.max,
+//             crossAxisAlignment: CrossAxisAlignment.center,
+//             children: [
+//               Container(
+//                 width: 20 * coefficient,
+//                 height: 20 * coefficient,
+//                 decoration: BoxDecoration(
+//                   shape: BoxShape.circle,
+//                   gradient: LinearGradient(
+//                     begin: Alignment.topRight,
+//                     end: Alignment.bottomLeft,
+//                     colors: [
+//                       SatorioColor.yellow_orange,
+//                       SatorioColor.tomato,
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//               SizedBox(
+//                 width: 6 * coefficient,
+//               ),
+//               Expanded(
+//                 child: Text(
+//                   rssItem.author ?? (rssItem.dc?.creator ?? ''),
+//                   maxLines: 1,
+//                   overflow: TextOverflow.ellipsis,
+//                   textAlign: TextAlign.start,
+//                   style: textTheme.bodyText2!.copyWith(
+//                     color: SatorioColor.textBlack,
+//                     fontSize: 15 * coefficient,
+//                     fontWeight: FontWeight.w600,
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ],
+//     ),
+//   );
+// }
 }

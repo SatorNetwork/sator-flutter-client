@@ -455,15 +455,6 @@ class HomePage extends GetView<HomeController> {
                       ),
                     ],
                   ),
-                  // child: BorderedButton(
-                  //   text: 'txt_sator_blog'.tr,
-                  //   textColor: SatorioColor.darkAccent,
-                  //   borderColor: SatorioColor.darkAccent,
-                  //   borderWidth: 1,
-                  //   onPressed: () {
-                  //     controller.toBlog();
-                  //   },
-                  // ),
                 ),
         ),
       ],
