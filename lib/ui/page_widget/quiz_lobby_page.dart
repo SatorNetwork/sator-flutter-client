@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_lobby_controller.dart';
 import 'package:satorio/domain/entities/payload/payload_user.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/util/avatar_list.dart';
 
 class QuizLobbyPage extends GetView<QuizLobbyController> {
@@ -146,11 +146,10 @@ class QuizLobbyPage extends GetView<QuizLobbyController> {
             width: 12,
           ),
           ClipOval(
-            child: SvgPicture.asset(
+            child: AvatarImage(
               avatarAsset,
-              width: 34,
               height: 34,
-              fit: BoxFit.fitWidth,
+              width: 34,
             ),
           ),
           SizedBox(

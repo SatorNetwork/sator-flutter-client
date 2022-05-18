@@ -26,6 +26,8 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   final Rx<Uint8List> squareImage = Rx(Uint8List.fromList([]));
   final Rx<List<Uint8List>> imagesRx = Rx([]);
 
+  final RxBool isTapRequested = false.obs;
+
   PuzzleController() {
     this.puzzleGameId = (Get.arguments as PuzzleArgument).puzzleGameId;
   }
@@ -90,11 +92,43 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
   }
 
   void tapTile(Tile tile) async {
-    puzzleGameRx.value = await _satorioRepository.tapTile(
-      puzzleGameId,
-      tile.currentPosition.x,
-      tile.currentPosition.y,
-    );
+    if (isTapRequested.value) return;
+
+    Future.value(true)
+        .then((value) {
+          isTapRequested.value = true;
+          return value;
+        })
+        .then((value) => _satorioRepository.tapTile(
+              puzzleGameId,
+              tile.currentPosition.x,
+              tile.currentPosition.y,
+            ))
+        .then(
+          (PuzzleGame puzzleGame) {
+            puzzleGameRx.value = puzzleGame;
+            _handlePuzzleChange();
+            isTapRequested.value = false;
+          },
+        )
+        .catchError(
+          (value) {
+            isTapRequested.value = false;
+          },
+        );
+  }
+
+  void toPuzzleImageSample() {
+    if (squareImage.value.isNotEmpty) {
+      Get.bottomSheet(
+        PuzzleImageSampleBottomSheet(squareImage.value),
+        isScrollControlled: true,
+        barrierColor: Colors.transparent,
+      );
+    }
+  }
+
+  void _handlePuzzleChange() {
     if (puzzleGameRx.value != null) {
       switch (puzzleGameRx.value!.status) {
         case PuzzleGameStatus.stepLimit:
@@ -104,6 +138,8 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
               'txt_puzzle_steps_reached'.tr,
               'txt_ok'.tr,
             ),
+          ).whenComplete(
+            () => Get.back(),
           );
           break;
         case PuzzleGameStatus.finished:
@@ -120,19 +156,11 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
                     'txt_puzzle_win'.tr,
                     'txt_ok'.tr,
                   ),
+          ).whenComplete(
+            () => Get.back(),
           );
           break;
       }
-    }
-  }
-
-  void toPuzzleImageSample() {
-    if (squareImage.value.isNotEmpty) {
-      Get.bottomSheet(
-        PuzzleImageSampleBottomSheet(squareImage.value),
-        isScrollControlled: true,
-        barrierColor: Colors.transparent,
-      );
     }
   }
 

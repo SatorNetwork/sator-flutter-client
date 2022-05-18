@@ -54,8 +54,7 @@ class EncryptManagerImpl extends EncryptManager {
       ),
       secretKey: crypto.SecretKey(aesKeyUint.toList()),
     );
-
-    return String.fromCharCodes(decryptedResult);
+    return  utf8.decode(decryptedResult);
   }
 
   @override

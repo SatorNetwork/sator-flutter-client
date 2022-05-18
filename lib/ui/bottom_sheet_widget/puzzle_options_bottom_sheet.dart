@@ -44,7 +44,7 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'txt_puzzle_game'.tr,
+                    'txt_unscramble'.tr,
                     textAlign: TextAlign.center,
                     style: textTheme.headline3!.copyWith(
                       color: SatorioColor.darkAccent,
@@ -56,7 +56,7 @@ class PuzzleOptionsBottomSheet extends StatelessWidget {
                     height: 6 * coefficient,
                   ),
                   Text(
-                    'txt_complete_picture'.tr,
+                    'txt_dont_run_out_steps'.tr,
                     textAlign: TextAlign.center,
                     style: textTheme.bodyText2!.copyWith(
                       color: SatorioColor.darkAccent,

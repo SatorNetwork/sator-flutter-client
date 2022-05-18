@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 
 class FirebaseDataSourceImpl implements FirebaseDataSource {
-  RemoteConfig _remoteConfig = RemoteConfig.instance;
+  FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  final bool isProduction = true;
+  final bool isProduction = false;
 
   @override
   Future<void> initRemoteConfig() async {

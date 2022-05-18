@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -12,11 +11,17 @@ import 'package:satorio/ui/widget/bordered_button.dart';
 class QuizWinnerBottomSheet extends StatelessWidget {
   final String prize;
   final String bonus;
+  final VoidCallback? onPressed;
+
   final ConfettiController _confettiController = ConfettiController(
     duration: const Duration(seconds: 2),
   );
 
-  QuizWinnerBottomSheet(this.prize, this.bonus) {
+  QuizWinnerBottomSheet(
+    this.prize,
+    this.bonus, {
+    this.onPressed,
+  }) {
     Future.delayed(Duration(milliseconds: 250), () {
       _confettiController.play();
     });
@@ -109,6 +114,7 @@ class QuizWinnerBottomSheet extends StatelessWidget {
                 borderColor: SatorioColor.smalt.withOpacity(0.24),
                 onPressed: () {
                   Get.back();
+                  onPressed?.call();
                 },
               ),
               SizedBox(
