@@ -12,6 +12,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/feed_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
@@ -50,7 +51,7 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
-import '../datasource/solana_data_source.dart';
+import 'package:satorio/data/datasource/solana_data_source.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
@@ -59,7 +60,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
   final InAppPurchaseDataSource _inAppPurchaseDataSource;
+  final FeedDataSource _feedDataSource;
   final SolanaDataSource _solanaDataSource;
+
   final RxBool _init = false.obs;
 
   SatorioRepositoryImpl(
@@ -69,7 +72,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
     this._firebaseDataSource,
     this._natsDataSource,
     this._inAppPurchaseDataSource,
-    this._solanaDataSource,
+    this._feedDataSource,
+      this._solanaDataSource,
   ) {
     _localDataSource
         .init()
@@ -839,6 +843,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _localDataSource.transactionsListenable();
   }
 
+  @override
+  ValueListenable rssItemsListenable() {
+    return _localDataSource.rssItemsListenable();
+  }
+
   //TODO:  move to region
   @override
   Future<List<NftItem>> nftsFiltered({
@@ -951,5 +960,18 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _firebaseDataSource
         .inAppProductsIds()
         .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> updateRssItems() async {
+    final lastRssUpdateTime = await _localDataSource.lastRssUpdateTime();
+    if (lastRssUpdateTime == null ||
+        DateTime.now().difference(lastRssUpdateTime).inDays >= 1) {
+      return _feedDataSource.rssItems().then(
+            (value) => _localDataSource.saveRssItems(value),
+          );
+    } else {
+      return Future.value();
+    }
   }
 }

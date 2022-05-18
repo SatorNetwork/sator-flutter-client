@@ -313,7 +313,8 @@ const Map<String, String> en = {
   'txt_you_will_get': 'You will get %s sao',
   'txt_steps_left_of_steps': '%d of %d',
   'txt_steps_left': 'Steps Left',
-  'txt_puzzle_game': 'Puzzle Game',
+  'txt_unscramble': 'Unscramble',
+  'txt_dont_run_out_steps': 'Don’t run out of steps',
   'txt_reward': 'Reward',
   'txt_choose_step_amount': 'Choose the amount of steps',
   'txt_exit_puzzle': 'Exit the puzzle',
@@ -325,4 +326,6 @@ const Map<String, String> en = {
   'txt_no_internet_connection': 'No Internet Connection',
   'txt_check_your_connection': 'Please check your connection',
   'txt_to_settings': 'To Settings',
+  'txt_sator_blog': 'Blog',
+  'txt_read_more': 'Read More',
 };
