@@ -4,6 +4,7 @@ import 'package:satorio/controller/rss_list_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/util/extension.dart';
 import 'package:webfeed/webfeed.dart';
 
 class RssListPage extends GetView<RssListController> {
@@ -94,16 +95,36 @@ class RssListPage extends GetView<RssListController> {
               ),
               color: SatorioColor.alice_blue,
             ),
-            child: Text(
-              rssItem.title ?? '',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.start,
-              style: textTheme.headline3!.copyWith(
-                color: SatorioColor.textBlack,
-                fontSize: 16 * coefficient,
-                fontWeight: FontWeight.w700,
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  rssItem.title ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: textTheme.headline3!.copyWith(
+                    color: SatorioColor.textBlack,
+                    fontSize: 16 * coefficient,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(
+                  height: 16 * coefficient,
+                ),
+                Text(
+                  rssItem.content?.value.removeAllHtmlTags() ?? '',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.start,
+                  style: textTheme.headline3!.copyWith(
+                    color: SatorioColor.textBlack,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
             ),
           ),
           Container(

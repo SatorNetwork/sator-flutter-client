@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +12,7 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/title_button.dart';
+import 'package:satorio/util/extension.dart';
 
 class HomePage extends GetView<HomeController> {
   @override
@@ -402,6 +401,22 @@ class HomePage extends GetView<HomeController> {
                                   color: SatorioColor.textBlack,
                                   fontSize: 18 * coefficient,
                                   fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 18 * coefficient,
+                              ),
+                              Text(
+                                controller.rssItemRx.value?.content?.value
+                                        .removeAllHtmlTags() ??
+                                    '',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.start,
+                                style: textTheme.headline3!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 15 * coefficient,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                               SizedBox(
