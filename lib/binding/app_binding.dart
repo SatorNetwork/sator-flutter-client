@@ -34,15 +34,16 @@ class AppBinding extends Bindings {
     Get.put<LocalDataSource>(LocalDataSourceImpl(), permanent: true);
     Get.put<AuthDataSource>(AuthDataSourceImpl(), permanent: true);
     Get.put<FirebaseDataSource>(FirebaseDataSourceImpl(), permanent: true);
-    Get.put<InAppPurchaseDataSource>(InAppPurchaseDataSourceImpl(),
-        permanent: true);
+    Get.put<InAppPurchaseDataSource>(
+      InAppPurchaseDataSourceImpl(),
+      permanent: true,
+    );
     Get.put<ApiDataSource>(
       ApiDataSourceImpl(Get.find(), Get.find(), Get.find()),
       permanent: true,
     );
     Get.put<NftsDataSource>(NftsDataSourceImpl(Get.find()), permanent: true);
     Get.put<FeedDataSource>(FeedDataSourceImpl(), permanent: true);
-
     Get.put<NatsDataSource>(
       NatsDataSourceImpl(Get.find()),
       permanent: true,
@@ -52,6 +53,7 @@ class AppBinding extends Bindings {
     // Repository
     Get.put<SatorioRepository>(
       SatorioRepositoryImpl(
+        Get.find(),
         Get.find(),
         Get.find(),
         Get.find(),
