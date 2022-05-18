@@ -61,10 +61,7 @@ class RssListPage extends GetView<RssListController> {
                   itemCount: controller.rssItemsRx.value.length,
                   itemBuilder: (context, index) {
                     final RssItem rssItem = controller.rssItemsRx.value[index];
-                    if (rssItem.content?.images.isEmpty ?? true)
-                      return _rssItemWithoutImages(rssItem);
-                    else
-                      return _rssItem(rssItem);
+                    return _rssItemWithoutImage(rssItem);
                   },
                 ),
               ),
@@ -75,7 +72,7 @@ class RssListPage extends GetView<RssListController> {
     );
   }
 
-  Widget _rssItemWithoutImages(RssItem rssItem) {
+  Widget _rssItemWithoutImage(RssItem rssItem) {
     return InkWell(
       onTap: () {
         controller.toRssItem(rssItem);
