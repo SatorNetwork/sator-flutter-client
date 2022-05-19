@@ -9,7 +9,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
-  final bool isProduction = false;
+  final bool isProduction = true;
 
   @override
   Future<void> initRemoteConfig() async {
@@ -94,7 +94,8 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   @override
   Future<List<String>> inAppProductsIds() async {
-    List idsFromFirebase = json.decode(_remoteConfig.getValue("in_app_ids").asString());
+    List idsFromFirebase =
+        json.decode(_remoteConfig.getValue("in_app_ids").asString());
 
     return (idsFromFirebase).map((item) => item as String).toList();
   }
