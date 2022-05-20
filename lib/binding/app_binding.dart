@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:satorio/data/connectivity/connectivity_service.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
+import 'package:satorio/data/datasource/feed_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/impl/ApiDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/AuthDataSourceImpl.dart';
@@ -9,6 +10,7 @@ import 'package:satorio/data/datasource/impl/FirebaseDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/InAppPurchaseDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/LocalDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/NftsDataSourceImpl.dart';
+import 'package:satorio/data/datasource/impl/feed_data_source_impl.dart';
 import 'package:satorio/data/datasource/impl/nats_data_source_impl.dart';
 import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
@@ -37,6 +39,8 @@ class AppBinding extends Bindings {
       permanent: true,
     );
     Get.put<NftsDataSource>(NftsDataSourceImpl(Get.find()), permanent: true);
+    Get.put<FeedDataSource>(FeedDataSourceImpl(), permanent: true);
+
     Get.put<NatsDataSource>(
       NatsDataSourceImpl(Get.find()),
       permanent: true,
@@ -45,6 +49,7 @@ class AppBinding extends Bindings {
     // Repository
     Get.put<SatorioRepository>(
       SatorioRepositoryImpl(
+        Get.find(),
         Get.find(),
         Get.find(),
         Get.find(),

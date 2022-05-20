@@ -138,6 +138,8 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
               'txt_puzzle_steps_reached'.tr,
               'txt_ok'.tr,
             ),
+          ).whenComplete(
+            () => Get.back(),
           );
           break;
         case PuzzleGameStatus.finished:
@@ -154,6 +156,8 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
                     'txt_puzzle_win'.tr,
                     'txt_ok'.tr,
                   ),
+          ).whenComplete(
+            () => Get.back(),
           );
           break;
       }

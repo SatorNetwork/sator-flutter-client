@@ -55,7 +55,9 @@ class NftItemController extends GetxController
   void onInit() async {
     super.onInit();
 
-    _initializeInApp();
+    if (!isAndroid) {
+      _initializeInApp();
+    }
 
     marketplaceUrl = await _satorioRepository.nftsMarketplaceUrl();
   }
@@ -116,20 +118,22 @@ class NftItemController extends GetxController
           _connectionSubscription.cancel();
           _purchaseErrorSubscription.cancel();
 
-          _satorioRepository
-              .buyNftIap(
-                  product.transactionReceipt!, nftItemRx.value.mintAddress)
-              .then((value) {
-            if (value) {
-              _refreshNftsData();
-              Get.back();
-              isBuyRequested.value = false;
-            }
-          }).catchError((error) {
-            _refreshNftsData();
-            Get.back();
-            isBuyRequested.value = false;
-          });
+          Future.delayed(
+              Duration(seconds: 2),
+              () => _satorioRepository
+                      .buyNftIap(product.transactionReceipt!,
+                          nftItemRx.value.mintAddress)
+                      .then((value) {
+                    if (value) {
+                      _refreshNftsData();
+                      Get.back();
+                      isBuyRequested.value = false;
+                    }
+                  }).catchError((error) {
+                    _refreshNftsData();
+                    Get.back();
+                    isBuyRequested.value = false;
+                  }));
         });
       });
 
@@ -198,7 +202,7 @@ class NftItemController extends GetxController
     required String token,
     required PurchasedItem purchasedItemIOS,
   }) async {
-      await _satorioRepository.finishTransaction(purchasedItemIOS, true);
+    await _satorioRepository.finishTransaction(purchasedItemIOS, true);
   }
 
   void addToFavourite() {}
@@ -283,7 +287,7 @@ class NftItemController extends GetxController
 }
 
 class NftItemArgument {
-  final  NftItem nftItem;
+  final NftItem nftItem;
 
   const NftItemArgument(this.nftItem);
 }
