@@ -313,7 +313,7 @@ class NftItemPage extends GetView<NftItemController> {
                             () => Text(
                               isAndroid
                                   ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
-                                  : '${controller.nftItemRx.value.priceInUsd.toStringAsFixed(2)} USD',
+                                  : '${controller.itemPrice.value} USD',
                               style: textTheme.bodyText2!.copyWith(
                                 color: SatorioColor.textBlack,
                                 fontSize: 15 * coefficient,
@@ -334,7 +334,7 @@ class NftItemPage extends GetView<NftItemController> {
                               : ElevatedGradientButton(
                                   text: isAndroid
                                       ? 'txt_to_marketplace'.tr
-                                      : 'txt_buy_nfts'.tr,
+                                      : 'txt_buy_nft'.tr,
                                   isInProgress: controller.isBuyRequested.value,
                                   onPressed: () {
                                     isAndroid
