@@ -90,7 +90,7 @@ class NftCategoriesController extends GetxController
   }
 
   String setItemPrice(double price) {
-    String? itemPrice;
+    String itemPrice = '';
     for (int i =0; i < products.length; i++) {
       double inAppPrice = double.parse(products[i].price!);
 
@@ -100,7 +100,7 @@ class NftCategoriesController extends GetxController
       }
     }
 
-    return itemPrice!;
+    return itemPrice;
   }
 
   void _loadShowsWithNfts() {
