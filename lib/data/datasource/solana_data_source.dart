@@ -1,7 +1,7 @@
 abstract class SolanaDataSource {
-  Future<void> balanceSOL();
+  Future<void> balanceSOL(String solanaAccountAddress);
 
-  Future<void> balanceSAO();
+  Future<void> balanceSAO(String solanaAccountAddress);
 
   Future<void> transactionsATA();
 
