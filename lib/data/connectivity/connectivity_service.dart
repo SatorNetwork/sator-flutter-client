@@ -21,7 +21,7 @@ class ConnectivityService extends GetxService {
         switch (result) {
           case ConnectivityResult.none:
             _changeStatusBarColor(SatorioColor.error);
-            _snackbarController = Get.snackbarWithButton(
+            _snackbarController = Get.snackbarAlert(
               'txt_no_internet_connection'.tr,
               'txt_check_your_connection'.tr,
               iconData: Icons.warning_amber_rounded,

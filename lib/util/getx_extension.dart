@@ -41,7 +41,7 @@ extension SatorGetInterface on GetInterface {
     );
   }
 
-  SnackbarController snackbarWithButton(
+  SnackbarController snackbarAlert(
     String title,
     String message, {
     IconData? iconData,
