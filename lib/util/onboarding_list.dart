@@ -12,9 +12,9 @@ final List<OnBoardingData> onBoardings = [
     'txt_onboarding_2_title'.tr,
     'txt_onboarding_2_description'.tr,
   ),
-  OnBoardingData(
-    'images/onboarding_3.svg',
-    'txt_onboarding_3_title'.tr,
-    'txt_onboarding_3_description'.tr,
-  ),
+  // OnBoardingData(
+  //   'images/onboarding_3.svg',
+  //   'txt_onboarding_3_title'.tr,
+  //   'txt_onboarding_3_description'.tr,
+  // ),
 ];
