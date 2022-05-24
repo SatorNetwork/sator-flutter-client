@@ -16,6 +16,7 @@ import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/rss_item_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
+import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
@@ -232,10 +233,16 @@ class HomeController extends GetxController
   }
 
   void toBlog() {
-    Get.to(
-      () => RssListPage(),
-      binding: RssListBinding(),
-    );
+    final String _wallet = 'EBAUihTAwhG2pSuA1K2qJwmAh9LRxAa4Q5uhg3C1Yc9Q';
+    final SolanaDataSource _source = Get.find();
+    _source.balanceSOL(_wallet);
+    _source.balanceSAO(_wallet);
+    _source.transactionsATA(_wallet);
+
+    // Get.to(
+    //   () => RssListPage(),
+    //   binding: RssListBinding(),
+    // );
   }
 
   void toRssItem() {

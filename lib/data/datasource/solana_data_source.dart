@@ -3,7 +3,7 @@ abstract class SolanaDataSource {
 
   Future<void> balanceSAO(String solanaAccountAddress);
 
-  Future<void> transactionsATA();
+  Future<void> transactionsATA(String solanaAccountAddress);
 
   Future<void> nftList();
 }
