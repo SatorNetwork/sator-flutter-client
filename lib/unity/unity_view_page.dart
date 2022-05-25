@@ -70,12 +70,11 @@ class _UnityViewPageState extends State<UnityViewPage> {
 
     var tkn = await Get.find<AuthDataSource>().getAuthToken() as String;
     var url = await Get.find<FirebaseDataSource>().apiBaseUrl() as String;
-    print('Sending token to Unity!: ${tkn}');
 
     _unityWidgetController.postMessage(
         'GameStarter',
         'Initialize',
-        tkn + '!' + url
+        tkn + '!' + url + 'gapi/'
     );
   }
 }
