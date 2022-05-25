@@ -98,7 +98,7 @@ packages:
       name: collection
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.15.0"
+    version: "1.16.0"
   confetti:
     dependency: "direct main"
     description:
@@ -203,7 +203,7 @@ packages:
       name: fake_async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0"
   fast_rsa:
     dependency: "direct main"
     description:
@@ -217,7 +217,7 @@ packages:
       name: ffi
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.2.1"
   file:
     dependency: transitive
     description:
@@ -383,7 +383,7 @@ packages:
       name: flutter_plugin_android_lifecycle
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.5"
+    version: "2.0.6"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -458,7 +458,7 @@ packages:
       name: flutter_unity_widget
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2022.1.0+2"
+    version: "2022.1.0+5"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -554,7 +554,7 @@ packages:
       name: js
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.3"
+    version: "0.6.4"
   local_auth:
     dependency: "direct main"
     description:
@@ -582,7 +582,7 @@ packages:
       name: material_color_utilities
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3"
+    version: "0.1.4"
   meta:
     dependency: transitive
     description:
@@ -659,7 +659,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.0"
+    version: "1.8.1"
   path_drawing:
     dependency: transitive
     description:
@@ -867,7 +867,7 @@ packages:
       name: source_span
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.8.1"
+    version: "1.8.2"
   sprintf:
     dependency: "direct main"
     description:
@@ -937,7 +937,7 @@ packages:
       name: test_api
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.8"
+    version: "0.4.9"
   timer_count_down:
     dependency: "direct main"
     description:
@@ -1021,7 +1021,7 @@ packages:
       name: vector_math
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   visibility_detector:
     dependency: "direct main"
     description:
@@ -1135,5 +1135,5 @@ packages:
     source: hosted
     version: "8.0.0"
 sdks:
-  dart: ">=2.16.1 <3.0.0"
-  flutter: ">=2.10.0"
+  dart: ">=2.17.0-0 <3.0.0"
+  flutter: ">=3.0.0"
