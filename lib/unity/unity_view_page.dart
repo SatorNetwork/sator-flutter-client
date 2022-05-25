@@ -26,7 +26,7 @@ class _UnityViewPageState extends State<UnityViewPage> {
         }, child:
     Scaffold(
       appBar: AppBar(
-        title: const Text('Sator Universe'),
+        title: const Text('Satorspace'),
       ),
       body: UnityWidget(
           onUnityCreated: onUnityCreated,
