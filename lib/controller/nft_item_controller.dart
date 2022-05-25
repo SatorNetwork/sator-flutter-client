@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/web_binding.dart';
 import 'package:satorio/controller/home_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
+import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/controller/web_controller.dart';
@@ -23,7 +24,7 @@ import 'package:satorio/util/links.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NftItemController extends GetxController
-    with NonWorkingFeatureMixin, BackToMainMixin {
+    with BackToMainMixin, ConnectivityMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<NftItem> nftItemRx;
@@ -168,7 +169,9 @@ class NftItemController extends GetxController
       _satorioRepository.getProducts(ids).then((value) {
         products = value;
 
-        products.sort((a, b) => double.parse(a.price!).compareTo(double.parse(b.price!)));
+        products.sort(
+          (a, b) => double.parse(a.price!).compareTo(double.parse(b.price!)),
+        );
 
         _setInAppProduct();
       });

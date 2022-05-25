@@ -295,22 +295,22 @@ class NftItemPage extends GetView<NftItemController> {
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                !controller.nftItemRx.value.onSale
-                    ? Container()
-                    : Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'txt_current_price'.tr,
-                            style: textTheme.bodyText2!.copyWith(
-                              color: SatorioColor.charcoal,
-                              fontSize: 15 * coefficient,
-                              fontWeight: FontWeight.w600,
+                Obx(
+                  () => controller.nftItemRx.value.onSale &&
+                          controller.isInternetConnectedRx.value
+                      ? Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'txt_current_price'.tr,
+                              style: textTheme.bodyText2!.copyWith(
+                                color: SatorioColor.charcoal,
+                                fontSize: 15 * coefficient,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                          ),
-                          Obx(
-                            () => Text(
+                            Text(
                               isAndroid
                                   ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
                                   : '${controller.itemPrice.value} USD',
@@ -320,32 +320,31 @@ class NftItemPage extends GetView<NftItemController> {
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        )
+                      : SizedBox(),
+                ),
                 SizedBox(
                   width: 36 * coefficient,
                 ),
-                controller.nftItemRx.value.onSale
-                    ? Expanded(
-                        child: Obx(
-                          () => controller.isOwner.value
-                              ? Container()
-                              : ElevatedGradientButton(
-                                  text: isAndroid
-                                      ? 'txt_to_marketplace'.tr
-                                      : 'txt_buy_nft'.tr,
-                                  isInProgress: controller.isBuyRequested.value,
-                                  onPressed: () {
-                                    isAndroid
-                                        ? controller.toMarketplace(controller
-                                            .nftItemRx.value.mintAddress)
-                                        : controller.buyInAppProduct();
-                                  },
-                                ),
-                        ),
-                      )
-                    : SizedBox(),
+                Expanded(
+                  child: Obx(
+                    () => controller.nftItemRx.value.onSale &&
+                            !controller.isOwner.value  && controller.isInternetConnectedRx.value?
+                        ElevatedGradientButton(
+                            text: isAndroid
+                                ? 'txt_to_marketplace'.tr
+                                : 'txt_buy_nft'.tr,
+                            isInProgress: controller.isBuyRequested.value,
+                            onPressed: () {
+                              isAndroid
+                                  ? controller.toMarketplace(
+                                      controller.nftItemRx.value.mintAddress)
+                                  : controller.buyInAppProduct();
+                            },
+                          ) : Container(),
+                  ),
+                ),
               ],
             ),
           ),
