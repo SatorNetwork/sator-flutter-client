@@ -286,6 +286,7 @@ const Map<String, String> en = {
   'txt_update_app_text': 'Your application version is outdated, please update',
   'txt_update': 'Update',
   'txt_buy_nfts': 'Buy NFTs',
+  'txt_buy_nft': 'Buy NFT',
   'txt_to_marketplace': 'Go to marketplace',
   'txt_top_scores': 'Top scores',
   'txt_other_players': 'Other players',
@@ -327,4 +328,6 @@ const Map<String, String> en = {
   'txt_no_internet_connection': 'No Internet Connection',
   'txt_check_your_connection': 'Please check your connection',
   'txt_to_settings': 'To Settings',
+  'txt_sator_blog': 'Blog',
+  'txt_read_more': 'Read More',
 };

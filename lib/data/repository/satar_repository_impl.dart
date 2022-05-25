@@ -12,6 +12,7 @@ import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
+import 'package:satorio/data/datasource/feed_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
@@ -43,7 +44,6 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/transfer.dart';
-import 'package:satorio/domain/entities/user_nft_item.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
@@ -58,15 +58,19 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final LocalDataSource _localDataSource;
   final NatsDataSource _natsDataSource;
   final InAppPurchaseDataSource _inAppPurchaseDataSource;
+  final FeedDataSource _feedDataSource;
+
   final RxBool _init = false.obs;
 
   SatorioRepositoryImpl(
-      this._apiDataSource,
-      this._nftsDataSource,
-      this._localDataSource,
-      this._firebaseDataSource,
-      this._natsDataSource,
-      this._inAppPurchaseDataSource) {
+    this._apiDataSource,
+    this._nftsDataSource,
+    this._localDataSource,
+    this._firebaseDataSource,
+    this._natsDataSource,
+    this._inAppPurchaseDataSource,
+    this._feedDataSource,
+  ) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
@@ -835,6 +839,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _localDataSource.transactionsListenable();
   }
 
+  @override
+  ValueListenable rssItemsListenable() {
+    return _localDataSource.rssItemsListenable();
+  }
+
   //TODO:  move to region
   @override
   Future<List<NftItem>> nftsFiltered({
@@ -946,6 +955,33 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future inAppProductsIds() {
     return _firebaseDataSource
         .inAppProductsIds()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> updateRssItems() async {
+    final lastRssUpdateTime = await _localDataSource.lastRssUpdateTime();
+    if (lastRssUpdateTime == null ||
+        DateTime.now().difference(lastRssUpdateTime).inDays >= 1) {
+      return _feedDataSource.rssItems().then(
+            (value) => _localDataSource.saveRssItems(value),
+          );
+    } else {
+      return Future.value();
+    }
+  }
+
+  @override
+  Future<bool> registerToken(String deviceId, String token) {
+    return _apiDataSource
+        .registerToken(deviceId, token)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<String?> fcmToken() {
+    return _firebaseDataSource
+        .fcmToken()
         .catchError((value) => _handleException(value));
   }
 }

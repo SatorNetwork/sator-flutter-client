@@ -28,6 +28,7 @@ class NftItemController extends GetxController
 
   late final Rx<NftItem> nftItemRx;
   late final RxBool isOwner = true.obs;
+  late final RxString itemPrice = ''.obs;
 
   final RxBool isBuyRequested = false.obs;
   final RxBool termsOfUseCheck = false.obs;
@@ -167,7 +168,7 @@ class NftItemController extends GetxController
       _satorioRepository.getProducts(ids).then((value) {
         products = value;
 
-        products.sort((a, b) => a.price!.compareTo(b.price!));
+        products.sort((a, b) => double.parse(a.price!).compareTo(double.parse(b.price!)));
 
         _setInAppProduct();
       });
@@ -180,6 +181,7 @@ class NftItemController extends GetxController
 
       if (nftItemRx.value.priceInUsd <= inAppPrice) {
         productId = products[i].productId!;
+        itemPrice.value = products[i].price!;
         break;
       }
     }

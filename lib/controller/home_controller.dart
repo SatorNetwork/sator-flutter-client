@@ -4,6 +4,8 @@ import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
+import 'package:satorio/binding/rss_item_binding.dart';
+import 'package:satorio/binding/rss_list_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
@@ -11,6 +13,7 @@ import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
+import 'package:satorio/controller/rss_item_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
@@ -25,8 +28,11 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/challenges_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
+import 'package:satorio/ui/page_widget/rss_item_page.dart';
+import 'package:satorio/ui/page_widget/rss_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
+import 'package:webfeed/webfeed.dart';
 
 class HomeController extends GetxController
     with GetTickerProviderStateMixin, NonWorkingFeatureMixin {
@@ -38,6 +44,7 @@ class HomeController extends GetxController
   late final Rx<List<NftItem>> nftHomeRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
   final Rx<List<ShowCategory>> categoriesRx = Rx([]);
+  final Rx<RssItem?> rssItemRx = Rx(null);
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
@@ -45,15 +52,19 @@ class HomeController extends GetxController
   final RxString quizHeadTitleRx = ''.obs;
   final RxString quizHeadMessageRx = ''.obs;
 
-  late ValueListenable<Box<Profile>> profileListenable;
-  late ValueListenable<Box<AmountCurrency>> walletBalanceListenable;
+  late ValueListenable<Box<Profile>> _profileListenable;
+  late ValueListenable<Box<AmountCurrency>> _walletBalanceListenable;
+  late ValueListenable<Box<RssItem>> _rssItemsListenable;
 
   HomeController() {
-    this.profileListenable =
+    this._profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
-    this.walletBalanceListenable = _satorioRepository.walletBalanceListenable()
+    this._walletBalanceListenable = _satorioRepository.walletBalanceListenable()
         as ValueListenable<Box<AmountCurrency>>;
+
+    _rssItemsListenable = _satorioRepository.rssItemsListenable()
+        as ValueListenable<Box<RssItem>>;
 
     _loadNfts();
   }
@@ -63,6 +74,7 @@ class HomeController extends GetxController
     super.onInit();
     _loadAllShows();
     _loadCategories();
+    _satorioRepository.updateRssItems();
 
     _satorioRepository
         .quizHeadTitleText()
@@ -73,16 +85,20 @@ class HomeController extends GetxController
         .then((value) => quizHeadMessageRx.value = value);
 
     _profileListener();
-    profileListenable.addListener(_profileListener);
+    _profileListenable.addListener(_profileListener);
 
     _walletBalanceListener();
-    walletBalanceListenable.addListener(_walletBalanceListener);
+    _walletBalanceListenable.addListener(_walletBalanceListener);
+
+    _rssItemsListener();
+    _rssItemsListenable.addListener(_rssItemsListener);
   }
 
   @override
   void onClose() {
-    profileListenable.removeListener(_profileListener);
-    walletBalanceListenable.removeListener(_walletBalanceListener);
+    _profileListenable.removeListener(_profileListener);
+    _walletBalanceListenable.removeListener(_walletBalanceListener);
+    _rssItemsListenable.removeListener(_rssItemsListener);
     super.onClose();
   }
 
@@ -91,6 +107,7 @@ class HomeController extends GetxController
 
     _satorioRepository.updateProfile();
     _satorioRepository.updateWalletBalance();
+    _satorioRepository.updateRssItems();
 
     _loadCategories();
     _loadAllShows();
@@ -214,6 +231,23 @@ class HomeController extends GetxController
     _toTab(MainController.TabProfile);
   }
 
+  void toBlog() {
+    Get.to(
+      () => RssListPage(),
+      binding: RssListBinding(),
+    );
+  }
+
+  void toRssItem() {
+    if (rssItemRx.value != null) {
+      Get.to(
+        () => RssItemPage(),
+        binding: RssItemBinding(),
+        arguments: RssItemArgument(rssItemRx.value!),
+      );
+    }
+  }
+
   void _toTab(int mainPageTab) {
     if (Get.isRegistered<MainController>()) {
       MainController mainController = Get.find();
@@ -222,11 +256,17 @@ class HomeController extends GetxController
   }
 
   void _profileListener() {
-    if (profileListenable.value.length > 0)
-      profileRx.value = profileListenable.value.getAt(0);
+    if (_profileListenable.value.length > 0)
+      profileRx.value = _profileListenable.value.getAt(0);
   }
 
   void _walletBalanceListener() {
-    walletRx.value = walletBalanceListenable.value.values.toList();
+    walletRx.value = _walletBalanceListenable.value.values.toList();
+  }
+
+  void _rssItemsListener() {
+    rssItemRx.value = _rssItemsListenable.value.values.isNotEmpty
+        ? _rssItemsListenable.value.values.first
+        : null;
   }
 }

@@ -57,7 +57,7 @@ class TitleWithButton extends StatelessWidget {
                 Icons.chevron_right,
                 size: 30,
                 color: iconColor == null ? Colors.black : iconColor,
-              )
+              ),
             ],
           ),
         ],

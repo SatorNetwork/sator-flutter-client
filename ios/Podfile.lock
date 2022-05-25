@@ -11,6 +11,8 @@ PODS:
   - connectivity_plus (0.0.1):
     - Flutter
     - ReachabilitySwift
+  - device_info_plus (0.0.1):
+    - Flutter
   - fast_rsa (0.6.0):
     - Flutter
   - Firebase/Analytics (8.14.0):
@@ -220,6 +222,7 @@ DEPENDENCIES:
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - better_player (from `.symlinks/plugins/better_player/ios`)
   - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - fast_rsa (from `.symlinks/plugins/fast_rsa/ios`)
   - Firebase/Analytics
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -279,6 +282,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/better_player/ios"
   connectivity_plus:
     :path: ".symlinks/plugins/connectivity_plus/ios"
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   fast_rsa:
     :path: ".symlinks/plugins/fast_rsa/ios"
   firebase_core:
@@ -325,6 +330,7 @@ SPEC CHECKSUMS:
   better_player: 2406bfe8175203c7a46fa15f9d778d73b12e1646
   Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
+  device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
   fast_rsa: 75791197cef082a0e3ba2376e65cbf83176d13aa
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
   firebase_core: b0b382f1497ab407aceb25e41e3036c8798c1609

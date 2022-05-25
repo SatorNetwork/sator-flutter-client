@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/nft_item_binding.dart';
 import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
-import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
@@ -47,10 +47,14 @@ class NftCategoriesController extends GetxController
   final RxBool _isLoadRx = false.obs;
   final RxBool _isLoadedRx = false.obs;
 
+  List<IAPItem> products = [];
+
   NftCategoriesController() {
     tabController = TabController(length: _fixedTabLength, vsync: this);
 
     _loadShowsWithNfts();
+
+    _getInAppProducts();
 
     loadNfts();
 
@@ -65,11 +69,38 @@ class NftCategoriesController extends GetxController
   }
 
   void refreshData() {
+    _getInAppProducts();
     _satorioRepository.nftsFiltered(
         orderType: NftOrderOnSaleType.onSale
     ).then((value) {
       allNftsRx.value = value;
     });
+  }
+
+  void _getInAppProducts() {
+    _satorioRepository.inAppProductsIds().then((ids) {
+      if (ids == null) return;
+
+      _satorioRepository.getProducts(ids).then((value) {
+        products = value;
+
+        products.sort((a, b) => double.parse(a.price!).compareTo(double.parse(b.price!)));
+      });
+    });
+  }
+
+  String setItemPrice(double price) {
+    String itemPrice = '';
+    for (int i =0; i < products.length; i++) {
+      double inAppPrice = double.parse(products[i].price!);
+
+      if (price <= inAppPrice) {
+        itemPrice = inAppPrice.toString();
+        break;
+      }
+    }
+
+    return itemPrice;
   }
 
   void _loadShowsWithNfts() {

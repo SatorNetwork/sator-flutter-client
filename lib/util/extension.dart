@@ -51,6 +51,14 @@ extension LinkValidation on String {
   }
 }
 
+extension HtmlTagsCleaner on String {
+  String removeAllHtmlTags() {
+    RegExp exp = RegExp(r"<[^>]*>", multiLine: true, caseSensitive: true);
+
+    return this.replaceAll(exp, '');
+  }
+}
+
 extension StringParseHelper on String {
   double? tryParse() {
     String locale = Get.deviceLocale.toString();
