@@ -305,7 +305,7 @@ class HomePage extends GetView<HomeController> {
           margin: const EdgeInsets.only(top: 16),
           height: 168 * coefficient,
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _showItem(new Show("Sator Universe", "Sator Universe", "https://drive.google.com/uc?id=1GJvIMimm14FqeMaCZuaaZ2BJsqWPK34-&export=download", false, false),
+          child: _showItem(new Show("Satorspace", "Satorspace", "https://drive.google.com/uc?id=1GJvIMimm14FqeMaCZuaaZ2BJsqWPK34-&export=download", false, false),
                   () => Navigator.push(context, MaterialPageRoute(builder: (context) => UnityViewPage()))),
         ),
         _categories(),
