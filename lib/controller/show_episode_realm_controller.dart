@@ -324,6 +324,7 @@ class ShowEpisodeRealmController extends GetxController
     Get.bottomSheet(
       RealmExpiringBottomSheet(
         activationRx.value,
+        isInternetConnectedRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },
@@ -568,6 +569,7 @@ class ShowEpisodeRealmController extends GetxController
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
+        isInternetConnectedRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },

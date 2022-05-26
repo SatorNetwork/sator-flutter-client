@@ -184,6 +184,7 @@ class ChallengeController extends GetxController with ConnectivityMixin {
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
+        isInternetConnectedRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },
