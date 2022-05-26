@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/quiz_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -19,7 +20,7 @@ import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ChallengeController extends GetxController {
+class ChallengeController extends GetxController with ConnectivityMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<Challenge?> challengeRx = Rx(null);
@@ -83,6 +84,7 @@ class ChallengeController extends GetxController {
     if (challengeRx.value != null) {
       Get.bottomSheet(
         EpisodeRealmBottomSheet(
+          isInternetConnectedRx.value,
           onQuizPressed: () {
             if (challengeRx.value!.attemptsLeft > 0) {
               _loadQuizQuestion();

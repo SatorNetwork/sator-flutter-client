@@ -322,7 +322,7 @@ class NftItemPage extends GetView<NftItemController> {
                             ),
                           ],
                         )
-                      : SizedBox(),
+                      : SizedBox(height: 48),
                 ),
                 SizedBox(
                   width: 36 * coefficient,
@@ -330,8 +330,9 @@ class NftItemPage extends GetView<NftItemController> {
                 Expanded(
                   child: Obx(
                     () => controller.nftItemRx.value.onSale &&
-                            !controller.isOwner.value  && controller.isInternetConnectedRx.value?
-                        ElevatedGradientButton(
+                            !controller.isOwner.value &&
+                            controller.isInternetConnectedRx.value
+                        ? ElevatedGradientButton(
                             text: isAndroid
                                 ? 'txt_to_marketplace'.tr
                                 : 'txt_buy_nft'.tr,
@@ -342,7 +343,8 @@ class NftItemPage extends GetView<NftItemController> {
                                       controller.nftItemRx.value.mintAddress)
                                   : controller.buyInAppProduct();
                             },
-                          ) : Container(),
+                          )
+                        : SizedBox(height: 48),
                   ),
                 ),
               ],

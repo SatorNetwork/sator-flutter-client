@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -12,12 +11,14 @@ import 'package:satorio/ui/widget/color_text_button.dart';
 import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class EpisodeRealmBottomSheet extends StatelessWidget {
-  const EpisodeRealmBottomSheet({
+  const EpisodeRealmBottomSheet(
+    this.isInternetConnected, {
     Key? key,
     this.onQuizPressed,
     this.onPaidUnlockPressed,
   }) : super(key: key);
 
+  final bool isInternetConnected;
   final VoidCallback? onQuizPressed;
   final VoidCallback? onPaidUnlockPressed;
 
@@ -88,31 +89,33 @@ class EpisodeRealmBottomSheet extends StatelessWidget {
                       SizedBox(
                         height: 8 * coefficient,
                       ),
-                      Text(
-                        'txt_or'.tr,
-                        style: textTheme.bodyText2!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 14.0 * coefficient,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      SizedBox(
-                        height: 8 * coefficient,
-                      ),
-                      BorderedButton(
-                        text: 'txt_unlock_sao'.tr,
-                        textColor: SatorioColor.interactive,
-                        borderColor: SatorioColor.interactive,
-                        borderWidth: 2,
-                        onPressed: () {
-                          Get.back();
-                          if (onPaidUnlockPressed != null) {
-                            onPaidUnlockPressed!();
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        height: 8 * coefficient,
-                      ),
+                      if (isInternetConnected) ...[
+                        Text(
+                          'txt_or'.tr,
+                          style: textTheme.bodyText2!.copyWith(
+                              color: SatorioColor.textBlack,
+                              fontSize: 14.0 * coefficient,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(
+                          height: 8 * coefficient,
+                        ),
+                        BorderedButton(
+                          text: 'txt_unlock_sao'.tr,
+                          textColor: SatorioColor.interactive,
+                          borderColor: SatorioColor.interactive,
+                          borderWidth: 2,
+                          onPressed: () {
+                            Get.back();
+                            if (onPaidUnlockPressed != null) {
+                              onPaidUnlockPressed!();
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          height: 8 * coefficient,
+                        ),
+                      ],
                       ColorTextButton(
                         text: 'txt_cancel'.tr,
                         onPressed: () {

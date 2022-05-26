@@ -19,7 +19,7 @@ import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
-import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
@@ -70,7 +70,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
-    with BackToMainMixin, NonWorkingFeatureMixin, ValidationMixin {
+    with BackToMainMixin, ValidationMixin, ConnectivityMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final int _itemsPerPage = 10;
@@ -288,6 +288,7 @@ class ShowEpisodeRealmController extends GetxController
   void toEpisodeRealmDialog() {
     Get.bottomSheet(
       EpisodeRealmBottomSheet(
+        isInternetConnectedRx.value,
         onQuizPressed: () {
           if (attemptsLeftRx.value > 0) {
             _loadQuizQuestion();
