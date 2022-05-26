@@ -288,7 +288,7 @@ class ShowEpisodeRealmController extends GetxController
   void toEpisodeRealmDialog() {
     Get.bottomSheet(
       EpisodeRealmBottomSheet(
-        isInternetConnectedRx.value,
+        isInternetConnectedRx,
         onQuizPressed: () {
           if (attemptsLeftRx.value > 0) {
             _loadQuizQuestion();

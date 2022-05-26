@@ -84,7 +84,7 @@ class ChallengeController extends GetxController with ConnectivityMixin {
     if (challengeRx.value != null) {
       Get.bottomSheet(
         EpisodeRealmBottomSheet(
-          isInternetConnectedRx.value,
+          isInternetConnectedRx,
           onQuizPressed: () {
             if (challengeRx.value!.attemptsLeft > 0) {
               _loadQuizQuestion();
