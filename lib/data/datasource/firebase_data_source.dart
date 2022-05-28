@@ -24,4 +24,6 @@ abstract class FirebaseDataSource {
   Future<int> appVersion();
 
   Future inAppProductsIds();
+
+  Future logEvent(String name, Map<String, Object?>? parameters);
 }

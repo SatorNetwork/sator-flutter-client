@@ -4,10 +4,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 
 class FirebaseDataSourceImpl implements FirebaseDataSource {
   FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
 
   final bool isProduction = false;
 
@@ -98,5 +100,10 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
         json.decode(_remoteConfig.getValue("in_app_ids").asString());
 
     return (idsFromFirebase).map((item) => item as String).toList();
+  }
+
+  @override
+  Future logEvent(String name, Map<String, Object?>? parameters) async {
+    return _firebaseAnalytics.logEvent(name: name, parameters: parameters);
   }
 }

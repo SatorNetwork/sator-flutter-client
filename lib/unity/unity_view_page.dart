@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
@@ -13,6 +15,7 @@ class UnityViewPage extends StatefulWidget {
 }
 
 class _UnityViewPageState extends State<UnityViewPage> {
+  late FirebaseDataSource _firebaseDataSource;
   late UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
 
@@ -26,7 +29,7 @@ class _UnityViewPageState extends State<UnityViewPage> {
         }, child:
     Scaffold(
       appBar: AppBar(
-        title: const Text('Satorspace'),
+        title: const Text('Sator Space'),
       ),
       body: UnityWidget(
           onUnityCreated: onUnityCreated,
@@ -47,7 +50,16 @@ class _UnityViewPageState extends State<UnityViewPage> {
   }
 
   void onUnityMessage(message) {
-    print('Received message from unity: ${message.toString()}');
+    var data = message.toString();
+    var splitted = data.split('^');
+    var eventName = splitted[0];
+    var parameters;
+
+    if (splitted[1].length != 0) {
+      parameters = json.decode(splitted[1]);
+    }
+
+    _firebaseDataSource.logEvent(eventName, parameters);
   }
 
   void onUnitySceneLoaded(SceneLoaded? scene) {
@@ -68,13 +80,15 @@ class _UnityViewPageState extends State<UnityViewPage> {
       },
     );
 
+    _firebaseDataSource = Get.find<FirebaseDataSource>();
+
     var tkn = await Get.find<AuthDataSource>().getAuthToken() as String;
-    var url = await Get.find<FirebaseDataSource>().apiBaseUrl() as String;
+    var url = await _firebaseDataSource.apiBaseUrl() as String;
 
     _unityWidgetController.postMessage(
         'GameStarter',
         'Initialize',
-        tkn + '!' + url + 'gapi/'
+        tkn + ' ' + url + 'gapi/'
     );
   }
 }
