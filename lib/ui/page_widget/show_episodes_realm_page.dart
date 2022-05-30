@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -183,7 +182,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   children: [
                     Obx(
                       () => InkWell(
-                        onTap: controller.activationRx.value.isActive
+                        onTap: controller.activationRx.value.isActive &&
+                                controller.isInternetConnectedRx.value
                             ? () {
                                 controller.toRealmExpiringBottomSheet();
                               }
@@ -752,16 +752,16 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         ),
                         Obx(
                           () => SizedBox(
-                            height:
-                                controller.puzzleGameRx.value == null ? 0 : 32,
+                            height: controller.puzzleGameRx.value != null &&
+                                    controller.isInternetConnectedRx.value
+                                ? 32
+                                : 0,
                           ),
                         ),
                         Obx(
-                          () => controller.puzzleGameRx.value == null
-                              ? SizedBox(
-                                  height: 0,
-                                )
-                              : Padding(
+                          () => controller.puzzleGameRx.value != null &&
+                                  controller.isInternetConnectedRx.value
+                              ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20),
                                   child: InkWell(
@@ -789,6 +789,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                                       ),
                                     ),
                                   ),
+                                )
+                              : SizedBox(
+                                  height: 0,
                                 ),
                         ),
                         SizedBox(

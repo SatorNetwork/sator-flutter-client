@@ -19,7 +19,7 @@ import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
-import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
@@ -61,6 +61,7 @@ import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/video_youtube_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/getx_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -69,7 +70,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
-    with BackToMainMixin, NonWorkingFeatureMixin, ValidationMixin {
+    with BackToMainMixin, ValidationMixin, ConnectivityMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final int _itemsPerPage = 10;
@@ -287,6 +288,7 @@ class ShowEpisodeRealmController extends GetxController
   void toEpisodeRealmDialog() {
     Get.bottomSheet(
       EpisodeRealmBottomSheet(
+        isInternetConnectedRx,
         onQuizPressed: () {
           if (attemptsLeftRx.value > 0) {
             _loadQuizQuestion();
@@ -316,16 +318,19 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void toRealmExpiringBottomSheet() {
-    Get.bottomSheet(
-      RealmExpiringBottomSheet(
-        activationRx.value,
-        (paidOption) {
-          _paidUnlock(paidOption);
-        },
-      ),
-      isScrollControlled: true,
-      barrierColor: Colors.transparent,
-    );
+    if (isAndroid) {
+      Get.bottomSheet(
+        RealmExpiringBottomSheet(
+          activationRx.value,
+          isInternetConnectedRx,
+          (paidOption) {
+            _paidUnlock(paidOption);
+          },
+        ),
+        isScrollControlled: true,
+        barrierColor: Colors.transparent,
+      );
+    }
   }
 
   void toRateBottomSheet() {
@@ -560,6 +565,7 @@ class ShowEpisodeRealmController extends GetxController
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
+        isInternetConnectedRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },

@@ -5,12 +5,14 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:satorio/data/connectivity/internet_connectivity.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/getx_extension.dart';
 
-class ConnectivityService extends GetxService {
+class ConnectivityService extends GetxService implements InternetConnectivity {
   late StreamSubscription _subscription;
   SnackbarController? _snackbarController;
+  final ValueNotifier<bool> _isConnectedNotifier = ValueNotifier(true);
 
   @override
   void onInit() {
@@ -18,6 +20,7 @@ class ConnectivityService extends GetxService {
 
     _subscription = Connectivity().onConnectivityChanged.listen(
       (ConnectivityResult result) {
+        _isConnectedNotifier.value = result != ConnectivityResult.none;
         switch (result) {
           case ConnectivityResult.none:
             _changeStatusBarColor(SatorioColor.error);
@@ -58,5 +61,10 @@ class ConnectivityService extends GetxService {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.light.copyWith(statusBarColor: color),
     );
+  }
+
+  @override
+  ValueNotifier<bool> internetConnectivity() {
+    return _isConnectedNotifier;
   }
 }
