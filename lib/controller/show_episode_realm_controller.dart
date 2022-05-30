@@ -61,6 +61,7 @@ import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/video_youtube_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/getx_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
