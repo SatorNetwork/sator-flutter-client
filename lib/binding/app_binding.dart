@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:satorio/data/connectivity/connectivity_service.dart';
+import 'package:satorio/data/connectivity/internet_connectivity.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/feed_data_source.dart';
@@ -27,7 +28,7 @@ class AppBinding extends Bindings {
   @override
   void dependencies() {
     // Managers & Services
-    Get.put<ConnectivityService>(ConnectivityService(), permanent: true);
+    Get.put<InternetConnectivity>(ConnectivityService(), permanent: true);
     Get.put<EncryptManager>(EncryptManagerImpl(), permanent: true);
 
     // Data Sources

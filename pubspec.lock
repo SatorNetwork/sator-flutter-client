@@ -36,13 +36,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.81"
-  bip39:
-    dependency: transitive
-    description:
-      name: bip39
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.6"
   boolean_selector:
     dependency: transitive
     description:
@@ -50,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  borsh_annotation:
-    dependency: transitive
-    description:
-      name: borsh_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.1"
   cached_network_image:
     dependency: "direct main"
     description:
@@ -162,13 +148,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  convert:
-    dependency: transitive
-    description:
-      name: convert
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   crypto:
     dependency: transitive
     description:
@@ -211,20 +190,48 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.3"
-  decimal:
-    dependency: transitive
+  device_info_plus:
+    dependency: "direct main"
     description:
-      name: decimal
+      name: device_info_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
-  ed25519_hd_key:
+    version: "3.2.3"
+  device_info_plus_linux:
     dependency: transitive
     description:
-      name: ed25519_hd_key
+      name: device_info_plus_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.1.1"
+  device_info_plus_macos:
+    dependency: transitive
+    description:
+      name: device_info_plus_macos
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.3"
+  device_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.0+1"
+  device_info_plus_web:
+    dependency: transitive
+    description:
+      name: device_info_plus_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  device_info_plus_windows:
+    dependency: transitive
+    description:
+      name: device_info_plus_windows
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   equatable:
     dependency: "direct main"
     description:
@@ -506,13 +513,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.5+1"
-  freezed_annotation:
-    dependency: transitive
-    description:
-      name: freezed_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0"
   fwfh_text_style:
     dependency: transitive
     description:
@@ -541,13 +541,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.0"
-  hex:
-    dependency: transitive
-    description:
-      name: hex
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   hive:
     dependency: "direct main"
     description:
@@ -604,13 +597,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-  json_annotation:
-    dependency: transitive
-    description:
-      name: json_annotation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.5.0"
   local_auth:
     dependency: "direct main"
     description:
@@ -807,13 +793,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.4.0"
-  pinenacl:
-    dependency: transitive
-    description:
-      name: pinenacl
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.4"
   platform:
     dependency: transitive
     description:
@@ -828,13 +807,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
-  pointycastle:
-    dependency: transitive
-    description:
-      name: pointycastle
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.6.0"
   process:
     dependency: transitive
     description:
@@ -863,13 +835,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
-  rational:
-    dependency: transitive
-    description:
-      name: rational
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
   rxdart:
     dependency: transitive
     description:
@@ -938,13 +903,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0+2"
-  solana:
-    dependency: "direct main"
-    description:
-      name: solana
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.23.0+1"
   source_span:
     dependency: transitive
     description:

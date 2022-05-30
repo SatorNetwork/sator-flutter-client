@@ -216,7 +216,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             text: TextSpan(
               text: isAndroid
                   ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
-                  : '${nftItem.priceInUsd.toStringAsFixed(2)} USD',
+                  : '${controller.setItemPrice(nftItem.priceInUsd)} USD',
               style: TextStyle(
                 color: SatorioColor.textBlack,
                 fontSize: 12.0 * coefficient,
@@ -432,7 +432,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             text: TextSpan(
               text: isAndroid
                   ? '${nftItem.buyNowPrice.toStringAsFixed(2)}'
-                  : '${nftItem.priceInUsd.toStringAsFixed(2)}',
+                  : '${controller.setItemPrice(nftItem.priceInUsd)}',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 14.0 * coefficient,

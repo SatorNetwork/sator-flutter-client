@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -16,7 +17,8 @@ import 'package:satorio/ui/page_widget/create_account_page.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/forgot_password_page.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class LoginController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
@@ -88,12 +90,9 @@ class LoginController extends GetxController with ValidationMixin {
   }
 
   void _showRefreshError() {
-    Get.snackbar(
+    Get.snackbarMessage(
       'txt_oops'.tr,
       'txt_login_refresh_error'.tr,
-      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-      colorText: SatorioColor.darkAccent,
-      duration: Duration(seconds: 4),
     );
   }
 
@@ -121,7 +120,7 @@ class LoginController extends GetxController with ValidationMixin {
             }
           }).catchError((value) {
             return _satorioRepository.logout().then((value) {
-              Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+              _showRefreshError();
               isBiometric.value = false;
               isRequested.value = false;
             });
@@ -217,15 +216,43 @@ class LoginController extends GetxController with ValidationMixin {
     });
   }
 
+  Future<void> _registerToken() async {
+    //TODO: refactor
+    var deviceInfo = DeviceInfoPlugin();
+
+    var _deviceOsInfo;
+
+    String _deviceId;
+
+    if (!isAndroid) {
+      _deviceOsInfo = await deviceInfo.iosInfo;
+      _deviceId = _deviceOsInfo.identifierForVendor;
+      _getFcmToken(_deviceId);
+    } else if (isAndroid) {
+      _deviceOsInfo = await deviceInfo.androidInfo;
+      _deviceId = _deviceOsInfo.androidId;
+      _getFcmToken(_deviceId);
+    }
+  }
+
+  void _getFcmToken(String deviceId) async {
+    _satorioRepository.fcmToken().then((token) {
+      _satorioRepository.registerToken(deviceId, token!).then((value) {
+        //TODO: handle it
+      });
+    });
+  }
+
   void _checkIsVerified() {
     _satorioRepository.isVerified().then((isVerified) {
-      if (isVerified)
+      if (isVerified) {
+        _registerToken();
         Get.offAll(
           () => MainPage(),
           binding: MainBinding(),
           arguments: MainArgument(deepLink),
         );
-      else
+      } else
         Get.to(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),

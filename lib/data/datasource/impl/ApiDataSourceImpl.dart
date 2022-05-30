@@ -31,7 +31,6 @@ import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/stake_level_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
-import 'package:satorio/data/model/user_nft_item_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_staking_model.dart';
@@ -45,6 +44,7 @@ import 'package:satorio/data/request/public_key_request.dart';
 import 'package:satorio/data/request/puzzle_unlock_request.dart';
 import 'package:satorio/data/request/rate_request.dart';
 import 'package:satorio/data/request/register_iap_request.dart';
+import 'package:satorio/data/request/register_token_request.dart';
 import 'package:satorio/data/request/reset_password_request.dart';
 import 'package:satorio/data/request/select_avatar_request.dart';
 import 'package:satorio/data/request/send_invite_request.dart';
@@ -91,6 +91,7 @@ class ApiDataSourceImpl implements ApiDataSource {
       String? fcmToken = await _firebaseDataSource.fcmToken();
 
       String? deviceId = fcmToken?.split(':')[0];
+
       if (deviceId != null && deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
 
@@ -1292,5 +1293,19 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
 // endregion
+
+// region Firebase
+  @override
+  Future<bool> registerToken(String deviceId, String token) {
+    return _getConnect
+        .requestPost(
+      'firebase/register_token',
+      RegisterTokenRequest(deviceId, token),
+    )
+        .then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+//endregion
 
 }
