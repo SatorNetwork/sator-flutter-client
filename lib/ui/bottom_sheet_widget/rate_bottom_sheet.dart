@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -25,8 +24,6 @@ class RateBottomSheet extends StatelessWidget {
   final RateCallback onRate;
   final RxInt rateRx = initValue.obs;
 
-  double get paddingH => 20;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,41 +36,41 @@ class RateBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.edit_outlined,
-                    size: 18 * coefficient,
-                    color: SatorioColor.textBlack,
-                  ),
-                  SizedBox(
-                    width: 12 * coefficient,
-                  ),
-                  Text(
-                    isZeroSeason
-                        ? 'txt_rate_content'.tr
-                        : 'txt_rate_episode'.tr,
-                    style: textTheme.bodyText2!.copyWith(
-                      color: SatorioColor.textBlack,
-                      fontSize: 13 * coefficient,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 16 * coefficient,
-          ),
-          Divider(
-            color: Colors.black.withOpacity(0.1),
-            height: 1,
-          ),
+          // Container(
+          //   child: Center(
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: [
+          //         Icon(
+          //           Icons.edit_outlined,
+          //           size: 18 * coefficient,
+          //           color: SatorioColor.textBlack,
+          //         ),
+          //         SizedBox(
+          //           width: 12 * coefficient,
+          //         ),
+          //         Text(
+          //           isZeroSeason
+          //               ? 'txt_rate_content'.tr
+          //               : 'txt_rate_episode'.tr,
+          //           style: textTheme.bodyText2!.copyWith(
+          //             color: SatorioColor.textBlack,
+          //             fontSize: 13 * coefficient,
+          //             fontWeight: FontWeight.w700,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(
+          //   height: 16 * coefficient,
+          // ),
+          // Divider(
+          //   color: Colors.black.withOpacity(0.1),
+          //   height: 1,
+          // ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 32 * coefficient),
             child: Obx(
@@ -113,7 +110,7 @@ class RateBottomSheet extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: paddingH),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedGradientButton(
               text: 'txt_rate'.tr,
               onPressed: () {
