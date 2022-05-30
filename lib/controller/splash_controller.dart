@@ -1,23 +1,21 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:satorio/binding/create_account_binding.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
-import 'package:satorio/binding/onboarding_binding.dart';
+import 'package:satorio/controller/create_account_controller.dart';
 import 'package:satorio/controller/email_verification_controller.dart';
 import 'package:satorio/controller/login_controller.dart';
-import 'package:satorio/controller/onboading_controller.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/page_widget/create_account_page.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
-import 'package:satorio/ui/page_widget/onboardinga_page.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/links.dart';
-import 'package:satorio/util/onboarding_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SplashController extends GetxController {
@@ -187,23 +185,29 @@ class SplashController extends GetxController {
   }
 
   void _toOnBoarding() {
-    precachePicture(
-      ExactAssetPicture(
-          SvgPicture.svgStringDecoderBuilder, 'images/bg/onboarding.svg'),
-      null,
-    );
-
-    onBoardings.forEach((data) {
-      precachePicture(
-        ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, data.assetName),
-        null,
-      );
-    });
+    // precachePicture(
+    //   ExactAssetPicture(
+    //       SvgPicture.svgStringDecoderBuilder, 'images/bg/onboarding.svg'),
+    //   null,
+    // );
+    //
+    // onBoardings.forEach((data) {
+    //   precachePicture(
+    //     ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, data.assetName),
+    //     null,
+    //   );
+    // });
+    //
+    // Get.offAll(
+    //   () => OnBoardingPage(),
+    //   binding: OnBoardingBinding(),
+    //   arguments: OnBoardingArgument(deepLink),
+    // );
 
     Get.offAll(
-      () => OnBoardingPage(),
-      binding: OnBoardingBinding(),
-      arguments: OnBoardingArgument(deepLink),
+      () => CreateAccountPage(),
+      binding: CreateAccountBinding(),
+      arguments: CreateAccountArgument(deepLink),
     );
   }
 }
