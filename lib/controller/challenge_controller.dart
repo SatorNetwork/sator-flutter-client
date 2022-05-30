@@ -17,7 +17,7 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_shee
 import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/quiz_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/getx_extension.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ChallengeController extends GetxController with ConnectivityMixin {
@@ -89,12 +89,9 @@ class ChallengeController extends GetxController with ConnectivityMixin {
             if (challengeRx.value!.attemptsLeft > 0) {
               _loadQuizQuestion();
             } else {
-              Get.snackbar(
+              Get.snackbarMessage(
                 'txt_oops'.tr,
                 'txt_attempts_left_alert'.tr,
-                backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-                colorText: SatorioColor.darkAccent,
-                duration: Duration(seconds: 4),
               );
             }
           },

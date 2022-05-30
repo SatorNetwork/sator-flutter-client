@@ -18,7 +18,7 @@ import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/forgot_password_page.dart';
 import 'package:satorio/ui/page_widget/main_page.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class LoginController extends GetxController with ValidationMixin {
   final TextEditingController emailController = TextEditingController();
@@ -90,12 +90,9 @@ class LoginController extends GetxController with ValidationMixin {
   }
 
   void _showRefreshError() {
-    Get.snackbar(
+    Get.snackbarMessage(
       'txt_oops'.tr,
       'txt_login_refresh_error'.tr,
-      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-      colorText: SatorioColor.darkAccent,
-      duration: Duration(seconds: 4),
     );
   }
 
@@ -123,7 +120,7 @@ class LoginController extends GetxController with ValidationMixin {
             }
           }).catchError((value) {
             return _satorioRepository.logout().then((value) {
-              Get.snackbar('txt_oops'.tr, 'txt_login_refresh_error'.tr);
+              _showRefreshError();
               isBiometric.value = false;
               isRequested.value = false;
             });
@@ -231,7 +228,7 @@ class LoginController extends GetxController with ValidationMixin {
       _deviceOsInfo = await deviceInfo.iosInfo;
       _deviceId = _deviceOsInfo.identifierForVendor;
       _getFcmToken(_deviceId);
-    } else if(isAndroid) {
+    } else if (isAndroid) {
       _deviceOsInfo = await deviceInfo.androidInfo;
       _deviceId = _deviceOsInfo.androidId;
       _getFcmToken(_deviceId);
@@ -251,13 +248,11 @@ class LoginController extends GetxController with ValidationMixin {
       if (isVerified) {
         _registerToken();
         Get.offAll(
-              () => MainPage(),
+          () => MainPage(),
           binding: MainBinding(),
           arguments: MainArgument(deepLink),
         );
-      }
-
-      else
+      } else
         Get.to(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),

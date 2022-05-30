@@ -4,8 +4,8 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/lock_rewards_bottom_sheet.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class WalletStakeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -139,7 +139,7 @@ class WalletStakeController extends GetxController {
               isInProgress.value = false;
             }
 
-            Get.snackbar(
+            Get.snackbarMessage(
               result ? 'txt_success'.tr : 'txt_oops'.tr,
               result
                   ? 'txt_stake_success'.tr.format(
@@ -150,9 +150,6 @@ class WalletStakeController extends GetxController {
                       ],
                     )
                   : 'txt_something_wrong'.tr,
-              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-              colorText: SatorioColor.darkAccent,
-              duration: Duration(seconds: 4),
             );
           },
         )
@@ -179,7 +176,7 @@ class WalletStakeController extends GetxController {
               isInProgress.value = false;
             }
 
-            Get.snackbar(
+            Get.snackbarMessage(
               result ? 'txt_success'.tr : 'txt_oops'.tr,
               result
                   ? 'txt_unstake_success'.tr.format(
@@ -189,9 +186,6 @@ class WalletStakeController extends GetxController {
                       ],
                     )
                   : 'txt_something_wrong'.tr,
-              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-              colorText: SatorioColor.darkAccent,
-              duration: Duration(seconds: 4),
             );
           },
         )

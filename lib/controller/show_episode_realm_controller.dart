@@ -44,7 +44,6 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/puzzle_options_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
@@ -62,9 +61,8 @@ import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/video_youtube_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
-import 'package:satorio/ui/theme/light_theme.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/getx_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -294,12 +292,9 @@ class ShowEpisodeRealmController extends GetxController
           if (attemptsLeftRx.value > 0) {
             _loadQuizQuestion();
           } else {
-            Get.snackbar(
+            Get.snackbarMessage(
               'txt_oops'.tr,
               'txt_attempts_left_alert'.tr,
-              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-              colorText: SatorioColor.darkAccent,
-              duration: Duration(seconds: 4),
             );
           }
         },
@@ -448,12 +443,9 @@ class ShowEpisodeRealmController extends GetxController
           }
           break;
         default:
-          Get.snackbar(
+          Get.snackbarMessage(
             'txt_oops'.tr,
             'txt_cannot_start_puzzle'.tr,
-            backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-            colorText: SatorioColor.darkAccent,
-            duration: Duration(seconds: 4),
           );
           break;
       }
@@ -677,13 +669,9 @@ class ShowEpisodeRealmController extends GetxController
       (result) {
         if (result) {
           _updateShowEpisode();
-          Get.bottomSheet(
-            DefaultBottomSheet(
-              'txt_success'.tr,
-              'txt_rate_success'.tr.format([rate]),
-              'txt_awesome'.tr,
-              icon: Icons.check_rounded,
-            ),
+          Get.snackbarMessage(
+            'txt_success'.tr,
+            'txt_rate_success'.tr.format([rate]),
           );
         }
       },

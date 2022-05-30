@@ -24,7 +24,7 @@ import 'package:satorio/domain/entities/quiz_screen_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_answer_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/challenges_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class QuizController extends GetxController {
   late final Rx<Challenge> challengeRx;
@@ -208,12 +208,9 @@ class QuizController extends GetxController {
       );
     } else {
       // wrong answer
-      Get.snackbar(
+      Get.snackbarMessage(
         'txt_oops'.tr,
         'txt_wrong_answer'.tr,
-        backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-        colorText: SatorioColor.darkAccent,
-        duration: Duration(seconds: 4),
       );
     }
   }
@@ -235,12 +232,9 @@ class QuizController extends GetxController {
   }
 
   _handleTimeOut(PayloadTimeOut payloadTimeOut) {
-    Get.snackbar(
+    Get.snackbarMessage(
       'txt_oops'.tr,
       payloadTimeOut.message,
-      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-      colorText: SatorioColor.darkAccent,
-      duration: Duration(seconds: 4),
     );
   }
 }
