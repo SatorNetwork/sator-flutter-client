@@ -148,8 +148,8 @@ class SplashController extends GetxController {
           binding: EmailVerificationBinding(),
           arguments: EmailVerificationArgument(
             'txt_your_email'.tr,
-            false,
-            deepLink,
+            deepLink: deepLink,
+            showAnotherAccountLogin: true,
           ),
         );
       }

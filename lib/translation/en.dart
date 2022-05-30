@@ -74,6 +74,7 @@ const Map<String, String> en = {
   'txt_congrats_msg': 'You have successfully claimed your rewards.',
   'txt_verification_text':
       'Please enter the verification code we’ve sent to %s or use the link from your inbox',
+  'txt_another_account_login': 'Log in with another account',
   'txt_resend_code': 'Resend code',
   'txt_send': 'Send',
   'txt_receive': 'Receive',
