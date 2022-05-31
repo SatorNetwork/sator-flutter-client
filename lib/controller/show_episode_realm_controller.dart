@@ -120,7 +120,9 @@ class ShowEpisodeRealmController extends GetxController
   ShowEpisodeRealmController() {
     ShowEpisodeRealmArgument argument = Get.arguments;
     showDetailRx = Rx(argument.showDetail);
-    showSeasonRx = Rx(argument.showSeason);
+    if (argument.showSeason != null) {
+      showSeasonRx = Rx(argument.showSeason!);
+    }
     showEpisodeRx = Rx(argument.showEpisode);
 
     isProfileRealm = argument.isProfileRealm;
@@ -705,7 +707,7 @@ class ShowEpisodeRealmController extends GetxController
 
 class ShowEpisodeRealmArgument {
   final ShowDetail showDetail;
-  final ShowSeason showSeason;
+  final ShowSeason? showSeason;
   final ShowEpisode showEpisode;
   final bool isProfileRealm;
 

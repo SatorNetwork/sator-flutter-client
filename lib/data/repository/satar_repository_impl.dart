@@ -413,6 +413,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<Show> show(String showId) {
+    return _apiDataSource
+        .show(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<ShowSeason>> showSeasons(String showId) {
     return _apiDataSource
         .showSeasons(showId)

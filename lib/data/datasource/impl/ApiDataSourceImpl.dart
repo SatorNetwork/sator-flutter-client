@@ -675,6 +675,18 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<ShowModel> show(String showId) {
+    return _getConnect
+        .requestGet(
+      'shows/$showId',
+    )
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      return ShowModel.fromJson(jsonData['data']);
+    });
+  }
+
+  @override
   Future<List<ShowSeasonModel>> showSeasons(String showId) {
     return _getConnect
         .requestGet(
