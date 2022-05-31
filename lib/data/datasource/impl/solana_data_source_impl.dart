@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:satorio/data/datasource/solana_data_source.dart';
+import 'package:satorio/data/model/transaction_model.dart';
 import 'package:solana/dto.dart';
 import 'package:solana/solana.dart';
 
@@ -135,11 +136,12 @@ class SolanaDataSourceImpl implements SolanaDataSource {
     final Iterable<TransactionDetails> _transactions =
         await _solanaClient.rpcClient.getTransactionsList(
       Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
-          commitment: Commitment.finalized,
-          limit: 100,
+      commitment: Commitment.finalized,
+      limit: 100,
     );
 
-    print('SOLANA getTransactionsList ${_transactions.length}');
+    final List<TransactionModel> result = [];
+
     _transactions.forEach((transaction) {
       print('-------------- ');
       final DateTime dt = DateTime.fromMillisecondsSinceEpoch(
@@ -151,7 +153,10 @@ class SolanaDataSourceImpl implements SolanaDataSource {
       print(
           'Meta postTokenBalances: ${transaction.meta?.postTokenBalances.map((e) => '${e.accountIndex} ${e.mint} ${e.uiTokenAmount.uiAmountString}').join(' | ')}');
 
-      final txHash = transaction.transaction.signatures[0];
+      final String? txHash = transaction.transaction.signatures.isNotEmpty
+          ? transaction.transaction.signatures[0]
+          : null;
+      double? amount;
 
       (transaction.transaction.message as ParsedMessage)
           .instructions
@@ -164,6 +169,8 @@ class SolanaDataSourceImpl implements SolanaDataSource {
           } else if (parsed is ParsedSplTokenTransferCheckedInstruction) {
             print(
                 'ParsedSplTokenTransferCheckedInstruction: ${parsed.info.tokenAmount.uiAmountString} ${parsed.info.destination} ${parsed.info.source} ');
+            amount =
+                double.tryParse(parsed.info.tokenAmount.uiAmountString ?? '');
           } else if (parsed is ParsedSplTokenGenericInstruction) {
             // print('ParsedSplTokenGenericInstruction: ${parsed.info}');
           }
@@ -180,7 +187,20 @@ class SolanaDataSourceImpl implements SolanaDataSource {
           // print('ParsedInstructionMemo: ${instruction.memo}');
         }
       });
+
+      if (txHash != null && amount != null) {
+        result.add(TransactionModel(
+          txHash!,
+          solanaAccountAddress,
+          txHash!,
+          amount!,
+          dt,
+        ));
+      }
     });
+
+    print(
+        'SOLANA getTransactionsList ${_transactions.length} == ${result.length}');
   }
 
   @override
