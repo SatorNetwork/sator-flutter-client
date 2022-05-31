@@ -1273,7 +1273,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'txt_current_price'.tr,
+                      isAndroid ? 'txt_current_price'.tr : '',
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.comet,
                         fontSize: 15 * coefficient,
@@ -1284,7 +1284,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       height: 6,
                     ),
                     Text(
-                      '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO',
+                      isAndroid ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO' : '',
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 15 * coefficient,
