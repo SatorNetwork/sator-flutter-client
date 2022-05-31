@@ -1,11 +1,13 @@
 import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import '../domain/entities/profile.dart';
+import '../domain/repositories/sator_repository.dart';
 
 class UnityViewPage extends StatefulWidget {
   UnityViewPage() : super();
@@ -15,6 +17,15 @@ class UnityViewPage extends StatefulWidget {
 }
 
 class _UnityViewPageState extends State<UnityViewPage> {
+  final SatorioRepository _satorioRepository = Get.find();
+
+  Profile? _getProfile() {
+    return (_satorioRepository.profileListenable()
+    as ValueListenable<Box<Profile>>)
+        .value
+        .getAt(0);
+  }
+
   late FirebaseDataSource _firebaseDataSource;
   late UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
@@ -82,13 +93,14 @@ class _UnityViewPageState extends State<UnityViewPage> {
 
     _firebaseDataSource = Get.find<FirebaseDataSource>();
 
+    var userId = _getProfile()?.id.toString();
     var tkn = await Get.find<AuthDataSource>().getAuthToken() as String;
     var url = await _firebaseDataSource.apiBaseUrl() as String;
 
     _unityWidgetController.postMessage(
         'GameStarter',
         'Initialize',
-        tkn + ' ' + url + 'gapi/'
+        tkn + ' ' + url + 'gapi/' + ' ' + userId!
     );
   }
 }

@@ -292,22 +292,6 @@ class HomePage extends GetView<HomeController> {
                   height: 0,
                 ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, left: 20, right: 20),
-          child: TitleWithButton(
-            textCode: 'txt_games'.tr,
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => UnityViewPage()));
-            },
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 16),
-          height: 168 * coefficient,
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _showItem(new Show("Sator Space", "Sator Space", "https://drive.google.com/uc?id=1GJvIMimm14FqeMaCZuaaZ2BJsqWPK34-&export=download", false, false),
-                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => UnityViewPage()))),
-        ),
         _categories(),
         Obx(
           () => controller.allShowsRx.value.length != 0
