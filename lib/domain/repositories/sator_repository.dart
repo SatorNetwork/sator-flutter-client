@@ -110,7 +110,7 @@ abstract class SatorioRepository {
   Future<void> updateWalletDetail(String detailPath);
 
   Future<void> updateWalletTransactions(
-    String transactionsPath, {
+    Wallet wallet, {
     DateTime? from,
     DateTime? to,
   });

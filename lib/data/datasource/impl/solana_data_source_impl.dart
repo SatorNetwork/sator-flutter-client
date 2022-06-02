@@ -29,8 +29,8 @@ class SolanaDataSourceImpl implements SolanaDataSource {
   Future<void> balanceSOL(String solanaAccountAddress) async {
     final int _balance =
         await _solanaClient.rpcClient.getBalance(solanaAccountAddress);
-
-    print('SOLANA getBalance $_balance');
+    //
+    // print('SOLANA getBalance $_balance');
   }
 
   @override
@@ -41,8 +41,8 @@ class SolanaDataSourceImpl implements SolanaDataSource {
     final TokenAmount _tokenAmount = await _solanaClient.rpcClient
         .getTokenAccountBalance(tokenWallet?.pubkey ?? '');
 
-    print(
-        'SOLANA getTokenAccountBalance ${_tokenAmount.amount} ${_tokenAmount.decimals} ${_tokenAmount.uiAmountString}');
+    // print(
+    //     'SOLANA getTokenAccountBalance ${_tokenAmount.amount} ${_tokenAmount.decimals} ${_tokenAmount.uiAmountString}');
   }
 
   @override
@@ -111,8 +111,6 @@ class SolanaDataSourceImpl implements SolanaDataSource {
       }
     });
 
-    print(
-        'SOLANA getTransactionsList ${_transactions.length} == ${result.length}');
     return result;
   }
 

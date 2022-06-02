@@ -152,12 +152,6 @@ class WalletController extends GetxController {
 
   void _updateTransaction(Wallet? wallet) {
     if (wallet != null && wallet.transactionsUrl.isNotEmpty) {
-      // TODO
-      final WalletDetail? walletDetail = walletDetailsRx.value
-          .firstWhereOrNull((element) => element.id == wallet.id);
-      print(
-          '_updateTransaction ${wallet.transactionsUrl} ${walletDetail?.id} ${walletDetail?.solanaAccountAddress}');
-
       List<DateTime> trxDateTimes = _transactionListenable.value.values
           .where((element) =>
               element.walletId == wallet.id && element.createdAt != null)
@@ -168,8 +162,7 @@ class WalletController extends GetxController {
           ? null
           : trxDateTimes.reduce((a, b) => a.isAfter(b) ? a : b);
 
-      _satorioRepository.updateWalletTransactions(wallet.transactionsUrl,
-          from: fromDateTime);
+      _satorioRepository.updateWalletTransactions(wallet, from: fromDateTime);
     }
   }
 
@@ -268,7 +261,7 @@ class WalletController extends GetxController {
           : trxDateTimes.reduce((a, b) => a.isBefore(b) ? a : b);
 
       _satorioRepository
-          .updateWalletTransactions(wallet.transactionsUrl, to: toDateTime)
+          .updateWalletTransactions(wallet, to: toDateTime)
           .then((value) => _isMoreLoading.value = false)
           .catchError((value) {
         _isMoreLoading.value = false;

@@ -649,31 +649,40 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<void> updateWalletDetail(String detailPath) {
     return _apiDataSource
         .walletDetail(detailPath)
-        .then((WalletDetail walletDetail) {
-      //TODO
-      print('WALLET ${walletDetail.solanaAccountAddress}');
-      if (walletDetail.solanaAccountAddress.isNotEmpty) {
-        _solanaDataSource.balanceSOL(walletDetail.solanaAccountAddress);
-        _solanaDataSource.balanceSAO(walletDetail.solanaAccountAddress);
-        _solanaDataSource.transactionsATA(
-            walletDetail.id, walletDetail.solanaAccountAddress);
-      }
-      return _localDataSource.saveWalletDetail(walletDetail);
-    }).catchError((value) => _handleException(value));
+        .then((WalletDetail walletDetail) =>
+            _localDataSource.saveWalletDetail(walletDetail))
+        .catchError((value) => _handleException(value));
   }
 
   @override
   Future<void> updateWalletTransactions(
-    String transactionsPath, {
+    Wallet wallet, {
     DateTime? from,
     DateTime? to,
   }) {
     return _apiDataSource
-        .walletTransactions(transactionsPath, from: from, to: to)
-        .then(
-          (List<Transaction> transactions) =>
-              _localDataSource.saveTransactions(transactions),
-        );
+        .walletDetail(wallet.detailsUrl)
+        .then((WalletDetail walletDetail) {
+      if (walletDetail.solanaAccountAddress.isEmpty) {
+        return _apiDataSource
+            .walletTransactions(wallet.transactionsUrl, from: from, to: to)
+            .then(
+              (List<Transaction> transactions) =>
+                  _localDataSource.saveTransactions(transactions),
+            );
+      } else {
+        return _solanaDataSource
+            .transactionsATA(
+          walletDetail.id,
+          walletDetail.solanaAccountAddress,
+        )
+            .then((List<Transaction> transactions) {
+          return _localDataSource
+              .cleanTransactions(walletDetail.id)
+              .then((value) => _localDataSource.saveTransactions(transactions));
+        });
+      }
+    });
   }
 
   @override
