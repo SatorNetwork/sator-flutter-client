@@ -18,6 +18,7 @@ import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
+import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -51,8 +52,6 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/util/getx_extension.dart';
 
-import 'package:satorio/data/datasource/solana_data_source.dart';
-
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
   final NftsDataSource _nftsDataSource;
@@ -73,13 +72,14 @@ class SatorioRepositoryImpl implements SatorioRepository {
     this._natsDataSource,
     this._inAppPurchaseDataSource,
     this._feedDataSource,
-      this._solanaDataSource,
+    this._solanaDataSource,
   ) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
         .then((value) => _nftsDataSource.init())
         .then((value) => _inAppPurchaseDataSource.init())
+        .then((value) => _solanaDataSource.init())
         .then((value) => _init.value = true);
   }
 
@@ -649,11 +649,17 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<void> updateWalletDetail(String detailPath) {
     return _apiDataSource
         .walletDetail(detailPath)
-        .then(
-          (WalletDetail walletDetail) =>
-              _localDataSource.saveWalletDetail(walletDetail),
-        )
-        .catchError((value) => _handleException(value));
+        .then((WalletDetail walletDetail) {
+      //TODO
+      print('WALLET ${walletDetail.solanaAccountAddress}');
+      if (walletDetail.solanaAccountAddress.isNotEmpty) {
+        _solanaDataSource.balanceSOL(walletDetail.solanaAccountAddress);
+        _solanaDataSource.balanceSAO(walletDetail.solanaAccountAddress);
+        _solanaDataSource.transactionsATA(
+            walletDetail.id, walletDetail.solanaAccountAddress);
+      }
+      return _localDataSource.saveWalletDetail(walletDetail);
+    }).catchError((value) => _handleException(value));
   }
 
   @override

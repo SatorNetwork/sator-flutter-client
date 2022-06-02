@@ -49,7 +49,10 @@ class AppBinding extends Bindings {
       NatsDataSourceImpl(Get.find()),
       permanent: true,
     );
-    Get.put<SolanaDataSource>(SolanaDataSourceImpl(), permanent: true);
+    Get.put<SolanaDataSource>(
+      SolanaDataSourceImpl(Get.find()),
+      permanent: true,
+    );
 
     // Repository
     Get.put<SatorioRepository>(

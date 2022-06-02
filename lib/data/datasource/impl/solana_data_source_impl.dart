@@ -1,111 +1,28 @@
-import 'package:intl/intl.dart';
 import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:solana/dto.dart';
 import 'package:solana/solana.dart';
 
+import '../firebase_data_source.dart';
+
 class SolanaDataSourceImpl implements SolanaDataSource {
-  static const String _urlDevNet = 'https://api.devnet.solana.com';
-  static const String _urlTestNet = 'https://api.testnet.solana.com';
+  late final String _token;
+  late final String _url;
 
-  static const String _tokenDev =
-      'FBDfbe7CFXHHNzDpNBYf4Evcg5GKrThYNjk4wP2xwjwA';
-  static const String _tokenProd =
-      '2HeykdKjzHKGm2LKHw8pDYwjKPiFEoXAz74dirhUgQvq';
-
-  // static const String _wallet = 'kNiKFPho1eoCpR7DSx7yzebZ3v9oT6fYwM3ww8fv4eh';
-  // static const String _wallet = 'EBAUihTAwhG2pSuA1K2qJwmAh9LRxAa4Q5uhg3C1Yc9Q';
-
+  final FirebaseDataSource _firebaseDataSource;
   late final SolanaClient _solanaClient;
 
-  SolanaDataSourceImpl() {
-    _solanaClientTmp();
-    _rpcClientTmp();
-  }
+  SolanaDataSourceImpl(this._firebaseDataSource);
 
-  void _solanaClientTmp() {
-    print('SOLANA _solanaClientTmp');
+  Future<void> init() async {
+    _token = await _firebaseDataSource.solanaToken();
+    _url = await _firebaseDataSource.solanaClusterUrl();
+
     _solanaClient = SolanaClient(
-      rpcUrl: Uri.parse(_urlDevNet),
-      websocketUrl: Uri.parse(_urlDevNet),
+      rpcUrl: Uri.parse(_url),
+      websocketUrl: Uri.parse(_url),
       timeout: Duration(seconds: 30),
     );
-  }
-
-  void _rpcClientTmp() async {
-    print('SOLANA _rpcClientTmp');
-
-    // final pubKey = _wallet;
-
-    // final Account? _accountInfo =
-    //     await _solanaClient.rpcClient.getAccountInfo(_wallet);
-    // .then((value) => print('SOLANA getAccountInfo $value'))
-    // .onError(
-    //   (Exception error, stackTrace) =>
-    //       print('SOLANA getAccountInfo ${error.toString()}'),
-    // );
-    // print(
-    //     'SOLANA getAccountInfo ${_accountInfo?.lamports} ${_accountInfo?.data}');
-
-    // _solanaClient.rpcClient
-    //     .getBalance(_wallet)
-    //     .then((value) => print('SOLANA getBalance $value'))
-    //     .onError(
-    //       (Exception error, stackTrace) =>
-    //           print('SOLANA getBalance ${error.toString()}'),
-    //     );
-
-    // _solanaClient.rpcClient
-    //     .getProgramAccounts(pubKey, encoding: Encoding.base58)
-    //     .then((value) => print('SOLANA getProgramAccounts $value'))
-    //     .onError(
-    //       (Exception error, stackTrace) =>
-    //           print('SOLANA getProgramAccounts ${error.toString()}'),
-    //     );
-
-    // _solanaClient.rpcClient
-    //     .getSignaturesForAddress(pubKey)
-    //     .then((List<TransactionSignatureInformation> value) =>
-    //         print('SOLANA getSignaturesForAddress ${value.length}'))
-    //     .onError(
-    //       (Exception error, stackTrace) =>
-    //           print('SOLANA getSignaturesForAddress ${error.toString()}'),
-    //     );
-
-    // _solanaClient.rpcClient
-    //     .getStakeActivation(pubKey)
-    //     .then((value) => print('SOLANA getStakeActivation $value'))
-    //     .onError(
-    //       (Exception error, stackTrace) =>
-    //           print('SOLANA getStakeActivation ${error.toString()}'),
-    //     );
-
-    // final ProgramAccount? tokenWallet =
-    //     await _solanaClient.getAssociatedTokenAccount(
-    //   owner: Ed25519HDPublicKey.fromBase58(_wallet),
-    //   mint: Ed25519HDPublicKey.fromBase58(_tokenDev),
-    // );
-    // final TokenAmount _tokenAmount = await _solanaClient.rpcClient
-    //     .getTokenAccountBalance(tokenWallet?.pubkey ?? '');
-    // print(
-    //     'SOLANA getTokenAccountBalance ${_tokenAmount.amount} ${_tokenAmount.decimals} ${_tokenAmount.uiAmountString}');
-
-    // _solanaClient.rpcClient
-    //     .getTokenLargestAccounts(pubKey)
-    //     .then((value) => print('SOLANA getTokenLargestAccounts $value'))
-    //     .onError(
-    //       (Exception error, stackTrace) =>
-    //           print('SOLANA getTokenLargestAccounts ${error.toString()}'),
-    //     );
-
-    // final Iterable<TransactionDetails> _transactions = await _solanaClient
-    //     .rpcClient
-    //     .getTransactionsList(Ed25519HDPublicKey.fromBase58(_wallet));
-    // print('SOLANA getTransactionsList ${_transactions.length}');
-    // _transactions.forEach((transaction) {
-    //   print(
-    //       '${(transaction.transaction.message as ParsedMessage).instructions}');
-    // });
   }
 
   @override
@@ -119,10 +36,7 @@ class SolanaDataSourceImpl implements SolanaDataSource {
   @override
   Future<void> balanceSAO(String solanaAccountAddress) async {
     final ProgramAccount? tokenWallet =
-        await _solanaClient.getAssociatedTokenAccount(
-      owner: Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
-      mint: Ed25519HDPublicKey.fromBase58(_tokenDev),
-    );
+        await _tokenProgramAccount(solanaAccountAddress);
 
     final TokenAmount _tokenAmount = await _solanaClient.rpcClient
         .getTokenAccountBalance(tokenWallet?.pubkey ?? '');
@@ -132,7 +46,10 @@ class SolanaDataSourceImpl implements SolanaDataSource {
   }
 
   @override
-  Future<void> transactionsATA(String solanaAccountAddress) async {
+  Future<List<TransactionModel>> transactionsATA(
+      String walletId, String solanaAccountAddress) async {
+    final List<TransactionModel> result = [];
+
     final Iterable<TransactionDetails> _transactions =
         await _solanaClient.rpcClient.getTransactionsList(
       Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
@@ -140,18 +57,12 @@ class SolanaDataSourceImpl implements SolanaDataSource {
       limit: 100,
     );
 
-    final List<TransactionModel> result = [];
+    final ProgramAccount? tokenAccount =
+        await _tokenProgramAccount(solanaAccountAddress);
 
     _transactions.forEach((transaction) {
-      print('-------------- ');
       final DateTime dt = DateTime.fromMillisecondsSinceEpoch(
           (transaction.blockTime ?? 0) * 1000);
-      print(
-          'Block time: ${transaction.blockTime} ${DateFormat('dd-MM-yyyy HH-mm-ss').format(dt)}');
-      print(
-          'Meta preTokenBalances: ${transaction.meta?.preTokenBalances.map((e) => '${e.accountIndex} ${e.mint} ${e.uiTokenAmount.uiAmountString}').join(' | ')}');
-      print(
-          'Meta postTokenBalances: ${transaction.meta?.postTokenBalances.map((e) => '${e.accountIndex} ${e.mint} ${e.uiTokenAmount.uiAmountString}').join(' | ')}');
 
       final String? txHash = transaction.transaction.signatures.isNotEmpty
           ? transaction.transaction.signatures[0]
@@ -164,35 +75,36 @@ class SolanaDataSourceImpl implements SolanaDataSource {
         if (instruction is ParsedInstructionSplToken) {
           final ParsedSplTokenInstruction parsed = instruction.parsed;
           if (parsed is ParsedSplTokenTransferInstruction) {
-            // print(
-            //     'ParsedSplTokenTransferInstruction: ${parsed.info.amount} ${parsed.info.destination} ${parsed.info.source} ');
+            // ParsedSplTokenTransferInstruction
           } else if (parsed is ParsedSplTokenTransferCheckedInstruction) {
-            print(
-                'ParsedSplTokenTransferCheckedInstruction: ${parsed.info.tokenAmount.uiAmountString} ${parsed.info.destination} ${parsed.info.source} ');
-            amount =
+            final double? parsedAmount =
                 double.tryParse(parsed.info.tokenAmount.uiAmountString ?? '');
+
+            if (parsedAmount != null) {
+              amount = parsed.info.source == tokenAccount?.pubkey
+                  ? -parsedAmount
+                  : parsedAmount;
+            }
           } else if (parsed is ParsedSplTokenGenericInstruction) {
-            // print('ParsedSplTokenGenericInstruction: ${parsed.info}');
+            // ParsedSplTokenGenericInstruction
           }
         } else if (instruction is ParsedInstructionSystem) {
           final ParsedSystemInstruction parsed = instruction.parsed;
           if (parsed is ParsedSystemTransferInstruction) {
-            // print(
-            //     'ParsedSystemTransferInstruction: ${parsed.info.lamports} ${parsed.info.destination} ${parsed.info.source} ');
+            // ParsedSystemTransferInstruction
           } else if (parsed is ParsedSystemTransferCheckedInstruction) {
-            // print(
-            //     'ParsedSystemTransferCheckedInstruction: ${parsed.info.lamports} ${parsed.info.destination} ${parsed.info.source} ');
+            // ParsedSystemTransferCheckedInstruction
           }
         } else if (instruction is ParsedInstructionMemo) {
-          // print('ParsedInstructionMemo: ${instruction.memo}');
+          // ParsedInstructionMemo
         }
       });
 
       if (txHash != null && amount != null) {
         result.add(TransactionModel(
-          txHash!,
-          solanaAccountAddress,
-          txHash!,
+          txHash,
+          walletId,
+          txHash,
           amount!,
           dt,
         ));
@@ -201,8 +113,16 @@ class SolanaDataSourceImpl implements SolanaDataSource {
 
     print(
         'SOLANA getTransactionsList ${_transactions.length} == ${result.length}');
+    return result;
   }
 
   @override
   Future<void> nftList() async {}
+
+  Future<ProgramAccount?> _tokenProgramAccount(String solanaAccountAddress) {
+    return _solanaClient.getAssociatedTokenAccount(
+      owner: Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
+      mint: Ed25519HDPublicKey.fromBase58(_token),
+    );
+  }
 }

@@ -99,4 +99,16 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
     return (idsFromFirebase).map((item) => item as String).toList();
   }
+
+  @override
+  Future<String> solanaClusterUrl() async {
+    return _remoteConfig.getString(
+        isProduction ? 'solana_prod_cluster_url' : 'solana_dev_cluster_url');
+  }
+
+  @override
+  Future<String> solanaToken() async {
+    return _remoteConfig
+        .getString(isProduction ? 'sao_token_prod' : 'sao_token_dev');
+  }
 }
