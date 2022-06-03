@@ -305,42 +305,6 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
               SizedBox(
                 height: 34 * coefficient,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: TitleWithButton(
-                  onTap: () {
-                    controller.toAllShows();
-                  },
-                  textCode: 'txt_realm_nft'.tr,
-                  fontSize: 24.0 * coefficient,
-                  fontWeight: FontWeight.w700,
-                  buttonText: 'View',
-                  color: Colors.black,
-                  iconColor: SatorioColor.darkAccent,
-                ),
-              ),
-              SizedBox(
-                height: 10 * coefficient,
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 16),
-                height: 168 * coefficient,
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  separatorBuilder: (context, index) => SizedBox(
-                    width: 16,
-                  ),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: controller.allShowsRx.value.length,
-                  itemBuilder: (context, index) {
-                    Show show = controller.allShowsRx.value[index];
-                    return _homeShowItem(show);
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 15 * coefficient,
-              ),
             ],
           ),
         ),
@@ -456,54 +420,6 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _homeShowItem(Show show) {
-    final double width = 125.0;
-    return InkWell(
-      onTap: () {
-        controller.toShowNfts(show.id);
-      },
-      child: Container(
-        width: width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClipOval(
-              child: Container(
-                height: 120,
-                width: 120,
-                color: Colors.white,
-                child: CachedNetworkImage(
-                  imageUrl: show.cover,
-                  cacheKey: show.cover,
-                  fit: BoxFit.cover,
-                  errorWidget: (context, url, error) => Container(
-                    color: SatorioColor.darkAccent,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 2 * coefficient,
-            ),
-            Expanded(
-              child: Text(
-                show.title,
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                style: textTheme.headline4!.copyWith(
-                  color: Colors.black,
-                  fontSize: 15.0 * coefficient,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

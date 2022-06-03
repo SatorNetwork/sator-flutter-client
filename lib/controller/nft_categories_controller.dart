@@ -120,14 +120,6 @@ class NftCategoriesController extends GetxController
     );
   }
 
-  void toShowNfts(String showId) {
-    Get.to(
-      () => NftListPage(),
-      binding: NftListBinding(),
-      arguments: NftListArgument(NftFilterType.Show, showId),
-    );
-  }
-
   void toNftItem(final NftItem nftItem) {
     Get.to(
       () => NftItemPage(),
