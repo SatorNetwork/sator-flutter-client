@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,8 @@ class WriteReviewController extends GetxController {
   static const int minValue = 1;
   static const int maxValue = 10;
   static const int initValue = 7;
+
+  final int minReviewLength = 100;
 
   final SatorioRepository _satorioRepository = Get.find();
 
