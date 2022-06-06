@@ -21,6 +21,9 @@ import 'package:satorio/ui/page_widget/wallet_in_app_purchase_page.dart';
 import 'package:satorio/ui/page_widget/wallet_receive_page.dart';
 import 'package:satorio/ui/page_widget/wallet_send_page.dart';
 import 'package:satorio/ui/page_widget/wallet_stake_page.dart';
+import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WalletController extends GetxController {
   static const _initPage = 0;
@@ -249,6 +252,13 @@ class WalletController extends GetxController {
 
     String walletId = walletDetailsRx.value[pageRx.value].id;
     Wallet? wallet = wallets[walletId];
+
+    // solana jrpc hasn't pagination
+    if (walletDetailsRx.value[pageRx.value].solanaAccountAddress.isNotEmpty) {
+      _isMoreLoading.value = false;
+      return;
+    }
+
     if (wallet != null && wallet.transactionsUrl.isNotEmpty) {
       List<DateTime> trxDateTimes = _transactionListenable.value.values
           .where((element) =>
@@ -267,5 +277,22 @@ class WalletController extends GetxController {
         _isMoreLoading.value = false;
       });
     }
+  }
+
+  void toTransactionExternally(String trxHash) async {
+    final String clusterName = await _satorioRepository.solanaClusterName();
+    final String urlString = linkSolanaTrx.format([trxHash, clusterName]);
+
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) throw 'Could not launch $url';
+  }
+
+  void toAccountExternally(String solanaAccountAddress) async {
+    final String clusterName = await _satorioRepository.solanaClusterName();
+    final String urlString =
+        linkSolanaAccount.format([solanaAccountAddress, clusterName]);
+
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) throw 'Could not launch $url';
   }
 }

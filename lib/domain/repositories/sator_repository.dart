@@ -314,4 +314,6 @@ abstract class SatorioRepository {
   Future<bool> registerToken(String deviceId, String token);
 
   Future<String?> fcmToken();
+
+  Future<String> solanaClusterName();
 }

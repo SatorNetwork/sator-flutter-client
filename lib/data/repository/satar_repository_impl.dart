@@ -997,4 +997,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
         .fcmToken()
         .catchError((value) => _handleException(value));
   }
+
+  @override
+  Future<String> solanaClusterName() {
+    return _firebaseDataSource.solanaClusterName();
+  }
 }

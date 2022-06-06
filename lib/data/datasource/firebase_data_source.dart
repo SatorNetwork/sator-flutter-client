@@ -28,4 +28,6 @@ abstract class FirebaseDataSource {
   Future<String> solanaToken();
 
   Future<String> solanaClusterUrl();
+
+  Future<String> solanaClusterName();
 }

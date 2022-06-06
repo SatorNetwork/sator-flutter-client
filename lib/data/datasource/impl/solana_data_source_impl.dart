@@ -1,9 +1,8 @@
+import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:solana/dto.dart';
 import 'package:solana/solana.dart';
-
-import '../firebase_data_source.dart';
 
 class SolanaDataSourceImpl implements SolanaDataSource {
   late final String _token;
