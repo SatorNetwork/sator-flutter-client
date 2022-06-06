@@ -9,6 +9,14 @@ class WalletDetail {
   final List<WalletAction> actions;
   final String type;
 
-  const WalletDetail(this.id, this.solanaAccountAddress, this.order,
-      this.balance, this.actions, this.type);
+  const WalletDetail(
+    this.id,
+    this.solanaAccountAddress,
+    this.order,
+    this.balance,
+    this.actions,
+    this.type,
+  );
+
+  bool get isSolana => solanaAccountAddress.isNotEmpty;
 }

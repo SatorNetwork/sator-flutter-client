@@ -254,7 +254,7 @@ class WalletController extends GetxController {
     Wallet? wallet = wallets[walletId];
 
     // solana jrpc hasn't pagination
-    if (walletDetailsRx.value[pageRx.value].solanaAccountAddress.isNotEmpty) {
+    if (walletDetailsRx.value[pageRx.value].isSolana) {
       _isMoreLoading.value = false;
       return;
     }

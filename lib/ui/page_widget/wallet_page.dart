@@ -205,21 +205,15 @@ class WalletPage extends GetView<WalletController> {
                               .walletDetailsRx
                               .value[controller.pageRx.value]
                               .id]![index];
-                      bool isSolana = controller
-                          .walletDetailsRx
-                          .value[controller.pageRx.value]
-                          .solanaAccountAddress
-                          .isNotEmpty;
+                      bool isSolana = controller.walletDetailsRx
+                          .value[controller.pageRx.value].isSolana;
                       return _transactionItem(transaction, isSolana);
                     },
                   ),
                 ),
                 Obx(
-                  () => controller
-                          .walletDetailsRx
-                          .value[controller.pageRx.value]
-                          .solanaAccountAddress
-                          .isNotEmpty
+                  () => controller.walletDetailsRx
+                          .value[controller.pageRx.value].isSolana
                       ? Padding(
                           padding: EdgeInsets.only(
                             top: 12,
