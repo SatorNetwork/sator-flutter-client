@@ -663,14 +663,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
     return _apiDataSource
         .walletDetail(wallet.detailsUrl)
         .then((WalletDetail walletDetail) {
-      if (walletDetail.solanaAccountAddress.isEmpty) {
-        return _apiDataSource
-            .walletTransactions(wallet.transactionsUrl, from: from, to: to)
-            .then(
-              (List<Transaction> transactions) =>
-                  _localDataSource.saveTransactions(transactions),
-            );
-      } else {
+      if (walletDetail.isSolana) {
         return _solanaDataSource
             .transactionsATA(
           walletDetail.id,
@@ -681,6 +674,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
               .cleanTransactions(walletDetail.id)
               .then((value) => _localDataSource.saveTransactions(transactions));
         });
+      } else {
+        return _apiDataSource
+            .walletTransactions(wallet.transactionsUrl, from: from, to: to)
+            .then(
+              (List<Transaction> transactions) =>
+                  _localDataSource.saveTransactions(transactions),
+            );
       }
     });
   }
