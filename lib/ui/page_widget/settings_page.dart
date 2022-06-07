@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
@@ -48,13 +46,12 @@ class SettingsPage extends GetView<SettingsController> {
       ),
       body: Stack(
         children: [
-          Container(
-            color: SatorioColor.darkAccent,
-            child: backgroundImage('images/bg/gradient.svg'),
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Container(
             height: Get.height,
-            margin: const EdgeInsets.only(top: 100),
+            margin: EdgeInsets.only(
+              top: kToolbarHeight + Get.mediaQuery.padding.top,
+            ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32),

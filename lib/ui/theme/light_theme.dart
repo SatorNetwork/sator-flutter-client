@@ -20,8 +20,9 @@ final lightTheme = ThemeData(
       ),
     ),
   ),
-  textTheme:
-      textTheme.copyWith(bodyText1: TextStyle(color: SatorioColor.brand)),
+  textTheme: textTheme.copyWith(
+    bodyText1: TextStyle(color: SatorioColor.brand),
+  ),
 );
 
 final double coefficient = Get.height / 812;
@@ -31,8 +32,8 @@ final bool isMaxScreenWidth = Get.width > 580.0;
 Widget backgroundImage(String imagePath) {
   return SvgPicture.asset(
     imagePath,
-    height: isMaxScreenWidth ? null : Get.height,
-    width: isMaxScreenWidth ? Get.width : null,
+    height: Get.height,
+    width: Get.width,
     fit: BoxFit.cover,
   );
 }
