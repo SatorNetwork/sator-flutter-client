@@ -10,6 +10,7 @@ import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/domain/entities/fcm_type.dart';
+import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
@@ -54,41 +55,50 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
         _fcmShow(message.data["show_id"]);
         break;
       case FCMType.newEpisode:
-        _fcmEpisode(message.data["show_id"], message.data["episode_id"]);
+        _fcmEpisode(message);
         break;
       default:
         print('default');
     }
   }
-  
+
   void _fcmShow(String showId) {
     final SatorioRepository _satorioRepository = Get.find();
     _satorioRepository.show(showId).then((show) {
       Get.to(
-            () => ShowDetailWithEpisodesPage(),
+        () => ShowDetailWithEpisodesPage(),
         binding: ShowDetailWithEpisodesBinding(),
         arguments: ShowDetailWithEpisodesArgument(show),
       );
     });
   }
 
-  void _fcmEpisode(String showId, String episodeId) {
+  void _fcmEpisode(RemoteMessage message) {
     final SatorioRepository _satorioRepository = Get.find();
-    _satorioRepository.showDetail(showId).then((showDetail) {
-      _satorioRepository
-          .showEpisode(showDetail.id, episodeId)
-          .then(
-            (showEpisode) {
-              Get.to(
-                    () => ShowEpisodesRealmPage(),
-                binding: ShowEpisodesRealmBinding(),
-                arguments: ShowEpisodeRealmArgument(
-                    showDetail, null, showEpisode, false),
+    Future.delayed(
+        Duration(seconds: 2),
+        () => _satorioRepository
+                .showDetail(message.data["show_id"])
+                .then((showDetail) {
+              _satorioRepository
+                  .showEpisode(
+                      message.data["show_id"], message.data["episode_id"])
+                  .then(
+                (showEpisode) {
+                  _satorioRepository
+                      .seasonById(
+                          message.data["show_id"], message.data['seasonID'])
+                      .then((ShowSeason showSeason) {
+                    Get.to(
+                      () => ShowEpisodesRealmPage(),
+                      binding: ShowEpisodesRealmBinding(),
+                      arguments: ShowEpisodeRealmArgument(
+                          showDetail, showSeason, showEpisode, false),
+                    );
+                  });
+                },
               );
-        },
-      );
-
-    });
+            }));
   }
 
   Color _fcmSnackbarColor(String type) {

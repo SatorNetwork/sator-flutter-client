@@ -427,6 +427,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<ShowSeason> seasonById(String showId, String seasonId) {
+    return _apiDataSource
+        .seasonById(showId, seasonId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<ShowEpisode> showEpisode(String showId, String episodeId) {
     return _apiDataSource
         .showEpisode(showId, episodeId)

@@ -152,6 +152,8 @@ abstract class SatorioRepository {
 
   Future<List<ShowSeason>> showSeasons(String showId);
 
+  Future<ShowSeason> seasonById(String showId, String seasonId);
+
   Future<ShowEpisode> showEpisode(String showId, String episodeId);
 
   Future<Show> loadShow(String showId);
