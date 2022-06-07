@@ -5,6 +5,8 @@ import 'package:solana/dto.dart';
 import 'package:solana/solana.dart';
 
 class SolanaDataSourceImpl implements SolanaDataSource {
+  static const int _trxCount = 30;
+
   late final String _token;
   late final String _url;
 
@@ -53,7 +55,7 @@ class SolanaDataSourceImpl implements SolanaDataSource {
         await _solanaClient.rpcClient.getTransactionsList(
       Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
       commitment: Commitment.finalized,
-      limit: 100,
+      limit: _trxCount,
     );
 
     final ProgramAccount? tokenAccount =
