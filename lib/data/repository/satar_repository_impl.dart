@@ -647,11 +647,28 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> updateWalletDetail(String detailPath) {
-    return _apiDataSource
-        .walletDetail(detailPath)
-        .then((WalletDetail walletDetail) =>
-            _localDataSource.saveWalletDetail(walletDetail))
-        .catchError((value) => _handleException(value));
+    return _apiDataSource.walletDetail(detailPath).then(
+      (WalletDetail walletDetail) {
+        final AmountCurrency? amountCurrency = walletDetail.balance
+            .firstWhereOrNull(
+                (element) => element.currency.toUpperCase() == 'SAO');
+
+        if (walletDetail.isSolana && amountCurrency != null) {
+          return _solanaDataSource
+              .balanceSAO(walletDetail.solanaAccountAddress)
+              .then(
+            (amount) {
+              if (amount != null) {
+                amountCurrency.amount = amount;
+              }
+              return _localDataSource.saveWalletDetail(walletDetail);
+            },
+          );
+        } else {
+          return _localDataSource.saveWalletDetail(walletDetail);
+        }
+      },
+    ).catchError((value) => _handleException(value));
   }
 
   @override

@@ -5,7 +5,7 @@ abstract class SolanaDataSource {
 
   Future<void> balanceSOL(String solanaAccountAddress);
 
-  Future<void> balanceSAO(String solanaAccountAddress);
+  Future<double?> balanceSAO(String solanaAccountAddress);
 
   Future<List<TransactionModel>> transactionsATA(
     String walletId,

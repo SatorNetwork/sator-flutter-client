@@ -35,15 +35,16 @@ class SolanaDataSourceImpl implements SolanaDataSource {
   }
 
   @override
-  Future<void> balanceSAO(String solanaAccountAddress) async {
-    final ProgramAccount? tokenWallet =
+  Future<double?> balanceSAO(String solanaAccountAddress) async {
+    final ProgramAccount? tokenAccount =
         await _tokenProgramAccount(solanaAccountAddress);
 
-    final TokenAmount _tokenAmount = await _solanaClient.rpcClient
-        .getTokenAccountBalance(tokenWallet?.pubkey ?? '');
+    if (tokenAccount == null) return null;
 
-    // print(
-    //     'SOLANA getTokenAccountBalance ${_tokenAmount.amount} ${_tokenAmount.decimals} ${_tokenAmount.uiAmountString}');
+    final TokenAmount _tokenAmount = await _solanaClient.rpcClient
+        .getTokenAccountBalance(tokenAccount.pubkey);
+
+    return double.tryParse(_tokenAmount.uiAmountString ?? '');
   }
 
   @override
