@@ -3,7 +3,7 @@ import 'package:satorio/data/model/transaction_model.dart';
 abstract class SolanaDataSource {
   Future<void> init();
 
-  Future<void> balanceSOL(String solanaAccountAddress);
+  Future<int> balanceSOL(String solanaAccountAddress);
 
   Future<double?> balanceSAO(String solanaAccountAddress);
 
@@ -12,5 +12,5 @@ abstract class SolanaDataSource {
     String solanaAccountAddress,
   );
 
-  Future<void> nftList();
+  Future<void> nftList(String solanaAccountAddress);
 }

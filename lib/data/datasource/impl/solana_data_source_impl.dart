@@ -27,11 +27,8 @@ class SolanaDataSourceImpl implements SolanaDataSource {
   }
 
   @override
-  Future<void> balanceSOL(String solanaAccountAddress) async {
-    final int _balance =
-        await _solanaClient.rpcClient.getBalance(solanaAccountAddress);
-    //
-    // print('SOLANA getBalance $_balance');
+  Future<int> balanceSOL(String solanaAccountAddress) async {
+    return _solanaClient.rpcClient.getBalance(solanaAccountAddress);
   }
 
   @override
@@ -53,18 +50,25 @@ class SolanaDataSourceImpl implements SolanaDataSource {
     final List<TransactionModel> result = [];
 
     final Iterable<TransactionDetails> _transactions =
-        await _solanaClient.rpcClient.getTransactionsList(
-      Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
-      commitment: Commitment.finalized,
-      limit: _trxCount,
-    );
+        await _solanaClient.rpcClient
+            .getTransactionsList(
+              Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
+              commitment: Commitment.finalized,
+              limit: _trxCount,
+            )
+            .catchError(
+              (value) => <TransactionDetails>[],
+            );
+
+    if (_transactions.isEmpty) return [];
 
     final ProgramAccount? tokenAccount =
         await _tokenProgramAccount(solanaAccountAddress);
 
     _transactions.forEach((transaction) {
       final DateTime dt = DateTime.fromMillisecondsSinceEpoch(
-          (transaction.blockTime ?? 0) * 1000);
+        (transaction.blockTime ?? 0) * 1000,
+      );
 
       final String? txHash = transaction.transaction.signatures.isNotEmpty
           ? transaction.transaction.signatures[0]
@@ -117,12 +121,16 @@ class SolanaDataSourceImpl implements SolanaDataSource {
   }
 
   @override
-  Future<void> nftList() async {}
+  Future<void> nftList(String solanaAccountAddress) async {
+    // Not implemented yet
+  }
 
   Future<ProgramAccount?> _tokenProgramAccount(String solanaAccountAddress) {
-    return _solanaClient.getAssociatedTokenAccount(
-      owner: Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
-      mint: Ed25519HDPublicKey.fromBase58(_token),
-    );
+    return _solanaClient
+        .getAssociatedTokenAccount(
+          owner: Ed25519HDPublicKey.fromBase58(solanaAccountAddress),
+          mint: Ed25519HDPublicKey.fromBase58(_token),
+        )
+        .catchError((value) => null);
   }
 }
