@@ -39,12 +39,10 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
     }
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(message.data);
       _fcmSnackbar(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print(message.data);
       _fcmCallback(message);
     });
   }
@@ -57,8 +55,6 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
       case FCMType.newEpisode:
         _fcmEpisode(message);
         break;
-      default:
-        print('default');
     }
   }
 
@@ -75,19 +71,17 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   void _fcmEpisode(RemoteMessage message) {
     final SatorioRepository _satorioRepository = Get.find();
+    final String showId = message.data["show_id"];
+    final String episodeId = message.data["episode_id"];
+    final String seasonId = message.data["seasonID"];
+
     Future.delayed(
         Duration(seconds: 2),
-        () => _satorioRepository
-                .showDetail(message.data["show_id"])
-                .then((showDetail) {
-              _satorioRepository
-                  .showEpisode(
-                      message.data["show_id"], message.data["episode_id"])
-                  .then(
+        () => _satorioRepository.showDetail(showId).then((showDetail) {
+              _satorioRepository.showEpisode(showId, episodeId).then(
                 (showEpisode) {
                   _satorioRepository
-                      .seasonById(
-                          message.data["show_id"], message.data['seasonID'])
+                      .seasonById(showId, seasonId)
                       .then((ShowSeason showSeason) {
                     Get.to(
                       () => ShowEpisodesRealmPage(),
@@ -111,15 +105,16 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   }
 
   void _fcmSnackbar(RemoteMessage remoteMessage) {
+    final String? rmType = remoteMessage.data["type"];
     Get.snackbar(
       "${remoteMessage.notification!.title}",
       "${remoteMessage.notification!.body}",
       onTap: (value) {
-        if (remoteMessage.data["type"] == null) return;
+        if (rmType == null) return;
         _fcmCallback(remoteMessage);
       },
-      backgroundColor: remoteMessage.data["type"] != null
-          ? _fcmSnackbarColor(remoteMessage.data["type"]).withOpacity(0.8)
+      backgroundColor: rmType != null
+          ? _fcmSnackbarColor(rmType).withOpacity(0.8)
           : SatorioColor.alice_blue2.withOpacity(0.8),
       colorText: SatorioColor.darkAccent,
       duration: Duration(seconds: 4),
