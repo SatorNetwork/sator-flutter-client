@@ -687,9 +687,10 @@ class SatorioRepositoryImpl implements SatorioRepository {
           walletDetail.solanaAccountAddress,
         )
             .then((List<Transaction> transactions) {
-          return _localDataSource
-              .cleanTransactions(walletDetail.id)
-              .then((value) => _localDataSource.saveTransactions(transactions));
+          return transactions.isNotEmpty
+              ? _localDataSource.cleanTransactions(walletDetail.id).then(
+                  (value) => _localDataSource.saveTransactions(transactions))
+              : Future.value();
         });
       } else {
         return _apiDataSource
