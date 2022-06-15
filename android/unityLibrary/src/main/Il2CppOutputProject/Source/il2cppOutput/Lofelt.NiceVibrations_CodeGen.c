@@ -12,150 +12,150 @@
 
 
 
-// 0x00000001 UnityEngine.RuntimePlatform Lofelt.NiceVibrations.dsq::xbc()
-extern void dsq_xbc_m6E7EBEC829FB94D5D58E90858B508D544FCCAA5B (void);
-// 0x00000002 System.Int32 Lofelt.NiceVibrations.dsq::xbd()
-extern void dsq_xbd_m93A9648C2610771D7A2ED3DB38623929A588EB79 (void);
-// 0x00000003 System.Boolean Lofelt.NiceVibrations.dsq::xbe()
-extern void dsq_xbe_m888AEECE0E8ABCA5EAD720F7170BCAB6596E8148 (void);
-// 0x00000004 System.Boolean Lofelt.NiceVibrations.dsq::xbf()
-extern void dsq_xbf_m892FE074C1489CDEFE670FE01B0E66A2B14D1F21 (void);
-// 0x00000005 System.Boolean Lofelt.NiceVibrations.dsq::xbg()
-extern void dsq_xbg_m7B7FA3BB5BDB143DF1F2B8B36F25C76CB4A21B43 (void);
-// 0x00000006 System.Boolean Lofelt.NiceVibrations.dsq::xbh()
-extern void dsq_xbh_m9DC17E516849D7DF4E06D8AE4E3205C20071E2DB (void);
-// 0x00000007 System.Boolean Lofelt.NiceVibrations.dsq::xbi()
-extern void dsq_xbi_m1F629AD1B5C6CFBE01014E2A83BFAC608A203255 (void);
-// 0x00000008 System.Boolean Lofelt.NiceVibrations.dsq::xbj()
-extern void dsq_xbj_m4DC8D2D8C71930BD92CD1E709CDBFDFF210615A9 (void);
-// 0x00000009 System.Boolean Lofelt.NiceVibrations.dsq::xbk()
-extern void dsq_xbk_m151EB958F69E85CCDE3DD65B41EE3B17EC2CC350 (void);
-// 0x0000000A System.Boolean Lofelt.NiceVibrations.dsq::xbl()
-extern void dsq_xbl_m30D6AB743A78D6833302BB82401E12C2D1F5A24D (void);
-// 0x0000000B System.Boolean Lofelt.NiceVibrations.dsq::xbm()
+// 0x00000001 UnityEngine.RuntimePlatform Lofelt.NiceVibrations.dsq::xbk()
+extern void dsq_xbk_mE67DACC216657E911A2017872EA39188002CB608 (void);
+// 0x00000002 System.Int32 Lofelt.NiceVibrations.dsq::xbl()
+extern void dsq_xbl_m7CF0930BE65648383B3CF6AAAE7A6DD73AD83A45 (void);
+// 0x00000003 System.Boolean Lofelt.NiceVibrations.dsq::xbm()
 extern void dsq_xbm_m3B38BA488A1474724DE31F20547C67899C0CB2D0 (void);
+// 0x00000004 System.Boolean Lofelt.NiceVibrations.dsq::xbn()
+extern void dsq_xbn_mFB80BC2E1C5C46160534A037EA0EA97A0BA83CD3 (void);
+// 0x00000005 System.Boolean Lofelt.NiceVibrations.dsq::xbo()
+extern void dsq_xbo_mE4A5265CE3739DB3E9361FA4728A2764C1E54504 (void);
+// 0x00000006 System.Boolean Lofelt.NiceVibrations.dsq::xbp()
+extern void dsq_xbp_mE04F1B9FAC124DE52D8179B77C0ED426AA828F2F (void);
+// 0x00000007 System.Boolean Lofelt.NiceVibrations.dsq::xbq()
+extern void dsq_xbq_mA05F75A1B7BAC826EBEEB9D1AD6F49B2925D1CC1 (void);
+// 0x00000008 System.Boolean Lofelt.NiceVibrations.dsq::xbr()
+extern void dsq_xbr_m4EDA455334BEC31415502C1A41A9B2E0EBD69E26 (void);
+// 0x00000009 System.Boolean Lofelt.NiceVibrations.dsq::xbs()
+extern void dsq_xbs_m99136F2769D248A600E87F99C00EF99E3C41A6E3 (void);
+// 0x0000000A System.Boolean Lofelt.NiceVibrations.dsq::xbt()
+extern void dsq_xbt_mE650D5C89CE6C1E8C3EFA5DF7845931321CE643C (void);
+// 0x0000000B System.Boolean Lofelt.NiceVibrations.dsq::xbu()
+extern void dsq_xbu_mCFD5F0328F96FCAD23890DA485EE11B54F4AA147 (void);
 // 0x0000000C System.Void Lofelt.NiceVibrations.dsq::.cctor()
 extern void dsq__cctor_mC90B64A0B9EE2C66D21F1A95C0FD007B0A929C01 (void);
-// 0x0000000D System.Void Lofelt.NiceVibrations.dsq::xbn()
-extern void dsq_xbn_m7F14E69C35C1A5C5282942B1945F20D1FCDD2413 (void);
-// 0x0000000E System.Boolean Lofelt.NiceVibrations.GamepadRumble::xbo()
-extern void GamepadRumble_xbo_mE6CFDDAD412FFF212188FE7105F4C5193E72A59C (void);
-// 0x0000000F System.Void Lofelt.NiceVibrations.dsr::xbp()
-extern void dsr_xbp_m3B656E0003944C0EE2CC1DF17454DC3C62321F83 (void);
-// 0x00000010 System.Boolean Lofelt.NiceVibrations.dsr::xbq()
-extern void dsr_xbq_m77C2711CAF5A762126D8E2FF5A5CD2FF08109794 (void);
-// 0x00000011 System.Void Lofelt.NiceVibrations.dsr::xbr(System.Int32)
-extern void dsr_xbr_m434DBE2E15320A6A537BD74E5BD9F2AF150ED14A (void);
-// 0x00000012 System.Boolean Lofelt.NiceVibrations.dsr::xbs()
-extern void dsr_xbs_mEA5D7092F720DB0E9DC997899B7E853469AB7B26 (void);
-// 0x00000013 System.Void Lofelt.NiceVibrations.dsr::xbt(Lofelt.NiceVibrations.GamepadRumble)
-extern void dsr_xbt_m6A61BCBBB71AE13249999A9C0A509FC44A0F35D7 (void);
-// 0x00000014 System.Void Lofelt.NiceVibrations.dsr::xbu()
-extern void dsr_xbu_mCB0AED0979B7A3FFA27EA7AF861E9A4AF60C1032 (void);
-// 0x00000015 System.Void Lofelt.NiceVibrations.dsr::xbv()
-extern void dsr_xbv_m85153111BC1CB382E6D0A4A32F11A43A23711111 (void);
-// 0x00000016 System.Void Lofelt.NiceVibrations.dsr::xbw()
-extern void dsr_xbw_m057EF3FD940D717BB78D7DE52F5925AEB0086E5B (void);
-// 0x00000017 System.Boolean Lofelt.NiceVibrations.dsr::xbx()
-extern void dsr_xbx_m1DF2178E80825948A497D3E4340FB9B9D0DA167A (void);
-// 0x00000018 System.Void Lofelt.NiceVibrations.dsr::xby()
-extern void dsr_xby_m4910260A9DB85C3009A13C2558E91C1CF46ABFC9 (void);
+// 0x0000000D System.Void Lofelt.NiceVibrations.dsq::xbv()
+extern void dsq_xbv_m72B4084FC597D78F7ABB755F8D59C5C3261AB4C7 (void);
+// 0x0000000E System.Boolean Lofelt.NiceVibrations.GamepadRumble::xbw()
+extern void GamepadRumble_xbw_m8586370EBF84C96138C0F4517F8F6364C5168E93 (void);
+// 0x0000000F System.Void Lofelt.NiceVibrations.dsr::xbx()
+extern void dsr_xbx_m362456F4FAEF6F2B5C8FB93CC7F660326C8DE792 (void);
+// 0x00000010 System.Boolean Lofelt.NiceVibrations.dsr::xby()
+extern void dsr_xby_m84DD7E45842CBBD96FCBD6B65A2B24E3342B327F (void);
+// 0x00000011 System.Void Lofelt.NiceVibrations.dsr::xbz(System.Int32)
+extern void dsr_xbz_m45DA434BF3619FC4479B51734B82A0FC80A6F4D1 (void);
+// 0x00000012 System.Boolean Lofelt.NiceVibrations.dsr::xca()
+extern void dsr_xca_mB1098D0B04154DC09BB35A174FD41F774794E8D4 (void);
+// 0x00000013 System.Void Lofelt.NiceVibrations.dsr::xcb(Lofelt.NiceVibrations.GamepadRumble)
+extern void dsr_xcb_m5908D9A2CF36C52D5AC0E811A53158E4AC16318F (void);
+// 0x00000014 System.Void Lofelt.NiceVibrations.dsr::xcc()
+extern void dsr_xcc_m02959F7919E164529AB1F5C9BF71EF3C96BF9444 (void);
+// 0x00000015 System.Void Lofelt.NiceVibrations.dsr::xcd()
+extern void dsr_xcd_m76F642AF326421129CA7427C0E4609C0C8CA3DD1 (void);
+// 0x00000016 System.Void Lofelt.NiceVibrations.dsr::xce()
+extern void dsr_xce_mADB0AD7EC8FD0EC2970C1F59CDB57F88AB3B3ADD (void);
+// 0x00000017 System.Boolean Lofelt.NiceVibrations.dsr::xcf()
+extern void dsr_xcf_mAD96C1195C8400A59A2ED4E9F836DF79B9991697 (void);
+// 0x00000018 System.Void Lofelt.NiceVibrations.dsr::xcg()
+extern void dsr_xcg_m42A8F5A40D692E9AE34F0F5D273FEB7F1B00906B (void);
 // 0x00000019 System.Void Lofelt.NiceVibrations.HapticClip::.ctor()
 extern void HapticClip__ctor_mDA5C718F3840EF39183001C5AC3A7EEAE745CB55 (void);
-// 0x0000001A Lofelt.NiceVibrations.dsv/dsu Lofelt.NiceVibrations.dst::xcb()
-extern void dst_xcb_mEA6B64AC7B19E659A5B75DE377AEABEEC32202A4 (void);
-// 0x0000001B System.Void Lofelt.NiceVibrations.dst::xcc(Lofelt.NiceVibrations.dsv/dsu)
-extern void dst_xcc_m765945DC6179FBF34870CFD39D94FCDA2399B59A (void);
-// 0x0000001C System.Boolean Lofelt.NiceVibrations.dst::xcd()
-extern void dst_xcd_m6E336735A42C805F41DC415A79CF7AF05F53DBEA (void);
-// 0x0000001D System.Void Lofelt.NiceVibrations.dst::xce(System.Boolean)
-extern void dst_xce_m6BA116474E9EE31107C16D767DD2DF7B4FAF9C35 (void);
-// 0x0000001E System.Single Lofelt.NiceVibrations.dst::xcf()
-extern void dst_xcf_m27F7025A8815E9A3F276BB29645AFE51BF5FF276 (void);
-// 0x0000001F System.Void Lofelt.NiceVibrations.dst::xcg(System.Single)
-extern void dst_xcg_m1330DFB113433B4947A1DEB193A8FB266490DF11 (void);
-// 0x00000020 System.Single Lofelt.NiceVibrations.dst::xch()
-extern void dst_xch_m4FF2ABE103B818C567E203ECDB0E34C1CB278E67 (void);
-// 0x00000021 System.Void Lofelt.NiceVibrations.dst::xci(System.Single)
-extern void dst_xci_m1B226EDDED953B2049426C04995D2CF9D859194A (void);
-// 0x00000022 System.Boolean Lofelt.NiceVibrations.dst::xcj()
-extern void dst_xcj_m364C14D968513D0E0C4869E6052B120B9E6A7DAC (void);
-// 0x00000023 System.Void Lofelt.NiceVibrations.dst::xck(System.Byte[])
-extern void dst_xck_mB8D1CDB50B095E37154F04F9A15740D3A053F9FE (void);
-// 0x00000024 System.Void Lofelt.NiceVibrations.dst::xcl(Lofelt.NiceVibrations.HapticClip)
-extern void dst_xcl_mB5CA117BBE091E4B9EAF32CC79A4622563DBC7FD (void);
-// 0x00000025 System.Void Lofelt.NiceVibrations.dst::xcm(System.Byte[],Lofelt.NiceVibrations.GamepadRumble)
-extern void dst_xcm_m3EB01614DF3623D7807197CE366F84A19D58F61A (void);
-// 0x00000026 System.Void Lofelt.NiceVibrations.dst::xcn()
-extern void dst_xcn_mD35B118EAC53E80EA74503A91C74773546FAAC3D (void);
-// 0x00000027 System.Void Lofelt.NiceVibrations.dst::xco()
-extern void dst_xco_m56A766C512DC65754F928BE4990A2716AE1DCAB2 (void);
-// 0x00000028 System.Void Lofelt.NiceVibrations.dst::xcp(Lofelt.NiceVibrations.HapticClip)
-extern void dst_xcp_m34869B20AE8A1ABD3042996CD94A7A2EBAB7212D (void);
-// 0x00000029 System.Void Lofelt.NiceVibrations.dst::xcq()
-extern void dst_xcq_m6834AD67F13973B1E8D323BB6358853D1AA81143 (void);
-// 0x0000002A System.Void Lofelt.NiceVibrations.dst::xcr(System.Single)
-extern void dst_xcr_mB3ADF668F3F8B1BAB2BE1C8A2A84A53DE8C35119 (void);
-// 0x0000002B System.Void Lofelt.NiceVibrations.dst::xcs(System.Single)
-extern void dst_xcs_m30F96EFBD25F41B7B6FE7139DA6E9B0F361777BD (void);
-// 0x0000002C System.Void Lofelt.NiceVibrations.dst::xct(System.Boolean)
-extern void dst_xct_mFCC76C52E7894DA3653D4600BCBA066AAC06010C (void);
-// 0x0000002D System.Boolean Lofelt.NiceVibrations.dst::xcu()
-extern void dst_xcu_mC04D0C9C6F9BD7CAAD897D8978E9F75D9CEA0AAD (void);
-// 0x0000002E System.Void Lofelt.NiceVibrations.dst::xcv()
+// 0x0000001A Lofelt.NiceVibrations.dsv/dsu Lofelt.NiceVibrations.dst::xcj()
+extern void dst_xcj_m26D396A3BC4F0162D35C97C6B4099BA8142C98C1 (void);
+// 0x0000001B System.Void Lofelt.NiceVibrations.dst::xck(Lofelt.NiceVibrations.dsv/dsu)
+extern void dst_xck_m80AD58F5C99137B0236C9A9D81CBB5E5609E4049 (void);
+// 0x0000001C System.Boolean Lofelt.NiceVibrations.dst::xcl()
+extern void dst_xcl_m901F4DBA48C3EA3132DEBF7C94EF943A5D1F0C52 (void);
+// 0x0000001D System.Void Lofelt.NiceVibrations.dst::xcm(System.Boolean)
+extern void dst_xcm_mB06FB837EC895D33B90651048825AB714D43AF35 (void);
+// 0x0000001E System.Single Lofelt.NiceVibrations.dst::xcn()
+extern void dst_xcn_m85B6CB95059AB5ED885790B45371936D2027C28E (void);
+// 0x0000001F System.Void Lofelt.NiceVibrations.dst::xco(System.Single)
+extern void dst_xco_m4B35FD090723D525EAD857A189E987137810261A (void);
+// 0x00000020 System.Single Lofelt.NiceVibrations.dst::xcp()
+extern void dst_xcp_mEF4B65EE5B99EBCC5F578F8BE500190368098A63 (void);
+// 0x00000021 System.Void Lofelt.NiceVibrations.dst::xcq(System.Single)
+extern void dst_xcq_m2EB99196F8BAF53EBA64E97F1D6E44A51FD00ECB (void);
+// 0x00000022 System.Boolean Lofelt.NiceVibrations.dst::xcr()
+extern void dst_xcr_m4CC95511289780660446A45C80DE031197D0C7FC (void);
+// 0x00000023 System.Void Lofelt.NiceVibrations.dst::xcs(System.Byte[])
+extern void dst_xcs_mCAB5F93DC30F07EDA618B6AA3F7014A7A22BE2F1 (void);
+// 0x00000024 System.Void Lofelt.NiceVibrations.dst::xct(Lofelt.NiceVibrations.HapticClip)
+extern void dst_xct_mC5E0900402A1DEE884F060FEE23C26E0843F6455 (void);
+// 0x00000025 System.Void Lofelt.NiceVibrations.dst::xcu(System.Byte[],Lofelt.NiceVibrations.GamepadRumble)
+extern void dst_xcu_m41269FCB9FF89CB87EE342E8BBE5183F01736353 (void);
+// 0x00000026 System.Void Lofelt.NiceVibrations.dst::xcv()
 extern void dst_xcv_m7F780BDA4617FC4B4FA90C21F282FCF5A7446560 (void);
-// 0x0000002F System.Void Lofelt.NiceVibrations.dst::xcw(System.Boolean)
-extern void dst_xcw_m15AC8E01A76C5CB8F88E7E676514124CCFA1EC87 (void);
+// 0x00000027 System.Void Lofelt.NiceVibrations.dst::xcw()
+extern void dst_xcw_mFB0E8D48B274EA96662AD206809A2E02E1E30128 (void);
+// 0x00000028 System.Void Lofelt.NiceVibrations.dst::xcx(Lofelt.NiceVibrations.HapticClip)
+extern void dst_xcx_mA2806FD6A9648B7DDAC790ED5F56CB4052BA401D (void);
+// 0x00000029 System.Void Lofelt.NiceVibrations.dst::xcy()
+extern void dst_xcy_mFCD1329AC45D62C4A97BE03CB602C1B3ADF3AF85 (void);
+// 0x0000002A System.Void Lofelt.NiceVibrations.dst::xcz(System.Single)
+extern void dst_xcz_m1CF46D99B3BA4008543AC8EDA6163E2102CA7F2B (void);
+// 0x0000002B System.Void Lofelt.NiceVibrations.dst::xda(System.Single)
+extern void dst_xda_m90A362F9C1114C4E2A6DB51BAF66EC8DFA1652C0 (void);
+// 0x0000002C System.Void Lofelt.NiceVibrations.dst::xdb(System.Boolean)
+extern void dst_xdb_m017217CF2A3D314E7352968B82E99C50BCCD725F (void);
+// 0x0000002D System.Boolean Lofelt.NiceVibrations.dst::xdc()
+extern void dst_xdc_mFCB2CEE5C3E8F0ECD600D216DE3E70F01E80E5F5 (void);
+// 0x0000002E System.Void Lofelt.NiceVibrations.dst::xdd()
+extern void dst_xdd_m9C7FE46203AD2161665BD801E36ADC3C00D0958E (void);
+// 0x0000002F System.Void Lofelt.NiceVibrations.dst::xde(System.Boolean)
+extern void dst_xde_m0FFBF65E92300B60015760A88AE26935B7D6914C (void);
 // 0x00000030 System.Void Lofelt.NiceVibrations.dst::.cctor()
 extern void dst__cctor_mAAE3A70E9DECA52BB25B25B396E1075DFA18EDC1 (void);
 // 0x00000031 System.Void Lofelt.NiceVibrations.dst/dss::.ctor()
 extern void dss__ctor_m74C06367429C23B57CB2629262C1FEB185F17272 (void);
-// 0x00000032 System.Void Lofelt.NiceVibrations.dst/dss::xbz(System.Object,System.Timers.ElapsedEventArgs)
-extern void dss_xbz_m59DFE656BA74792A423FD8626875C56B9B1887F6 (void);
+// 0x00000032 System.Void Lofelt.NiceVibrations.dst/dss::xch(System.Object,System.Timers.ElapsedEventArgs)
+extern void dss_xch_m1D1CBCF08E8F9AB0143BEDF8A7FF0C391D936338 (void);
 // 0x00000033 System.Void Lofelt.NiceVibrations.dst/<>c::.cctor()
 extern void U3CU3Ec__cctor_m9EE32DDB72F002AF5E1FE96382A716352B2F45B8 (void);
 // 0x00000034 System.Void Lofelt.NiceVibrations.dst/<>c::.ctor()
 extern void U3CU3Ec__ctor_m0D09393E42DA204CE3AF321CA04570E8A687F04A (void);
-// 0x00000035 System.Void Lofelt.NiceVibrations.dst/<>c::xca(System.Object)
-extern void U3CU3Ec_xca_mF69B8AE3E09CB23BCEBB0BF1838F4655A1B61FE6 (void);
+// 0x00000035 System.Void Lofelt.NiceVibrations.dst/<>c::xci(System.Object)
+extern void U3CU3Ec_xci_m54593B4904E7F6C138EFBEE20EE195DE511733D7 (void);
 // 0x00000036 System.Void Lofelt.NiceVibrations.dsv::.cctor()
 extern void dsv__cctor_mC5FA5EA117A2D983640F48A329C0D5D07D59AA35 (void);
-// 0x00000037 System.Void Lofelt.NiceVibrations.dsv::xda(System.Single,System.Single)
-extern void dsv_xda_mA0F114CB2D9EB0538E5FB17994DED5B73D4EA62F (void);
-// 0x00000038 Lofelt.NiceVibrations.dsv/dsu Lofelt.NiceVibrations.dsv::xdb(System.Single)
-extern void dsv_xdb_mB06A5862FAD8C3628139BA757C66E314DF0004DF (void);
-// 0x00000039 System.Void Lofelt.NiceVibrations.dsv::xdc(System.Single,System.Single,System.Single)
-extern void dsv_xdc_m20A0C2D2B2A72CDAA9C7B990ADB8F3F09FEDCB9D (void);
-// 0x0000003A Lofelt.NiceVibrations.dsv/Preset Lofelt.NiceVibrations.dsv::xdd(Lofelt.NiceVibrations.dsv/dsu)
-extern void dsv_xdd_m31AF2020D81D58874E8B79FB43971B65172FC98D (void);
-// 0x0000003B System.Void Lofelt.NiceVibrations.dsv::xde(Lofelt.NiceVibrations.dsv/dsu)
-extern void dsv_xde_m0B4224FC2A3939B20D5A882A2A5E72C5D9FD6D53 (void);
-// 0x0000003C System.Single Lofelt.NiceVibrations.dsv::xdf(Lofelt.NiceVibrations.dsv/dsu)
-extern void dsv_xdf_mE29A2B9004F0633AA6674A6D16E407EBD01D67EC (void);
+// 0x00000037 System.Void Lofelt.NiceVibrations.dsv::xdi(System.Single,System.Single)
+extern void dsv_xdi_mE359A5D5FCD664D7FE6DB891994FB5246FB69B09 (void);
+// 0x00000038 Lofelt.NiceVibrations.dsv/dsu Lofelt.NiceVibrations.dsv::xdj(System.Single)
+extern void dsv_xdj_m90C5509141BB857AEFB58F45DD7F8FF75D4C5B4C (void);
+// 0x00000039 System.Void Lofelt.NiceVibrations.dsv::xdk(System.Single,System.Single,System.Single)
+extern void dsv_xdk_mD915EB108C8C18C797B294C28F85AC5DF9302234 (void);
+// 0x0000003A Lofelt.NiceVibrations.dsv/Preset Lofelt.NiceVibrations.dsv::xdl(Lofelt.NiceVibrations.dsv/dsu)
+extern void dsv_xdl_m7F4A7E411BD0E56994EFD2341282AF21C639F916 (void);
+// 0x0000003B System.Void Lofelt.NiceVibrations.dsv::xdm(Lofelt.NiceVibrations.dsv/dsu)
+extern void dsv_xdm_m1BD1707A7B8EBFDDCB90FBA30F8ECF19232F7A72 (void);
+// 0x0000003C System.Single Lofelt.NiceVibrations.dsv::xdn(Lofelt.NiceVibrations.dsv/dsu)
+extern void dsv_xdn_m819349BDF9BE05171F3F91BE0038CEA6293D17CC (void);
 // 0x0000003D System.Void Lofelt.NiceVibrations.dsv/Pattern::.cctor()
 extern void Pattern__cctor_mF3CC293BD9CC6E7F9B0B33109E7646A3804D8353 (void);
 // 0x0000003E System.Void Lofelt.NiceVibrations.dsv/Pattern::.ctor(System.Single[],System.Single[])
 extern void Pattern__ctor_m994AE2FE6ECA25DE71010CFC47C05627F43BC960 (void);
-// 0x0000003F Lofelt.NiceVibrations.GamepadRumble Lofelt.NiceVibrations.dsv/Pattern::xcx()
-extern void Pattern_xcx_mC43DEB9E9D80452F77B259D1433D90003A25A1C9 (void);
-// 0x00000040 System.String Lofelt.NiceVibrations.dsv/Pattern::xcy()
-extern void Pattern_xcy_m3C535412AB42D3B7CEFB0FBB36BB18431CC8E0FF (void);
+// 0x0000003F Lofelt.NiceVibrations.GamepadRumble Lofelt.NiceVibrations.dsv/Pattern::xdf()
+extern void Pattern_xdf_m63EC16E524C546901D1B4700A2FF1CCEB8EAA9CC (void);
+// 0x00000040 System.String Lofelt.NiceVibrations.dsv/Pattern::xdg()
+extern void Pattern_xdg_m3FCA7D16CB3FC31DDA9C5D47522E3424DAA6BB49 (void);
 // 0x00000041 System.Void Lofelt.NiceVibrations.dsv/Preset::.ctor(Lofelt.NiceVibrations.dsv/dsu,System.Single[],System.Single[])
 extern void Preset__ctor_m2D16CC34CD747C0FEDD5BEFDF868C17FE3235261 (void);
-// 0x00000042 System.Single Lofelt.NiceVibrations.dsv/Preset::xcz()
-extern void Preset_xcz_mD3AC5FEB4CF6BAEE8782754E173523996A04CF61 (void);
+// 0x00000042 System.Single Lofelt.NiceVibrations.dsv/Preset::xdh()
+extern void Preset_xdh_m1F345472C237E23F14F0BDF10E3A34843C00DE5C (void);
 // 0x00000043 System.Void Lofelt.NiceVibrations.HapticReceiver::OnBeforeSerialize()
 extern void HapticReceiver_OnBeforeSerialize_mAF7053C780A07266440E01C13046DB1A04E78B38 (void);
 // 0x00000044 System.Void Lofelt.NiceVibrations.HapticReceiver::OnAfterDeserialize()
 extern void HapticReceiver_OnAfterDeserialize_m8C8EC18318A5D2E3F35663C76EBB3769F60F8315 (void);
-// 0x00000045 System.Single Lofelt.NiceVibrations.HapticReceiver::xdg()
-extern void HapticReceiver_xdg_m1531087BB94A9B17A1A335F58BCA8CD9CBC08D72 (void);
-// 0x00000046 System.Void Lofelt.NiceVibrations.HapticReceiver::xdh(System.Single)
-extern void HapticReceiver_xdh_m2F8F566BE72F48714470F316BD81DF3B2309705C (void);
-// 0x00000047 System.Boolean Lofelt.NiceVibrations.HapticReceiver::xdi()
-extern void HapticReceiver_xdi_m43CE770F08AC2372F17E01A760DA8D840F75B409 (void);
-// 0x00000048 System.Void Lofelt.NiceVibrations.HapticReceiver::xdj(System.Boolean)
-extern void HapticReceiver_xdj_m181DE400BE16769A6A325BF997F242A0A55D7181 (void);
+// 0x00000045 System.Single Lofelt.NiceVibrations.HapticReceiver::xdo()
+extern void HapticReceiver_xdo_mC695631ACC5F9997B67DE32D4DCCE2B550CB8B05 (void);
+// 0x00000046 System.Void Lofelt.NiceVibrations.HapticReceiver::xdp(System.Single)
+extern void HapticReceiver_xdp_m75B5FD02F2B3010E623A8568849DAB8438B542DD (void);
+// 0x00000047 System.Boolean Lofelt.NiceVibrations.HapticReceiver::xdq()
+extern void HapticReceiver_xdq_m685F31AAD84151FC595D4DD3F0240FCCEAF629ED (void);
+// 0x00000048 System.Void Lofelt.NiceVibrations.HapticReceiver::xdr(System.Boolean)
+extern void HapticReceiver_xdr_mFE8F40211ACE0D0255939A8FE7DB5A2F970B4DCD (void);
 // 0x00000049 System.Void Lofelt.NiceVibrations.HapticReceiver::Start()
 extern void HapticReceiver_Start_m20FB05EA56712DCF7D7DE120D66F3382B39F4368 (void);
 // 0x0000004A System.Void Lofelt.NiceVibrations.HapticReceiver::OnApplicationFocus(System.Boolean)
@@ -164,34 +164,34 @@ extern void HapticReceiver_OnApplicationFocus_mC0224086B7FD93BC2A20068B58499E528
 extern void HapticReceiver_OnDestroy_mE425F66306C46AFA23571A6E3812D6B05A3A4435 (void);
 // 0x0000004C System.Void Lofelt.NiceVibrations.HapticReceiver::.ctor()
 extern void HapticReceiver__ctor_m821A7ABCDE3D7DFE0290086F61B5FD945FCCBBFE (void);
-// 0x0000004D Lofelt.NiceVibrations.dsv/dsu Lofelt.NiceVibrations.HapticSource::xdm()
-extern void HapticSource_xdm_m05908773F2D371E10B00A764EF6F2CF2C6EDCAC6 (void);
-// 0x0000004E System.Void Lofelt.NiceVibrations.HapticSource::xdn(Lofelt.NiceVibrations.dsv/dsu)
-extern void HapticSource_xdn_m67BB73F67205EE2A46B0486DF47C804D80F7504C (void);
-// 0x0000004F System.Boolean Lofelt.NiceVibrations.HapticSource::xdo()
-extern void HapticSource_xdo_mCC895E96829F09FA8A2C1FCA0EA4E0C24268D321 (void);
-// 0x00000050 System.Void Lofelt.NiceVibrations.HapticSource::xdp(System.Boolean)
-extern void HapticSource_xdp_mD5FC74E9223EEDF2259DFEE690D83BEDB4A07935 (void);
-// 0x00000051 System.Single Lofelt.NiceVibrations.HapticSource::xdq()
-extern void HapticSource_xdq_mE92BD15E107D4A188C250685647071B7CFBC296E (void);
-// 0x00000052 System.Void Lofelt.NiceVibrations.HapticSource::xdr(System.Single)
-extern void HapticSource_xdr_m61CE96A7A1DF895C94747C51CA85C81FED5821D5 (void);
-// 0x00000053 System.Single Lofelt.NiceVibrations.HapticSource::xds()
-extern void HapticSource_xds_m18939C79AEAAC3AFC6EDD2BF5205CA4A36720B16 (void);
-// 0x00000054 System.Void Lofelt.NiceVibrations.HapticSource::xdt(System.Single)
-extern void HapticSource_xdt_m9838DFAC3A3246E25B12DEB1A72C8324292786FA (void);
+// 0x0000004D Lofelt.NiceVibrations.dsv/dsu Lofelt.NiceVibrations.HapticSource::xdu()
+extern void HapticSource_xdu_m9B3D832737FC4FBAB68E123D18ED2F25A77CC7A1 (void);
+// 0x0000004E System.Void Lofelt.NiceVibrations.HapticSource::xdv(Lofelt.NiceVibrations.dsv/dsu)
+extern void HapticSource_xdv_mD383D54CDE2C731FF91416F02C276204A3D18E79 (void);
+// 0x0000004F System.Boolean Lofelt.NiceVibrations.HapticSource::xdw()
+extern void HapticSource_xdw_mF5266F181654545A484E7438E9BA4456A43AF5E4 (void);
+// 0x00000050 System.Void Lofelt.NiceVibrations.HapticSource::xdx(System.Boolean)
+extern void HapticSource_xdx_m60034ED534D43046220F198A2F817869D6336BAF (void);
+// 0x00000051 System.Single Lofelt.NiceVibrations.HapticSource::xdy()
+extern void HapticSource_xdy_m1FE1E1E17591E714E748A956A783AC913E1B89B1 (void);
+// 0x00000052 System.Void Lofelt.NiceVibrations.HapticSource::xdz(System.Single)
+extern void HapticSource_xdz_m5FAC352A43C58826B8134F92A747AE8DF4B62A94 (void);
+// 0x00000053 System.Single Lofelt.NiceVibrations.HapticSource::xea()
+extern void HapticSource_xea_m9ADF685A8ED92108914249FA026640B52DFCE0E0 (void);
+// 0x00000054 System.Void Lofelt.NiceVibrations.HapticSource::xeb(System.Single)
+extern void HapticSource_xeb_m6D37B363C28A4E1A1EABE264A7CBB9FA49893683 (void);
 // 0x00000055 System.Void Lofelt.NiceVibrations.HapticSource::.cctor()
 extern void HapticSource__cctor_mB3A2979FCCD6DD2DA19A800B454867F65D591EF3 (void);
-// 0x00000056 System.Void Lofelt.NiceVibrations.HapticSource::xdu()
-extern void HapticSource_xdu_m4E57159E4FE68EB8273A2B196FAFDB475271FABE (void);
-// 0x00000057 System.Boolean Lofelt.NiceVibrations.HapticSource::xdv()
-extern void HapticSource_xdv_mFB0DD66A7F6EFFC60C28BE97DE2A3A4C0DDB4855 (void);
-// 0x00000058 System.Boolean Lofelt.NiceVibrations.HapticSource::xdw()
-extern void HapticSource_xdw_mF5266F181654545A484E7438E9BA4456A43AF5E4 (void);
-// 0x00000059 System.Void Lofelt.NiceVibrations.HapticSource::xdx()
-extern void HapticSource_xdx_m91BEBE8C4C69C331EF99A4929710E332A220F9A4 (void);
-// 0x0000005A System.Void Lofelt.NiceVibrations.HapticSource::xdy(System.Single)
-extern void HapticSource_xdy_m43BFB468B6CE659BF17B069C892A763D373344DF (void);
+// 0x00000056 System.Void Lofelt.NiceVibrations.HapticSource::xec()
+extern void HapticSource_xec_m02775C38EAA0E4707BE63F96C6C70BB0DA21628E (void);
+// 0x00000057 System.Boolean Lofelt.NiceVibrations.HapticSource::xed()
+extern void HapticSource_xed_m546192D5EA1A518892B473623A9A0E447774756A (void);
+// 0x00000058 System.Boolean Lofelt.NiceVibrations.HapticSource::xee()
+extern void HapticSource_xee_m0D24AC52FF502316DA70BBF909F429C74C901A31 (void);
+// 0x00000059 System.Void Lofelt.NiceVibrations.HapticSource::xef()
+extern void HapticSource_xef_m53592559CF674F8FD8198582ED5C069E386B6D21 (void);
+// 0x0000005A System.Void Lofelt.NiceVibrations.HapticSource::xeg(System.Single)
+extern void HapticSource_xeg_m84A8D00066107D5C95024F11B499775D7A4064B7 (void);
 // 0x0000005B System.Void Lofelt.NiceVibrations.HapticSource::OnDisable()
 extern void HapticSource_OnDisable_m51C0FD784EA1CD6B35C6FC73A69259D1850DBC9E (void);
 // 0x0000005C System.Void Lofelt.NiceVibrations.HapticSource::.ctor()
@@ -200,12 +200,12 @@ extern void HapticSource__ctor_m67CF61EF32054D47DB68F85ADD4F0E5E1AAE8BEE (void);
 extern void U3CU3Ec__cctor_m16F5946BF09519686428F50F759CC1AC72B0527C (void);
 // 0x0000005E System.Void Lofelt.NiceVibrations.HapticSource/<>c::.ctor()
 extern void U3CU3Ec__ctor_mBB29C861B6103C44AD31484810E6D1EAE7AE677D (void);
-// 0x0000005F System.Void Lofelt.NiceVibrations.HapticSource/<>c::xdk()
-extern void U3CU3Ec_xdk_m8F0BC9347552980553E0C704B6BEA4677D492D18 (void);
-// 0x00000060 System.Void Lofelt.NiceVibrations.HapticSource/<>c::xdl()
-extern void U3CU3Ec_xdl_m33E26A6B2F93AE4611D740EE11D8BB6C677FB349 (void);
-// 0x00000061 System.String Lofelt.NiceVibrations.dsw::xdz(System.IntPtr)
-extern void dsw_xdz_m25728F04442EA82FE5FDB52DF44EDC8820CC4619 (void);
+// 0x0000005F System.Void Lofelt.NiceVibrations.HapticSource/<>c::xds()
+extern void U3CU3Ec_xds_m4FA2F469ED542E83C4FDFE1FD25EB5D45D4AE5D4 (void);
+// 0x00000060 System.Void Lofelt.NiceVibrations.HapticSource/<>c::xdt()
+extern void U3CU3Ec_xdt_m168B6906986BCFA8ECEDEB0162A1EFCF3F9619C5 (void);
+// 0x00000061 System.String Lofelt.NiceVibrations.dsw::xeh(System.IntPtr)
+extern void dsw_xeh_m3DDD45F75DE07E61D501A1275DFAA3239031E60F (void);
 // 0x00000062 System.Void Lofelt.NiceVibrations.dsw::Call(UnityEngine.AndroidJavaObject,System.IntPtr,UnityEngine.jvalue[])
 extern void dsw_Call_m4248451B688D71D1C6A199219BBDF0E8D0172422 (void);
 // 0x00000063 System.Void Lofelt.NiceVibrations.dsw::Call(UnityEngine.AndroidJavaObject,System.IntPtr)
@@ -221,135 +221,135 @@ extern void dsw_Call_m71DCFE3FCB24F42D9FB8D5791228FCF321DD940F (void);
 extern void dsw__cctor_mCFFA58ED7A4215A05DDF8025C94F8383A809A0CD (void);
 // 0x00000069 System.Boolean Lofelt.NiceVibrations.dsx::lofeltHapticsLoadDirect(System.IntPtr,System.Byte[],System.Int64)
 extern void dsx_lofeltHapticsLoadDirect_m1A68A17A99F9B9D1734F0FFCF7F7401D020BAC01 (void);
-// 0x0000006A System.Void Lofelt.NiceVibrations.dsx::xea()
-extern void dsx_xea_m68FA2EFB83458CD2F8EC3B66641170C8DC2AF20D (void);
-// 0x0000006B System.Void Lofelt.NiceVibrations.dsx::xeb()
-extern void dsx_xeb_m86978115D71069D35C0E2BF87E01051E7471F8AE (void);
-// 0x0000006C System.Boolean Lofelt.NiceVibrations.dsx::xec()
-extern void dsx_xec_m8A334220334974BB90B1C38C5D15FCF38F778E88 (void);
-// 0x0000006D System.Void Lofelt.NiceVibrations.dsx::xed(System.Byte[])
-extern void dsx_xed_m77FE6D364247F005481ABE60535E10CE865E69D5 (void);
-// 0x0000006E System.Single Lofelt.NiceVibrations.dsx::xee()
-extern void dsx_xee_m3B3BF14816A23613E6A1ECAAA2FC9AD79E591263 (void);
-// 0x0000006F System.Void Lofelt.NiceVibrations.dsx::xef()
-extern void dsx_xef_m9FFECFCE66DF585D505E8B838CFCC5641EAEC71C (void);
-// 0x00000070 System.Void Lofelt.NiceVibrations.dsx::xeg(System.Single[])
-extern void dsx_xeg_m842E99D6BA0730534A42B862A2D49AE44A4F0E4E (void);
-// 0x00000071 System.Void Lofelt.NiceVibrations.dsx::xeh()
-extern void dsx_xeh_m9927CCDF482790F85F18DCE98EA58625C6775BD5 (void);
-// 0x00000072 System.Void Lofelt.NiceVibrations.dsx::xei()
+// 0x0000006A System.Void Lofelt.NiceVibrations.dsx::xei()
 extern void dsx_xei_m76F4FE79712FB69908EBB215B25F8C3E01F527FA (void);
-// 0x00000073 System.Void Lofelt.NiceVibrations.dsx::xej(System.Single)
-extern void dsx_xej_mBAA9C79A796000285C23AD32CB06EBAB2CD7EEE5 (void);
-// 0x00000074 System.Void Lofelt.NiceVibrations.dsx::xek(System.Single)
-extern void dsx_xek_mA72E6BBCEFE7304EA186FC3D54EEEEA6B9ADF0D8 (void);
-// 0x00000075 System.Void Lofelt.NiceVibrations.dsx::xel(System.Single)
-extern void dsx_xel_m0DC59C4910A41A0B9E3831C62F2C8F1FACC656D0 (void);
-// 0x00000076 System.Void Lofelt.NiceVibrations.dsx::xem(System.Boolean)
-extern void dsx_xem_m20450FC847FCBCF9FD8C8AEEE0354A7D5FD7EA98 (void);
-// 0x00000077 System.Void Lofelt.NiceVibrations.dsx::xen(System.Int32)
-extern void dsx_xen_m216DDA93DF77EE33CAB145F83909CB12CAB4EED1 (void);
+// 0x0000006B System.Void Lofelt.NiceVibrations.dsx::xej()
+extern void dsx_xej_m306DFDE13E2522F00105B608E83B4DE4012D297A (void);
+// 0x0000006C System.Boolean Lofelt.NiceVibrations.dsx::xek()
+extern void dsx_xek_mB4289CDF80D78264E288BBA65BCE326A0787E317 (void);
+// 0x0000006D System.Void Lofelt.NiceVibrations.dsx::xel(System.Byte[])
+extern void dsx_xel_m4F3B170D170CDFCE5816725A1E4C4F7BE0F3C90B (void);
+// 0x0000006E System.Single Lofelt.NiceVibrations.dsx::xem()
+extern void dsx_xem_m2DFE2AF2B090F8F14A49AB5A4E6A313A426233BE (void);
+// 0x0000006F System.Void Lofelt.NiceVibrations.dsx::xen()
+extern void dsx_xen_m05A47A3D8CAA443FD1162DCF8810E5B83FF64BA0 (void);
+// 0x00000070 System.Void Lofelt.NiceVibrations.dsx::xeo(System.Single[])
+extern void dsx_xeo_m3066C50F61A7B736AC82994A31CFCCB3CECCBB37 (void);
+// 0x00000071 System.Void Lofelt.NiceVibrations.dsx::xep()
+extern void dsx_xep_mD044634FB8825D6549F5C68278BA860478AC3FBA (void);
+// 0x00000072 System.Void Lofelt.NiceVibrations.dsx::xeq()
+extern void dsx_xeq_mED686AB7BF76E0D94A40E220D4B34ED2CA8993F2 (void);
+// 0x00000073 System.Void Lofelt.NiceVibrations.dsx::xer(System.Single)
+extern void dsx_xer_m85DBCB23AB6F02598243CE4C5C345B8CCA5CDF2D (void);
+// 0x00000074 System.Void Lofelt.NiceVibrations.dsx::xes(System.Single)
+extern void dsx_xes_m235D988AC90C2A140CB0F669ED4B518855F83529 (void);
+// 0x00000075 System.Void Lofelt.NiceVibrations.dsx::xet(System.Single)
+extern void dsx_xet_mE2E6D053C88B3B4A0EF1AE63D5D73CF9332E81FF (void);
+// 0x00000076 System.Void Lofelt.NiceVibrations.dsx::xeu(System.Boolean)
+extern void dsx_xeu_m9E37FC9B42C64E5EEC233F0C44E45688AC4D50B6 (void);
+// 0x00000077 System.Void Lofelt.NiceVibrations.dsx::xev(System.Int32)
+extern void dsx_xev_mB6F3157EEA65B112AC987521B12D872DF0619E6E (void);
 // 0x00000078 System.Void Lofelt.NiceVibrations.dsx::.cctor()
 extern void dsx__cctor_m9C71EEAF6B43FFEBB6F36FF9D09B00A66AF6EEB4 (void);
 static Il2CppMethodPointer s_methodPointers[120] = 
 {
-	dsq_xbc_m6E7EBEC829FB94D5D58E90858B508D544FCCAA5B,
-	dsq_xbd_m93A9648C2610771D7A2ED3DB38623929A588EB79,
-	dsq_xbe_m888AEECE0E8ABCA5EAD720F7170BCAB6596E8148,
-	dsq_xbf_m892FE074C1489CDEFE670FE01B0E66A2B14D1F21,
-	dsq_xbg_m7B7FA3BB5BDB143DF1F2B8B36F25C76CB4A21B43,
-	dsq_xbh_m9DC17E516849D7DF4E06D8AE4E3205C20071E2DB,
-	dsq_xbi_m1F629AD1B5C6CFBE01014E2A83BFAC608A203255,
-	dsq_xbj_m4DC8D2D8C71930BD92CD1E709CDBFDFF210615A9,
-	dsq_xbk_m151EB958F69E85CCDE3DD65B41EE3B17EC2CC350,
-	dsq_xbl_m30D6AB743A78D6833302BB82401E12C2D1F5A24D,
+	dsq_xbk_mE67DACC216657E911A2017872EA39188002CB608,
+	dsq_xbl_m7CF0930BE65648383B3CF6AAAE7A6DD73AD83A45,
 	dsq_xbm_m3B38BA488A1474724DE31F20547C67899C0CB2D0,
+	dsq_xbn_mFB80BC2E1C5C46160534A037EA0EA97A0BA83CD3,
+	dsq_xbo_mE4A5265CE3739DB3E9361FA4728A2764C1E54504,
+	dsq_xbp_mE04F1B9FAC124DE52D8179B77C0ED426AA828F2F,
+	dsq_xbq_mA05F75A1B7BAC826EBEEB9D1AD6F49B2925D1CC1,
+	dsq_xbr_m4EDA455334BEC31415502C1A41A9B2E0EBD69E26,
+	dsq_xbs_m99136F2769D248A600E87F99C00EF99E3C41A6E3,
+	dsq_xbt_mE650D5C89CE6C1E8C3EFA5DF7845931321CE643C,
+	dsq_xbu_mCFD5F0328F96FCAD23890DA485EE11B54F4AA147,
 	dsq__cctor_mC90B64A0B9EE2C66D21F1A95C0FD007B0A929C01,
-	dsq_xbn_m7F14E69C35C1A5C5282942B1945F20D1FCDD2413,
-	GamepadRumble_xbo_mE6CFDDAD412FFF212188FE7105F4C5193E72A59C,
-	dsr_xbp_m3B656E0003944C0EE2CC1DF17454DC3C62321F83,
-	dsr_xbq_m77C2711CAF5A762126D8E2FF5A5CD2FF08109794,
-	dsr_xbr_m434DBE2E15320A6A537BD74E5BD9F2AF150ED14A,
-	dsr_xbs_mEA5D7092F720DB0E9DC997899B7E853469AB7B26,
-	dsr_xbt_m6A61BCBBB71AE13249999A9C0A509FC44A0F35D7,
-	dsr_xbu_mCB0AED0979B7A3FFA27EA7AF861E9A4AF60C1032,
-	dsr_xbv_m85153111BC1CB382E6D0A4A32F11A43A23711111,
-	dsr_xbw_m057EF3FD940D717BB78D7DE52F5925AEB0086E5B,
-	dsr_xbx_m1DF2178E80825948A497D3E4340FB9B9D0DA167A,
-	dsr_xby_m4910260A9DB85C3009A13C2558E91C1CF46ABFC9,
+	dsq_xbv_m72B4084FC597D78F7ABB755F8D59C5C3261AB4C7,
+	GamepadRumble_xbw_m8586370EBF84C96138C0F4517F8F6364C5168E93,
+	dsr_xbx_m362456F4FAEF6F2B5C8FB93CC7F660326C8DE792,
+	dsr_xby_m84DD7E45842CBBD96FCBD6B65A2B24E3342B327F,
+	dsr_xbz_m45DA434BF3619FC4479B51734B82A0FC80A6F4D1,
+	dsr_xca_mB1098D0B04154DC09BB35A174FD41F774794E8D4,
+	dsr_xcb_m5908D9A2CF36C52D5AC0E811A53158E4AC16318F,
+	dsr_xcc_m02959F7919E164529AB1F5C9BF71EF3C96BF9444,
+	dsr_xcd_m76F642AF326421129CA7427C0E4609C0C8CA3DD1,
+	dsr_xce_mADB0AD7EC8FD0EC2970C1F59CDB57F88AB3B3ADD,
+	dsr_xcf_mAD96C1195C8400A59A2ED4E9F836DF79B9991697,
+	dsr_xcg_m42A8F5A40D692E9AE34F0F5D273FEB7F1B00906B,
 	HapticClip__ctor_mDA5C718F3840EF39183001C5AC3A7EEAE745CB55,
-	dst_xcb_mEA6B64AC7B19E659A5B75DE377AEABEEC32202A4,
-	dst_xcc_m765945DC6179FBF34870CFD39D94FCDA2399B59A,
-	dst_xcd_m6E336735A42C805F41DC415A79CF7AF05F53DBEA,
-	dst_xce_m6BA116474E9EE31107C16D767DD2DF7B4FAF9C35,
-	dst_xcf_m27F7025A8815E9A3F276BB29645AFE51BF5FF276,
-	dst_xcg_m1330DFB113433B4947A1DEB193A8FB266490DF11,
-	dst_xch_m4FF2ABE103B818C567E203ECDB0E34C1CB278E67,
-	dst_xci_m1B226EDDED953B2049426C04995D2CF9D859194A,
-	dst_xcj_m364C14D968513D0E0C4869E6052B120B9E6A7DAC,
-	dst_xck_mB8D1CDB50B095E37154F04F9A15740D3A053F9FE,
-	dst_xcl_mB5CA117BBE091E4B9EAF32CC79A4622563DBC7FD,
-	dst_xcm_m3EB01614DF3623D7807197CE366F84A19D58F61A,
-	dst_xcn_mD35B118EAC53E80EA74503A91C74773546FAAC3D,
-	dst_xco_m56A766C512DC65754F928BE4990A2716AE1DCAB2,
-	dst_xcp_m34869B20AE8A1ABD3042996CD94A7A2EBAB7212D,
-	dst_xcq_m6834AD67F13973B1E8D323BB6358853D1AA81143,
-	dst_xcr_mB3ADF668F3F8B1BAB2BE1C8A2A84A53DE8C35119,
-	dst_xcs_m30F96EFBD25F41B7B6FE7139DA6E9B0F361777BD,
-	dst_xct_mFCC76C52E7894DA3653D4600BCBA066AAC06010C,
-	dst_xcu_mC04D0C9C6F9BD7CAAD897D8978E9F75D9CEA0AAD,
+	dst_xcj_m26D396A3BC4F0162D35C97C6B4099BA8142C98C1,
+	dst_xck_m80AD58F5C99137B0236C9A9D81CBB5E5609E4049,
+	dst_xcl_m901F4DBA48C3EA3132DEBF7C94EF943A5D1F0C52,
+	dst_xcm_mB06FB837EC895D33B90651048825AB714D43AF35,
+	dst_xcn_m85B6CB95059AB5ED885790B45371936D2027C28E,
+	dst_xco_m4B35FD090723D525EAD857A189E987137810261A,
+	dst_xcp_mEF4B65EE5B99EBCC5F578F8BE500190368098A63,
+	dst_xcq_m2EB99196F8BAF53EBA64E97F1D6E44A51FD00ECB,
+	dst_xcr_m4CC95511289780660446A45C80DE031197D0C7FC,
+	dst_xcs_mCAB5F93DC30F07EDA618B6AA3F7014A7A22BE2F1,
+	dst_xct_mC5E0900402A1DEE884F060FEE23C26E0843F6455,
+	dst_xcu_m41269FCB9FF89CB87EE342E8BBE5183F01736353,
 	dst_xcv_m7F780BDA4617FC4B4FA90C21F282FCF5A7446560,
-	dst_xcw_m15AC8E01A76C5CB8F88E7E676514124CCFA1EC87,
+	dst_xcw_mFB0E8D48B274EA96662AD206809A2E02E1E30128,
+	dst_xcx_mA2806FD6A9648B7DDAC790ED5F56CB4052BA401D,
+	dst_xcy_mFCD1329AC45D62C4A97BE03CB602C1B3ADF3AF85,
+	dst_xcz_m1CF46D99B3BA4008543AC8EDA6163E2102CA7F2B,
+	dst_xda_m90A362F9C1114C4E2A6DB51BAF66EC8DFA1652C0,
+	dst_xdb_m017217CF2A3D314E7352968B82E99C50BCCD725F,
+	dst_xdc_mFCB2CEE5C3E8F0ECD600D216DE3E70F01E80E5F5,
+	dst_xdd_m9C7FE46203AD2161665BD801E36ADC3C00D0958E,
+	dst_xde_m0FFBF65E92300B60015760A88AE26935B7D6914C,
 	dst__cctor_mAAE3A70E9DECA52BB25B25B396E1075DFA18EDC1,
 	dss__ctor_m74C06367429C23B57CB2629262C1FEB185F17272,
-	dss_xbz_m59DFE656BA74792A423FD8626875C56B9B1887F6,
+	dss_xch_m1D1CBCF08E8F9AB0143BEDF8A7FF0C391D936338,
 	U3CU3Ec__cctor_m9EE32DDB72F002AF5E1FE96382A716352B2F45B8,
 	U3CU3Ec__ctor_m0D09393E42DA204CE3AF321CA04570E8A687F04A,
-	U3CU3Ec_xca_mF69B8AE3E09CB23BCEBB0BF1838F4655A1B61FE6,
+	U3CU3Ec_xci_m54593B4904E7F6C138EFBEE20EE195DE511733D7,
 	dsv__cctor_mC5FA5EA117A2D983640F48A329C0D5D07D59AA35,
-	dsv_xda_mA0F114CB2D9EB0538E5FB17994DED5B73D4EA62F,
-	dsv_xdb_mB06A5862FAD8C3628139BA757C66E314DF0004DF,
-	dsv_xdc_m20A0C2D2B2A72CDAA9C7B990ADB8F3F09FEDCB9D,
-	dsv_xdd_m31AF2020D81D58874E8B79FB43971B65172FC98D,
-	dsv_xde_m0B4224FC2A3939B20D5A882A2A5E72C5D9FD6D53,
-	dsv_xdf_mE29A2B9004F0633AA6674A6D16E407EBD01D67EC,
+	dsv_xdi_mE359A5D5FCD664D7FE6DB891994FB5246FB69B09,
+	dsv_xdj_m90C5509141BB857AEFB58F45DD7F8FF75D4C5B4C,
+	dsv_xdk_mD915EB108C8C18C797B294C28F85AC5DF9302234,
+	dsv_xdl_m7F4A7E411BD0E56994EFD2341282AF21C639F916,
+	dsv_xdm_m1BD1707A7B8EBFDDCB90FBA30F8ECF19232F7A72,
+	dsv_xdn_m819349BDF9BE05171F3F91BE0038CEA6293D17CC,
 	Pattern__cctor_mF3CC293BD9CC6E7F9B0B33109E7646A3804D8353,
 	Pattern__ctor_m994AE2FE6ECA25DE71010CFC47C05627F43BC960,
-	Pattern_xcx_mC43DEB9E9D80452F77B259D1433D90003A25A1C9,
-	Pattern_xcy_m3C535412AB42D3B7CEFB0FBB36BB18431CC8E0FF,
+	Pattern_xdf_m63EC16E524C546901D1B4700A2FF1CCEB8EAA9CC,
+	Pattern_xdg_m3FCA7D16CB3FC31DDA9C5D47522E3424DAA6BB49,
 	Preset__ctor_m2D16CC34CD747C0FEDD5BEFDF868C17FE3235261,
-	Preset_xcz_mD3AC5FEB4CF6BAEE8782754E173523996A04CF61,
+	Preset_xdh_m1F345472C237E23F14F0BDF10E3A34843C00DE5C,
 	HapticReceiver_OnBeforeSerialize_mAF7053C780A07266440E01C13046DB1A04E78B38,
 	HapticReceiver_OnAfterDeserialize_m8C8EC18318A5D2E3F35663C76EBB3769F60F8315,
-	HapticReceiver_xdg_m1531087BB94A9B17A1A335F58BCA8CD9CBC08D72,
-	HapticReceiver_xdh_m2F8F566BE72F48714470F316BD81DF3B2309705C,
-	HapticReceiver_xdi_m43CE770F08AC2372F17E01A760DA8D840F75B409,
-	HapticReceiver_xdj_m181DE400BE16769A6A325BF997F242A0A55D7181,
+	HapticReceiver_xdo_mC695631ACC5F9997B67DE32D4DCCE2B550CB8B05,
+	HapticReceiver_xdp_m75B5FD02F2B3010E623A8568849DAB8438B542DD,
+	HapticReceiver_xdq_m685F31AAD84151FC595D4DD3F0240FCCEAF629ED,
+	HapticReceiver_xdr_mFE8F40211ACE0D0255939A8FE7DB5A2F970B4DCD,
 	HapticReceiver_Start_m20FB05EA56712DCF7D7DE120D66F3382B39F4368,
 	HapticReceiver_OnApplicationFocus_mC0224086B7FD93BC2A20068B58499E5287A9BFB4,
 	HapticReceiver_OnDestroy_mE425F66306C46AFA23571A6E3812D6B05A3A4435,
 	HapticReceiver__ctor_m821A7ABCDE3D7DFE0290086F61B5FD945FCCBBFE,
-	HapticSource_xdm_m05908773F2D371E10B00A764EF6F2CF2C6EDCAC6,
-	HapticSource_xdn_m67BB73F67205EE2A46B0486DF47C804D80F7504C,
-	HapticSource_xdo_mCC895E96829F09FA8A2C1FCA0EA4E0C24268D321,
-	HapticSource_xdp_mD5FC74E9223EEDF2259DFEE690D83BEDB4A07935,
-	HapticSource_xdq_mE92BD15E107D4A188C250685647071B7CFBC296E,
-	HapticSource_xdr_m61CE96A7A1DF895C94747C51CA85C81FED5821D5,
-	HapticSource_xds_m18939C79AEAAC3AFC6EDD2BF5205CA4A36720B16,
-	HapticSource_xdt_m9838DFAC3A3246E25B12DEB1A72C8324292786FA,
-	HapticSource__cctor_mB3A2979FCCD6DD2DA19A800B454867F65D591EF3,
-	HapticSource_xdu_m4E57159E4FE68EB8273A2B196FAFDB475271FABE,
-	HapticSource_xdv_mFB0DD66A7F6EFFC60C28BE97DE2A3A4C0DDB4855,
+	HapticSource_xdu_m9B3D832737FC4FBAB68E123D18ED2F25A77CC7A1,
+	HapticSource_xdv_mD383D54CDE2C731FF91416F02C276204A3D18E79,
 	HapticSource_xdw_mF5266F181654545A484E7438E9BA4456A43AF5E4,
-	HapticSource_xdx_m91BEBE8C4C69C331EF99A4929710E332A220F9A4,
-	HapticSource_xdy_m43BFB468B6CE659BF17B069C892A763D373344DF,
+	HapticSource_xdx_m60034ED534D43046220F198A2F817869D6336BAF,
+	HapticSource_xdy_m1FE1E1E17591E714E748A956A783AC913E1B89B1,
+	HapticSource_xdz_m5FAC352A43C58826B8134F92A747AE8DF4B62A94,
+	HapticSource_xea_m9ADF685A8ED92108914249FA026640B52DFCE0E0,
+	HapticSource_xeb_m6D37B363C28A4E1A1EABE264A7CBB9FA49893683,
+	HapticSource__cctor_mB3A2979FCCD6DD2DA19A800B454867F65D591EF3,
+	HapticSource_xec_m02775C38EAA0E4707BE63F96C6C70BB0DA21628E,
+	HapticSource_xed_m546192D5EA1A518892B473623A9A0E447774756A,
+	HapticSource_xee_m0D24AC52FF502316DA70BBF909F429C74C901A31,
+	HapticSource_xef_m53592559CF674F8FD8198582ED5C069E386B6D21,
+	HapticSource_xeg_m84A8D00066107D5C95024F11B499775D7A4064B7,
 	HapticSource_OnDisable_m51C0FD784EA1CD6B35C6FC73A69259D1850DBC9E,
 	HapticSource__ctor_m67CF61EF32054D47DB68F85ADD4F0E5E1AAE8BEE,
 	U3CU3Ec__cctor_m16F5946BF09519686428F50F759CC1AC72B0527C,
 	U3CU3Ec__ctor_mBB29C861B6103C44AD31484810E6D1EAE7AE677D,
-	U3CU3Ec_xdk_m8F0BC9347552980553E0C704B6BEA4677D492D18,
-	U3CU3Ec_xdl_m33E26A6B2F93AE4611D740EE11D8BB6C677FB349,
-	dsw_xdz_m25728F04442EA82FE5FDB52DF44EDC8820CC4619,
+	U3CU3Ec_xds_m4FA2F469ED542E83C4FDFE1FD25EB5D45D4AE5D4,
+	U3CU3Ec_xdt_m168B6906986BCFA8ECEDEB0162A1EFCF3F9619C5,
+	dsw_xeh_m3DDD45F75DE07E61D501A1275DFAA3239031E60F,
 	dsw_Call_m4248451B688D71D1C6A199219BBDF0E8D0172422,
 	dsw_Call_m07F0B266C2CD78F17EEE24DCE71AEC181FA0D107,
 	dsw_Call_mF5228A2A95A8C42DD8D1AF3DC7C1560069F1E3B4,
@@ -358,100 +358,100 @@ static Il2CppMethodPointer s_methodPointers[120] =
 	NULL,
 	dsw__cctor_mCFFA58ED7A4215A05DDF8025C94F8383A809A0CD,
 	dsx_lofeltHapticsLoadDirect_m1A68A17A99F9B9D1734F0FFCF7F7401D020BAC01,
-	dsx_xea_m68FA2EFB83458CD2F8EC3B66641170C8DC2AF20D,
-	dsx_xeb_m86978115D71069D35C0E2BF87E01051E7471F8AE,
-	dsx_xec_m8A334220334974BB90B1C38C5D15FCF38F778E88,
-	dsx_xed_m77FE6D364247F005481ABE60535E10CE865E69D5,
-	dsx_xee_m3B3BF14816A23613E6A1ECAAA2FC9AD79E591263,
-	dsx_xef_m9FFECFCE66DF585D505E8B838CFCC5641EAEC71C,
-	dsx_xeg_m842E99D6BA0730534A42B862A2D49AE44A4F0E4E,
-	dsx_xeh_m9927CCDF482790F85F18DCE98EA58625C6775BD5,
 	dsx_xei_m76F4FE79712FB69908EBB215B25F8C3E01F527FA,
-	dsx_xej_mBAA9C79A796000285C23AD32CB06EBAB2CD7EEE5,
-	dsx_xek_mA72E6BBCEFE7304EA186FC3D54EEEEA6B9ADF0D8,
-	dsx_xel_m0DC59C4910A41A0B9E3831C62F2C8F1FACC656D0,
-	dsx_xem_m20450FC847FCBCF9FD8C8AEEE0354A7D5FD7EA98,
-	dsx_xen_m216DDA93DF77EE33CAB145F83909CB12CAB4EED1,
+	dsx_xej_m306DFDE13E2522F00105B608E83B4DE4012D297A,
+	dsx_xek_mB4289CDF80D78264E288BBA65BCE326A0787E317,
+	dsx_xel_m4F3B170D170CDFCE5816725A1E4C4F7BE0F3C90B,
+	dsx_xem_m2DFE2AF2B090F8F14A49AB5A4E6A313A426233BE,
+	dsx_xen_m05A47A3D8CAA443FD1162DCF8810E5B83FF64BA0,
+	dsx_xeo_m3066C50F61A7B736AC82994A31CFCCB3CECCBB37,
+	dsx_xep_mD044634FB8825D6549F5C68278BA860478AC3FBA,
+	dsx_xeq_mED686AB7BF76E0D94A40E220D4B34ED2CA8993F2,
+	dsx_xer_m85DBCB23AB6F02598243CE4C5C345B8CCA5CDF2D,
+	dsx_xes_m235D988AC90C2A140CB0F669ED4B518855F83529,
+	dsx_xet_mE2E6D053C88B3B4A0EF1AE63D5D73CF9332E81FF,
+	dsx_xeu_m9E37FC9B42C64E5EEC233F0C44E45688AC4D50B6,
+	dsx_xev_mB6F3157EEA65B112AC987521B12D872DF0619E6E,
 	dsx__cctor_m9C71EEAF6B43FFEBB6F36FF9D09B00A66AF6EEB4,
 };
-extern void GamepadRumble_xbo_mE6CFDDAD412FFF212188FE7105F4C5193E72A59C_AdjustorThunk (void);
+extern void GamepadRumble_xbw_m8586370EBF84C96138C0F4517F8F6364C5168E93_AdjustorThunk (void);
 extern void Pattern__ctor_m994AE2FE6ECA25DE71010CFC47C05627F43BC960_AdjustorThunk (void);
-extern void Pattern_xcx_mC43DEB9E9D80452F77B259D1433D90003A25A1C9_AdjustorThunk (void);
-extern void Pattern_xcy_m3C535412AB42D3B7CEFB0FBB36BB18431CC8E0FF_AdjustorThunk (void);
+extern void Pattern_xdf_m63EC16E524C546901D1B4700A2FF1CCEB8EAA9CC_AdjustorThunk (void);
+extern void Pattern_xdg_m3FCA7D16CB3FC31DDA9C5D47522E3424DAA6BB49_AdjustorThunk (void);
 extern void Preset__ctor_m2D16CC34CD747C0FEDD5BEFDF868C17FE3235261_AdjustorThunk (void);
-extern void Preset_xcz_mD3AC5FEB4CF6BAEE8782754E173523996A04CF61_AdjustorThunk (void);
+extern void Preset_xdh_m1F345472C237E23F14F0BDF10E3A34843C00DE5C_AdjustorThunk (void);
 static Il2CppTokenAdjustorThunkPair s_adjustorThunks[6] = 
 {
-	{ 0x0600000E, GamepadRumble_xbo_mE6CFDDAD412FFF212188FE7105F4C5193E72A59C_AdjustorThunk },
+	{ 0x0600000E, GamepadRumble_xbw_m8586370EBF84C96138C0F4517F8F6364C5168E93_AdjustorThunk },
 	{ 0x0600003E, Pattern__ctor_m994AE2FE6ECA25DE71010CFC47C05627F43BC960_AdjustorThunk },
-	{ 0x0600003F, Pattern_xcx_mC43DEB9E9D80452F77B259D1433D90003A25A1C9_AdjustorThunk },
-	{ 0x06000040, Pattern_xcy_m3C535412AB42D3B7CEFB0FBB36BB18431CC8E0FF_AdjustorThunk },
+	{ 0x0600003F, Pattern_xdf_m63EC16E524C546901D1B4700A2FF1CCEB8EAA9CC_AdjustorThunk },
+	{ 0x06000040, Pattern_xdg_m3FCA7D16CB3FC31DDA9C5D47522E3424DAA6BB49_AdjustorThunk },
 	{ 0x06000041, Preset__ctor_m2D16CC34CD747C0FEDD5BEFDF868C17FE3235261_AdjustorThunk },
-	{ 0x06000042, Preset_xcz_mD3AC5FEB4CF6BAEE8782754E173523996A04CF61_AdjustorThunk },
+	{ 0x06000042, Preset_xdh_m1F345472C237E23F14F0BDF10E3A34843C00DE5C_AdjustorThunk },
 };
 static const int32_t s_InvokerIndices[120] = 
 {
-	8069,
-	8069,
-	8089,
-	8089,
-	8089,
-	8089,
-	8089,
-	8089,
-	8089,
-	8089,
-	8089,
-	8104,
-	8104,
+	8068,
+	8068,
+	8088,
+	8088,
+	8088,
+	8088,
+	8088,
+	8088,
+	8088,
+	8088,
+	8088,
+	8103,
+	8103,
 	5185,
-	8104,
-	8089,
-	8000,
-	8089,
-	7998,
-	8104,
-	8104,
-	8104,
-	8089,
-	8104,
+	8103,
+	8088,
+	7999,
+	8088,
+	7997,
+	8103,
+	8103,
+	8103,
+	8088,
+	8103,
 	5242,
-	8069,
-	8000,
-	8089,
-	8010,
-	8092,
-	8013,
-	8092,
-	8013,
-	8089,
-	8003,
-	8003,
-	7429,
-	8104,
-	8104,
-	8003,
-	8104,
-	8013,
-	8013,
-	8010,
-	8089,
-	8104,
-	8010,
-	8104,
+	8068,
+	7999,
+	8088,
+	8009,
+	8091,
+	8012,
+	8091,
+	8012,
+	8088,
+	8002,
+	8002,
+	7428,
+	8103,
+	8103,
+	8002,
+	8103,
+	8012,
+	8012,
+	8009,
+	8088,
+	8103,
+	8009,
+	8103,
 	5242,
 	2665,
-	8104,
+	8103,
 	5242,
 	4352,
-	8104,
-	7459,
-	7693,
-	6895,
-	8033,
-	8000,
-	7883,
-	8104,
+	8103,
+	7458,
+	7692,
+	6894,
+	8032,
+	7999,
+	7882,
+	8103,
 	2665,
 	5094,
 	5145,
@@ -475,7 +475,7 @@ static const int32_t s_InvokerIndices[120] =
 	4398,
 	5195,
 	4398,
-	8104,
+	8103,
 	5242,
 	5185,
 	5185,
@@ -483,34 +483,34 @@ static const int32_t s_InvokerIndices[120] =
 	4398,
 	5242,
 	5242,
-	8104,
+	8103,
 	5242,
 	5242,
 	5242,
-	7804,
-	6863,
-	7434,
-	6865,
+	7803,
+	6862,
+	7433,
 	6864,
 	6863,
+	6862,
 	-1,
-	8104,
-	6690,
-	8104,
-	8104,
-	8089,
-	8003,
-	8092,
-	8104,
-	8003,
-	8104,
-	8104,
-	8013,
-	8013,
-	8013,
-	8010,
-	8000,
-	8104,
+	8103,
+	6689,
+	8103,
+	8103,
+	8088,
+	8002,
+	8091,
+	8103,
+	8002,
+	8103,
+	8103,
+	8012,
+	8012,
+	8012,
+	8009,
+	7999,
+	8103,
 };
 static const Il2CppTokenRangePair s_rgctxIndices[1] = 
 {
