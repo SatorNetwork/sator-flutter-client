@@ -19,7 +19,7 @@ import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
-import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
+import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
@@ -44,7 +44,6 @@ import 'package:satorio/domain/entities/show_detail.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/episode_realm_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/puzzle_options_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/rate_bottom_sheet.dart';
@@ -62,15 +61,16 @@ import 'package:satorio/ui/page_widget/reviews_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/ui/page_widget/video_youtube_page.dart';
 import 'package:satorio/ui/page_widget/write_review_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/getx_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'write_review_controller.dart';
 
 class ShowEpisodeRealmController extends GetxController
-    with BackToMainMixin, NonWorkingFeatureMixin, ValidationMixin {
+    with BackToMainMixin, ValidationMixin, ConnectivityMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final int _itemsPerPage = 10;
@@ -290,16 +290,14 @@ class ShowEpisodeRealmController extends GetxController
   void toEpisodeRealmDialog() {
     Get.bottomSheet(
       EpisodeRealmBottomSheet(
+        isInternetConnectedRx,
         onQuizPressed: () {
           if (attemptsLeftRx.value > 0) {
             _loadQuizQuestion();
           } else {
-            Get.snackbar(
+            Get.snackbarMessage(
               'txt_oops'.tr,
               'txt_attempts_left_alert'.tr,
-              backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-              colorText: SatorioColor.darkAccent,
-              duration: Duration(seconds: 4),
             );
           }
         },
@@ -322,16 +320,19 @@ class ShowEpisodeRealmController extends GetxController
   }
 
   void toRealmExpiringBottomSheet() {
-    Get.bottomSheet(
-      RealmExpiringBottomSheet(
-        activationRx.value,
-        (paidOption) {
-          _paidUnlock(paidOption);
-        },
-      ),
-      isScrollControlled: true,
-      barrierColor: Colors.transparent,
-    );
+    if (isAndroid) {
+      Get.bottomSheet(
+        RealmExpiringBottomSheet(
+          activationRx.value,
+          isInternetConnectedRx,
+          (paidOption) {
+            _paidUnlock(paidOption);
+          },
+        ),
+        isScrollControlled: true,
+        barrierColor: Colors.transparent,
+      );
+    }
   }
 
   void toRateBottomSheet() {
@@ -445,12 +446,9 @@ class ShowEpisodeRealmController extends GetxController
           }
           break;
         default:
-          Get.snackbar(
+          Get.snackbarMessage(
             'txt_oops'.tr,
             'txt_cannot_start_puzzle'.tr,
-            backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-            colorText: SatorioColor.darkAccent,
-            duration: Duration(seconds: 4),
           );
           break;
       }
@@ -569,6 +567,7 @@ class ShowEpisodeRealmController extends GetxController
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
+        isInternetConnectedRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },
@@ -673,13 +672,9 @@ class ShowEpisodeRealmController extends GetxController
       (result) {
         if (result) {
           _updateShowEpisode();
-          Get.bottomSheet(
-            DefaultBottomSheet(
-              'txt_success'.tr,
-              'txt_rate_success'.tr.format([rate]),
-              'txt_awesome'.tr,
-              icon: Icons.check_rounded,
-            ),
+          Get.snackbarMessage(
+            'txt_success'.tr,
+            'txt_rate_success'.tr.format([rate]),
           );
         }
       },

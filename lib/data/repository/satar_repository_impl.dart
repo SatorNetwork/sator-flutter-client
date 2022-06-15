@@ -49,7 +49,7 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/entities/wallet_staking.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class SatorioRepositoryImpl implements SatorioRepository {
   final ApiDataSource _apiDataSource;
@@ -92,12 +92,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   void _handleApiErrorException(ApiErrorException exception) {
-    Get.snackbar(
+    Get.snackbarMessage(
       'txt_oops'.tr,
       exception.errorMessage,
-      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-      colorText: SatorioColor.darkAccent,
-      duration: Duration(seconds: 4),
     );
   }
 
@@ -109,12 +106,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
           binding: LoginBinding(),
           arguments: LoginArgument(null),
         );
-        Get.snackbar(
+        Get.snackbarMessage(
           'txt_oops'.tr,
           exception.errorMessage,
-          backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-          colorText: SatorioColor.darkAccent,
-          duration: Duration(seconds: 4),
         );
       },
     );

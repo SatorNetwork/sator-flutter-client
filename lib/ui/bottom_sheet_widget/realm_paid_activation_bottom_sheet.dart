@@ -14,10 +14,12 @@ typedef SelectPaidOptionCallback = void Function(PaidOption paidOption);
 
 class RealmPaidActivationBottomSheet extends StatelessWidget {
   RealmPaidActivationBottomSheet(
+    this.isInternetConnectedRx,
     this.onExtend, {
     Key? key,
   }) : super(key: key);
 
+  final RxBool isInternetConnectedRx;
   final Rx<PaidOption?> _selectedPaidOptionRx = Rx(null);
 
   final SelectPaidOptionCallback onExtend;
@@ -121,16 +123,21 @@ class RealmPaidActivationBottomSheet extends StatelessWidget {
                     height: 24 * coefficient,
                   ),
                   Obx(
-                    () => ElevatedGradientButton(
-                      text: 'txt_unlock_sao'.tr,
-                      isEnabled: _selectedPaidOptionRx.value != null,
-                      onPressed: () {
-                        Get.back();
-                        if (_selectedPaidOptionRx.value != null) {
-                          onExtend(_selectedPaidOptionRx.value!);
-                        }
-                      },
-                    ),
+                    () {
+                      if (!isInternetConnectedRx.value) {
+                        Get.until((route) => !(Get.isBottomSheetOpen ?? false));
+                      }
+                      return ElevatedGradientButton(
+                        text: 'txt_unlock_sao'.tr,
+                        isEnabled: _selectedPaidOptionRx.value != null,
+                        onPressed: () {
+                          Get.back();
+                          if (_selectedPaidOptionRx.value != null) {
+                            onExtend(_selectedPaidOptionRx.value!);
+                          }
+                        },
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 8 * coefficient,
