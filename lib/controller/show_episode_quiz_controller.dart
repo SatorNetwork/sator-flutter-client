@@ -5,7 +5,7 @@ import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/show_episode.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class ShowEpisodeQuizController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -62,12 +62,9 @@ class ShowEpisodeQuizController extends GetxController {
   }
 
   void _showSnackbar(String title, String message) {
-    Get.snackbar(
+    Get.snackbarMessage(
       title,
       message,
-      backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-      colorText: SatorioColor.darkAccent,
-      duration: Duration(seconds: 4),
       snackbarStatus: (SnackbarStatus? status) {
         if (status == SnackbarStatus.CLOSED) {
           Get.back(closeOverlays: true);

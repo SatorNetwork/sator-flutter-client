@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/quiz_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
+import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -16,10 +17,10 @@ import 'package:satorio/ui/bottom_sheet_widget/realm_paid_activation_bottom_shee
 import 'package:satorio/ui/bottom_sheet_widget/realm_unlock_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/quiz_page.dart';
 import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/getx_extension.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ChallengeController extends GetxController {
+class ChallengeController extends GetxController with ConnectivityMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<Challenge?> challengeRx = Rx(null);
@@ -83,16 +84,14 @@ class ChallengeController extends GetxController {
     if (challengeRx.value != null) {
       Get.bottomSheet(
         EpisodeRealmBottomSheet(
+          isInternetConnectedRx,
           onQuizPressed: () {
             if (challengeRx.value!.attemptsLeft > 0) {
               _loadQuizQuestion();
             } else {
-              Get.snackbar(
+              Get.snackbarMessage(
                 'txt_oops'.tr,
                 'txt_attempts_left_alert'.tr,
-                backgroundColor: SatorioColor.carnation_pink.withOpacity(0.8),
-                colorText: SatorioColor.darkAccent,
-                duration: Duration(seconds: 4),
               );
             }
           },
@@ -182,6 +181,7 @@ class ChallengeController extends GetxController {
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
+        isInternetConnectedRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },
