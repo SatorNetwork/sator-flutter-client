@@ -4,7 +4,7 @@ apply plugin: 'com.android.library'
 
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(name: 'unity-classes', ext:'jar')
     implementation(name: 'LofeltHaptics', ext:'aar')
     implementation(name: 'NativeHelper', ext:'aar')
     implementation(name: 'NativeShare', ext:'aar')

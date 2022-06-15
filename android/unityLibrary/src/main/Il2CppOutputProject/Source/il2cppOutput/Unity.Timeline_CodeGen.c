@@ -2272,7 +2272,7 @@ static const Il2CppRGCTXDefinition s_rgctxValues[23] =
 	{ (Il2CppRGCTXDataType)3, 19592 },
 	{ (Il2CppRGCTXDataType)3, 17973 },
 	{ (Il2CppRGCTXDataType)3, 19595 },
-	{ (Il2CppRGCTXDataType)2, 5537 },
+	{ (Il2CppRGCTXDataType)2, 5538 },
 	{ (Il2CppRGCTXDataType)3, 19590 },
 };
 extern const CustomAttributesCacheGenerator g_Unity_Timeline_AttributeGenerators[];
