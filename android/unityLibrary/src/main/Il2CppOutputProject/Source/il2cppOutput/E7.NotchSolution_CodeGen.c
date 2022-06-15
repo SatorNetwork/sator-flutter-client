@@ -12,87 +12,87 @@
 
 
 
-// 0x00000001 E7.NotchSolution.BlendedClipsAdaptor E7.NotchSolution.AdaptationBase::wtc()
-extern void AdaptationBase_wtc_mFE3684115064D63DC5AB9B7F98AF0EE0513BF7D5 (void);
-// 0x00000002 UnityEngine.Animator E7.NotchSolution.AdaptationBase::wtd()
-extern void AdaptationBase_wtd_m1819419D044C8BED834EC9BA88F4AE9E76B6C250 (void);
-// 0x00000003 UnityEngine.Rect E7.NotchSolution.AdaptationBase::wte()
-extern void AdaptationBase_wte_mAA11890FCE790EBA6CD15E40CF201595E201621D (void);
+// 0x00000001 E7.NotchSolution.BlendedClipsAdaptor E7.NotchSolution.AdaptationBase::wsx()
+extern void AdaptationBase_wsx_m937BEE049D57DDACE681F730720C63719D8ECC8F (void);
+// 0x00000002 UnityEngine.Animator E7.NotchSolution.AdaptationBase::wsy()
+extern void AdaptationBase_wsy_m2317A008A693576A75FDBD2CA20C2CC655793B2F (void);
+// 0x00000003 UnityEngine.Rect E7.NotchSolution.AdaptationBase::wsz()
+extern void AdaptationBase_wsz_m6225D8DECA57B041B02ADA4A9564A3C3B1BD397A (void);
 // 0x00000004 System.Void E7.NotchSolution.AdaptationBase::Start()
 extern void AdaptationBase_Start_mEEE70073F983A0D6AB3B1C342D9E833019FF0F2F (void);
 // 0x00000005 System.Void E7.NotchSolution.AdaptationBase::Update()
 extern void AdaptationBase_Update_m7882EEB7AD4BB2944D16D3796AAEDD3230468004 (void);
-// 0x00000006 System.Void E7.NotchSolution.AdaptationBase::wtf(UnityEngine.Rect,UnityEngine.Rect[])
-extern void AdaptationBase_wtf_m82C269B886CD7359E5E42BC5D8A1BECE73A438BE (void);
-// 0x00000007 System.Void E7.NotchSolution.AdaptationBase::wtg(UnityEngine.AnimationCurve)
-extern void AdaptationBase_wtg_mD8691B6E1EA16D23C768D696650B62155F40C470 (void);
-// 0x00000008 System.Void E7.NotchSolution.AdaptationBase::wth(System.Single)
-extern void AdaptationBase_wth_m8ED39E9F4E144AD6814558DC52EBDC7092181C0D (void);
-// 0x00000009 System.Void E7.NotchSolution.AdaptationBase::wti()
+// 0x00000006 System.Void E7.NotchSolution.AdaptationBase::wta(UnityEngine.Rect,UnityEngine.Rect[])
+extern void AdaptationBase_wta_m38DFCC1D94B9E4804FE40F8F2BB06D9054DE9F7D (void);
+// 0x00000007 System.Void E7.NotchSolution.AdaptationBase::wtb(UnityEngine.AnimationCurve)
+extern void AdaptationBase_wtb_m99F18A2CB0F3780158FC214839EB31FC99D850EE (void);
+// 0x00000008 System.Void E7.NotchSolution.AdaptationBase::wtc(System.Single)
+extern void AdaptationBase_wtc_mA78651F45DC85A8F55B9EDA170C1949359D52182 (void);
+// 0x00000009 System.Void E7.NotchSolution.AdaptationBase::wtd()
 // 0x0000000A System.Void E7.NotchSolution.AdaptationBase::.ctor()
 extern void AdaptationBase__ctor_m50D7CDA55A7F6682D8F780D72F758DA3CF966DF3 (void);
 // 0x0000000B System.Void E7.NotchSolution.BlendedClipsAdaptor::.ctor(UnityEngine.AnimationCurve)
 extern void BlendedClipsAdaptor__ctor_mFFDA7697D389E0F084755D691CB40360B8BD2E29 (void);
-// 0x0000000C System.Boolean E7.NotchSolution.BlendedClipsAdaptor::wtj()
-extern void BlendedClipsAdaptor_wtj_m6CF371986899D27724F7985486A3A62D4B15B250 (void);
-// 0x0000000D System.Void E7.NotchSolution.BlendedClipsAdaptor::wtk(System.Single,UnityEngine.Animator)
-extern void BlendedClipsAdaptor_wtk_m6AC2423C02E467917160E63F9BF0E71D8903BEF8 (void);
+// 0x0000000C System.Boolean E7.NotchSolution.BlendedClipsAdaptor::wte()
+extern void BlendedClipsAdaptor_wte_m38C96232EE84E53F622316F02A0DC51F8B9F933B (void);
+// 0x0000000D System.Void E7.NotchSolution.BlendedClipsAdaptor::wtf(System.Single,UnityEngine.Animator)
+extern void BlendedClipsAdaptor_wtf_mBA0B32F32A596A1F21BE193778BAAD27AF820476 (void);
 // 0x0000000E System.Void E7.NotchSolution.PerEdgeAdaptations::.ctor()
 extern void PerEdgeAdaptations__ctor_m83B42A2A6E7967A9CA028EDFDC8563BBD9414237 (void);
-// 0x0000000F System.Void E7.NotchSolution.dqc::wtl(UnityEngine.Rect,UnityEngine.Rect[])
-// 0x00000010 UnityEngine.Rect E7.NotchSolution.NotchSolutionUIBehaviourBase::wtq()
-extern void NotchSolutionUIBehaviourBase_wtq_mF4E760EE890FAAF31E19431D43622188DE801448 (void);
-// 0x00000011 UnityEngine.RectTransform E7.NotchSolution.NotchSolutionUIBehaviourBase::wtr()
-extern void NotchSolutionUIBehaviourBase_wtr_m0C7B2E7F95F1D043B10834A93F7EE2E7329D69C9 (void);
+// 0x0000000F System.Void E7.NotchSolution.dpx::wtg(UnityEngine.Rect,UnityEngine.Rect[])
+// 0x00000010 UnityEngine.Rect E7.NotchSolution.NotchSolutionUIBehaviourBase::wtl()
+extern void NotchSolutionUIBehaviourBase_wtl_m63D7EDA48F83800FD5A797E592BF7F438FCD139F (void);
+// 0x00000011 UnityEngine.RectTransform E7.NotchSolution.NotchSolutionUIBehaviourBase::wtm()
+extern void NotchSolutionUIBehaviourBase_wtm_m4676B55359376A9583EC3B446D1C81FC6AE39394 (void);
 // 0x00000012 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::OnEnable()
 extern void NotchSolutionUIBehaviourBase_OnEnable_mB58B0CC87D20E90186F9F4B79AB71C17DAC93D47 (void);
 // 0x00000013 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::OnDisable()
 extern void NotchSolutionUIBehaviourBase_OnDisable_mF0E4327BC6B4EE827BE209E33DF2FF4DC5E06179 (void);
 // 0x00000014 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::OnRectTransformDimensionsChange()
 extern void NotchSolutionUIBehaviourBase_OnRectTransformDimensionsChange_mA66CDFC9489CD86A713A890EFE360C5DEFA16884 (void);
-// 0x00000015 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wts()
+// 0x00000015 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtn()
+extern void NotchSolutionUIBehaviourBase_wtn_m25C34D60919D00BB717A4B6D31A56807CF6CB3F3 (void);
+// 0x00000016 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wto()
+extern void NotchSolutionUIBehaviourBase_wto_mAD053B9F4E381D1A93D09D8EAB0C6BA0DA24BABF (void);
+// 0x00000017 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtp(UnityEngine.Rect,UnityEngine.Rect[])
+extern void NotchSolutionUIBehaviourBase_wtp_m7BAA226F7A52503C95E6AD145CD5F3E8A24F989D (void);
+// 0x00000018 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtq()
+// 0x00000019 UnityEngine.Rect E7.NotchSolution.NotchSolutionUIBehaviourBase::wtr()
+extern void NotchSolutionUIBehaviourBase_wtr_m77BAEB89BE83F9B439AE856D3872506B4EA99F7D (void);
+// 0x0000001A System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wts()
 extern void NotchSolutionUIBehaviourBase_wts_mD53EC19F16C248C43B76D99F4597F1723E2BB39A (void);
-// 0x00000016 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtt()
+// 0x0000001B System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtt()
 extern void NotchSolutionUIBehaviourBase_wtt_mB7A0D128B4ADF5478E3E734DC875D32660E9E1FE (void);
-// 0x00000017 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtu(UnityEngine.Rect,UnityEngine.Rect[])
-extern void NotchSolutionUIBehaviourBase_wtu_mEA1DCABEAE936AA6E60C684C08D5B43A81BB2EBC (void);
-// 0x00000018 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtv()
-// 0x00000019 UnityEngine.Rect E7.NotchSolution.NotchSolutionUIBehaviourBase::wtw()
-extern void NotchSolutionUIBehaviourBase_wtw_mB17A4F8CF7FE3CBD51DE344595F26549EBBBA4F2 (void);
-// 0x0000001A System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wtx()
-extern void NotchSolutionUIBehaviourBase_wtx_m61B24E9053F18405D2470CFA26F2A9C1CB54B505 (void);
-// 0x0000001B System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::wty()
-extern void NotchSolutionUIBehaviourBase_wty_mAF21BEE1F0EDBDA213768112AE19D9BEA570BD89 (void);
-// 0x0000001C System.Collections.IEnumerator E7.NotchSolution.NotchSolutionUIBehaviourBase::wtz()
-extern void NotchSolutionUIBehaviourBase_wtz_mC696869346B60D498874742D1A2AA6C5C58BB1A2 (void);
+// 0x0000001C System.Collections.IEnumerator E7.NotchSolution.NotchSolutionUIBehaviourBase::wtu()
+extern void NotchSolutionUIBehaviourBase_wtu_m3612278941DAAED2A455B0D3E7D780E2AA884DE7 (void);
 // 0x0000001D System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase::.ctor()
 extern void NotchSolutionUIBehaviourBase__ctor_m06D19A834AF9C336013AA1322C9F9D3233D281A0 (void);
-// 0x0000001E UnityEngine.Canvas E7.NotchSolution.NotchSolutionUIBehaviourBase::wua()
-extern void NotchSolutionUIBehaviourBase_wua_mC8954F01041AD8F3D0F5F5A7C89DA77ADAC184EA (void);
-// 0x0000001F System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase/dqd::.ctor(System.Int32)
-extern void dqd__ctor_mE9B4B26A7878FDA774FB740068423FF10624E2F5 (void);
-// 0x00000020 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase/dqd::wtm()
-extern void dqd_wtm_mEDA559AC9C02C54E85BE56E77479B0FAF96D8BE0 (void);
-// 0x00000021 System.Boolean E7.NotchSolution.NotchSolutionUIBehaviourBase/dqd::MoveNext()
-extern void dqd_MoveNext_mFC2CC1F497A4067B811EF3C6727E49893C07C73B (void);
-// 0x00000022 System.Object E7.NotchSolution.NotchSolutionUIBehaviourBase/dqd::wtn()
-extern void dqd_wtn_mD9228126CF9F3889CB6E8A09822CDF5B07DE5B4B (void);
-// 0x00000023 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase/dqd::wto()
-extern void dqd_wto_m0CF57EF7EC15A55DAA820845678D87810AA991EC (void);
-// 0x00000024 System.Object E7.NotchSolution.NotchSolutionUIBehaviourBase/dqd::wtp()
-extern void dqd_wtp_m58AF3D22808A26A99A918C70082442B570AF8B69 (void);
-// 0x00000025 System.Boolean E7.NotchSolution.dqe::wub()
-extern void dqe_wub_m74DB080D3800099FFB1F408D310A1E5535E7E2FC (void);
-// 0x00000026 UnityEngine.Rect E7.NotchSolution.dqe::wuc()
-extern void dqe_wuc_m3F847A0CA20AC1568FEAE84CDE0D5A48FCFBEFD4 (void);
-// 0x00000027 UnityEngine.Rect[] E7.NotchSolution.dqe::wud()
-extern void dqe_wud_mD519F05985AE0C6F6696338F42849277B3C4D97E (void);
-// 0x00000028 UnityEngine.ScreenOrientation E7.NotchSolution.dqe::wue()
-extern void dqe_wue_m4771396A25407ECFF5C7647BAB3EA8347D19A572 (void);
-// 0x00000029 UnityEngine.Rect E7.NotchSolution.dqe::wuf(UnityEngine.Rect)
-extern void dqe_wuf_mBD9DD2C61C9854D876E97371A7C39118AC6242E0 (void);
-// 0x0000002A System.Void E7.NotchSolution.dqe::.cctor()
-extern void dqe__cctor_mE9641A3584BDB514C3F3352BE4D82A80DC76CE42 (void);
+// 0x0000001E UnityEngine.Canvas E7.NotchSolution.NotchSolutionUIBehaviourBase::wtv()
+extern void NotchSolutionUIBehaviourBase_wtv_mF9E6FECE1B43F2EF10785C13FC13E0E16D9F7830 (void);
+// 0x0000001F System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase/dpy::.ctor(System.Int32)
+extern void dpy__ctor_mD901801112F12E27FAB6B6CF48FE10A78BE9671C (void);
+// 0x00000020 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase/dpy::wth()
+extern void dpy_wth_m0D22A1AA092916590CD93497585502AC7EBD2042 (void);
+// 0x00000021 System.Boolean E7.NotchSolution.NotchSolutionUIBehaviourBase/dpy::MoveNext()
+extern void dpy_MoveNext_mF7CCC6EBCB9FCAA7362DDB841B6ECB5393307EFC (void);
+// 0x00000022 System.Object E7.NotchSolution.NotchSolutionUIBehaviourBase/dpy::wti()
+extern void dpy_wti_m0889064199CA52F31116DACF6EA5735DF280A198 (void);
+// 0x00000023 System.Void E7.NotchSolution.NotchSolutionUIBehaviourBase/dpy::wtj()
+extern void dpy_wtj_m468246790C76D944B55B9281746ABA1D1085A0ED (void);
+// 0x00000024 System.Object E7.NotchSolution.NotchSolutionUIBehaviourBase/dpy::wtk()
+extern void dpy_wtk_m05C2843604921DC934A52059FE4EE4B1CFF67DB3 (void);
+// 0x00000025 System.Boolean E7.NotchSolution.dpz::wtw()
+extern void dpz_wtw_m5C19BE00C9A9275077ACC9DA7B95DB0DDEDFAEEE (void);
+// 0x00000026 UnityEngine.Rect E7.NotchSolution.dpz::wtx()
+extern void dpz_wtx_mD5A0731E35463544DC777DB7BECD792658FC149C (void);
+// 0x00000027 UnityEngine.Rect[] E7.NotchSolution.dpz::wty()
+extern void dpz_wty_m40DC559979399E81A33A0F98BF61F4ECEBB30F00 (void);
+// 0x00000028 UnityEngine.ScreenOrientation E7.NotchSolution.dpz::wtz()
+extern void dpz_wtz_m14328487BE0FC8340BF02CDE0CFADD0FB7D0216B (void);
+// 0x00000029 UnityEngine.Rect E7.NotchSolution.dpz::wua(UnityEngine.Rect)
+extern void dpz_wua_m7E8A43709119E4ACF11880FDE057F3EC9C013A2E (void);
+// 0x0000002A System.Void E7.NotchSolution.dpz::.cctor()
+extern void dpz__cctor_m53146585562F4338D1686F791BF07C19DFAC1D2A (void);
 // 0x0000002B System.Void E7.NotchSolution.PerEdgeEvaluationModes::.ctor()
 extern void PerEdgeEvaluationModes__ctor_mC37F1C45BF291CFF2264E000D1A7565C970E3BFE (void);
 // 0x0000002C System.Void E7.NotchSolution.PerEdgeValues`1::.ctor()
@@ -114,74 +114,74 @@ extern void OrientationDependentData__ctor_mE847242A14FC93440C0974CE0A80B1B563FD
 extern void SystemInfoData__ctor_m4BACF222E07793CA8BE503006701E10D48CE14C1 (void);
 // 0x00000035 System.Void E7.NotchSolution.GraphicsDependentSystemInfoData::.ctor()
 extern void GraphicsDependentSystemInfoData__ctor_m030B8A6FA78B5C8191076DA6BB9A6B4674C322B0 (void);
-// 0x00000036 System.Single E7.NotchSolution.AspectRatioAdaptation::wug()
-extern void AspectRatioAdaptation_wug_mF4CB7C82A1A185142BF7D2D368160E35B466B0FF (void);
+// 0x00000036 System.Single E7.NotchSolution.AspectRatioAdaptation::wub()
+extern void AspectRatioAdaptation_wub_mE73AF310D4DA116DCDB56C0D5FA8DDE271A4363D (void);
 // 0x00000037 System.Void E7.NotchSolution.AspectRatioAdaptation::Reset()
 extern void AspectRatioAdaptation_Reset_m0B7D50FDCE4990D220F50D8E39839DF97E3167F3 (void);
-// 0x00000038 System.Void E7.NotchSolution.AspectRatioAdaptation::wti()
-extern void AspectRatioAdaptation_wti_m345137F536A34FE7FE5718EC18E60CC7A62C0F0A (void);
+// 0x00000038 System.Void E7.NotchSolution.AspectRatioAdaptation::wtd()
+extern void AspectRatioAdaptation_wtd_mEF86C73A89C399A7BE96FFFBAE9BD2CEA550CA42 (void);
 // 0x00000039 System.Void E7.NotchSolution.AspectRatioAdaptation::.ctor()
 extern void AspectRatioAdaptation__ctor_mCEC39EF7263F13BF39BA057B169C0558546A7597 (void);
-// 0x0000003A UnityEngine.AnimationCurve E7.NotchSolution.AspectRatioAdaptation::wuh()
-extern void AspectRatioAdaptation_wuh_m848867EFA18F4972601DEBFE94DDC76A1FD6101C (void);
+// 0x0000003A UnityEngine.AnimationCurve E7.NotchSolution.AspectRatioAdaptation::wuc()
+extern void AspectRatioAdaptation_wuc_mC13F9C897957BE0B6D883325E9B7B7FE70066189 (void);
 // 0x0000003B System.Void E7.NotchSolution.SafeAdaptation::Reset()
 extern void SafeAdaptation_Reset_mBCDC4C51B720AC181883EDA727DC4BC52F30F32C (void);
-// 0x0000003C System.Void E7.NotchSolution.SafeAdaptation::wti()
-extern void SafeAdaptation_wti_m9376907A0BB45D3E525214F790E97588AE02DAAD (void);
-// 0x0000003D System.Void E7.NotchSolution.SafeAdaptation::wui(UnityEngine.Rect)
-extern void SafeAdaptation_wui_mB24ED9115F696CC207E2A7750C82914107B14CA3 (void);
+// 0x0000003C System.Void E7.NotchSolution.SafeAdaptation::wtd()
+extern void SafeAdaptation_wtd_m2F1BE589FA829FB2E8F1CB7183F3D7854B97724E (void);
+// 0x0000003D System.Void E7.NotchSolution.SafeAdaptation::wud(UnityEngine.Rect)
+extern void SafeAdaptation_wud_mC60CC203B64BE0F55AA4BD6E47D22A86901B9C87 (void);
 // 0x0000003E System.Void E7.NotchSolution.SafeAdaptation::.ctor()
 extern void SafeAdaptation__ctor_mF0AA64F26F44ABD9A73AB22227EAC75CA2D84CBC (void);
-// 0x0000003F System.Void E7.NotchSolution.SafePadding::wtv()
-extern void SafePadding_wtv_m92E505A3B7D3E7F14B2BD60F4F42616DBD893264 (void);
+// 0x0000003F System.Void E7.NotchSolution.SafePadding::wtq()
+extern void SafePadding_wtq_mEAC237724CC44D250324481339C35A3C167C1459 (void);
 // 0x00000040 System.Void E7.NotchSolution.SafePadding::.ctor()
 extern void SafePadding__ctor_m947CFAF0720337507641FAD6C3CE316E8F0F5988 (void);
-// 0x00000041 System.Boolean E7.NotchSolution.SafePadding::wuj(E7.NotchSolution.dqb)
-extern void SafePadding_wuj_m76F67CE1340D1F36F4180F74480EAB33C99826D4 (void);
+// 0x00000041 System.Boolean E7.NotchSolution.SafePadding::wue(E7.NotchSolution.dpw)
+extern void SafePadding_wue_m074954BE125A8AAB32829D04EAA3B49E3543FC30 (void);
 static Il2CppMethodPointer s_methodPointers[65] = 
 {
-	AdaptationBase_wtc_mFE3684115064D63DC5AB9B7F98AF0EE0513BF7D5,
-	AdaptationBase_wtd_m1819419D044C8BED834EC9BA88F4AE9E76B6C250,
-	AdaptationBase_wte_mAA11890FCE790EBA6CD15E40CF201595E201621D,
+	AdaptationBase_wsx_m937BEE049D57DDACE681F730720C63719D8ECC8F,
+	AdaptationBase_wsy_m2317A008A693576A75FDBD2CA20C2CC655793B2F,
+	AdaptationBase_wsz_m6225D8DECA57B041B02ADA4A9564A3C3B1BD397A,
 	AdaptationBase_Start_mEEE70073F983A0D6AB3B1C342D9E833019FF0F2F,
 	AdaptationBase_Update_m7882EEB7AD4BB2944D16D3796AAEDD3230468004,
-	AdaptationBase_wtf_m82C269B886CD7359E5E42BC5D8A1BECE73A438BE,
-	AdaptationBase_wtg_mD8691B6E1EA16D23C768D696650B62155F40C470,
-	AdaptationBase_wth_m8ED39E9F4E144AD6814558DC52EBDC7092181C0D,
+	AdaptationBase_wta_m38DFCC1D94B9E4804FE40F8F2BB06D9054DE9F7D,
+	AdaptationBase_wtb_m99F18A2CB0F3780158FC214839EB31FC99D850EE,
+	AdaptationBase_wtc_mA78651F45DC85A8F55B9EDA170C1949359D52182,
 	NULL,
 	AdaptationBase__ctor_m50D7CDA55A7F6682D8F780D72F758DA3CF966DF3,
 	BlendedClipsAdaptor__ctor_mFFDA7697D389E0F084755D691CB40360B8BD2E29,
-	BlendedClipsAdaptor_wtj_m6CF371986899D27724F7985486A3A62D4B15B250,
-	BlendedClipsAdaptor_wtk_m6AC2423C02E467917160E63F9BF0E71D8903BEF8,
+	BlendedClipsAdaptor_wte_m38C96232EE84E53F622316F02A0DC51F8B9F933B,
+	BlendedClipsAdaptor_wtf_mBA0B32F32A596A1F21BE193778BAAD27AF820476,
 	PerEdgeAdaptations__ctor_m83B42A2A6E7967A9CA028EDFDC8563BBD9414237,
 	NULL,
-	NotchSolutionUIBehaviourBase_wtq_mF4E760EE890FAAF31E19431D43622188DE801448,
-	NotchSolutionUIBehaviourBase_wtr_m0C7B2E7F95F1D043B10834A93F7EE2E7329D69C9,
+	NotchSolutionUIBehaviourBase_wtl_m63D7EDA48F83800FD5A797E592BF7F438FCD139F,
+	NotchSolutionUIBehaviourBase_wtm_m4676B55359376A9583EC3B446D1C81FC6AE39394,
 	NotchSolutionUIBehaviourBase_OnEnable_mB58B0CC87D20E90186F9F4B79AB71C17DAC93D47,
 	NotchSolutionUIBehaviourBase_OnDisable_mF0E4327BC6B4EE827BE209E33DF2FF4DC5E06179,
 	NotchSolutionUIBehaviourBase_OnRectTransformDimensionsChange_mA66CDFC9489CD86A713A890EFE360C5DEFA16884,
+	NotchSolutionUIBehaviourBase_wtn_m25C34D60919D00BB717A4B6D31A56807CF6CB3F3,
+	NotchSolutionUIBehaviourBase_wto_mAD053B9F4E381D1A93D09D8EAB0C6BA0DA24BABF,
+	NotchSolutionUIBehaviourBase_wtp_m7BAA226F7A52503C95E6AD145CD5F3E8A24F989D,
+	NULL,
+	NotchSolutionUIBehaviourBase_wtr_m77BAEB89BE83F9B439AE856D3872506B4EA99F7D,
 	NotchSolutionUIBehaviourBase_wts_mD53EC19F16C248C43B76D99F4597F1723E2BB39A,
 	NotchSolutionUIBehaviourBase_wtt_mB7A0D128B4ADF5478E3E734DC875D32660E9E1FE,
-	NotchSolutionUIBehaviourBase_wtu_mEA1DCABEAE936AA6E60C684C08D5B43A81BB2EBC,
-	NULL,
-	NotchSolutionUIBehaviourBase_wtw_mB17A4F8CF7FE3CBD51DE344595F26549EBBBA4F2,
-	NotchSolutionUIBehaviourBase_wtx_m61B24E9053F18405D2470CFA26F2A9C1CB54B505,
-	NotchSolutionUIBehaviourBase_wty_mAF21BEE1F0EDBDA213768112AE19D9BEA570BD89,
-	NotchSolutionUIBehaviourBase_wtz_mC696869346B60D498874742D1A2AA6C5C58BB1A2,
+	NotchSolutionUIBehaviourBase_wtu_m3612278941DAAED2A455B0D3E7D780E2AA884DE7,
 	NotchSolutionUIBehaviourBase__ctor_m06D19A834AF9C336013AA1322C9F9D3233D281A0,
-	NotchSolutionUIBehaviourBase_wua_mC8954F01041AD8F3D0F5F5A7C89DA77ADAC184EA,
-	dqd__ctor_mE9B4B26A7878FDA774FB740068423FF10624E2F5,
-	dqd_wtm_mEDA559AC9C02C54E85BE56E77479B0FAF96D8BE0,
-	dqd_MoveNext_mFC2CC1F497A4067B811EF3C6727E49893C07C73B,
-	dqd_wtn_mD9228126CF9F3889CB6E8A09822CDF5B07DE5B4B,
-	dqd_wto_m0CF57EF7EC15A55DAA820845678D87810AA991EC,
-	dqd_wtp_m58AF3D22808A26A99A918C70082442B570AF8B69,
-	dqe_wub_m74DB080D3800099FFB1F408D310A1E5535E7E2FC,
-	dqe_wuc_m3F847A0CA20AC1568FEAE84CDE0D5A48FCFBEFD4,
-	dqe_wud_mD519F05985AE0C6F6696338F42849277B3C4D97E,
-	dqe_wue_m4771396A25407ECFF5C7647BAB3EA8347D19A572,
-	dqe_wuf_mBD9DD2C61C9854D876E97371A7C39118AC6242E0,
-	dqe__cctor_mE9641A3584BDB514C3F3352BE4D82A80DC76CE42,
+	NotchSolutionUIBehaviourBase_wtv_mF9E6FECE1B43F2EF10785C13FC13E0E16D9F7830,
+	dpy__ctor_mD901801112F12E27FAB6B6CF48FE10A78BE9671C,
+	dpy_wth_m0D22A1AA092916590CD93497585502AC7EBD2042,
+	dpy_MoveNext_mF7CCC6EBCB9FCAA7362DDB841B6ECB5393307EFC,
+	dpy_wti_m0889064199CA52F31116DACF6EA5735DF280A198,
+	dpy_wtj_m468246790C76D944B55B9281746ABA1D1085A0ED,
+	dpy_wtk_m05C2843604921DC934A52059FE4EE4B1CFF67DB3,
+	dpz_wtw_m5C19BE00C9A9275077ACC9DA7B95DB0DDEDFAEEE,
+	dpz_wtx_mD5A0731E35463544DC777DB7BECD792658FC149C,
+	dpz_wty_m40DC559979399E81A33A0F98BF61F4ECEBB30F00,
+	dpz_wtz_m14328487BE0FC8340BF02CDE0CFADD0FB7D0216B,
+	dpz_wua_m7E8A43709119E4ACF11880FDE057F3EC9C013A2E,
+	dpz__cctor_m53146585562F4338D1686F791BF07C19DFAC1D2A,
 	PerEdgeEvaluationModes__ctor_mC37F1C45BF291CFF2264E000D1A7565C970E3BFE,
 	NULL,
 	SimulationDevice_ToString_mDC227D690B419A8F5C38FA8EEBD3F81D9AFB5533,
@@ -193,18 +193,18 @@ static Il2CppMethodPointer s_methodPointers[65] =
 	OrientationDependentData__ctor_mE847242A14FC93440C0974CE0A80B1B563FD3F64,
 	SystemInfoData__ctor_m4BACF222E07793CA8BE503006701E10D48CE14C1,
 	GraphicsDependentSystemInfoData__ctor_m030B8A6FA78B5C8191076DA6BB9A6B4674C322B0,
-	AspectRatioAdaptation_wug_mF4CB7C82A1A185142BF7D2D368160E35B466B0FF,
+	AspectRatioAdaptation_wub_mE73AF310D4DA116DCDB56C0D5FA8DDE271A4363D,
 	AspectRatioAdaptation_Reset_m0B7D50FDCE4990D220F50D8E39839DF97E3167F3,
-	AspectRatioAdaptation_wti_m345137F536A34FE7FE5718EC18E60CC7A62C0F0A,
+	AspectRatioAdaptation_wtd_mEF86C73A89C399A7BE96FFFBAE9BD2CEA550CA42,
 	AspectRatioAdaptation__ctor_mCEC39EF7263F13BF39BA057B169C0558546A7597,
-	AspectRatioAdaptation_wuh_m848867EFA18F4972601DEBFE94DDC76A1FD6101C,
+	AspectRatioAdaptation_wuc_mC13F9C897957BE0B6D883325E9B7B7FE70066189,
 	SafeAdaptation_Reset_mBCDC4C51B720AC181883EDA727DC4BC52F30F32C,
-	SafeAdaptation_wti_m9376907A0BB45D3E525214F790E97588AE02DAAD,
-	SafeAdaptation_wui_mB24ED9115F696CC207E2A7750C82914107B14CA3,
+	SafeAdaptation_wtd_m2F1BE589FA829FB2E8F1CB7183F3D7854B97724E,
+	SafeAdaptation_wud_mC60CC203B64BE0F55AA4BD6E47D22A86901B9C87,
 	SafeAdaptation__ctor_mF0AA64F26F44ABD9A73AB22227EAC75CA2D84CBC,
-	SafePadding_wtv_m92E505A3B7D3E7F14B2BD60F4F42616DBD893264,
+	SafePadding_wtq_mEAC237724CC44D250324481339C35A3C167C1459,
 	SafePadding__ctor_m947CFAF0720337507641FAD6C3CE316E8F0F5988,
-	SafePadding_wuj_m76F67CE1340D1F36F4180F74480EAB33C99826D4,
+	SafePadding_wue_m074954BE125A8AAB32829D04EAA3B49E3543FC30,
 };
 static const int32_t s_InvokerIndices[65] = 
 {
