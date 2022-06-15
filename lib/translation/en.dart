@@ -217,7 +217,7 @@ const Map<String, String> en = {
   'txt_rating': 'Rating',
   'txt_title': 'Title',
   'txt_enter_title': 'Enter title',
-  'txt_enter_review': 'Enter review',
+  'txt_enter_review': 'Enter review (min %d characters)',
   'txt_review_write_success': 'Review was sent',
   'txt_submit': 'Submit',
   'txt_looks_bad': 'So-so - Need to edit',

@@ -270,7 +270,9 @@ class WriteReviewPage extends GetView<WriteReviewController> {
                       child: InputTextField(
                         controller: controller.reviewController,
                         inputTitle: 'txt_review'.tr,
-                        hintText: 'txt_enter_review'.tr,
+                        hintText: 'txt_enter_review'.tr.format([
+                          controller.minReviewLength,
+                        ]),
                         keyboardType: TextInputType.multiline,
                         minLines: 4,
                         maxLines: null,
@@ -291,7 +293,8 @@ class WriteReviewPage extends GetView<WriteReviewController> {
               () => ElevatedGradientButton(
                 text: 'txt_preview'.tr,
                 isEnabled: controller.titleRx.value.isNotEmpty &&
-                    controller.reviewRx.value.length >= controller.minReviewLength,
+                    controller.reviewRx.value.length >=
+                        controller.minReviewLength,
                 onPressed: () {
                   controller.toPreview();
                 },
