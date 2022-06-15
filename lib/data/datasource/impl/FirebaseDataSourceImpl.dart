@@ -75,24 +75,22 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
     final String episodeId = message.data["episode_id"];
     final String seasonId = message.data["seasonID"];
 
-    Future.delayed(
-        Duration(seconds: 2),
-        () => _satorioRepository.showDetail(showId).then((showDetail) {
-              _satorioRepository.showEpisode(showId, episodeId).then(
-                (showEpisode) {
-                  _satorioRepository
-                      .seasonById(showId, seasonId)
-                      .then((ShowSeason showSeason) {
-                    Get.to(
-                      () => ShowEpisodesRealmPage(),
-                      binding: ShowEpisodesRealmBinding(),
-                      arguments: ShowEpisodeRealmArgument(
-                          showDetail, showSeason, showEpisode, false),
-                    );
-                  });
-                },
-              );
-            }));
+    _satorioRepository.showDetail(showId).then((showDetail) {
+      _satorioRepository.showEpisode(showId, episodeId).then(
+        (showEpisode) {
+          _satorioRepository
+              .seasonById(showId, seasonId)
+              .then((ShowSeason showSeason) {
+            Get.to(
+              () => ShowEpisodesRealmPage(),
+              binding: ShowEpisodesRealmBinding(),
+              arguments: ShowEpisodeRealmArgument(
+                  showDetail, showSeason, showEpisode, false),
+            );
+          });
+        },
+      );
+    });
   }
 
   Color _fcmSnackbarColor(String type) {
