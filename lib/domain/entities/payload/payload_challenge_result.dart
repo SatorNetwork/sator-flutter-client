@@ -7,6 +7,8 @@ class PayloadChallengeResult extends Payload {
   final String showTransactionUrl;
   final List<PayloadPlayer> winners;
   final List<PayloadPlayer> losers;
+  final bool isRewardsDisabled;
+  final List<PayloadPlayer> players;
 
   const PayloadChallengeResult(
     this.challengeId,
@@ -14,5 +16,7 @@ class PayloadChallengeResult extends Payload {
     this.showTransactionUrl,
     this.winners,
     this.losers,
+    this.isRewardsDisabled,
+    this.players,
   );
 }

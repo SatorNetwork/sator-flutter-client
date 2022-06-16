@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/quiz_result_controller.dart';
-import 'package:satorio/domain/entities/payload/payload_player.dart';
+import 'package:satorio/domain/entities/payload/payload_challenge_result.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
@@ -18,170 +18,19 @@ class QuizResultPage extends GetView<QuizResultController> {
           backgroundImage('images/bg/gradient.svg'),
           SingleChildScrollView(
             child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: Get.mediaQuery.padding.top + 22 * coefficient,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Text(
-                          'txt_prize_pool'.tr,
-                          style: textTheme.bodyText1!.copyWith(
-                            color: SatorioColor.darkAccent,
-                            fontSize: 18.0 * coefficient,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Expanded(
-                          child: Obx(
-                            () => Text(
-                              controller.resultRx.value?.currentPrizePool ?? '',
-                              textAlign: TextAlign.end,
-                              style: textTheme.bodyText1!.copyWith(
-                                color: SatorioColor.darkAccent,
-                                fontSize: 18.0 * coefficient,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 21 * coefficient,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'txt_top_scores'.tr,
-                      style: textTheme.headline4!.copyWith(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 24.0 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 21 * coefficient,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(16.0),
-                      ),
-                      color: Colors.white,
-                    ),
-                    child: Obx(
-                      () => ListView.separated(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 4,
-                        ),
-                        shrinkWrap: true,
-                        separatorBuilder: (context, index) => Divider(
-                          color: Colors.black.withOpacity(0.10),
-                          height: 1,
-                        ),
-                        itemCount:
-                            controller.resultRx.value?.winners.length ?? 0,
-                        itemBuilder: (context, index) {
-                          final player =
-                              controller.resultRx.value!.winners[index];
-                          return _topPlayer(player);
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 21 * coefficient,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'txt_other_players'.tr,
-                      style: textTheme.headline4!.copyWith(
-                        color: SatorioColor.darkAccent,
-                        fontSize: 24.0 * coefficient,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 21 * coefficient,
-                  ),
-                  Obx(
-                    () => (controller.resultRx.value?.losers.isEmpty ?? true)
-                        ? SizedBox(
-                            height: 0,
-                          )
-                        : Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(16.0),
-                              ),
-                              color: Colors.white,
-                            ),
-                            child: Obx(
-                              () => ListView.separated(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 4,
-                                ),
-                                shrinkWrap: true,
-                                separatorBuilder: (context, index) => Divider(
-                                  color: Colors.black.withOpacity(0.10),
-                                  height: 1,
-                                ),
-                                itemCount:
-                                    controller.resultRx.value?.losers.length ??
-                                        0,
-                                itemBuilder: (context, index) {
-                                  final player =
-                                      controller.resultRx.value!.losers[index];
-                                  return _otherPlayer(player);
-                                },
-                              ),
-                            ),
-                          ),
-                  ),
-                  SizedBox(
-                    height: 25 * coefficient,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ElevatedGradientButton(
-                      text: 'txt_play_next_challenge'.tr,
-                      onPressed: () {
-                        controller.quizController.toChallenges();
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 13 * coefficient,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: BorderedButton(
-                      text: 'txt_back_realm'.tr,
-                      textColor: SatorioColor.darkAccent,
-                      borderColor: SatorioColor.smalt.withOpacity(0.24),
-                      onPressed: () {
-                        controller.quizController.backToEpisode();
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 38 * coefficient,
-                  ),
-                ],
-              ),
+              child: Obx(() {
+                final PayloadChallengeResult? result =
+                    controller.resultRx.value;
+                if (result == null)
+                  return SizedBox(
+                    height: 0,
+                  );
+                else if (result.isRewardsDisabled) {
+                  return _tablesWithPoints(result);
+                } else {
+                  return _tablesWithRewards(result);
+                }
+              }),
             ),
           ),
         ],
@@ -189,7 +38,223 @@ class QuizResultPage extends GetView<QuizResultController> {
     );
   }
 
-  Widget _topPlayer(PayloadPlayer player) {
+  Widget _tablesWithPoints(PayloadChallengeResult result) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _topOffset(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            'txt_scores'.tr,
+            style: textTheme.headline4!.copyWith(
+              color: SatorioColor.darkAccent,
+              fontSize: 24.0 * coefficient,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 21 * coefficient,
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(16.0),
+            ),
+            color: Colors.white,
+          ),
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 4,
+            ),
+            shrinkWrap: true,
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.black.withOpacity(0.10),
+              height: 1,
+            ),
+            itemCount: result.players.length,
+            itemBuilder: (context, index) {
+              final player = result.players[index];
+              return _playerWithPrize(
+                player.avatar,
+                player.username,
+                player.pts.toStringAsFixed(2),
+              );
+            },
+          ),
+        ),
+        ..._buttons()
+      ],
+    );
+  }
+
+  Widget _tablesWithRewards(PayloadChallengeResult result) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _topOffset(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              Text(
+                'txt_prize_pool'.tr,
+                style: textTheme.bodyText1!.copyWith(
+                  color: SatorioColor.darkAccent,
+                  fontSize: 18.0 * coefficient,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  result.currentPrizePool,
+                  textAlign: TextAlign.end,
+                  style: textTheme.bodyText1!.copyWith(
+                    color: SatorioColor.darkAccent,
+                    fontSize: 18.0 * coefficient,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 21 * coefficient,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            'txt_top_scores'.tr,
+            style: textTheme.headline4!.copyWith(
+              color: SatorioColor.darkAccent,
+              fontSize: 24.0 * coefficient,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 21 * coefficient,
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(16.0),
+            ),
+            color: Colors.white,
+          ),
+          child: ListView.separated(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 4,
+            ),
+            shrinkWrap: true,
+            separatorBuilder: (context, index) => Divider(
+              color: Colors.black.withOpacity(0.10),
+              height: 1,
+            ),
+            itemCount: result.winners.length,
+            itemBuilder: (context, index) {
+              final player = result.winners[index];
+              return _playerWithPrize(
+                  player.avatar, player.username, player.prize);
+            },
+          ),
+        ),
+        if (result.losers.isNotEmpty) ...[
+          SizedBox(
+            height: 21 * coefficient,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              'txt_other_players'.tr,
+              style: textTheme.headline4!.copyWith(
+                color: SatorioColor.darkAccent,
+                fontSize: 24.0 * coefficient,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 21 * coefficient,
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(
+                Radius.circular(16.0),
+              ),
+              color: Colors.white,
+            ),
+            child: ListView.separated(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 4,
+              ),
+              shrinkWrap: true,
+              separatorBuilder: (context, index) => Divider(
+                color: Colors.black.withOpacity(0.10),
+                height: 1,
+              ),
+              itemCount: result.losers.length,
+              itemBuilder: (context, index) {
+                final player = result.losers[index];
+                return _otherPlayer(player.avatar, player.username);
+              },
+            ),
+          )
+        ],
+        ..._buttons(),
+      ],
+    );
+  }
+
+  Widget _topOffset() {
+    return SizedBox(
+      height: Get.mediaQuery.padding.top + 22 * coefficient,
+    );
+  }
+
+  List<Widget> _buttons() {
+    return [
+      SizedBox(
+        height: 25 * coefficient,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: ElevatedGradientButton(
+          text: 'txt_play_next_challenge'.tr,
+          onPressed: () {
+            controller.quizController.toChallenges();
+          },
+        ),
+      ),
+      SizedBox(
+        height: 13 * coefficient,
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: BorderedButton(
+          text: 'txt_back_realm'.tr,
+          textColor: SatorioColor.darkAccent,
+          borderColor: SatorioColor.smalt.withOpacity(0.24),
+          onPressed: () {
+            controller.quizController.backToEpisode();
+          },
+        ),
+      ),
+      SizedBox(
+        height: 38 * coefficient,
+      )
+    ];
+  }
+
+  Widget _playerWithPrize(String avatar, String username, String prize) {
     return Container(
       height: 48,
       child: Row(
@@ -197,7 +262,7 @@ class QuizResultPage extends GetView<QuizResultController> {
         children: [
           ClipOval(
             child: AvatarImage(
-              player.avatar,
+              avatar,
               width: 34,
               height: 34,
             ),
@@ -207,7 +272,7 @@ class QuizResultPage extends GetView<QuizResultController> {
           ),
           Expanded(
             child: Text(
-              player.username,
+              username,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: textTheme.bodyText1!.copyWith(
@@ -228,7 +293,7 @@ class QuizResultPage extends GetView<QuizResultController> {
             ),
             child: Center(
               child: Text(
-                player.prize,
+                prize,
                 overflow: TextOverflow.ellipsis,
                 style: textTheme.bodyText1!.copyWith(
                   color: Colors.white,
@@ -243,7 +308,7 @@ class QuizResultPage extends GetView<QuizResultController> {
     );
   }
 
-  Widget _otherPlayer(PayloadPlayer player) {
+  Widget _otherPlayer(String avatar, String username) {
     return Container(
       height: 48,
       child: Row(
@@ -251,7 +316,7 @@ class QuizResultPage extends GetView<QuizResultController> {
         children: [
           ClipOval(
             child: AvatarImage(
-              player.avatar,
+              avatar,
               width: 34,
               height: 34,
             ),
@@ -261,7 +326,7 @@ class QuizResultPage extends GetView<QuizResultController> {
           ),
           Expanded(
             child: Text(
-              player.username,
+              username,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
