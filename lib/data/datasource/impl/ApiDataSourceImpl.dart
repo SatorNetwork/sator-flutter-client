@@ -1198,10 +1198,10 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> buyNftItem(String nftItemId) {
+  Future<bool> buyNftItem(String mintAddress) {
     return _getConnect
         .requestPost(
-      'nft/$nftItemId/buy',
+      'nft/$mintAddress/buy/marketplace',
       EmptyRequest(),
     )
         .then((Response response) {

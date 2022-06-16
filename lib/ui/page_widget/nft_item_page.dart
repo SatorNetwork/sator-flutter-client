@@ -334,13 +334,12 @@ class NftItemPage extends GetView<NftItemController> {
                             controller.isInternetConnectedRx.value
                         ? ElevatedGradientButton(
                             text: isAndroid
-                                ? 'txt_to_marketplace'.tr
+                                ? 'txt_buy_nft'.tr
                                 : 'txt_buy_nft'.tr,
                             isInProgress: controller.isBuyRequested.value,
                             onPressed: () {
                               isAndroid
-                                  ? controller.toMarketplace(
-                                      controller.nftItemRx.value.mintAddress)
+                                  ? controller.buy()
                                   : controller.buyInAppProduct();
                             },
                           )

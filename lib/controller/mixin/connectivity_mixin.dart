@@ -6,7 +6,7 @@ mixin ConnectivityMixin on GetxController {
   final ValueNotifier<bool> _notifier =
       Get.find<InternetConnectivity>().internetConnectivity();
 
-  final RxBool isInternetConnectedRx = true.obs;
+  RxBool isInternetConnectedRx = true.obs;
 
   @override
   void onInit() {

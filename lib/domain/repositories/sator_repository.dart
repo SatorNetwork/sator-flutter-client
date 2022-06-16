@@ -252,7 +252,7 @@ abstract class SatorioRepository {
 
   Future<NftItem> nftItem(String nftItemId);
 
-  Future<bool> buyNftItem(String nftItemId);
+  Future<bool> buyNftItem(String mintAddress);
 
   //
 
