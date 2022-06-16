@@ -333,9 +333,7 @@ class NftItemPage extends GetView<NftItemController> {
                             !controller.isOwner.value &&
                             controller.isInternetConnectedRx.value
                         ? ElevatedGradientButton(
-                            text: isAndroid
-                                ? 'txt_buy_nft'.tr
-                                : 'txt_buy_nft'.tr,
+                            text: 'txt_buy_nft'.tr,
                             isInProgress: controller.isBuyRequested.value,
                             onPressed: () {
                               isAndroid
