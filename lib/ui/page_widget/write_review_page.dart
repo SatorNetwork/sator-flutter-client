@@ -267,16 +267,22 @@ class WriteReviewPage extends GetView<WriteReviewController> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: InputTextField(
-                        controller: controller.reviewController,
-                        inputTitle: 'txt_review'.tr,
-                        hintText: 'txt_enter_review'.tr.format([
-                          controller.minReviewLength,
-                        ]),
-                        keyboardType: TextInputType.multiline,
-                        minLines: 4,
-                        maxLines: null,
-                        // maxLines: 8,
+                      child: Obx(
+                        () => InputTextField(
+                          controller: controller.reviewController,
+                          inputTitle: 'txt_review'.tr,
+                          hintText: 'txt_enter_review'.tr.format([
+                            controller.minReviewLength,
+                          ]),
+                          errorText: controller.isShowReviewErrorRx.value
+                              ? 'txt_enter_review'.tr.format([
+                                  controller.minReviewLength,
+                                ])
+                              : null,
+                          keyboardType: TextInputType.multiline,
+                          minLines: 4,
+                          maxLines: null,
+                        ),
                       ),
                     ),
                   ],

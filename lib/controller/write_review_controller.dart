@@ -32,6 +32,7 @@ class WriteReviewController extends GetxController {
   final RxInt rateRx = initValue.obs;
   final RxString titleRx = ''.obs;
   final RxString reviewRx = ''.obs;
+  final RxBool isShowReviewErrorRx = false.obs;
 
   final RxBool isRequested = false.obs;
 
@@ -120,7 +121,10 @@ class WriteReviewController extends GetxController {
   }
 
   void _reviewListener() {
-    reviewRx.value = reviewController.text.trim();
+    final String review = reviewController.text.trim();
+    reviewRx.value = review;
+    isShowReviewErrorRx.value =
+        0 < review.length && review.length < minReviewLength;
   }
 }
 
