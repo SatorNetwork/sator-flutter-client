@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +10,6 @@ import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/util/avatar_list.dart';
 import 'package:satorio/util/rating_type.dart';
-import 'package:satorio/util/smile_list.dart';
 
 class ReviewsPage extends GetView<ReviewsController> {
   @override
@@ -47,16 +44,11 @@ class ReviewsPage extends GetView<ReviewsController> {
       ),
       body: Stack(
         children: [
+          backgroundImage('images/bg/gradient.svg'),
           Container(
-            color: SatorioColor.darkAccent,
-            child: Column(
-              children: [
-                backgroundImage('images/bg/gradient.svg'),
-              ],
+            margin: EdgeInsets.only(
+              top: kToolbarHeight + Get.mediaQuery.padding.top,
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 100),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32),
@@ -124,11 +116,9 @@ class ReviewsPage extends GetView<ReviewsController> {
     final RxBool isLikedRx = review.isLiked.obs;
     final RxBool isDislikedRx = review.isDisliked.obs;
 
-    var formattedLikes = NumberFormat.compact(
-    ).format(review.likes);
+    var formattedLikes = NumberFormat.compact().format(review.likes);
 
-    var formattedDislikes = NumberFormat.compact(
-    ).format(review.dislikes);
+    var formattedDislikes = NumberFormat.compact().format(review.dislikes);
 
     String avatarAsset =
         review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
@@ -157,10 +147,10 @@ class ReviewsPage extends GetView<ReviewsController> {
                   children: [
                     ClipOval(
                         child: AvatarImage(
-                          avatarAsset,
-                          width: 20,
-                          height: 20,
-                        )),
+                      avatarAsset,
+                      width: 20,
+                      height: 20,
+                    )),
                     SizedBox(
                       width: 6,
                     ),
@@ -287,43 +277,45 @@ class ReviewsPage extends GetView<ReviewsController> {
                       ),
                     ),
                     Spacer(),
-                    controller.profile.id != review.userId ?
-                    InkWell(
-                      onTap: () {
-                        controller.toTransactingTipsDialog(review.userName, review);
-                      },
-                      child: Row(
-                        children: [
-                          Container(
-                            height: 24,
-                            width: 24,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: SatorioColor.interactive,
+                    controller.profile.id != review.userId
+                        ? InkWell(
+                            onTap: () {
+                              controller.toTransactingTipsDialog(
+                                  review.userName, review);
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 24,
+                                  width: 24,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: SatorioColor.interactive,
+                                  ),
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      'images/sator_logo.svg',
+                                      width: 12,
+                                      height: 12,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Text(
+                                  'txt_tip'.tr,
+                                  style: textTheme.bodyText2!.copyWith(
+                                    color: SatorioColor.interactive,
+                                    fontSize: 14 * coefficient,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: Center(
-                              child: SvgPicture.asset(
-                                'images/sator_logo.svg',
-                                width: 12,
-                                height: 12,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 4,
-                          ),
-                          Text(
-                            'txt_tip'.tr,
-                            style: textTheme.bodyText2!.copyWith(
-                              color: SatorioColor.interactive,
-                              fontSize: 14 * coefficient,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ) : Container(),
+                          )
+                        : Container(),
                   ],
                 ),
               )

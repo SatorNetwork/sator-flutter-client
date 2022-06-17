@@ -20,9 +20,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          Container(
-            child: backgroundImage('images/bg/gradient.svg'),
-          ),
+          backgroundImage('images/bg/gradient.svg'),
           Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -442,9 +440,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
               children: <TextSpan>[
                 TextSpan(text: ' '),
                 TextSpan(
-                  text: isAndroid
-                      ? 'SAO'
-                      : 'USD',
+                  text: isAndroid ? 'SAO' : 'USD',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 14.0 * coefficient,

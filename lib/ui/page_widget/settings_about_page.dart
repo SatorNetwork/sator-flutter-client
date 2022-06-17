@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/settings_about_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -47,7 +45,9 @@ class SettingsAboutPage extends GetView<SettingsAboutController> {
         ],
       ),
       body: Container(
-        margin: const EdgeInsets.only(top: 100),
+        margin: EdgeInsets.only(
+          top: kToolbarHeight + Get.mediaQuery.padding.top,
+        ),
         child: Padding(
           padding: EdgeInsets.only(left: 24),
           child: _aboutContent(),
@@ -60,8 +60,10 @@ class SettingsAboutPage extends GetView<SettingsAboutController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _aboutButton('txt_policy'.tr, () => controller.toWebPage(linkPrivacyPolicy)),
-        _aboutButton('txt_terms'.tr, () => controller.toWebPage(linkTermsOfUse)),
+        _aboutButton(
+            'txt_policy'.tr, () => controller.toWebPage(linkPrivacyPolicy)),
+        _aboutButton(
+            'txt_terms'.tr, () => controller.toWebPage(linkTermsOfUse)),
       ],
     );
   }
