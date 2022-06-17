@@ -110,7 +110,7 @@ abstract class SatorioRepository {
   Future<void> updateWalletDetail(String detailPath);
 
   Future<void> updateWalletTransactions(
-    String transactionsPath, {
+    Wallet wallet, {
     DateTime? from,
     DateTime? to,
   });
@@ -314,4 +314,6 @@ abstract class SatorioRepository {
   Future<bool> registerToken(String deviceId, String token);
 
   Future<String?> fcmToken();
+
+  Future<String> solanaClusterName();
 }

@@ -24,4 +24,10 @@ abstract class FirebaseDataSource {
   Future<int> appVersion();
 
   Future inAppProductsIds();
+
+  Future<String> solanaToken();
+
+  Future<String> solanaClusterUrl();
+
+  Future<String> solanaClusterName();
 }

@@ -3,7 +3,7 @@ import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/util/extension.dart';
 
 class AmountCurrencyModel extends AmountCurrency implements ToJsonInterface {
-  const AmountCurrencyModel(
+  AmountCurrencyModel(
     double amount,
     String currency,
   ) : super(
