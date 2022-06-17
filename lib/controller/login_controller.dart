@@ -1,6 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:satorio/binding/create_account_binding.dart';
@@ -256,7 +255,10 @@ class LoginController extends GetxController with ValidationMixin {
         Get.to(
           () => EmailVerificationPage(),
           binding: EmailVerificationBinding(),
-          arguments: EmailVerificationArgument(emailRx.value, false, deepLink),
+          arguments: EmailVerificationArgument(
+            emailRx.value,
+            deepLink: deepLink,
+          ),
         );
       isRequested.value = false;
     });

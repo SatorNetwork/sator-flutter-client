@@ -35,11 +35,11 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                         fontWeight: FontWeight.w700),
                   ),
                   SizedBox(
-                    height: 6,
+                    height: 6 * coefficient,
                   ),
                   _descriptionWidget(),
                   SizedBox(
-                    height: 36,
+                    height: 36 * coefficient,
                   ),
                   PinCodeTextField(
                     appContext: context,
@@ -66,13 +66,33 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                     enableActiveFill: true,
                     controller: controller.codeController,
                     onCompleted: (v) {
-                      controller.isUpdate
-                          ? controller.verifyUpdateEmail()
-                          : controller.verifyAccount();
+                      controller.verify();
                     },
                     onChanged: (value) {},
                     beforeTextPaste: (text) => true,
                   ),
+                  if (controller.showAnotherAccountLogin)
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          height: 20 * coefficient,
+                        ),
+                        InkWell(
+                          onTap: () => controller.loginViaAnotherAccount(),
+                          child: Center(
+                            child: Text(
+                              'Log in with another account',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: SatorioColor.interactive,
+                                  fontSize: 17 * coefficient,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                 ],
               ),
               Align(
