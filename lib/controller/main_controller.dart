@@ -1,13 +1,9 @@
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenge_binding.dart';
-import 'package:satorio/binding/qr_scanner_binding.dart';
 import 'package:satorio/controller/challenge_controller.dart';
-import 'package:satorio/controller/qr_scanner_controller.dart';
-import 'package:satorio/domain/entities/nft_item.dart';
-import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/challenge_page.dart';
-import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
+import 'package:satorio/unity/unity_view_page.dart';
 
 class MainController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
@@ -68,10 +64,13 @@ class MainController extends GetxController {
 
   void toQrScanner() {
     Get.to(
-      () => QrScannerPage(),
-      binding: QrScannerBinding(),
-      arguments: QrScannerArgument(false),
+      () => UnityViewPage(),
     );
+    // Get.to(
+    //   () => QrScannerPage(),
+    //   binding: QrScannerBinding(),
+    //   arguments: QrScannerArgument(false),
+    // );
   }
 }
 

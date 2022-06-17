@@ -248,6 +248,7 @@ const Map<String, String> en = {
   'txt_all_realms': 'All realms',
   'txt_highest_rewards': 'Highest rewards',
   'txt_most_social': 'Most social',
+  'txt_games': 'Games',
   'txt_newest_added': 'Newest added',
   'txt_popular_movies': 'Popular movies',
   'txt_music_realms': 'Music realms',

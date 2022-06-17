@@ -45,7 +45,7 @@ dependencies:
   firebase_messaging: ^11.2.12
   firebase_remote_config: ^2.0.3
   grouped_list: ^4.2.0
-  webview_flutter: ^3.0.2
+  webview_flutter: ^2.0.13
   cached_network_image: ^3.2.0
   lottie: ^1.2.2
   visibility_detector: ^0.2.2
@@ -70,6 +70,8 @@ dependencies:
   device_info_plus: ^3.2.3
   webfeed: ^0.7.0
   flutter_html: ^3.0.0-alpha.3
+  flutter_unity_widget: ^2022.1.0+4
+  firebase_analytics: ^9.1.9
   solana: ^0.23.0+1
 
 dev_dependencies:

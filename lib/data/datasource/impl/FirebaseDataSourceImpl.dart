@@ -8,6 +8,7 @@ import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:satorio/domain/entities/fcm_type.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -18,6 +19,7 @@ import 'package:satorio/util/getx_extension.dart';
 class FirebaseDataSourceImpl implements FirebaseDataSource {
   FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
 
   final bool isProduction = false;
 
@@ -155,6 +157,11 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
     return (idsFromFirebase).map((item) => item as String).toList();
   }
 
+  @override
+  Future logEvent(String name, Map<String, Object?>? parameters) async {
+    return _firebaseAnalytics.logEvent(name: name, parameters: parameters);
+  }
+  
   @override
   Future<String> solanaClusterUrl() async {
     return _remoteConfig.getString(
