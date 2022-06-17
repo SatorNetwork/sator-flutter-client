@@ -148,7 +148,11 @@ abstract class ApiDataSource {
 
   Future<ShowDetailModel> showDetail(String showId);
 
+  Future<ShowModel> show(String showId);
+
   Future<List<ShowSeasonModel>> showSeasons(String showId);
+
+  Future<ShowSeasonModel> seasonById(String showId, String seasonId);
 
   Future<ShowEpisodeModel> showEpisode(String showId, String episodeId);
 

@@ -3,7 +3,17 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
+import 'package:satorio/binding/show_episodes_realm_binding.dart';
+import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
+import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
+import 'package:satorio/domain/entities/fcm_type.dart';
+import 'package:satorio/domain/entities/show_season.dart';
+import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
+import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class FirebaseDataSourceImpl implements FirebaseDataSource {
   FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -27,15 +37,60 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
       _firebaseMessaging.requestPermission();
     }
 
-    String? token = await fcmToken();
-    print("FirebaseMessaging token: $token");
-
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("onMessage: ${message.notification}");
+      Get.snackbarNotify(message, () => _fcmCallback(message));
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print("onMessageOpenedApp: ${message.notification}");
+      _fcmCallback(message);
+    });
+  }
+
+  void _fcmCallback(RemoteMessage message) {
+    switch (message.data["type"]) {
+      case FCMType.newShow:
+        print('_fcmCallback');
+        _fcmShow(message.data["show_id"]);
+        break;
+      case FCMType.newEpisode:
+        _fcmEpisode(message);
+        break;
+    }
+  }
+
+  void _fcmShow(String showId) {
+    print('_fcmShow');
+    final SatorioRepository _satorioRepository = Get.find();
+    _satorioRepository.show(showId).then((show) {
+      Get.to(
+        () => ShowDetailWithEpisodesPage(),
+        binding: ShowDetailWithEpisodesBinding(),
+        arguments: ShowDetailWithEpisodesArgument(show),
+      );
+    });
+  }
+
+  void _fcmEpisode(RemoteMessage message) {
+    final SatorioRepository _satorioRepository = Get.find();
+    final String showId = message.data["show_id"];
+    final String episodeId = message.data["episode_id"];
+    final String seasonId = message.data["season_id"];
+
+    _satorioRepository.showDetail(showId).then((showDetail) {
+      _satorioRepository.showEpisode(showId, episodeId).then(
+        (showEpisode) {
+          _satorioRepository
+              .seasonById(showId, seasonId)
+              .then((ShowSeason showSeason) {
+            Get.to(
+              () => ShowEpisodesRealmPage(),
+              binding: ShowEpisodesRealmBinding(),
+              arguments: ShowEpisodeRealmArgument(
+                  showDetail, showSeason, showEpisode, false),
+            );
+          });
+        },
+      );
     });
   }
 
