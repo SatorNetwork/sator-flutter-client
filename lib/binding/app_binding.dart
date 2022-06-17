@@ -37,6 +37,7 @@ class AppBinding extends Bindings {
     Get.put<LocalDataSource>(LocalDataSourceImpl(), permanent: true);
     Get.put<AuthDataSource>(AuthDataSourceImpl(), permanent: true);
     Get.put<FirebaseDataSource>(FirebaseDataSourceImpl(), permanent: true);
+    Get.put<DeviceInfoDataSource>(DeviceInfoDataSourceImpl(), permanent: true);
     Get.put<InAppPurchaseDataSource>(
       InAppPurchaseDataSourceImpl(),
       permanent: true,
@@ -59,6 +60,7 @@ class AppBinding extends Bindings {
     // Repository
     Get.put<SatorioRepository>(
       SatorioRepositoryImpl(
+        Get.find(),
         Get.find(),
         Get.find(),
         Get.find(),
