@@ -271,13 +271,14 @@ class WriteReviewPage extends GetView<WriteReviewController> {
                         () => InputTextField(
                           controller: controller.reviewController,
                           inputTitle: 'txt_review'.tr,
-                          hintText: 'txt_enter_review'.tr.format([
+                          inputTitleSuffix: 'txt_min_characters'.tr.format([
                             controller.minReviewLength,
                           ]),
+                          hintText: 'txt_enter_review'.tr,
                           errorText: controller.isShowReviewErrorRx.value
-                              ? 'txt_enter_review'.tr.format([
-                                  controller.minReviewLength,
-                                ])
+                              ? '${'txt_enter_review'.tr} ${'txt_min_characters'.tr.format([
+                                      controller.minReviewLength,
+                                    ])}'
                               : null,
                           keyboardType: TextInputType.multiline,
                           minLines: 4,
