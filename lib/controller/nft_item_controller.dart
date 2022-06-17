@@ -15,13 +15,14 @@ import 'package:satorio/controller/nft_categories_controller.dart';
 import 'package:satorio/controller/web_controller.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/checkout_bottom_sheet.dart';
 import 'package:satorio/ui/bottom_sheet_widget/success_nft_bought_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/links.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NftItemController extends GetxController
     with BackToMainMixin, ConnectivityMixin, NonWorkingFeatureMixin {
@@ -41,12 +42,19 @@ class NftItemController extends GetxController
   late final StreamSubscription _purchaseErrorSubscription;
   late final StreamSubscription _connectionSubscription;
 
+  late ValueListenable<Box<Wallet>> _walletsListenable;
+  ValueListenable<Box<WalletDetail>>? _walletDetailsListenable;
+  List<WalletDetail> walletDetails = [];
+  String solanaAddress = "";
+
   late final String marketplaceUrl;
 
   NftItemController() {
     NftItemArgument argument = Get.arguments as NftItemArgument;
 
     nftItemRx = Rx(argument.nftItem);
+    _walletsListenable =
+        _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
 
     _checkOwner();
     _refreshNftItem(argument.nftItem.mintAddress);
@@ -55,6 +63,7 @@ class NftItemController extends GetxController
   @override
   void onInit() async {
     super.onInit();
+    _walletsListener();
 
     if (!isAndroid) {
       _initializeInApp();
@@ -65,11 +74,6 @@ class NftItemController extends GetxController
 
   void back() {
     Get.back();
-  }
-
-  void toMarketplace(String id) async {
-    final Uri url = Uri.parse('$marketplaceUrl/nft-item?id=$id');
-    if (!await launchUrl(url)) throw 'Could not launch $url';
   }
 
   Future<void> _initializeInApp() async {
@@ -94,7 +98,6 @@ class NftItemController extends GetxController
 
       _connectionSubscription =
           FlutterInappPurchase.connectionUpdated.listen((connected) {
-        //TODO: remove after tests
         print('connected: $connected');
       });
 
@@ -237,8 +240,39 @@ class NftItemController extends GetxController
 //   }
 // }
 
+  void _walletsListener() {
+    Map<String, Wallet> wallets = {};
+    // Update wallets map
+    Map<String, Wallet> walletsNew = {};
+    _walletsListenable.value.values.forEach((wallet) {
+      walletsNew[wallet.id] = wallet;
+    });
+    wallets = walletsNew;
+
+    // Ids of wallets
+    List<String> ids = wallets.values.map((wallet) => wallet.id).toList();
+
+    _walletDetailsListenable = _satorioRepository.walletDetailsListenable(ids)
+        as ValueListenable<Box<WalletDetail>>;
+    _walletDetailsListener();
+  }
+
+  void _walletDetailsListener() {
+    walletDetails = _walletDetailsListenable!.value.values.toList();
+    walletDetails.sort((a, b) => a.order.compareTo(b.order));
+    _solanaAddress();
+  }
+
+  void _solanaAddress() {
+    walletDetails.forEach((element) {
+      print(element);
+      if (element.isSolana) {
+        solanaAddress = element.solanaAccountAddress;
+      }
+    });
+  }
+
   void buy() {
-    Profile? profile = _getProfile();
     Future.value(true)
         .then(
           (value) {
@@ -254,7 +288,7 @@ class NftItemController extends GetxController
             if (isSuccess) {
               Get.bottomSheet(
                 SuccessNftBoughtBottomSheet(
-                    nftItemRx.value.nftMetadata.name, profile!.id),
+                    nftItemRx.value.nftMetadata.name, solanaAddress),
               );
             }
             isBuyRequested.value = false;
@@ -284,6 +318,13 @@ class NftItemController extends GetxController
   Profile? _getProfile() {
     return (_satorioRepository.profileListenable()
             as ValueListenable<Box<Profile>>)
+        .value
+        .getAt(0);
+  }
+
+  Wallet? _getWallet() {
+    return (_satorioRepository.walletsListenable()
+            as ValueListenable<Box<Wallet>>)
         .value
         .getAt(0);
   }
