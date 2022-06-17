@@ -1,0 +1,101 @@
+<linker>
+  <assembly fullname="Unity.Addressables, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.AddressableAssets.Addressables" preserve="all" />
+  </assembly>
+  <assembly fullname="Unity.ResourceManager, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" preserve="all">
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.LegacyResourcesProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.AssetBundleProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.BundledAssetProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.InstanceProvider" preserve="all" />
+    <type fullname="UnityEngine.ResourceManagement.ResourceProviders.SceneProvider" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.GameObject" preserve="all" />
+    <type fullname="UnityEngine.Transform" preserve="all" />
+    <type fullname="UnityEngine.Material" preserve="all" />
+    <type fullname="UnityEngine.Texture2D" preserve="all" />
+    <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.RectTransform" preserve="all" />
+    <type fullname="UnityEngine.U2D.SpriteAtlas" preserve="all" />
+    <type fullname="UnityEngine.Shader" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.AnimationClip" preserve="all" />
+    <type fullname="UnityEngine.Animation" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.UI.Image" preserve="all" />
+    <type fullname="UnityEngine.UI.Button" preserve="all" />
+    <type fullname="UnityEngine.UI.AspectRatioFitter" preserve="all" />
+    <type fullname="UnityEngine.UI.Text" preserve="all" />
+    <type fullname="UnityEngine.UI.GraphicRaycaster" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventSystem" preserve="all" />
+    <type fullname="UnityEngine.UI.CanvasScaler" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.StandaloneInputModule" preserve="all" />
+    <type fullname="UnityEngine.UI.GridLayoutGroup" preserve="all" />
+    <type fullname="UnityEngine.UI.HorizontalLayoutGroup" preserve="all" />
+    <type fullname="UnityEngine.UI.RawImage" preserve="all" />
+    <type fullname="UnityEngine.UI.ContentSizeFitter" preserve="all" />
+    <type fullname="UnityEngine.UI.Mask" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventTrigger" preserve="all" />
+    <type fullname="UnityEngine.UI.ScrollRect" preserve="all" />
+  </assembly>
+  <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="Sator.Ui.MenuButtonsPanel" preserve="all" />
+    <type fullname="Sator.Ui.PackPopupItemUi" preserve="all" />
+    <type fullname="Sator.Ui.BlockerUi" preserve="all" />
+    <type fullname="Sator.RoadCross.Ui.RoadCrossViewersUi" preserve="all" />
+    <type fullname="Sator.Ui.MenuEnergyComponent" preserve="all" />
+    <type fullname="Sator.Ui.CraftUi" preserve="all" />
+    <type fullname="Sator.Ui.PackPopupItem" preserve="all" />
+    <type fullname="Sator.Ui.ChooseComplexityItemUi" preserve="all" />
+    <type fullname="Sator.Ui.InventoryUi" preserve="all" />
+    <type fullname="Sator.Ui.ConvertCurrencyUi" preserve="all" />
+    <type fullname="Sator.Ui.TutorialSwipeUi" preserve="all" />
+    <type fullname="Sator.Ui.CraftItemUi" preserve="all" />
+    <type fullname="Sator.Ui.UpdateBalanceUi" preserve="all" />
+    <type fullname="Sator.Ui.CraftAnimateUi" preserve="all" />
+    <type fullname="Sator.Ui.TutorialChoosePackUi" preserve="all" />
+    <type fullname="Sator.Ui.TutorialBuyPcUi" preserve="all" />
+    <type fullname="Sator.Ui.ChooseComplexityUi" preserve="all" />
+    <type fullname="Sator.Ui.PackPopupUi" preserve="all" />
+    <type fullname="Sator.Ui.InventoryItemUi" preserve="all" />
+    <type fullname="Sator.Ui.LoaderUiComponent" preserve="all" />
+    <type fullname="Sator.Utils.AnimatorCallbackHelper" preserve="all" />
+    <type fullname="Sator.RoadCross.Ui.RoadCrossTutorialUi" preserve="all" />
+    <type fullname="Sator.Ui.NumberKeyboardUiComponent" preserve="all" />
+    <type fullname="Sator.RoadCross.Ui.RoadCrossWelcomeUi" preserve="all" />
+    <type fullname="Sator.RoadCross.Ui.RoadCrossWinUi" preserve="all" />
+    <type fullname="Sator.Ui.UpdateVersionUi" preserve="all" />
+    <type fullname="Sator.Ui.CraftRecipesUi" preserve="all" />
+    <type fullname="Sator.Ui.ElectricityUi" preserve="all" />
+    <type fullname="Sator.Ui.CheckInternetConnectionUi" preserve="all" />
+    <type fullname="Sator.Ui.FadeUi" preserve="all" />
+    <type fullname="Sator.RoadCross.Ui.RoadCrossLoseUi" preserve="all" />
+    <type fullname="Sator.Ui.LoaderUi" preserve="all" />
+  </assembly>
+  <assembly fullname="E7.NotchSolution, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="E7.NotchSolution.SafePadding" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityUIExtensions, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.UI.Extensions.HorizontalScrollSnap" preserve="all" />
+  </assembly>
+  <assembly fullname="Coffee.UIParticle, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="Coffee.UIExtensions.UIParticle" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEditor.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEditor.MonoScript" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.Font" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.ParticleSystem" preserve="all" />
+    <type fullname="UnityEngine.ParticleSystemRenderer" preserve="all" />
+  </assembly>
+  <assembly fullname="UnityEngine.UIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UnityEngine.CanvasRenderer" preserve="all" />
+    <type fullname="UnityEngine.Canvas" preserve="all" />
+    <type fullname="UnityEngine.CanvasGroup" preserve="all" />
+  </assembly>
+</linker>

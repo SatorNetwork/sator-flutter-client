@@ -98,9 +98,10 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<bool> isOnBoarded() async {
-    dynamic tmp = _storage.read(_onBoarded);
-    final bool result = tmp != null && tmp is bool ? tmp : false;
-    return result;
+    // dynamic tmp = _storage.read(_onBoarded);
+    // final bool result = tmp != null && tmp is bool ? tmp : false;
+    // return result;
+    return true;
   }
 
   @override

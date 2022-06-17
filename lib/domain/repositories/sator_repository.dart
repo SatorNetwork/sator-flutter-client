@@ -148,7 +148,11 @@ abstract class SatorioRepository {
 
   Future<ShowDetail> showDetail(String showId);
 
+  Future<Show> show(String showId);
+
   Future<List<ShowSeason>> showSeasons(String showId);
+
+  Future<ShowSeason> seasonById(String showId, String seasonId);
 
   Future<ShowEpisode> showEpisode(String showId, String episodeId);
 
@@ -310,8 +314,6 @@ abstract class SatorioRepository {
   Future inAppProductsIds();
 
   Future<void> updateRssItems();
-
-  Future<bool> registerToken(String deviceId, String token);
 
   Future<String?> fcmToken();
 

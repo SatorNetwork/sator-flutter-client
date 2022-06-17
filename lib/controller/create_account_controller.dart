@@ -97,6 +97,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
                 _satorioRepository
                     .confirmReferralCode(deepLink!.queryParameters['code']!);
               }
+              _satorioRepository.fcmToken();
               _satorioRepository.updateProfile();
               Get.to(
                 () => EmailVerificationPage(),

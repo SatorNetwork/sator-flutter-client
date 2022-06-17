@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
+import 'package:satorio/data/datasource/device_info_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
@@ -60,6 +61,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final NatsDataSource _natsDataSource;
   final InAppPurchaseDataSource _inAppPurchaseDataSource;
   final FeedDataSource _feedDataSource;
+  final DeviceInfoDataSource _deviceInfoDataSource;
   final SolanaDataSource _solanaDataSource;
 
   final RxBool _init = false.obs;
@@ -72,6 +74,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
     this._natsDataSource,
     this._inAppPurchaseDataSource,
     this._feedDataSource,
+    this._deviceInfoDataSource,
     this._solanaDataSource,
   ) {
     _localDataSource
@@ -411,9 +414,23 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<Show> show(String showId) {
+    return _apiDataSource
+        .show(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<ShowSeason>> showSeasons(String showId) {
     return _apiDataSource
         .showSeasons(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<ShowSeason> seasonById(String showId, String seasonId) {
+    return _apiDataSource
+        .seasonById(showId, seasonId)
         .catchError((value) => _handleException(value));
   }
 
@@ -1003,17 +1020,12 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> registerToken(String deviceId, String token) {
-    return _apiDataSource
-        .registerToken(deviceId, token)
-        .catchError((value) => _handleException(value));
-  }
-
-  @override
   Future<String?> fcmToken() {
-    return _firebaseDataSource
-        .fcmToken()
-        .catchError((value) => _handleException(value));
+    return _firebaseDataSource.fcmToken().then((fcmToken) {
+      _deviceInfoDataSource.getDeviceId().then((deviceId) {
+        _apiDataSource.registerToken(deviceId, fcmToken!);
+      });
+    }).catchError((value) => _handleException(value));
   }
 
   @override

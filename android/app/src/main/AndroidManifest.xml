@@ -2,9 +2,20 @@
     package="com.satorio.app">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
    <application
         android:label="satorio"
         android:icon="@mipmap/ic_launcher">
+       <activity
+               android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity"
+               android:theme="@style/UnityThemeSelector"
+               android:screenOrientation="fullSensor"
+               android:launchMode="singleTask"
+               android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
+               android:hardwareAccelerated="false"
+               android:process=":Unity">
+           <meta-data android:name="com.xraph.plugin.flutter_unity_widget.OverrideUnityActivity" android:value="true" />
+       </activity>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

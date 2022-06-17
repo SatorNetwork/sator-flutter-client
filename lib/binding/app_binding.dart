@@ -3,10 +3,12 @@ import 'package:satorio/data/connectivity/connectivity_service.dart';
 import 'package:satorio/data/connectivity/internet_connectivity.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
+import 'package:satorio/data/datasource/device_info_data_source.dart';
 import 'package:satorio/data/datasource/feed_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/datasource/impl/ApiDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/AuthDataSourceImpl.dart';
+import 'package:satorio/data/datasource/impl/DeviceInfoDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/FirebaseDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/InAppPurchaseDataSourceImpl.dart';
 import 'package:satorio/data/datasource/impl/LocalDataSourceImpl.dart';
@@ -35,12 +37,13 @@ class AppBinding extends Bindings {
     Get.put<LocalDataSource>(LocalDataSourceImpl(), permanent: true);
     Get.put<AuthDataSource>(AuthDataSourceImpl(), permanent: true);
     Get.put<FirebaseDataSource>(FirebaseDataSourceImpl(), permanent: true);
+    Get.put<DeviceInfoDataSource>(DeviceInfoDataSourceImpl(), permanent: true);
     Get.put<InAppPurchaseDataSource>(
       InAppPurchaseDataSourceImpl(),
       permanent: true,
     );
     Get.put<ApiDataSource>(
-      ApiDataSourceImpl(Get.find(), Get.find(), Get.find()),
+      ApiDataSourceImpl(Get.find(), Get.find(), Get.find(), Get.find()),
       permanent: true,
     );
     Get.put<NftsDataSource>(NftsDataSourceImpl(Get.find()), permanent: true);
@@ -57,6 +60,7 @@ class AppBinding extends Bindings {
     // Repository
     Get.put<SatorioRepository>(
       SatorioRepositoryImpl(
+        Get.find(),
         Get.find(),
         Get.find(),
         Get.find(),
