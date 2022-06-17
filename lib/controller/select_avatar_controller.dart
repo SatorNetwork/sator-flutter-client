@@ -163,7 +163,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
   void _solanaAddress() {
     walletDetailsRx.value.forEach((element) {
       solanaAddressRx.update((val) {
-        if (element.solanaAccountAddress.isNotEmpty) {
+        if (element.isSolana) {
           solanaAddressRx.value = element.solanaAccountAddress;
           _loadNfts();
         }

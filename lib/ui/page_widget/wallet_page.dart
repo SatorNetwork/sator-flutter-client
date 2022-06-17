@@ -11,6 +11,7 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
+import 'package:satorio/ui/widget/bordered_button.dart';
 import 'package:satorio/ui/widget/wallet_detail_container.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -204,9 +205,33 @@ class WalletPage extends GetView<WalletController> {
                               .walletDetailsRx
                               .value[controller.pageRx.value]
                               .id]![index];
-                      return _transactionItem(transaction);
+                      bool isSolana = controller.walletDetailsRx
+                          .value[controller.pageRx.value].isSolana;
+                      return _transactionItem(transaction, isSolana);
                     },
                   ),
+                ),
+                Obx(
+                  () => controller.walletDetailsRx
+                          .value[controller.pageRx.value].isSolana
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                            top: 12,
+                            bottom: 12,
+                            left: 20,
+                            right: 20,
+                          ),
+                          child: BorderedButton(
+                            text: 'txt_more'.tr,
+                            onPressed: () {
+                              controller.toAccountExternally(controller
+                                  .walletDetailsRx
+                                  .value[controller.pageRx.value]
+                                  .solanaAccountAddress);
+                            },
+                          ),
+                        )
+                      : SizedBox(),
                 ),
               ],
             ),
@@ -275,69 +300,76 @@ class WalletPage extends GetView<WalletController> {
     );
   }
 
-  Widget _transactionItem(Transaction transaction) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      height: 63,
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(
-                'txt_transaction'.tr,
-                style: TextStyle(
-                  color: SatorioColor.textBlack,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  transaction.amount >= 0
-                      ? '+${transaction.amount}'
-                      : '${transaction.amount}',
-                  textAlign: TextAlign.end,
+  Widget _transactionItem(Transaction transaction, bool isSolana) {
+    return InkWell(
+      onTap: () {
+        if (isSolana) {
+          controller.toTransactionExternally(transaction.txHash);
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+        height: 63,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  'txt_transaction'.tr,
                   style: TextStyle(
-                    color: transaction.amount >= 0
-                        ? SatorioColor.success
-                        : SatorioColor.error,
+                    color: SatorioColor.textBlack,
                     fontSize: 14.0,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          Row(
-            children: [
-              Text(
-                transaction.txHash.ellipsize(),
-                style: TextStyle(
-                  color: Colors.black.withOpacity(0.5),
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w400,
+                Expanded(
+                  child: Text(
+                    transaction.amount >= 0
+                        ? '+${transaction.amount}'
+                        : '${transaction.amount}',
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: transaction.amount >= 0
+                          ? SatorioColor.success
+                          : SatorioColor.error,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  transaction.createdAt == null
-                      ? ''
-                      : DateFormat('MMM dd, yyyy')
-                          .format(transaction.createdAt!),
-                  textAlign: TextAlign.end,
+              ],
+            ),
+            SizedBox(
+              height: 4,
+            ),
+            Row(
+              children: [
+                Text(
+                  transaction.txHash.ellipsize(),
                   style: TextStyle(
                     color: Colors.black.withOpacity(0.5),
                     fontSize: 12.0,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Expanded(
+                  child: Text(
+                    transaction.createdAt == null
+                        ? ''
+                        : DateFormat('MMM dd, yyyy')
+                            .format(transaction.createdAt!),
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.5),
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

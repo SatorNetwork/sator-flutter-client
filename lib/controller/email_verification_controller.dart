@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
+import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 
 class EmailVerificationController extends GetxController with ValidationMixin {
@@ -21,6 +23,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
   late final String email;
   late final bool isUpdate;
+  late final bool showAnotherAccountLogin;
   late final Uri? deepLink;
 
   @override
@@ -45,10 +48,15 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 
     email = argument.email;
     isUpdate = argument.isUpdate;
+    showAnotherAccountLogin = argument.showAnotherAccountLogin;
     deepLink = argument.deepLink;
   }
 
-  void verifyAccount() {
+  void verify() {
+    isUpdate ? _verifyUpdateEmail() : _verifyAccount();
+  }
+
+  void _verifyAccount() {
     _satorioRepository.verifyAccount(codeController.text).then(
       (isSuccess) {
         if (isSuccess) {
@@ -70,7 +78,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
     });
   }
 
-  void verifyUpdateEmail() {
+  void _verifyUpdateEmail() {
     _satorioRepository.verifyUpdateEmail(email, codeController.text).then(
       (isSuccess) {
         if (isSuccess) {
@@ -103,6 +111,16 @@ class EmailVerificationController extends GetxController with ValidationMixin {
     );
   }
 
+  void loginViaAnotherAccount() {
+    _satorioRepository.logout().then((value) {
+      Get.offAll(
+        () => LoginPage(),
+        binding: LoginBinding(),
+        arguments: LoginArgument(deepLink),
+      );
+    });
+  }
+
   void _startTimer() {
     _delayTimer?.cancel();
     _delayTimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -115,7 +133,13 @@ class EmailVerificationController extends GetxController with ValidationMixin {
 class EmailVerificationArgument {
   final String email;
   final bool isUpdate;
+  final bool showAnotherAccountLogin;
   final Uri? deepLink;
 
-  const EmailVerificationArgument(this.email, this.isUpdate, this.deepLink);
+  const EmailVerificationArgument(
+    this.email, {
+    this.showAnotherAccountLogin = false,
+    this.isUpdate = false,
+    this.deepLink,
+  });
 }

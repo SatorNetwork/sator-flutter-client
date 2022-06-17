@@ -261,17 +261,20 @@ class NftItemPage extends GetView<NftItemController> {
           SizedBox(
             height: 8 * coefficient,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Obx(
-              () => Text(
-                controller.nftItemRx.value.nftMetadata.description,
-                maxLines: 5,
-                overflow: TextOverflow.ellipsis,
-                style: textTheme.bodyText2!.copyWith(
-                  color: SatorioColor.charcoal,
-                  fontSize: 17 * coefficient,
-                  fontWeight: FontWeight.w400,
+          Container(
+            constraints: BoxConstraints(maxHeight: 104 * coefficient),
+            child: SingleChildScrollView(
+              child: Obx(
+                () => Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    controller.nftItemRx.value.nftMetadata.description,
+                    style: textTheme.bodyText2!.copyWith(
+                      color: SatorioColor.charcoal,
+                      fontSize: 17 * coefficient,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
                 ),
               ),
             ),

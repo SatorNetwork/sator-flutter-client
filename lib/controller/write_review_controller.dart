@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,8 @@ class WriteReviewController extends GetxController {
   static const int minValue = 1;
   static const int maxValue = 10;
   static const int initValue = 7;
+
+  final int minReviewLength = 100;
 
   final SatorioRepository _satorioRepository = Get.find();
 
@@ -31,6 +32,7 @@ class WriteReviewController extends GetxController {
   final RxInt rateRx = initValue.obs;
   final RxString titleRx = ''.obs;
   final RxString reviewRx = ''.obs;
+  final RxBool isShowReviewErrorRx = false.obs;
 
   final RxBool isRequested = false.obs;
 
@@ -119,7 +121,10 @@ class WriteReviewController extends GetxController {
   }
 
   void _reviewListener() {
-    reviewRx.value = reviewController.text.trim();
+    final String review = reviewController.text.trim();
+    reviewRx.value = review;
+    isShowReviewErrorRx.value =
+        0 < review.length && review.length < minReviewLength;
   }
 }
 

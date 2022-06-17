@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/active_realms_controller.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
@@ -10,7 +8,6 @@ import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
 class ActiveRealmsPage extends GetView<ActiveRealmsController> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,16 +40,11 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
       ),
       body: Stack(
         children: [
+          backgroundImage('images/bg/gradient.svg'),
           Container(
-            color: SatorioColor.darkAccent,
-            child: Column(
-              children: [
-                backgroundImage('images/bg/gradient.svg'),
-              ],
+            margin: EdgeInsets.only(
+              top: kToolbarHeight + Get.mediaQuery.padding.top,
             ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 100),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(32),
@@ -61,8 +53,7 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
               color: Colors.white,
             ),
             child: ClipRRect(
-                borderRadius:
-                BorderRadius.vertical(top: Radius.circular(32)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
                 child: Stack(children: [
                   NotificationListener<ScrollNotification>(
                     onNotification: (notification) {
@@ -100,14 +91,14 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
 
   Widget _activeRealms() {
     return Obx(
-    () => ListView.separated(
+      () => ListView.separated(
           scrollDirection: Axis.vertical,
           padding: EdgeInsets.symmetric(horizontal: 16, vertical: 40),
           itemCount: controller.activatedRealmsRx.value.length,
           shrinkWrap: true,
           separatorBuilder: (context, index) => SizedBox(
-            height: 16,
-          ),
+                height: 16,
+              ),
           itemBuilder: (context, index) {
             return _realmItem(controller.activatedRealmsRx.value[index]!);
           }),
@@ -134,7 +125,7 @@ class ActiveRealmsPage extends GetView<ActiveRealmsController> {
         ),
         child: ClipRRect(
           borderRadius:
-          BorderRadius.all(Radius.circular(16 * coefficient - borderWidth)),
+              BorderRadius.all(Radius.circular(16 * coefficient - borderWidth)),
           child: Stack(
             fit: StackFit.passthrough,
             children: [

@@ -3,10 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenges_binding.dart';
+import 'package:satorio/binding/wallet_in_app_purchase_binding.dart';
 import 'package:satorio/binding/wallet_receive_binding.dart';
 import 'package:satorio/binding/wallet_send_binding.dart';
 import 'package:satorio/binding/wallet_stake_binding.dart';
-import 'package:satorio/binding/wallet_in_app_purchase_binding.dart';
 import 'package:satorio/controller/wallet_receive_controller.dart';
 import 'package:satorio/controller/wallet_send_controller.dart';
 import 'package:satorio/controller/wallet_stake_controller.dart';
@@ -17,10 +17,13 @@ import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/challenges_page.dart';
+import 'package:satorio/ui/page_widget/wallet_in_app_purchase_page.dart';
 import 'package:satorio/ui/page_widget/wallet_receive_page.dart';
 import 'package:satorio/ui/page_widget/wallet_send_page.dart';
 import 'package:satorio/ui/page_widget/wallet_stake_page.dart';
-import 'package:satorio/ui/page_widget/wallet_in_app_purchase_page.dart';
+import 'package:satorio/util/extension.dart';
+import 'package:satorio/util/links.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WalletController extends GetxController {
   static const _initPage = 0;
@@ -162,14 +165,13 @@ class WalletController extends GetxController {
           ? null
           : trxDateTimes.reduce((a, b) => a.isAfter(b) ? a : b);
 
-      _satorioRepository.updateWalletTransactions(wallet.transactionsUrl,
-          from: fromDateTime);
+      _satorioRepository.updateWalletTransactions(wallet, from: fromDateTime);
     }
   }
 
   void toTopUp() {
     Get.to(
-          () => WalletInAppPurchasePage(),
+      () => WalletInAppPurchasePage(),
       binding: WalletInAppPurchaseBinding(),
     );
   }
@@ -192,7 +194,7 @@ class WalletController extends GetxController {
 
   void toChallenges() {
     Get.to(
-          () => ChallengesPage(),
+      () => ChallengesPage(),
       binding: ChallengesBinding(),
     );
   }
@@ -250,6 +252,13 @@ class WalletController extends GetxController {
 
     String walletId = walletDetailsRx.value[pageRx.value].id;
     Wallet? wallet = wallets[walletId];
+
+    // solana jrpc hasn't pagination
+    if (walletDetailsRx.value[pageRx.value].isSolana) {
+      _isMoreLoading.value = false;
+      return;
+    }
+
     if (wallet != null && wallet.transactionsUrl.isNotEmpty) {
       List<DateTime> trxDateTimes = _transactionListenable.value.values
           .where((element) =>
@@ -262,11 +271,28 @@ class WalletController extends GetxController {
           : trxDateTimes.reduce((a, b) => a.isBefore(b) ? a : b);
 
       _satorioRepository
-          .updateWalletTransactions(wallet.transactionsUrl, to: toDateTime)
+          .updateWalletTransactions(wallet, to: toDateTime)
           .then((value) => _isMoreLoading.value = false)
           .catchError((value) {
         _isMoreLoading.value = false;
       });
     }
+  }
+
+  void toTransactionExternally(String trxHash) async {
+    final String clusterName = await _satorioRepository.solanaClusterName();
+    final String urlString = linkSolanaTrx.format([trxHash, clusterName]);
+
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) throw 'Could not launch $url';
+  }
+
+  void toAccountExternally(String solanaAccountAddress) async {
+    final String clusterName = await _satorioRepository.solanaClusterName();
+    final String urlString =
+        linkSolanaAccount.format([solanaAccountAddress, clusterName]);
+
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) throw 'Could not launch $url';
   }
 }
