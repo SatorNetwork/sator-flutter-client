@@ -329,4 +329,6 @@ const Map<String, String> en = {
   'txt_to_settings': 'To Settings',
   'txt_sator_blog': 'Blog',
   'txt_read_more': 'Read More',
+  'txt_to_show': 'To show',
+  'txt_to_episode': 'To episode',
 };

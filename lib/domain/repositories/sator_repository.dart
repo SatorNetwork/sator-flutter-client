@@ -315,7 +315,5 @@ abstract class SatorioRepository {
 
   Future<void> updateRssItems();
 
-  Future<bool> registerToken(String deviceId, String token);
-
   Future<String?> fcmToken();
 }

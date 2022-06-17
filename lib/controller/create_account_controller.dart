@@ -1,4 +1,3 @@
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -13,7 +12,6 @@ import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/email_verification_page.dart';
 import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/web_page.dart';
-import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/util/extension.dart';
 import 'package:satorio/util/links.dart';
 
@@ -100,7 +98,7 @@ class CreateAccountController extends GetxController with ValidationMixin {
                 _satorioRepository
                     .confirmReferralCode(deepLink!.queryParameters['code']!);
               }
-              _registerToken();
+              _satorioRepository.fcmToken();
               _satorioRepository.updateProfile();
               Get.to(
                 () => EmailVerificationPage(),
@@ -127,33 +125,6 @@ class CreateAccountController extends GetxController with ValidationMixin {
             handleValidationException(value);
           },
         );
-  }
-
-  Future<void> _registerToken() async {
-    //TODO: refactor
-    var deviceInfo = DeviceInfoPlugin();
-
-    var _deviceOsInfo;
-
-    String _deviceId;
-
-    if (!isAndroid) {
-      _deviceOsInfo = await deviceInfo.iosInfo;
-      _deviceId = _deviceOsInfo.identifierForVendor;
-      _getFcmToken(_deviceId);
-    } else if(isAndroid) {
-      _deviceOsInfo = await deviceInfo.androidInfo;
-      _deviceId = _deviceOsInfo.androidId;
-      _getFcmToken(_deviceId);
-    }
-  }
-
-  void _getFcmToken(String deviceId) async {
-    _satorioRepository.fcmToken().then((token) {
-      _satorioRepository.registerToken(deviceId, token!).then((value) {
-        //TODO: handle it
-      });
-    });
   }
 
   void _emailListener() {

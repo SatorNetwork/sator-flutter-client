@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -14,7 +13,7 @@ import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
-import 'package:satorio/ui/theme/sator_color.dart';
+import 'package:satorio/util/getx_extension.dart';
 
 class FirebaseDataSourceImpl implements FirebaseDataSource {
   FirebaseRemoteConfig _remoteConfig = FirebaseRemoteConfig.instance;
@@ -39,7 +38,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
     }
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      _fcmSnackbar(message);
+      Get.snackbarNotify(message, () => _fcmCallback(message));
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -50,6 +49,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   void _fcmCallback(RemoteMessage message) {
     switch (message.data["type"]) {
       case FCMType.newShow:
+        print('_fcmCallback');
         _fcmShow(message.data["show_id"]);
         break;
       case FCMType.newEpisode:
@@ -59,6 +59,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   }
 
   void _fcmShow(String showId) {
+    print('_fcmShow');
     final SatorioRepository _satorioRepository = Get.find();
     _satorioRepository.show(showId).then((show) {
       Get.to(
@@ -73,7 +74,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
     final SatorioRepository _satorioRepository = Get.find();
     final String showId = message.data["show_id"];
     final String episodeId = message.data["episode_id"];
-    final String seasonId = message.data["seasonID"];
+    final String seasonId = message.data["season_id"];
 
     _satorioRepository.showDetail(showId).then((showDetail) {
       _satorioRepository.showEpisode(showId, episodeId).then(
@@ -91,32 +92,6 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
         },
       );
     });
-  }
-
-  Color _fcmSnackbarColor(String type) {
-    switch (type) {
-      case FCMType.newShow:
-        return SatorioColor.alice_blue2;
-      default:
-        return SatorioColor.brand;
-    }
-  }
-
-  void _fcmSnackbar(RemoteMessage remoteMessage) {
-    final String? rmType = remoteMessage.data["type"];
-    Get.snackbar(
-      "${remoteMessage.notification!.title}",
-      "${remoteMessage.notification!.body}",
-      onTap: (value) {
-        if (rmType == null) return;
-        _fcmCallback(remoteMessage);
-      },
-      backgroundColor: rmType != null
-          ? _fcmSnackbarColor(rmType).withOpacity(0.8)
-          : SatorioColor.alice_blue2.withOpacity(0.8),
-      colorText: SatorioColor.darkAccent,
-      duration: Duration(seconds: 4),
-    );
   }
 
   @override

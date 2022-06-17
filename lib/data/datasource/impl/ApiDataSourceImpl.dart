@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/connect.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
 import 'package:satorio/data/datasource/auth_data_source.dart';
+import 'package:satorio/data/datasource/device_info_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
@@ -71,10 +72,11 @@ class ApiDataSourceImpl implements ApiDataSource {
   late final GetConnect _getConnect;
   final AuthDataSource _authDataSource;
   final FirebaseDataSource _firebaseDataSource;
+  final DeviceInfoDataSource _deviceInfoDataSource;
   final EncryptManager _encryptManager;
 
-  ApiDataSourceImpl(
-      this._authDataSource, this._firebaseDataSource, this._encryptManager);
+  ApiDataSourceImpl(this._authDataSource, this._firebaseDataSource,
+      this._deviceInfoDataSource, this._encryptManager);
 
   @override
   Future<void> init() async {
@@ -88,11 +90,10 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect.timeout = Duration(seconds: 30);
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-      String? fcmToken = await _firebaseDataSource.fcmToken();
 
-      String? deviceId = fcmToken?.split(':')[0];
+      String? deviceId = await _deviceInfoDataSource.getDeviceId();
 
-      if (deviceId != null && deviceId.isNotEmpty)
+      if (deviceId.isNotEmpty)
         request.headers['Device-ID'] = deviceId;
 
       String? token = await _authDataSource.getAuthToken();
