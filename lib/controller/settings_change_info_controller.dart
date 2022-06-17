@@ -77,7 +77,10 @@ class SettingsChangeInfoController extends GetxController with ValidationMixin {
           Get.off(
             () => EmailVerificationPage(),
             binding: EmailVerificationBinding(),
-            arguments: EmailVerificationArgument(emailRx.value, true, null),
+            arguments: EmailVerificationArgument(
+              emailRx.value,
+              isUpdate: true,
+            ),
           );
           emailController.clear();
         }

@@ -26,4 +26,10 @@ abstract class FirebaseDataSource {
   Future inAppProductsIds();
 
   Future logEvent(String name, Map<String, Object?>? parameters);
+  
+  Future<String> solanaToken();
+
+  Future<String> solanaClusterUrl();
+
+  Future<String> solanaClusterName();
 }

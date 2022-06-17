@@ -74,6 +74,7 @@ const Map<String, String> en = {
   'txt_congrats_msg': 'You have successfully claimed your rewards.',
   'txt_verification_text':
       'Please enter the verification code we’ve sent to %s or use the link from your inbox',
+  'txt_another_account_login': 'Log in with another account',
   'txt_resend_code': 'Resend code',
   'txt_send': 'Send',
   'txt_receive': 'Receive',
@@ -218,6 +219,7 @@ const Map<String, String> en = {
   'txt_title': 'Title',
   'txt_enter_title': 'Enter title',
   'txt_enter_review': 'Enter review',
+  'txt_min_characters': '(min %d characters)',
   'txt_review_write_success': 'Review was sent',
   'txt_submit': 'Submit',
   'txt_looks_bad': 'So-so - Need to edit',
@@ -330,4 +332,7 @@ const Map<String, String> en = {
   'txt_to_settings': 'To Settings',
   'txt_sator_blog': 'Blog',
   'txt_read_more': 'Read More',
+  'txt_more': 'More',
+  'txt_to_show': 'To show',
+  'txt_to_episode': 'To episode',
 };

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/data/datasource/api_data_source.dart';
+import 'package:satorio/data/datasource/device_info_data_source.dart';
 import 'package:satorio/data/datasource/exception/api_error_exception.dart';
 import 'package:satorio/data/datasource/exception/api_kyc_exception.dart';
 import 'package:satorio/data/datasource/exception/api_unauthorized_exception.dart';
@@ -18,6 +19,7 @@ import 'package:satorio/data/datasource/in_app_purchase_data_source.dart';
 import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/datasource/nats_data_source.dart';
 import 'package:satorio/data/datasource/nfts_data_source.dart';
+import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -59,6 +61,8 @@ class SatorioRepositoryImpl implements SatorioRepository {
   final NatsDataSource _natsDataSource;
   final InAppPurchaseDataSource _inAppPurchaseDataSource;
   final FeedDataSource _feedDataSource;
+  final DeviceInfoDataSource _deviceInfoDataSource;
+  final SolanaDataSource _solanaDataSource;
 
   final RxBool _init = false.obs;
 
@@ -70,12 +74,15 @@ class SatorioRepositoryImpl implements SatorioRepository {
     this._natsDataSource,
     this._inAppPurchaseDataSource,
     this._feedDataSource,
+    this._deviceInfoDataSource,
+    this._solanaDataSource,
   ) {
     _localDataSource
         .init()
         .then((value) => _apiDataSource.init())
         .then((value) => _nftsDataSource.init())
         .then((value) => _inAppPurchaseDataSource.init())
+        .then((value) => _solanaDataSource.init())
         .then((value) => _init.value = true);
   }
 
@@ -407,9 +414,23 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<Show> show(String showId) {
+    return _apiDataSource
+        .show(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<ShowSeason>> showSeasons(String showId) {
     return _apiDataSource
         .showSeasons(showId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<ShowSeason> seasonById(String showId, String seasonId) {
+    return _apiDataSource
+        .seasonById(showId, seasonId)
         .catchError((value) => _handleException(value));
   }
 
@@ -643,27 +664,60 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> updateWalletDetail(String detailPath) {
-    return _apiDataSource
-        .walletDetail(detailPath)
-        .then(
-          (WalletDetail walletDetail) =>
-              _localDataSource.saveWalletDetail(walletDetail),
-        )
-        .catchError((value) => _handleException(value));
+    return _apiDataSource.walletDetail(detailPath).then(
+      (WalletDetail walletDetail) {
+        final AmountCurrency? amountCurrency = walletDetail.balance
+            .firstWhereOrNull(
+                (element) => element.currency.toUpperCase() == 'SAO');
+
+        if (walletDetail.isSolana && amountCurrency != null) {
+          return _solanaDataSource
+              .balanceSAO(walletDetail.solanaAccountAddress)
+              .then(
+            (amount) {
+              if (amount != null) {
+                amountCurrency.amount = amount;
+              }
+              return _localDataSource.saveWalletDetail(walletDetail);
+            },
+          );
+        } else {
+          return _localDataSource.saveWalletDetail(walletDetail);
+        }
+      },
+    ).catchError((value) => _handleException(value));
   }
 
   @override
   Future<void> updateWalletTransactions(
-    String transactionsPath, {
+    Wallet wallet, {
     DateTime? from,
     DateTime? to,
   }) {
     return _apiDataSource
-        .walletTransactions(transactionsPath, from: from, to: to)
-        .then(
-          (List<Transaction> transactions) =>
-              _localDataSource.saveTransactions(transactions),
-        );
+        .walletDetail(wallet.detailsUrl)
+        .then((WalletDetail walletDetail) {
+      if (walletDetail.isSolana) {
+        return _solanaDataSource
+            .transactionsATA(
+          walletDetail.id,
+          walletDetail.solanaAccountAddress,
+        )
+            .then((List<Transaction> transactions) {
+          return transactions.isNotEmpty
+              ? _localDataSource.cleanTransactions(walletDetail.id).then(
+                  (value) => _localDataSource.saveTransactions(transactions))
+              : Future.value();
+        });
+      } else {
+        return _apiDataSource
+            .walletTransactions(wallet.transactionsUrl, from: from, to: to)
+            .then(
+              (List<Transaction> transactions) =>
+                  _localDataSource.saveTransactions(transactions),
+            );
+      }
+    });
   }
 
   @override
@@ -966,16 +1020,16 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> registerToken(String deviceId, String token) {
-    return _apiDataSource
-        .registerToken(deviceId, token)
-        .catchError((value) => _handleException(value));
+  Future<String?> fcmToken() {
+    return _firebaseDataSource.fcmToken().then((fcmToken) {
+      _deviceInfoDataSource.getDeviceId().then((deviceId) {
+        _apiDataSource.registerToken(deviceId, fcmToken!);
+      });
+    }).catchError((value) => _handleException(value));
   }
 
   @override
-  Future<String?> fcmToken() {
-    return _firebaseDataSource
-        .fcmToken()
-        .catchError((value) => _handleException(value));
+  Future<String> solanaClusterName() {
+    return _firebaseDataSource.solanaClusterName();
   }
 }

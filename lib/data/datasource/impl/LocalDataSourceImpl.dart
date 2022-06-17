@@ -179,6 +179,17 @@ class LocalDataSourceImpl implements LocalDataSource {
   }
 
   @override
+  Future<void> cleanTransactions(String walletId) async {
+    Box<Transaction> transactionBox = Hive.box<Transaction>(_transactionBox);
+
+    final Iterable<String> trxIds = transactionBox.values
+        .where((trx) => trx.walletId == walletId)
+        .map((e) => e.id);
+
+    transactionBox.deleteAll(trxIds);
+  }
+
+  @override
   Future<void> saveTransactions(List<Transaction> transactions) async {
     final Map<String, Transaction> transactionMap = {};
     transactions.forEach((transaction) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 
@@ -8,6 +8,7 @@ class InputTextField extends StatelessWidget {
   const InputTextField(
       {this.controller,
       this.inputTitle = '',
+      this.inputTitleSuffix = '',
       this.keyboardType = TextInputType.text,
       this.minLines = 1,
       this.maxLines = 1,
@@ -22,6 +23,7 @@ class InputTextField extends StatelessWidget {
 
   final TextEditingController? controller;
   final String inputTitle;
+  final String inputTitleSuffix;
   final TextInputType keyboardType;
   final int? minLines;
   final int? maxLines;
@@ -40,11 +42,25 @@ class InputTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(
-          inputTitle,
-          style: textTheme.bodyText2!.copyWith(
-            fontWeight: FontWeight.w600,
-            color: SatorioColor.textBlack,
+        RichText(
+          text: TextSpan(
+            text: inputTitle,
+            style: textTheme.bodyText2!.copyWith(
+              color: SatorioColor.textBlack,
+              fontSize: 15 * coefficient,
+              fontWeight: FontWeight.w600,
+            ),
+            children: <TextSpan>[
+              if (inputTitleSuffix.isNotEmpty)
+                TextSpan(
+                  text: ' $inputTitleSuffix',
+                  style: textTheme.bodyText1!.copyWith(
+                    color: SatorioColor.textBlack,
+                    fontSize: 15 * coefficient,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+            ],
           ),
         ),
         SizedBox(

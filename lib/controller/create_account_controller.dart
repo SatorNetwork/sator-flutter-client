@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/binding/login_binding.dart';
@@ -98,14 +97,14 @@ class CreateAccountController extends GetxController with ValidationMixin {
                 _satorioRepository
                     .confirmReferralCode(deepLink!.queryParameters['code']!);
               }
+              _satorioRepository.fcmToken();
               _satorioRepository.updateProfile();
               Get.to(
                 () => EmailVerificationPage(),
                 binding: EmailVerificationBinding(),
                 arguments: EmailVerificationArgument(
                   emailRx.value,
-                  false,
-                  deepLink,
+                  deepLink: deepLink,
                 ),
               );
               ScaffoldMessenger.of(Get.context!).showSnackBar(

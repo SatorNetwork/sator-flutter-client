@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/settings_change_info_controller.dart';
 import 'package:satorio/domain/entities/change_info_type.dart';
@@ -50,7 +48,9 @@ class SettingsChangeInfoPage extends GetView<SettingsChangeInfoController> {
         ],
       ),
       body: Container(
-        margin: const EdgeInsets.only(top: 100),
+        margin: EdgeInsets.only(
+          top: kToolbarHeight + Get.mediaQuery.padding.top,
+        ),
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 24),
             child: _changeInfoContent()),
@@ -170,7 +170,7 @@ class SettingsChangeInfoPage extends GetView<SettingsChangeInfoController> {
           height: 16,
         ),
         Obx(
-              () => InputTextField(
+          () => InputTextField(
             inputTitle: 'txt_new_password'.tr,
             controller: controller.newPasswordController,
             hintText: 'txt_password_hint'.tr,
@@ -194,7 +194,8 @@ class SettingsChangeInfoPage extends GetView<SettingsChangeInfoController> {
         Obx(
           () => ElevatedGradientButton(
             text: 'txt_change_password'.tr,
-            isEnabled: controller.oldPasswordRx.value.isNotEmpty && controller.newPasswordRx.value.isNotEmpty,
+            isEnabled: controller.oldPasswordRx.value.isNotEmpty &&
+                controller.newPasswordRx.value.isNotEmpty,
             isInProgress: controller.isRequested.value,
             onPressed: () {
               controller.changePassword();
