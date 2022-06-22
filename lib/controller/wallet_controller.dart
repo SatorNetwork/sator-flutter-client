@@ -13,6 +13,7 @@ import 'package:satorio/controller/wallet_stake_controller.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
+import 'package:satorio/domain/entities/wallet_action.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/bottom_sheet_widget/claim_rewards_bottom_sheet.dart';
@@ -125,10 +126,22 @@ class WalletController extends GetxController {
     _transactionsListener();
   }
 
-  void _walletDetailsListener() {
+  void _walletDetailsListener() async {
     List<WalletDetail> walletDetails =
         _walletDetailsListenable!.value.values.toList();
     walletDetails.sort((a, b) => a.order.compareTo(b.order));
+
+    if (GetPlatform.isIOS) {
+      final bool isTokenLockEnabled =
+          await _satorioRepository.isTokenLockEnabled();
+      if (isTokenLockEnabled) {
+        walletDetails.forEach((element) {
+          element.actions
+              .removeWhere((action) => action.type == Type.stake_tokens);
+        });
+      }
+    }
+
     walletDetailsRx.value = walletDetails;
   }
 

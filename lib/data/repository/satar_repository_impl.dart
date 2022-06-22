@@ -1032,4 +1032,19 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<String> solanaClusterName() {
     return _firebaseDataSource.solanaClusterName();
   }
+
+  @override
+  Future<bool> isTokenLockEnabled() {
+    return _firebaseDataSource.isTokenLockEnabled();
+  }
+
+  @override
+  Future<bool> isPaidUnlockEnabled() {
+    return _firebaseDataSource.isPaidUnlockEnabled();
+  }
+
+  @override
+  Future<bool> isTipsEnabled() {
+    return _firebaseDataSource.isTipsEnabled();
+  }
 }

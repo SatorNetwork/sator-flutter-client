@@ -318,4 +318,10 @@ abstract class SatorioRepository {
   Future<String?> fcmToken();
 
   Future<String> solanaClusterName();
+
+  Future<bool> isTokenLockEnabled();
+
+  Future<bool> isPaidUnlockEnabled();
+
+  Future<bool> isTipsEnabled();
 }

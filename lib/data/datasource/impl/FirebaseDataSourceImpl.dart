@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:get/get.dart';
@@ -8,7 +9,6 @@ import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:satorio/domain/entities/fcm_type.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
@@ -21,7 +21,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FirebaseAnalytics _firebaseAnalytics = FirebaseAnalytics.instance;
 
-  final bool isProduction = true;
+  final bool isProduction = false;
 
   @override
   Future<void> initRemoteConfig() async {
@@ -161,7 +161,7 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   Future logEvent(String name, Map<String, Object?>? parameters) async {
     return _firebaseAnalytics.logEvent(name: name, parameters: parameters);
   }
-  
+
   @override
   Future<String> solanaClusterUrl() async {
     return _remoteConfig.getString(
@@ -178,5 +178,23 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   Future<String> solanaToken() async {
     return _remoteConfig
         .getString(isProduction ? 'sao_token_prod' : 'sao_token_dev');
+  }
+
+  @override
+  Future<bool> isTokenLockEnabled() async {
+    return _remoteConfig.getBool(
+        isProduction ? 'enable_token_lock_prod' : 'enable_token_lock_dev');
+  }
+
+  @override
+  Future<bool> isPaidUnlockEnabled() async {
+    return _remoteConfig.getBool(
+        isProduction ? 'enable_paid_unlock_prod' : 'enable_paid_unlock_dev');
+  }
+
+  @override
+  Future<bool> isTipsEnabled() async {
+    return _remoteConfig
+        .getBool(isProduction ? 'enable_tips_prod' : 'enable_tips_dev');
   }
 }
