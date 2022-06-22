@@ -134,7 +134,7 @@ class WalletController extends GetxController {
     if (GetPlatform.isIOS) {
       final bool isTokenLockEnabled =
           await _satorioRepository.isTokenLockEnabled();
-      if (isTokenLockEnabled) {
+      if (!isTokenLockEnabled) {
         walletDetails.forEach((element) {
           element.actions
               .removeWhere((action) => action.type == Type.stake_tokens);

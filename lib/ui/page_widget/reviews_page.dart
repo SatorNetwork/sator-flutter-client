@@ -277,45 +277,47 @@ class ReviewsPage extends GetView<ReviewsController> {
                       ),
                     ),
                     Spacer(),
-                    controller.profile.id != review.userId
-                        ? InkWell(
-                            onTap: () {
-                              controller.toTransactingTipsDialog(
-                                  review.userName, review);
-                            },
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 24,
-                                  width: 24,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: SatorioColor.interactive,
-                                  ),
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      'images/sator_logo.svg',
-                                      width: 12,
-                                      height: 12,
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                    Obx(
+                        () => controller.profile.id != review.userId && controller.isTipsEnabledRx.value
+                            ? InkWell(
+                          onTap: () {
+                            controller.toTransactingTipsDialog(
+                                review.userName, review);
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                height: 24,
+                                width: 24,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: SatorioColor.interactive,
                                 ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                  'txt_tip'.tr,
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.interactive,
-                                    fontSize: 14 * coefficient,
-                                    fontWeight: FontWeight.w500,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'images/sator_logo.svg',
+                                    width: 12,
+                                    height: 12,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              ],
-                            ),
-                          )
-                        : Container(),
+                              ),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Text(
+                                'txt_tip'.tr,
+                                style: textTheme.bodyText2!.copyWith(
+                                  color: SatorioColor.interactive,
+                                  fontSize: 14 * coefficient,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                            : Container()
+                    ),
                   ],
                 ),
               )

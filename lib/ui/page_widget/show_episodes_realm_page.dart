@@ -1284,7 +1284,9 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       height: 6,
                     ),
                     Text(
-                      isAndroid ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO' : '',
+                      isAndroid
+                          ? '${nftItem.buyNowPrice.toStringAsFixed(2)} SAO'
+                          : '',
                       style: textTheme.bodyText2!.copyWith(
                         color: SatorioColor.textBlack,
                         fontSize: 15 * coefficient,
@@ -1571,7 +1573,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ),
                     ),
                     Spacer(),
-                    controller.profile.id != review.userId
+                    Obx(() => controller.profile.id != review.userId &&
+                            controller.isTipsEnabledRx.value
                         ? InkWell(
                             onTap: () {
                               controller.toTransactingTipsDialog(
@@ -1609,7 +1612,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                               ],
                             ),
                           )
-                        : Container(),
+                        : Container()),
                   ],
                 ),
               ),

@@ -96,6 +96,7 @@ class ShowEpisodeRealmController extends GetxController
 
   final RxString quizHeadTitleRx = ''.obs;
   final RxString quizHeadMessageRx = ''.obs;
+  final RxBool isTipsEnabledRx = true.obs;
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
@@ -169,6 +170,14 @@ class ShowEpisodeRealmController extends GetxController
     _satorioRepository
         .quizHeadMessageText()
         .then((value) => quizHeadMessageRx.value = value);
+
+    if (GetPlatform.isIOS) {
+      _satorioRepository
+          .isTipsEnabled()
+          .then((value) => isTipsEnabledRx.value = value);
+    } else {
+      isTipsEnabledRx.value = true;
+    }
 
     lastSeenInit();
   }
