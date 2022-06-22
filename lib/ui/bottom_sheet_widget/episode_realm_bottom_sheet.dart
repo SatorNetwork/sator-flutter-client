@@ -12,13 +12,13 @@ import 'package:satorio/ui/widget/elevated_gradient_button.dart';
 
 class EpisodeRealmBottomSheet extends StatelessWidget {
   const EpisodeRealmBottomSheet(
-    this.isInternetConnectedRx, {
+    this.isPaidUnlockEnabledRx, {
     Key? key,
     this.onQuizPressed,
     this.onPaidUnlockPressed,
   }) : super(key: key);
 
-  final RxBool isInternetConnectedRx;
+  final RxBool isPaidUnlockEnabledRx;
   final VoidCallback? onQuizPressed;
   final VoidCallback? onPaidUnlockPressed;
 
@@ -89,7 +89,7 @@ class EpisodeRealmBottomSheet extends StatelessWidget {
                       SizedBox(
                         height: 8 * coefficient,
                       ),
-                      Obx(() => isInternetConnectedRx.value
+                      Obx(() => isPaidUnlockEnabledRx.value
                           ? Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [

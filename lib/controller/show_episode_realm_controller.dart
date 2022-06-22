@@ -19,7 +19,6 @@ import 'package:satorio/controller/challenge_controller.dart';
 import 'package:satorio/controller/chat_controller.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
-import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
@@ -28,6 +27,7 @@ import 'package:satorio/controller/puzzle_controller.dart';
 import 'package:satorio/controller/reviews_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/controller/video_youtube_controller.dart';
+import 'package:satorio/controller/write_review_controller.dart';
 import 'package:satorio/data/model/last_seen_model.dart';
 import 'package:satorio/domain/entities/episode_activation.dart';
 import 'package:satorio/domain/entities/last_seen.dart';
@@ -67,10 +67,8 @@ import 'package:satorio/util/getx_extension.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import 'write_review_controller.dart';
-
 class ShowEpisodeRealmController extends GetxController
-    with BackToMainMixin, ValidationMixin, ConnectivityMixin {
+    with BackToMainMixin, ValidationMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
   final int _itemsPerPage = 10;
@@ -97,6 +95,7 @@ class ShowEpisodeRealmController extends GetxController
   final RxString quizHeadTitleRx = ''.obs;
   final RxString quizHeadMessageRx = ''.obs;
   final RxBool isTipsEnabledRx = true.obs;
+  final RxBool isPaidUnlockEnabledRx = true.obs;
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
@@ -175,8 +174,12 @@ class ShowEpisodeRealmController extends GetxController
       _satorioRepository
           .isTipsEnabled()
           .then((value) => isTipsEnabledRx.value = value);
+      _satorioRepository
+          .isPaidUnlockEnabled()
+          .then((value) => isPaidUnlockEnabledRx.value = value);
     } else {
       isTipsEnabledRx.value = true;
+      isPaidUnlockEnabledRx.value = true;
     }
 
     lastSeenInit();
@@ -297,7 +300,7 @@ class ShowEpisodeRealmController extends GetxController
   void toEpisodeRealmDialog() {
     Get.bottomSheet(
       EpisodeRealmBottomSheet(
-        isInternetConnectedRx,
+        isPaidUnlockEnabledRx,
         onQuizPressed: () {
           if (attemptsLeftRx.value > 0) {
             _loadQuizQuestion();
@@ -331,7 +334,7 @@ class ShowEpisodeRealmController extends GetxController
       Get.bottomSheet(
         RealmExpiringBottomSheet(
           activationRx.value,
-          isInternetConnectedRx,
+          isPaidUnlockEnabledRx,
           (paidOption) {
             _paidUnlock(paidOption);
           },
@@ -574,7 +577,7 @@ class ShowEpisodeRealmController extends GetxController
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
-        isInternetConnectedRx,
+        isPaidUnlockEnabledRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },

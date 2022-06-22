@@ -183,7 +183,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                     Obx(
                       () => InkWell(
                         onTap: controller.activationRx.value.isActive &&
-                                controller.isInternetConnectedRx.value
+                                controller.isPaidUnlockEnabledRx.value
                             ? () {
                                 controller.toRealmExpiringBottomSheet();
                               }
@@ -753,14 +753,14 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         Obx(
                           () => SizedBox(
                             height: controller.puzzleGameRx.value != null &&
-                                    controller.isInternetConnectedRx.value
+                                    controller.isPaidUnlockEnabledRx.value
                                 ? 32
                                 : 0,
                           ),
                         ),
                         Obx(
                           () => controller.puzzleGameRx.value != null &&
-                                  controller.isInternetConnectedRx.value
+                                  controller.isPaidUnlockEnabledRx.value
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20),
