@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/challenge_binding.dart';
@@ -603,6 +604,7 @@ class ShowEpisodeRealmController extends GetxController
           (EpisodeActivation episodeActivation) {
             isRequestedForUnlock.value = false;
             activationRx.value = episodeActivation;
+            HapticFeedback.vibrate();
             if (episodeActivation.isActive) {
               _toUnlockBottomSheet();
               _updateShowEpisode();
@@ -661,6 +663,7 @@ class ShowEpisodeRealmController extends GetxController
           .unlockPuzzle(puzzleGameRx.value!.id, puzzleOption.id)
           .then((puzzleGame) {
         puzzleGameRx.value = puzzleGame;
+        HapticFeedback.vibrate();
         _toPuzzle();
       });
   }
