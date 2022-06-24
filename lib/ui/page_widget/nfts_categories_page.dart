@@ -388,33 +388,35 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           SizedBox(
             height: 8 * coefficient,
           ),
-          RichText(
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              text: isAndroid
-                  ? '${nftItem.buyNowPrice.toStringAsFixed(2)}'
-                  : '${controller.setItemPrice(nftItem.priceInUsd)}',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 14.0 * coefficient,
-                fontWeight: FontWeight.w500,
-                backgroundColor: Colors.transparent,
-              ),
-              children: <TextSpan>[
-                TextSpan(text: ' '),
-                TextSpan(
-                  text: isAndroid ? 'SAO' : 'USD',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.0 * coefficient,
-                    fontWeight: FontWeight.w500,
-                    backgroundColor: Colors.transparent,
+          !isAndroid && controller.setItemPrice(nftItem.priceInUsd).isEmpty
+              ? Container()
+              : RichText(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  text: TextSpan(
+                    text: isAndroid
+                        ? '${nftItem.buyNowPrice.toStringAsFixed(2)}'
+                        : '${controller.setItemPrice(nftItem.priceInUsd)}',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14.0 * coefficient,
+                      fontWeight: FontWeight.w500,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(text: ' '),
+                      TextSpan(
+                        text: isAndroid ? 'SAO' : 'USD',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14.0 * coefficient,
+                          fontWeight: FontWeight.w500,
+                          backgroundColor: Colors.transparent,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
         ],
       ),
     );
