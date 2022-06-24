@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
@@ -60,6 +61,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
     _satorioRepository.verifyAccount(codeController.text).then(
       (isSuccess) {
         if (isSuccess) {
+          HapticFeedback.vibrate();
           Get.offAll(
             () => SelectAvatarPage(),
             binding: SelectAvatarBinding(),

@@ -256,7 +256,7 @@ abstract class ApiDataSource {
 
   Future<NftItemModel> nftItem(String nftItemId);
 
-  Future<bool> buyNftItem(String nftItemId);
+  Future<bool> buyNftItem(String mintAddress);
 
   Future<bool> buyNftIap(String transactionReceipt, String mintAddress);
 

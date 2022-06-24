@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/mixin/back_to_main_mixin.dart';
 import 'package:satorio/domain/entities/transfer.dart';
@@ -34,6 +35,7 @@ class TransactionPreviewController extends GetxController with BackToMainMixin {
         .then(
           (bool result) {
             isSendRequestInProgress.value = false;
+            HapticFeedback.vibrate();
 
             Get.dialog(
               DefaultDialog(

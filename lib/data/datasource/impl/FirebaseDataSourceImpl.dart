@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/show_episodes_realm_binding.dart';
@@ -51,7 +52,6 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   void _fcmCallback(RemoteMessage message) {
     switch (message.data["type"]) {
       case FCMType.newShow:
-        print('_fcmCallback');
         _fcmShow(message.data["show_id"]);
         break;
       case FCMType.newEpisode:
@@ -61,7 +61,6 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
   }
 
   void _fcmShow(String showId) {
-    print('_fcmShow');
     final SatorioRepository _satorioRepository = Get.find();
     _satorioRepository.show(showId).then((show) {
       Get.to(

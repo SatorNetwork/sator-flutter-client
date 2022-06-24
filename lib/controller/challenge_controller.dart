@@ -1,5 +1,6 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/quiz_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
@@ -221,6 +222,7 @@ class ChallengeController extends GetxController {
             (EpisodeActivation episodeActivation) {
               isRequested.value = false;
               if (episodeActivation.isActive) {
+                HapticFeedback.vibrate();
                 _toUnlockBottomSheet();
                 _reloadChallenge(challengeRx.value!.id);
               }
