@@ -282,79 +282,82 @@ class NftItemPage extends GetView<NftItemController> {
           SizedBox(
             height: 24 * coefficient,
           ),
-          !isAndroid && controller.itemPrice.value.isEmpty
-              ? Container()
-              : Container(
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    top: 20,
-                    right: 20,
-                    bottom: 20 + Get.mediaQuery.padding.bottom,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(24),
+          Obx(
+            () => GetPlatform.isIOS && controller.itemPrice.value.isEmpty
+                ? Container()
+                : Container(
+                    padding: EdgeInsets.only(
+                      left: 20,
+                      top: 20,
+                      right: 20,
+                      bottom: 20 + Get.mediaQuery.padding.bottom,
                     ),
-                    color: SatorioColor.alice_blue,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Obx(
-                        () => controller.nftItemRx.value.onSale &&
-                                controller.isInternetConnectedRx.value
-                            ? Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'txt_current_price'.tr,
-                                    style: textTheme.bodyText2!.copyWith(
-                                      color: SatorioColor.charcoal,
-                                      fontSize: 15 * coefficient,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    isAndroid
-                                        ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
-                                        : '${controller.itemPrice.value} USD',
-                                    style: textTheme.bodyText2!.copyWith(
-                                      color: SatorioColor.textBlack,
-                                      fontSize: 15 * coefficient,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : SizedBox(height: 48),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(24),
                       ),
-                      SizedBox(
-                        width: 36 * coefficient,
-                      ),
-                      Expanded(
-                        child: Obx(
+                      color: SatorioColor.alice_blue,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Obx(
                           () => controller.nftItemRx.value.onSale &&
-                                  !controller.isOwner.value &&
                                   controller.isInternetConnectedRx.value
-                              ? ElevatedGradientButton(
-                                  text: isAndroid
-                                      ? 'txt_to_marketplace'.tr
-                                      : 'txt_buy_nft'.tr,
-                                  isInProgress: controller.isBuyRequested.value,
-                                  onPressed: () {
-                                    isAndroid
-                                        ? controller.toMarketplace(controller
-                                            .nftItemRx.value.mintAddress)
-                                        : controller.buyInAppProduct();
-                                  },
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'txt_current_price'.tr,
+                                      style: textTheme.bodyText2!.copyWith(
+                                        color: SatorioColor.charcoal,
+                                        fontSize: 15 * coefficient,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      isAndroid
+                                          ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
+                                          : '${controller.itemPrice.value} USD',
+                                      style: textTheme.bodyText2!.copyWith(
+                                        color: SatorioColor.textBlack,
+                                        fontSize: 15 * coefficient,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
                                 )
                               : SizedBox(height: 48),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: 36 * coefficient,
+                        ),
+                        Expanded(
+                          child: Obx(
+                            () => controller.nftItemRx.value.onSale &&
+                                    !controller.isOwner.value &&
+                                    controller.isInternetConnectedRx.value
+                                ? ElevatedGradientButton(
+                                    text: isAndroid
+                                        ? 'txt_to_marketplace'.tr
+                                        : 'txt_buy_nft'.tr,
+                                    isInProgress:
+                                        controller.isBuyRequested.value,
+                                    onPressed: () {
+                                      isAndroid
+                                          ? controller.toMarketplace(controller
+                                              .nftItemRx.value.mintAddress)
+                                          : controller.buyInAppProduct();
+                                    },
+                                  )
+                                : SizedBox(height: 48),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+          )
         ],
       ),
     );
