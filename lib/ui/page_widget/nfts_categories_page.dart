@@ -388,7 +388,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
           SizedBox(
             height: 8 * coefficient,
           ),
-          Obs(
+          Obx(
             () => GetPlatform.isIOS &&
                     controller.setItemPrice(nftItem.priceInUsd).isEmpty
                 ? Container()
