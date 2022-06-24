@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/binding/main_binding.dart';
@@ -63,6 +64,7 @@ class SelectAvatarController extends GetxController with BackToMainMixin {
   void saveAvatar() {
     _satorioRepository.selectAvatar(avatarRx.value!).then((isSuccess) {
       if (isSuccess) {
+        HapticFeedback.vibrate();
         //TODO: for future, when settings page created
         switch (type) {
           case SelectAvatarType.registration:

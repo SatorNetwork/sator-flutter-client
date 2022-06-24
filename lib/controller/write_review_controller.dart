@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:satorio/domain/entities/profile.dart';
@@ -95,6 +96,8 @@ class WriteReviewController extends GetxController {
           (bool result) {
             if (result) {
               Get.back(result: true);
+              HapticFeedback.vibrate();
+
               ScaffoldMessenger.of(Get.context!).showSnackBar(
                 SnackBar(
                   content: Text('txt_review_write_success'.tr),

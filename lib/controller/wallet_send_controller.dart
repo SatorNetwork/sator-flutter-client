@@ -12,7 +12,6 @@ import 'package:satorio/domain/entities/qr/qr_data.dart';
 import 'package:satorio/domain/entities/transfer.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/choose_wallet_dialog.dart';
 import 'package:satorio/ui/page_widget/qr_scanner_page.dart';
 import 'package:satorio/ui/page_widget/transaction_preview_page.dart';

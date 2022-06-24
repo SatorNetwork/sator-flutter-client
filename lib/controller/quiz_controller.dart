@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_nats/dart_nats.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/challenges_binding.dart';
 import 'package:satorio/controller/challenges_controller.dart';
@@ -203,6 +204,7 @@ class QuizController extends GetxController {
       PayloadQuestionResult payloadQuestionResult) {
     if (payloadQuestionResult.result) {
       //correct answer
+      HapticFeedback.vibrate();
       Get.bottomSheet(
         SuccessAnswerBottomSheet(payloadQuestionResult),
       );

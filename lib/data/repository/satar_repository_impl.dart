@@ -854,9 +854,9 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> buyNftItem(String nftItemId) {
+  Future<bool> buyNftItem(String mintAddress) {
     return _apiDataSource
-        .buyNftItem(nftItemId)
+        .buyNftItem(mintAddress)
         .catchError((value) => _handleException(value));
   }
 

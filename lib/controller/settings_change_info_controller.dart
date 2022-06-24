@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/email_verification_binding.dart';
 import 'package:satorio/domain/entities/change_info_type.dart';
@@ -67,6 +68,10 @@ class SettingsChangeInfoController extends GetxController with ValidationMixin {
     super.onClose();
   }
 
+  void _hapticFeedback() {
+    HapticFeedback.vibrate();
+  }
+
   void requestUpdateEmail() {
     Future.value(true).then((value) {
       isRequested.value = true;
@@ -74,6 +79,7 @@ class SettingsChangeInfoController extends GetxController with ValidationMixin {
     }).then((value) {
       _satorioRepository.requestUpdateEmail(emailRx.value).then((isSuccess) {
         if (isSuccess) {
+          _hapticFeedback();
           Get.off(
             () => EmailVerificationPage(),
             binding: EmailVerificationBinding(),
@@ -99,6 +105,7 @@ class SettingsChangeInfoController extends GetxController with ValidationMixin {
     }).then((value) {
       _satorioRepository.updateUsername(usernameRx.value).then((isSuccess) {
         if (isSuccess) {
+          _hapticFeedback();
           _satorioRepository.isTokenValid().then((value) {
             _satorioRepository.updateProfile().then((value) {
               ScaffoldMessenger.of(Get.context!).showSnackBar(
@@ -133,6 +140,7 @@ class SettingsChangeInfoController extends GetxController with ValidationMixin {
           .changePassword(oldPasswordRx.value, newPasswordRx.value)
           .then((isSuccess) {
         if (isSuccess) {
+          _hapticFeedback();
           _clearPasswordController();
           ScaffoldMessenger.of(Get.context!).showSnackBar(
             SnackBar(

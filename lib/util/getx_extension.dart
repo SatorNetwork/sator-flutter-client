@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/fcm_type.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
@@ -125,6 +126,7 @@ extension SatorGetInterface on GetInterface {
 
   SnackbarController snackbarNotify(
       RemoteMessage message, VoidCallback? onPressed) {
+    HapticFeedback.vibrate();
     final String rmType = message.data["type"];
     return Get.snackbar(
       "${message.notification!.title}",
