@@ -53,7 +53,7 @@ def getSdkDir() {
 
 def BuildIl2Cpp(String workingDir, String targetDirectory, String architecture, String abi, String configuration) {
     exec {
-        commandLine(workingDir + "/src/main/Il2CppOutputProject/IL2CPP/build/deploy/netcoreapp3.1/il2cpp",
+        commandLine(workingDir + "/src/main/Il2CppOutputProject/IL2CPP/build/deploy/netcoreapp3.1/il2cpp.exe",
             "--compile-cpp",
             "--libil2cpp-static",
             "--platform=Android",
