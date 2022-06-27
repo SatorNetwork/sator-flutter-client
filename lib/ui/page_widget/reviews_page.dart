@@ -278,7 +278,7 @@ class ReviewsPage extends GetView<ReviewsController> {
                     ),
                     Spacer(),
                     Obx(
-                        () => controller.profile.id != review.userId && controller.isTipsEnabledRx.value
+                        () => controller.isTipsEnabledRx.value && review.userId != controller.profile.id
                             ? InkWell(
                           onTap: () {
                             controller.toTransactingTipsDialog(

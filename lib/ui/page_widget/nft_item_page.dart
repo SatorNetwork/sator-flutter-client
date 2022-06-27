@@ -319,7 +319,7 @@ class NftItemPage extends GetView<NftItemController> {
                                     Text(
                                       isAndroid
                                           ? '${controller.nftItemRx.value.buyNowPrice.toStringAsFixed(2)} SAO'
-                                          : '${controller.itemPrice.value} USD',
+                                          : '${controller.itemPriceRx.value} USD',
                                       style: textTheme.bodyText2!.copyWith(
                                         color: SatorioColor.textBlack,
                                         fontSize: 15 * coefficient,
