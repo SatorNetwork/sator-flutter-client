@@ -44,7 +44,7 @@ class MainController extends GetxController {
                 final id = deepLink.queryParameters['id'];
                 if (id != null && id.isNotEmpty) {
                   Get.to(
-                    () => ChallengePage(),
+                        () => ChallengePage(),
                     binding: ChallengeBinding(),
                     arguments: ChallengeArgument(id),
                   );
@@ -66,13 +66,8 @@ class MainController extends GetxController {
   }
 
   void toQrScanner() {
-    // Get.to(
-    //   () => UnityViewPage(),
-    // );
     Get.to(
-      () => QrScannerPage(),
-      binding: QrScannerBinding(),
-      arguments: QrScannerArgument(false),
+          () => UnityViewPage(),
     );
   }
 }

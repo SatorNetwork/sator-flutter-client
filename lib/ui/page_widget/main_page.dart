@@ -84,8 +84,7 @@ class MainPage extends GetView<MainController> {
             ),
             ExtBottomNavyBarItem(
               icon: Icon(
-                SatorIcons.scan,
-                // Icons.games_outlined,
+                Icons.games_outlined,
                 size: 20,
               ),
               title: Text(
