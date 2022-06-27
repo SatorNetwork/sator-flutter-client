@@ -367,6 +367,8 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
   }
 
   Widget _homeNftItem(NftItem nftItem) {
+    controller.isPriceShownRx.value = GetPlatform.isIOS &&
+        controller.setItemPrice(nftItem.priceInUsd).isEmpty;
     return InkWell(
       onTap: () {
         controller.toNftItem(nftItem);
@@ -389,8 +391,7 @@ class NftCategoriesPage extends GetView<NftCategoriesController> {
             height: 8 * coefficient,
           ),
           Obx(
-            () => GetPlatform.isIOS &&
-                    controller.setItemPrice(nftItem.priceInUsd).isEmpty
+            () => controller.isPriceShownRx.value
                 ? Container()
                 : RichText(
                     maxLines: 1,

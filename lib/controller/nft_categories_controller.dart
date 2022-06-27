@@ -47,6 +47,8 @@ class NftCategoriesController extends GetxController
   final RxBool _isLoadRx = false.obs;
   final RxBool _isLoadedRx = false.obs;
 
+  final RxBool isPriceShownRx = false.obs;
+
   List<IAPItem> products = [];
 
   NftCategoriesController() {

@@ -36,6 +36,8 @@ class NftItemController extends GetxController
   final RxBool isBuyRequested = false.obs;
   final RxBool termsOfUseCheck = false.obs;
 
+  final RxBool isPriceShownRx = false.obs;
+
   String productId = "";
   List<IAPItem> products = [];
 
@@ -56,6 +58,8 @@ class NftItemController extends GetxController
     nftItemRx = Rx(argument.nftItem);
     _walletsListenable =
         _satorioRepository.walletsListenable() as ValueListenable<Box<Wallet>>;
+
+    isPriceShownRx.value = GetPlatform.isIOS && itemPrice.value.isEmpty;
 
     _checkOwner();
     _refreshNftItem(argument.nftItem.mintAddress);

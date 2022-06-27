@@ -283,7 +283,7 @@ class NftItemPage extends GetView<NftItemController> {
             height: 24 * coefficient,
           ),
           Obx(
-            () => GetPlatform.isIOS && controller.itemPrice.value.isEmpty
+            () => controller.isPriceShownRx.value
                 ? Container()
                 : Container(
                     padding: EdgeInsets.only(
@@ -335,18 +335,19 @@ class NftItemPage extends GetView<NftItemController> {
                         ),
                         Expanded(
                           child: Obx(
-                                () => controller.nftItemRx.value.onSale &&
-                                !controller.isOwner.value &&
-                                controller.isInternetConnectedRx.value
+                            () => controller.nftItemRx.value.onSale &&
+                                    !controller.isOwner.value &&
+                                    controller.isInternetConnectedRx.value
                                 ? ElevatedGradientButton(
-                              text: 'txt_buy_nft'.tr,
-                              isInProgress: controller.isBuyRequested.value,
-                              onPressed: () {
-                                isAndroid
-                                    ? controller.buy()
-                                    : controller.buyInAppProduct();
-                              },
-                            )
+                                    text: 'txt_buy_nft'.tr,
+                                    isInProgress:
+                                        controller.isBuyRequested.value,
+                                    onPressed: () {
+                                      isAndroid
+                                          ? controller.buy()
+                                          : controller.buyInAppProduct();
+                                    },
+                                  )
                                 : SizedBox(height: 48),
                           ),
                         ),
