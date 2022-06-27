@@ -84,7 +84,6 @@ class ShowEpisodeRealmController extends GetxController
 
   final RxBool isRequestedForUnlock = false.obs;
   final RxBool isRequestedForPuzzleOptions = false.obs;
-  final RxBool isTipsButtonShownRx = false.obs;
 
   final Rx<EpisodeActivation> activationRx = Rx(
     EpisodeActivation(false, null, null),

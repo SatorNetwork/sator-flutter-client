@@ -1405,10 +1405,6 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
   Widget _reviewItem(Review review) {
     final double reviewContainerHeight = 235.0 * coefficient;
 
-    controller.isTipsButtonShownRx.value =
-        controller.profile.id != review.userId &&
-            controller.isTipsEnabledRx.value;
-
     String avatarAsset =
         review.userAvatar.isNotEmpty ? review.userAvatar : avatars[0];
 
@@ -1577,7 +1573,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ),
                     ),
                     Spacer(),
-                    Obx(() => controller.isTipsButtonShownRx.value
+                    Obx(() => controller.isTipsEnabledRx.value &&
+                            review.userId != controller.profile.id
                         ? InkWell(
                             onTap: () {
                               controller.toTransactingTipsDialog(
