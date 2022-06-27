@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
 import 'package:satorio/binding/show_episodes_realm_binding.dart';
