@@ -283,7 +283,7 @@ class NftItemPage extends GetView<NftItemController> {
             height: 24 * coefficient,
           ),
           Obx(
-            () => controller.isPriceShownRx.value
+            () => controller.itemPriceRx.value.isEmpty && GetPlatform.isIOS
                 ? Container()
                 : Container(
                     padding: EdgeInsets.only(
