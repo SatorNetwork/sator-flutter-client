@@ -256,7 +256,7 @@ abstract class SatorioRepository {
 
   Future<NftItem> nftItem(String nftItemId);
 
-  Future<bool> buyNftItem(String nftItemId);
+  Future<bool> buyNftItem(String mintAddress);
 
   //
 
@@ -318,4 +318,10 @@ abstract class SatorioRepository {
   Future<String?> fcmToken();
 
   Future<String> solanaClusterName();
+
+  Future<bool> isTokenLockEnabled();
+
+  Future<bool> isPaidUnlockEnabled();
+
+  Future<bool> isTipsEnabled();
 }

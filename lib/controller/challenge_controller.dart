@@ -1,9 +1,9 @@
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/binding/quiz_binding.dart';
 import 'package:satorio/binding/show_episode_quiz_binding.dart';
-import 'package:satorio/controller/mixin/connectivity_mixin.dart';
 import 'package:satorio/controller/quiz_controller.dart';
 import 'package:satorio/controller/show_episode_quiz_controller.dart';
 import 'package:satorio/domain/entities/challenge.dart';
@@ -20,15 +20,29 @@ import 'package:satorio/ui/page_widget/show_episode_quiz_page.dart';
 import 'package:satorio/util/getx_extension.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ChallengeController extends GetxController with ConnectivityMixin {
+class ChallengeController extends GetxController {
   final SatorioRepository _satorioRepository = Get.find();
 
   late final Rx<Challenge?> challengeRx = Rx(null);
   final RxBool isRequested = false.obs;
 
+  final RxBool isPaidUnlockEnabledRx = true.obs;
+
   ChallengeController() {
     ChallengeArgument argument = Get.arguments as ChallengeArgument;
     _reloadChallenge(argument.challengeId);
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (GetPlatform.isIOS) {
+      _satorioRepository
+          .isPaidUnlockEnabled()
+          .then((value) => isPaidUnlockEnabledRx.value = value);
+    } else {
+      isPaidUnlockEnabledRx.value = true;
+    }
   }
 
   void back() {
@@ -84,7 +98,7 @@ class ChallengeController extends GetxController with ConnectivityMixin {
     if (challengeRx.value != null) {
       Get.bottomSheet(
         EpisodeRealmBottomSheet(
-          isInternetConnectedRx,
+          isPaidUnlockEnabledRx,
           onQuizPressed: () {
             if (challengeRx.value!.attemptsLeft > 0) {
               _loadQuizQuestion();
@@ -181,7 +195,7 @@ class ChallengeController extends GetxController with ConnectivityMixin {
   void _toRealmPaidActivationBottomSheet() {
     Get.bottomSheet(
       RealmPaidActivationBottomSheet(
-        isInternetConnectedRx,
+        isPaidUnlockEnabledRx,
         (paidOption) {
           _paidUnlock(paidOption);
         },
@@ -208,6 +222,7 @@ class ChallengeController extends GetxController with ConnectivityMixin {
             (EpisodeActivation episodeActivation) {
               isRequested.value = false;
               if (episodeActivation.isActive) {
+                HapticFeedback.vibrate();
                 _toUnlockBottomSheet();
                 _reloadChallenge(challengeRx.value!.id);
               }

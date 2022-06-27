@@ -32,4 +32,10 @@ abstract class FirebaseDataSource {
   Future<String> solanaClusterUrl();
 
   Future<String> solanaClusterName();
+
+  Future<bool> isTokenLockEnabled();
+
+  Future<bool> isPaidUnlockEnabled();
+
+  Future<bool> isTipsEnabled();
 }

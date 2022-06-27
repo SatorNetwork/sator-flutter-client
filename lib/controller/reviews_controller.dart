@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
 import 'package:satorio/ui/bottom_sheet_widget/transacting_tips_bottom_sheet.dart';
 import 'package:satorio/ui/dialog_widget/success_tip_dialog.dart';
 import 'package:satorio/util/extension.dart';
@@ -34,12 +34,22 @@ class ReviewsController extends GetxController with NonWorkingFeatureMixin {
   final RxBool _isLoadingRx = false.obs;
   final RxBool _isAllLoadedRx = false.obs;
 
+  final RxBool isTipsEnabledRx = true.obs;
+
   ReviewsController() {
     ReviewsArgument argument = Get.arguments as ReviewsArgument;
 
     _isAllReviews = argument.isAllReviews;
     _showDetailId = argument.showDetailId;
     _showEpisodeId = argument.showEpisodeId;
+
+    if (GetPlatform.isIOS) {
+      _satorioRepository
+          .isTipsEnabled()
+          .then((value) => isTipsEnabledRx.value = value);
+    } else {
+      isTipsEnabledRx.value = true;
+    }
 
     loadReviews();
   }
@@ -130,7 +140,9 @@ class ReviewsController extends GetxController with NonWorkingFeatureMixin {
     _satorioRepository.rateReview(reviewId, ratingType).then((value) {
       if (value) {
         if (_isAllReviews) {
-          _satorioRepository.getReviews(_showDetailId, _showEpisodeId).then((List<Review> reviews) {
+          _satorioRepository
+              .getReviews(_showDetailId, _showEpisodeId)
+              .then((List<Review> reviews) {
             reviewsRx.value = reviews;
           });
         } else {

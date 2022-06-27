@@ -12,12 +12,16 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
     String showTransactionUrl,
     List<PayloadPlayer> winners,
     List<PayloadPlayer> losers,
+    bool isRewardsDisabled,
+    List<PayloadPlayer> players,
   ) : super(
           challengeId,
           currentPrizePool,
           showTransactionUrl,
           winners,
           losers,
+          isRewardsDisabled,
+          players,
         );
 
   factory PayloadChallengeResultModel.fromJson(Map json) =>
@@ -25,18 +29,10 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
         json.parseValueAsString('challenge_id'),
         json.parseValueAsString('current_prize_pool'),
         json.parseValueAsString('show_transaction_url'),
-        (json['winners'] == null || !(json['winners'] is Iterable))
-            ? []
-            : (json['winners'] as Iterable)
-                .where((element) => element != null)
-                .map((element) => PayloadPlayerModel.fromJson(element))
-                .toList(),
-        (json['losers'] == null || !(json['losers'] is Iterable))
-            ? []
-            : (json['losers'] as Iterable)
-                .where((element) => element != null)
-                .map((element) => PayloadPlayerModel.fromJson(element))
-                .toList(),
+        _parsePlayersList(json['winners']),
+        _parsePlayersList(json['losers']),
+        json.parseValueAsBool('disabled_rewards'),
+        _parsePlayersList(json['players']),
       );
 
   @override
@@ -52,5 +48,19 @@ class PayloadChallengeResultModel extends PayloadChallengeResult
             .whereType<ToJsonInterface>()
             .map((element) => element.toJson())
             .toList(),
+        'disabled_rewards': isRewardsDisabled,
+        'players': players
+            .whereType<ToJsonInterface>()
+            .map((element) => element.toJson())
+            .toList(),
       };
+}
+
+List<PayloadPlayer> _parsePlayersList(dynamic jsonElement) {
+  return (jsonElement != null && jsonElement is Iterable)
+      ? jsonElement
+          .where((element) => element != null)
+          .map((element) => PayloadPlayerModel.fromJson(element))
+          .toList()
+      : [];
 }

@@ -9,12 +9,14 @@ class PayloadPlayerModel extends PayloadPlayer implements ToJsonInterface {
     String avatar,
     String prize,
     String bonus,
+    double pts,
   ) : super(
           userId,
           username,
           avatar,
           prize,
           bonus,
+          pts,
         );
 
   factory PayloadPlayerModel.fromJson(Map json) => PayloadPlayerModel(
@@ -23,6 +25,7 @@ class PayloadPlayerModel extends PayloadPlayer implements ToJsonInterface {
         json.parseValueAsString('avatar'),
         json.parseValueAsString('prize'),
         json.parseValueAsString('bonus'),
+        json.parseValueAsDouble('pts'),
       );
 
   @override
@@ -32,5 +35,6 @@ class PayloadPlayerModel extends PayloadPlayer implements ToJsonInterface {
         'avatar': avatar,
         'prize': prize,
         'bonus': bonus,
+        'prs': pts,
       };
 }

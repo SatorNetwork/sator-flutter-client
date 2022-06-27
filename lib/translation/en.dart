@@ -51,6 +51,7 @@ const Map<String, String> en = {
   'txt_prize_pool': 'Prize pool',
   'txt_winners': 'Winners',
   'txt_players': 'Players',
+  'txt_scores': 'Scores',
   'txt_play': 'Play',
   'txt_challenge_lobby': 'Challenge Lobby',
   'txt_waiting_players': 'Waiting for players to join',

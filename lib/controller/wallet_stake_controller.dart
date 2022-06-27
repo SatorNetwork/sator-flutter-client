@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/stake_level.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
@@ -131,6 +132,8 @@ class WalletStakeController extends GetxController {
         )
         .then(
           (bool result) {
+            HapticFeedback.vibrate();
+
             if (result) {
               possibleMultiplier(amount);
               _updateWalletStake();
@@ -138,7 +141,6 @@ class WalletStakeController extends GetxController {
               tmpState.value = true;
               isInProgress.value = false;
             }
-
             Get.snackbarMessage(
               result ? 'txt_success'.tr : 'txt_oops'.tr,
               result
@@ -170,6 +172,8 @@ class WalletStakeController extends GetxController {
         .then(
           (bool result) {
             if (result) {
+              HapticFeedback.vibrate();
+
               _updateWalletStake();
               _stakeLevels();
               tmpState.value = false;

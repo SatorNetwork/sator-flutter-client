@@ -1223,15 +1223,14 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
-  Future<bool> buyNftItem(String nftItemId) {
+  Future<bool> buyNftItem(String mintAddress) {
     return _getConnect
         .requestPost(
-      'nft/$nftItemId/buy',
+      'nft/$mintAddress/buy',
       EmptyRequest(),
     )
         .then((Response response) {
       return response.isOk;
-      // return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
   }
 
