@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_unity_widget/flutter_unity_widget.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -29,6 +30,22 @@ class _UnityViewPageState extends State<UnityViewPage> {
   late FirebaseDataSource _firebaseDataSource;
   late UnityWidgetController _unityWidgetController;
   double _sliderValue = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
