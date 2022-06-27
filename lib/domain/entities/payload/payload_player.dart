@@ -4,6 +4,7 @@ class PayloadPlayer {
   final String avatar;
   final String prize;
   final String bonus;
+  final double pts;
 
   const PayloadPlayer(
     this.userId,
@@ -11,5 +12,6 @@ class PayloadPlayer {
     this.avatar,
     this.prize,
     this.bonus,
+    this.pts,
   );
 }
