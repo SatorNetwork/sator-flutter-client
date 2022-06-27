@@ -1573,8 +1573,8 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                       ),
                     ),
                     Spacer(),
-                    Obx(() => controller.profile.id != review.userId &&
-                            controller.isTipsEnabledRx.value
+                    Obx(() => controller.isTipsEnabledRx.value &&
+                            review.userId != controller.profile.id
                         ? InkWell(
                             onTap: () {
                               controller.toTransactingTipsDialog(
