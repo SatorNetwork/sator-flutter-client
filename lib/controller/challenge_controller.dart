@@ -36,13 +36,9 @@ class ChallengeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (GetPlatform.isIOS) {
-      _satorioRepository
-          .isPaidUnlockEnabled()
-          .then((value) => isPaidUnlockEnabledRx.value = value);
-    } else {
-      isPaidUnlockEnabledRx.value = true;
-    }
+    _satorioRepository
+        .isPaidUnlockEnabled()
+        .then((value) => isPaidUnlockEnabledRx.value = value);
   }
 
   void back() {

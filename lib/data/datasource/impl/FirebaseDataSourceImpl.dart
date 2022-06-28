@@ -180,19 +180,31 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   @override
   Future<bool> isTokenLockEnabled() async {
-    return _remoteConfig.getBool(
-        isProduction ? 'enable_token_lock_prod' : 'enable_token_lock_dev');
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(
+          isProduction ? 'enable_token_lock_prod' : 'enable_token_lock_dev');
+    } else {
+      return true;
+    }
   }
 
   @override
   Future<bool> isPaidUnlockEnabled() async {
-    return _remoteConfig.getBool(
-        isProduction ? 'enable_paid_unlock_prod' : 'enable_paid_unlock_dev');
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(
+          isProduction ? 'enable_paid_unlock_prod' : 'enable_paid_unlock_dev');
+    } else {
+      return true;
+    }
   }
 
   @override
   Future<bool> isTipsEnabled() async {
-    return _remoteConfig
-        .getBool(isProduction ? 'enable_tips_prod' : 'enable_tips_dev');
+    if (GetPlatform.isIOS) {
+      return _remoteConfig
+          .getBool(isProduction ? 'enable_tips_prod' : 'enable_tips_dev');
+    } else {
+      return true;
+    }
   }
 }
