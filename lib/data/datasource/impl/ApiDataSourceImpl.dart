@@ -1226,7 +1226,7 @@ class ApiDataSourceImpl implements ApiDataSource {
   Future<bool> buyNftItem(String mintAddress) {
     return _getConnect
         .requestPost(
-      'nft/$mintAddress/buy',
+      'nft/$mintAddress/buy/marketplace',
       EmptyRequest(),
     )
         .then((Response response) {
