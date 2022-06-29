@@ -265,8 +265,15 @@ class HomeController extends GetxController
   }
 
   void _rssItemsListener() {
-    rssItemRx.value = _rssItemsListenable.value.values.isNotEmpty
-        ? _rssItemsListenable.value.values.first
-        : null;
+    final rssItems = _rssItemsListenable.value.values.toList();
+    rssItems.sort((a, b) {
+      if (a.pubDate == null)
+        return -1;
+      else if (b.pubDate == null)
+        return 1;
+      else
+        return b.pubDate!.compareTo(a.pubDate!);
+    });
+    rssItemRx.value = rssItems.isNotEmpty ? rssItems.first : null;
   }
 }
