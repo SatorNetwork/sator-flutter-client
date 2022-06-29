@@ -97,33 +97,45 @@ class ChallengePage extends GetView<ChallengeController> {
                     ),
                   ),
                   SizedBox(height: 48),
-                  Row(
-                    children: [
-                      Text(
-                        'txt_prize_pool'.tr,
-                        style: textTheme.bodyText1!.copyWith(
-                          color: SatorioColor.textBlack,
-                          fontSize: 15.0 * coefficient,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Expanded(
-                        child: Obx(
-                          () => Text(
-                            controller.challengeRx.value?.currentPrizePool ??
-                                '',
-                            textAlign: TextAlign.end,
-                            style: textTheme.bodyText1!.copyWith(
-                              color: SatorioColor.textBlack,
-                              fontSize: 15.0 * coefficient,
-                              fontWeight: FontWeight.w400,
-                            ),
+                  Obx(
+                    () => controller
+                                .challengeRx.value?.currentPrizePool.isEmpty ??
+                            true
+                        ? SizedBox(height: 0)
+                        : Row(
+                            children: [
+                              Text(
+                                'txt_prize_pool'.tr,
+                                style: textTheme.bodyText1!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 15.0 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  controller.challengeRx.value
+                                          ?.currentPrizePool ??
+                                      '',
+                                  textAlign: TextAlign.end,
+                                  style: textTheme.bodyText1!.copyWith(
+                                    color: SatorioColor.textBlack,
+                                    fontSize: 15.0 * coefficient,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                    ],
                   ),
-                  SizedBox(height: 25),
+                  Obx(
+                    () => SizedBox(
+                        height: controller.challengeRx.value?.currentPrizePool
+                                    .isEmpty ??
+                                true
+                            ? 0
+                            : 25),
+                  ),
                   Row(
                     children: [
                       Text(
