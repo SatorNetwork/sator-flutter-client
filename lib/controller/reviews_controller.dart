@@ -43,13 +43,9 @@ class ReviewsController extends GetxController with NonWorkingFeatureMixin {
     _showDetailId = argument.showDetailId;
     _showEpisodeId = argument.showEpisodeId;
 
-    if (GetPlatform.isIOS) {
-      _satorioRepository
-          .isTipsEnabled()
-          .then((value) => isTipsEnabledRx.value = value);
-    } else {
-      isTipsEnabledRx.value = true;
-    }
+    _satorioRepository
+        .isTipsEnabled()
+        .then((value) => isTipsEnabledRx.value = value);
 
     loadReviews();
   }

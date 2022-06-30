@@ -131,15 +131,13 @@ class WalletController extends GetxController {
         _walletDetailsListenable!.value.values.toList();
     walletDetails.sort((a, b) => a.order.compareTo(b.order));
 
-    if (GetPlatform.isIOS) {
-      final bool isTokenLockEnabled =
-          await _satorioRepository.isTokenLockEnabled();
-      if (!isTokenLockEnabled) {
-        walletDetails.forEach((element) {
-          element.actions
-              .removeWhere((action) => action.type == Type.stake_tokens);
-        });
-      }
+    final bool isTokenLockEnabled =
+        await _satorioRepository.isTokenLockEnabled();
+    if (!isTokenLockEnabled) {
+      walletDetails.forEach((element) {
+        element.actions
+            .removeWhere((action) => action.type == Type.stake_tokens);
+      });
     }
 
     walletDetailsRx.value = walletDetails;

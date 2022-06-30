@@ -171,17 +171,13 @@ class ShowEpisodeRealmController extends GetxController
         .quizHeadMessageText()
         .then((value) => quizHeadMessageRx.value = value);
 
-    if (GetPlatform.isIOS) {
-      _satorioRepository
-          .isTipsEnabled()
-          .then((value) => isTipsEnabledRx.value = value);
-      _satorioRepository
-          .isPaidUnlockEnabled()
-          .then((value) => isPaidUnlockEnabledRx.value = value);
-    } else {
-      isTipsEnabledRx.value = true;
-      isPaidUnlockEnabledRx.value = true;
-    }
+    _satorioRepository
+        .isTipsEnabled()
+        .then((value) => isTipsEnabledRx.value = value);
+
+    _satorioRepository
+        .isPaidUnlockEnabled()
+        .then((value) => isPaidUnlockEnabledRx.value = value);
 
     lastSeenInit();
   }
