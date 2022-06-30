@@ -97,7 +97,7 @@ class ShowEpisodeRealmController extends GetxController
   final RxString quizHeadMessageRx = ''.obs;
   final RxBool isTipsEnabledRx = true.obs;
   final RxBool isPaidUnlockEnabledRx = true.obs;
-  final RxBool isRealmEarnedSaoEnabledRx = true.obs;
+  final RxBool isRealmEarnedSaoEnabledRx = false.obs;
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
