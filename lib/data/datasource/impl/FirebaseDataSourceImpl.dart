@@ -207,4 +207,48 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
       return true;
     }
   }
+
+  @override
+  Future<bool> isBottomSheetPtsEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_bottom_sheet_pts_prod'
+          : 'enable_bottom_sheet_pts_dev');
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> isWinnerScoresEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_winner_scores_prod'
+          : 'enable_winner_scores_dev');
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> isHomeBalanceEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_home_balance_prod'
+          : 'enable_home_balance_dev');
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> isRealmEarnedSaoEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_realm_earned_sao_prod'
+          : 'enable_realm_earned_sao_dev');
+    } else {
+      return true;
+    }
+  }
 }

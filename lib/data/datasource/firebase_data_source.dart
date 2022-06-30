@@ -26,7 +26,7 @@ abstract class FirebaseDataSource {
   Future inAppProductsIds();
 
   Future logEvent(String name, Map<String, Object?>? parameters);
-  
+
   Future<String> solanaToken();
 
   Future<String> solanaClusterUrl();
@@ -38,4 +38,12 @@ abstract class FirebaseDataSource {
   Future<bool> isPaidUnlockEnabled();
 
   Future<bool> isTipsEnabled();
+
+  Future<bool> isBottomSheetPtsEnabled();
+
+  Future<bool> isWinnerScoresEnabled();
+
+  Future<bool> isHomeBalanceEnabled();
+
+  Future<bool> isRealmEarnedSaoEnabled();
 }
