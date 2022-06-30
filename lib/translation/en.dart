@@ -64,8 +64,8 @@ const Map<String, String> en = {
   'txt_questions_left': '%d questions left',
   'txt_wait_time_runs_out':
       'Wait until the time runs out or all of the players will vote.',
-  'txt_fastest_answer': '🔥 Fastest answer ',
-  'txt_add_pts': '+%dpts',
+  'txt_fastest_answer': '🔥 Fastest answer',
+  'txt_add_pts': ' +%dpts',
   'txt_quit': 'Quit',
   'txt_next': 'Next',
   'txt_awesome': 'Awesome',
