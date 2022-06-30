@@ -51,6 +51,7 @@ class HomeController extends GetxController
 
   final RxString quizHeadTitleRx = ''.obs;
   final RxString quizHeadMessageRx = ''.obs;
+  final RxBool isHomeBalanceEnabledRx = false.obs;
 
   late ValueListenable<Box<Profile>> _profileListenable;
   late ValueListenable<Box<AmountCurrency>> _walletBalanceListenable;
@@ -83,6 +84,10 @@ class HomeController extends GetxController
     _satorioRepository
         .quizHeadMessageText()
         .then((value) => quizHeadMessageRx.value = value);
+
+    _satorioRepository
+        .isHomeBalanceEnabled()
+        .then((value) => isHomeBalanceEnabledRx.value = value);
 
     _profileListener();
     _profileListenable.addListener(_profileListener);

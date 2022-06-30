@@ -14,8 +14,6 @@ import 'package:satorio/ui/widget/avatar_image.dart';
 import 'package:satorio/ui/widget/title_button.dart';
 import 'package:satorio/util/extension.dart';
 
-import '../../unity/unity_view_page.dart';
-
 class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
@@ -115,7 +113,9 @@ class HomePage extends GetView<HomeController> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      controller.walletRx.value.length > 0
+                                      controller.walletRx.value.length > 0 &&
+                                              controller
+                                                  .isHomeBalanceEnabledRx.value
                                           ? controller
                                               .walletRx.value[0].displayedValue
                                           : '',
@@ -537,8 +537,7 @@ class HomePage extends GetView<HomeController> {
       onTap: () {
         if (onTapCallback != null) {
           onTapCallback();
-        }
-        else {
+        } else {
           controller.toShowDetail(show);
         }
       },

@@ -324,4 +324,12 @@ abstract class SatorioRepository {
   Future<bool> isPaidUnlockEnabled();
 
   Future<bool> isTipsEnabled();
+
+  Future<bool> isBottomSheetPtsEnabled();
+
+  Future<bool> isWinnerScoresEnabled();
+
+  Future<bool> isHomeBalanceEnabled();
+
+  Future<bool> isRealmEarnedSaoEnabled();
 }

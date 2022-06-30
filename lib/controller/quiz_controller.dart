@@ -37,6 +37,8 @@ class QuizController extends GetxController {
 
   final Rx<QuizScreenType> screenTypeRx = Rx(QuizScreenType.lobby);
 
+  final RxBool isBottomSheetPtsEnabledRx = false.obs;
+
   final SatorioRepository _satorioRepository = Get.find();
 
   QuizController() {
@@ -45,6 +47,10 @@ class QuizController extends GetxController {
     natsConfig = argument.natsConfig;
 
     _initConnection();
+
+    _satorioRepository
+        .isBottomSheetPtsEnabled()
+        .then((value) => isBottomSheetPtsEnabledRx.value = value);
   }
 
   @override
@@ -206,7 +212,7 @@ class QuizController extends GetxController {
       //correct answer
       HapticFeedback.vibrate();
       Get.bottomSheet(
-        SuccessAnswerBottomSheet(payloadQuestionResult),
+        SuccessAnswerBottomSheet(isBottomSheetPtsEnabledRx.value, payloadQuestionResult),
       );
     } else {
       // wrong answer

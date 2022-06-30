@@ -275,60 +275,69 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(right: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(8),
-                        ),
-                        color: Colors.white.withOpacity(0.6),
-                      ),
-                      padding: EdgeInsets.all(16),
-                      child: Center(
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'images/sator_logo.svg',
-                              color: SatorioColor.textBlack,
-                              height: 20,
-                              width: 20,
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Obx(
-                                  () => Text(
-                                    controller
-                                        .showEpisodeRx.value.totalRewardsAmount
-                                        .toStringAsFixed(2),
-                                    style: textTheme.bodyText2!.copyWith(
+                    Obx(
+                      () => controller.isRealmEarnedSaoEnabledRx.value
+                          ? Container(
+                              margin: EdgeInsets.only(right: 16),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                                color: Colors.white.withOpacity(0.6),
+                              ),
+                              padding: EdgeInsets.all(16),
+                              child: Center(
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(
+                                      'images/sator_logo.svg',
                                       color: SatorioColor.textBlack,
-                                      fontSize: 15 * coefficient,
-                                      fontWeight: FontWeight.w600,
+                                      height: 20,
+                                      width: 20,
                                     ),
-                                  ),
+                                    SizedBox(
+                                      width: 16,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Obx(
+                                          () => Text(
+                                            controller.showEpisodeRx.value
+                                                .totalRewardsAmount
+                                                .toStringAsFixed(2),
+                                            style:
+                                                textTheme.bodyText2!.copyWith(
+                                              color: SatorioColor.textBlack,
+                                              fontSize: 15 * coefficient,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        Text(
+                                          'txt_sao_earned'.tr,
+                                          style: textTheme.bodyText2!.copyWith(
+                                            color: SatorioColor.textBlack,
+                                            fontSize: 12 * coefficient,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                Text(
-                                  'txt_sao_earned'.tr,
-                                  style: textTheme.bodyText2!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 12 * coefficient,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
+                              ),
                             )
-                          ],
-                        ),
-                      ),
+                          : SizedBox(
+                              width: 0,
+                            ),
                     ),
                     Container(
                       margin: EdgeInsets.only(right: 16),

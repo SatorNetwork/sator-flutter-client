@@ -1047,4 +1047,24 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<bool> isTipsEnabled() {
     return _firebaseDataSource.isTipsEnabled();
   }
+
+  @override
+  Future<bool> isBottomSheetPtsEnabled() {
+    return _firebaseDataSource.isBottomSheetPtsEnabled();
+  }
+
+  @override
+  Future<bool> isWinnerScoresEnabled() {
+    return _firebaseDataSource.isWinnerScoresEnabled();
+  }
+
+  @override
+  Future<bool> isHomeBalanceEnabled() {
+    return _firebaseDataSource.isHomeBalanceEnabled();
+  }
+
+  @override
+  Future<bool> isRealmEarnedSaoEnabled() {
+    return _firebaseDataSource.isRealmEarnedSaoEnabled();
+  }
 }
