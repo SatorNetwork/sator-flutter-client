@@ -186,7 +186,14 @@ class ChallengePage extends GetView<ChallengeController> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 25),
+                  Obx(
+                    () => SizedBox(
+                      height: controller.isRealmEarnedSaoEnabledRx.value ||
+                              controller.challengeRx.value?.receivedReward == 0
+                          ? 25
+                          : 0,
+                    ),
+                  ),
                   Obx(
                     () => controller.isRealmEarnedSaoEnabledRx.value ||
                             controller.challengeRx.value?.receivedReward == 0
@@ -219,12 +226,7 @@ class ChallengePage extends GetView<ChallengeController> {
                             height: 0,
                           ),
                   ),
-                  Obx(
-                    () => SizedBox(
-                      height: controller.isRealmEarnedSaoEnabledRx.value ||
-                          controller.challengeRx.value?.receivedReward == 0 ? 45 : 0,
-                    ),
-                  ),
+                  SizedBox(height: 45),
                   Obx(
                     () => ElevatedGradientButton(
                       text: _buttonText(controller.challengeRx.value),
