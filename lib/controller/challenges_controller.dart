@@ -15,6 +15,8 @@ class ChallengesController extends GetxController {
   final RxBool _isLoadingRx = false.obs;
   final RxBool _isAllLoadedRx = false.obs;
 
+  final RxBool isPaidUnlockEnabledRx = false.obs;
+
   final Rx<List<ChallengeSimple>> challengesRx = Rx([]);
 
   ChallengesController();
@@ -22,6 +24,11 @@ class ChallengesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    _satorioRepository
+        .isPaidUnlockEnabled()
+        .then((value) => isPaidUnlockEnabledRx.value = value);
+
     loadChallenges();
   }
 

@@ -98,11 +98,8 @@ class ChallengePage extends GetView<ChallengeController> {
                   ),
                   SizedBox(height: 48),
                   Obx(
-                    () => controller
-                                .challengeRx.value?.currentPrizePool.isEmpty ??
-                            true
-                        ? SizedBox(height: 0)
-                        : Row(
+                    () => controller.isPaidUnlockEnabledRx.value
+                        ? Row(
                             children: [
                               Text(
                                 'txt_prize_pool'.tr,
@@ -126,15 +123,13 @@ class ChallengePage extends GetView<ChallengeController> {
                                 ),
                               ),
                             ],
-                          ),
+                          )
+                        : SizedBox(height: 0),
                   ),
                   Obx(
                     () => SizedBox(
-                        height: controller.challengeRx.value?.currentPrizePool
-                                    .isEmpty ??
-                                true
-                            ? 0
-                            : 25),
+                      height: controller.isPaidUnlockEnabledRx.value ? 25 : 0,
+                    ),
                   ),
                   Row(
                     children: [
@@ -193,33 +188,42 @@ class ChallengePage extends GetView<ChallengeController> {
                   ),
                   SizedBox(height: 25),
                   Obx(
-                    () => Row(
-                      children: [
-                        Text(
-                          _blockTitle(controller.challengeRx.value),
-                          style: textTheme.bodyText1!.copyWith(
-                            color: SatorioColor.textBlack,
-                            fontSize: 15.0 * coefficient,
-                            fontWeight: FontWeight.w400,
+                    () => controller.isRealmEarnedSaoEnabledRx.value ||
+                            controller.challengeRx.value?.receivedReward == 0
+                        ? Row(
+                            children: [
+                              Text(
+                                _blockTitle(controller.challengeRx.value),
+                                style: textTheme.bodyText1!.copyWith(
+                                  color: SatorioColor.textBlack,
+                                  fontSize: 15.0 * coefficient,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  _blockValue(controller.challengeRx.value),
+                                  textAlign: TextAlign.end,
+                                  style: textTheme.bodyText1!.copyWith(
+                                    color: _blockValueTextColor(
+                                        controller.challengeRx.value),
+                                    fontSize: 15.0 * coefficient,
+                                    fontWeight: _blockValueTextWeight(
+                                        controller.challengeRx.value),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : SizedBox(
+                            height: 0,
                           ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            _blockValue(controller.challengeRx.value),
-                            textAlign: TextAlign.end,
-                            style: textTheme.bodyText1!.copyWith(
-                              color: _blockValueTextColor(
-                                  controller.challengeRx.value),
-                              fontSize: 15.0 * coefficient,
-                              fontWeight: _blockValueTextWeight(
-                                  controller.challengeRx.value),
-                            ),
-                          ),
-                        ),
-                      ],
+                  ),
+                  Obx(
+                    () => SizedBox(
+                      height: controller.isPaidUnlockEnabledRx.value ? 45 : 0,
                     ),
                   ),
-                  SizedBox(height: 45),
                   Obx(
                     () => ElevatedGradientButton(
                       text: _buttonText(controller.challengeRx.value),
