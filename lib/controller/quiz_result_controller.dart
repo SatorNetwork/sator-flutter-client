@@ -33,7 +33,9 @@ class QuizResultController extends GetxController {
   void updateQuizResult(PayloadChallengeResult payloadChallengeResult) {
     resultRx.value = payloadChallengeResult;
 
-    _checkIsUserWinner(payloadChallengeResult.winners);
+    if (isWinnerScoresEnabledRx.value) {
+      _checkIsUserWinner(payloadChallengeResult.winners);
+    }
   }
 
   void claimRewards() {
