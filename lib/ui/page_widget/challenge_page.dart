@@ -221,7 +221,8 @@ class ChallengePage extends GetView<ChallengeController> {
                   ),
                   Obx(
                     () => SizedBox(
-                      height: controller.isPaidUnlockEnabledRx.value ? 45 : 0,
+                      height: controller.isRealmEarnedSaoEnabledRx.value ||
+                          controller.challengeRx.value?.receivedReward == 0 ? 45 : 0,
                     ),
                   ),
                   Obx(
