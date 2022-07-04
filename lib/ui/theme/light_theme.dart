@@ -29,6 +29,7 @@ final double coefficient = Get.height / 812;
 
 final bool isMaxScreenWidth = Get.width > 580.0;
 
+// TODO:to separate widget
 Widget backgroundImage(String imagePath) {
   return SvgPicture.asset(
     imagePath,
