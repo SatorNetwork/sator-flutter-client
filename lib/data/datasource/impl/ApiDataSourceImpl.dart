@@ -8,7 +8,6 @@ import 'package:satorio/data/datasource/device_info_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
-import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
@@ -24,6 +23,7 @@ import 'package:satorio/data/model/puzzle/puzzle_unlock_option_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
+import 'package:satorio/data/model/sao_wallet_config_model.dart';
 import 'package:satorio/data/model/show_category_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
@@ -90,11 +90,9 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect.timeout = Duration(seconds: 30);
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-
       String? deviceId = await _deviceInfoDataSource.getDeviceId();
 
-      if (deviceId.isNotEmpty)
-        request.headers['Device-ID'] = deviceId;
+      if (deviceId.isNotEmpty) request.headers['Device-ID'] = deviceId;
 
       String? token = await _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
@@ -412,23 +410,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Wallet
 
   @override
-  Future<List<AmountCurrencyModel>> walletBalance() {
-    return _getConnect
-        .requestGet(
-      'balance',
-    )
-        .then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable)
-        return (jsonData['data'] as Iterable)
-            .map((element) => AmountCurrencyModel.fromJson(element))
-            .toList();
-      else
-        return [];
-    });
-  }
-
-  @override
   Future<List<WalletModel>> wallets() {
     return _getConnect
         .requestGet(
@@ -443,6 +424,16 @@ class ApiDataSourceImpl implements ApiDataSource {
       else
         return [];
     });
+  }
+
+  @override
+  Future<SaoWalletConfigModel> saoWallet() {
+    return _getConnect.requestGet('wallets/sao').then(
+      (Response response) {
+        return SaoWalletConfigModel.fromJson(
+            json.decode(response.bodyString!)['data']);
+      },
+    );
   }
 
   @override

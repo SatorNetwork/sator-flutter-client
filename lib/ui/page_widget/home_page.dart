@@ -113,11 +113,11 @@ class HomePage extends GetView<HomeController> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      controller.walletRx.value.length > 0 &&
+                                      controller.saoWalletRx.value.length > 0 &&
                                               controller
                                                   .isHomeBalanceEnabledRx.value
-                                          ? controller
-                                              .walletRx.value[0].displayedValue
+                                          ? controller.saoWalletRx.value[0]
+                                              .displayedValue
                                           : '',
                                       style: textTheme.bodyText1!.copyWith(
                                         color: SatorioColor.darkAccent,
