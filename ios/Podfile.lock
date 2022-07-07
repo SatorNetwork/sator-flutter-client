@@ -126,6 +126,8 @@ PODS:
     - OrderedSet (~> 5.0)
   - flutter_secure_storage (3.3.1):
     - Flutter
+  - flutter_unity_widget (4.0.0):
+    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -240,6 +242,7 @@ DEPENDENCIES:
   - flutter_inapp_purchase (from `.symlinks/plugins/flutter_inapp_purchase/ios`)
   - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
+  - flutter_unity_widget (from `.symlinks/plugins/flutter_unity_widget/ios`)
   - local_auth (from `.symlinks/plugins/local_auth/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
@@ -313,6 +316,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_inappwebview/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
+  flutter_unity_widget:
+    :path: ".symlinks/plugins/flutter_unity_widget/ios"
   local_auth:
     :path: ".symlinks/plugins/local_auth/ios"
   package_info_plus:
@@ -338,7 +343,7 @@ SPEC CHECKSUMS:
   Cache: 4ca7e00363fca5455f26534e5607634c820ffc2d
   connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
   device_info_plus: e5c5da33f982a436e103237c0c85f9031142abed
-  fast_rsa: 75791197cef082a0e3ba2376e65cbf83176d13aa
+  fast_rsa: 27bc53282e6bfdfd7f86dd2cb7e1625fe0cee824
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
   firebase_analytics: 255aab7b18367301ea2e6e1dcfed017b8829c785
   firebase_core: b0b382f1497ab407aceb25e41e3036c8798c1609
@@ -360,6 +365,7 @@ SPEC CHECKSUMS:
   flutter_inapp_purchase: 5c6a1ac3f11b11d0c8c0321c0c41c1f05805e4c8
   flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
   flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  flutter_unity_widget: e509f3109933aa0c63b1bc149ca3d5b90fb68543
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   GoogleAppMeasurement: 71156240babd3cc6ced03e0d54816f01a880c730
@@ -387,4 +393,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a1ffedfeccdf2f3825a0f324cda2a075901af42d
 
-COCOAPODS: 1.11.0
+COCOAPODS: 1.11.3
