@@ -2,7 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:satorio/domain/entities/fcm_type.dart';
+import 'package:satorio/domain/entities/fcm_announcement_type.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 
@@ -132,7 +132,7 @@ extension SatorGetInterface on GetInterface {
       "${message.notification!.title}",
       "${message.notification!.body}",
       mainButton: _mainButton(
-          _fcmButtonText(rmType), onPressed, SatorioColor.bright_grey),
+          callbackButtonText(rmType), onPressed, SatorioColor.bright_grey),
       backgroundColor: _fcmSnackbarColor(rmType).withOpacity(0.8),
       colorText: SatorioColor.darkAccent,
       duration: Duration(seconds: 4),
@@ -150,11 +150,15 @@ extension SatorGetInterface on GetInterface {
     }
   }
 
-  String _fcmButtonText(String type) {
+  String callbackButtonText(String type) {
     switch (type) {
       case FCMType.newShow:
         return "txt_to_show".tr;
       case FCMType.newEpisode:
+        return "txt_to_episode".tr;
+      case AnnouncementType.show:
+        return "txt_to_show".tr;
+      case AnnouncementType.episode:
         return "txt_to_episode".tr;
       default:
         return "To new";

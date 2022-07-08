@@ -9,7 +9,8 @@ import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
-import 'package:satorio/domain/entities/fcm_type.dart';
+import 'package:satorio/domain/entities/fcm_announcement_type.dart';
+import 'package:satorio/domain/entities/realm.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
@@ -72,24 +73,13 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   void _fcmEpisode(RemoteMessage message) {
     final SatorioRepository _satorioRepository = Get.find();
-    final String showId = message.data["show_id"];
-    final String episodeId = message.data["episode_id"];
-    final String seasonId = message.data["season_id"];
 
-    _satorioRepository.showDetail(showId).then((showDetail) {
-      _satorioRepository.showEpisode(showId, episodeId).then(
-        (showEpisode) {
-          _satorioRepository
-              .seasonById(showId, seasonId)
-              .then((ShowSeason showSeason) {
-            Get.to(
-              () => ShowEpisodesRealmPage(),
-              binding: ShowEpisodesRealmBinding(),
-              arguments: ShowEpisodeRealmArgument(
-                  showDetail, showSeason, showEpisode, false),
-            );
-          });
-        },
+    _satorioRepository.episodeById(message.data["episode_id"]).then((Realm realm) {
+      Get.to(
+            () => ShowEpisodesRealmPage(),
+        binding: ShowEpisodesRealmBinding(),
+        arguments: ShowEpisodeRealmArgument(
+            realm.showDetail, realm.showSeason, realm.showEpisode, false),
       );
     });
   }

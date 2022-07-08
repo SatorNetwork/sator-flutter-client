@@ -9,6 +9,7 @@ import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
+import 'package:satorio/data/model/announcement_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
@@ -22,6 +23,7 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/puzzle/puzzle_game_model.dart';
 import 'package:satorio/data/model/puzzle/puzzle_unlock_option_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
+import 'package:satorio/data/model/realm_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
 import 'package:satorio/data/model/show_category_model.dart';
@@ -90,11 +92,9 @@ class ApiDataSourceImpl implements ApiDataSource {
     _getConnect.timeout = Duration(seconds: 30);
 
     _getConnect.httpClient.addRequestModifier<Object?>((request) async {
-
       String? deviceId = await _deviceInfoDataSource.getDeviceId();
 
-      if (deviceId.isNotEmpty)
-        request.headers['Device-ID'] = deviceId;
+      if (deviceId.isNotEmpty) request.headers['Device-ID'] = deviceId;
 
       String? token = await _authDataSource.getAuthToken();
       if (token != null && token.isNotEmpty)
@@ -732,6 +732,17 @@ class ApiDataSourceImpl implements ApiDataSource {
   }
 
   @override
+  Future<RealmModel> episodeById(String episodeId) {
+    return _getConnect
+        .requestGet(
+      'shows/episodes/$episodeId',
+    )
+        .then((Response response) {
+      return RealmModel.fromJson(json.decode(response.bodyString!)['data']);
+    });
+  }
+
+  @override
   Future<List<ReviewModel>> getReviews(String showId, String episodeId,
       {int? page, int? itemsPerPage}) {
     Map<String, String>? query;
@@ -1326,6 +1337,36 @@ class ApiDataSourceImpl implements ApiDataSource {
       'firebase/register_token',
       RegisterTokenRequest(deviceId, token),
     )
+        .then((Response response) {
+      return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
+    });
+  }
+
+//endregion
+
+// region Announcements
+  @override
+  Future<List<AnnouncementModel>> unreadAnnouncements() {
+    return _getConnect
+        .requestGet(
+      'announcement/unread',
+    )
+        .then((Response response) {
+      Map jsonData = json.decode(response.bodyString!);
+      if (jsonData['data'] != null && jsonData['data'] is Iterable) {
+        return (jsonData['data'] as Iterable)
+            .map((element) => AnnouncementModel.fromJson(element))
+            .toList();
+      } else {
+        return [];
+      }
+    });
+  }
+
+  @override
+  Future<bool> markAnnouncementAsRead(String announcementId) {
+    return _getConnect
+        .requestPost('announcement/$announcementId/read', EmptyRequest())
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
     });
