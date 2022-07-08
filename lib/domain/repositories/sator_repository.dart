@@ -329,6 +329,14 @@ abstract class SatorioRepository {
 
   Future<bool> isTipsEnabled();
 
+  Future<bool> isBottomSheetPtsEnabled();
+
+  Future<bool> isWinnerScoresEnabled();
+
+  Future<bool> isHomeBalanceEnabled();
+
+  Future<bool> isRealmEarnedSaoEnabled();
+
   Future<List<Announcement>> unreadAnnouncements();
 
   Future<bool> markAnnouncementAsRead(String announcementId);

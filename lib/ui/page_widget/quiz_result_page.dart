@@ -45,14 +45,16 @@ class QuizResultPage extends GetView<QuizResultController> {
         _topOffset(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            'txt_scores'.tr,
-            style: textTheme.headline4!.copyWith(
-              color: SatorioColor.darkAccent,
-              fontSize: 24.0 * coefficient,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          child: Obx(() => Text(
+                controller.isWinnerScoresEnabledRx.value
+                    ? 'txt_scores'.tr
+                    : 'txt_players'.tr,
+                style: textTheme.headline4!.copyWith(
+                  color: SatorioColor.darkAccent,
+                  fontSize: 24.0 * coefficient,
+                  fontWeight: FontWeight.w700,
+                ),
+              )),
         ),
         SizedBox(
           height: 21 * coefficient,
@@ -282,26 +284,32 @@ class QuizResultPage extends GetView<QuizResultController> {
               ),
             ),
           ),
-          Container(
-            height: 32,
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(16.0),
-              ),
-              color: SatorioColor.interactive,
-            ),
-            child: Center(
-              child: Text(
-                prize,
-                overflow: TextOverflow.ellipsis,
-                style: textTheme.bodyText1!.copyWith(
-                  color: Colors.white,
-                  fontSize: 15.0 * coefficient,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
+          Obx(
+            () => controller.isWinnerScoresEnabledRx.value
+                ? Container(
+                    height: 32,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(16.0),
+                      ),
+                      color: SatorioColor.interactive,
+                    ),
+                    child: Center(
+                      child: Text(
+                        prize,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyText1!.copyWith(
+                          color: Colors.white,
+                          fontSize: 15.0 * coefficient,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                : SizedBox(
+                    width: 0,
+                  ),
           )
         ],
       ),

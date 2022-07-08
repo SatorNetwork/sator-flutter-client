@@ -18,17 +18,24 @@ class QuizResultController extends GetxController {
   SatorioRepository _satorioRepository = Get.find();
 
   final RxString claimText = ''.obs;
+  final RxBool isWinnerScoresEnabledRx = false.obs;
 
   QuizResultController() {
     _satorioRepository.claimRewardsText().then((value) {
       claimText.value = value;
     });
+
+    _satorioRepository
+        .isWinnerScoresEnabled()
+        .then((value) => isWinnerScoresEnabledRx.value = value);
   }
 
   void updateQuizResult(PayloadChallengeResult payloadChallengeResult) {
     resultRx.value = payloadChallengeResult;
 
-    _checkIsUserWinner(payloadChallengeResult.winners);
+    if (isWinnerScoresEnabledRx.value) {
+      _checkIsUserWinner(payloadChallengeResult.winners);
+    }
   }
 
   void claimRewards() {

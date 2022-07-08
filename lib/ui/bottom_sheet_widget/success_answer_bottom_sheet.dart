@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/payload/payload_question_result.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/util/extension.dart';
 
 class SuccessAnswerBottomSheet extends StatelessWidget {
-  const SuccessAnswerBottomSheet(this.data);
+  const SuccessAnswerBottomSheet(this.isBottomSheetPtsEnabled, this.data);
 
+  final bool isBottomSheetPtsEnabled;
   final PayloadQuestionResult data;
 
   @override
@@ -102,15 +102,16 @@ class SuccessAnswerBottomSheet extends StatelessWidget {
                         backgroundColor: Colors.transparent,
                       ),
                       children: <TextSpan>[
-                        TextSpan(
-                          text: 'txt_add_pts'.tr.format([data.additionalPts]),
-                          style: TextStyle(
-                            color: SatorioColor.textBlack,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
-                            backgroundColor: Colors.transparent,
+                        if (isBottomSheetPtsEnabled)
+                          TextSpan(
+                            text: 'txt_add_pts'.tr.format([data.additionalPts]),
+                            style: TextStyle(
+                              color: SatorioColor.textBlack,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                              backgroundColor: Colors.transparent,
+                            ),
                           ),
-                        ),
                       ],
                     ),
                   ),
