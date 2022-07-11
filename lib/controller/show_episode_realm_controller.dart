@@ -638,17 +638,21 @@ class ShowEpisodeRealmController extends GetxController
           .then((value) => _satorioRepository.puzzleOptions())
           .then((puzzleOptions) {
             isRequestedForPuzzleOptions.value = false;
-            Get.bottomSheet(
-              PuzzleOptionsBottomSheet(
-                puzzleGameRx.value?.prizePool ?? 0.0,
-                puzzleOptions,
-                (puzzleOption) {
-                  _puzzleUnlock(puzzleOption);
-                },
-              ),
-              isScrollControlled: true,
-              barrierColor: Colors.transparent,
-            );
+            if (puzzleOptions.isEmpty) {
+              _toPuzzle();
+            } else {
+              Get.bottomSheet(
+                PuzzleOptionsBottomSheet(
+                  puzzleGameRx.value?.prizePool ?? 0.0,
+                  puzzleOptions,
+                  (puzzleOption) {
+                    _puzzleUnlock(puzzleOption);
+                  },
+                ),
+                isScrollControlled: true,
+                barrierColor: Colors.transparent,
+              );
+            }
           })
           .catchError(
             (value) {
