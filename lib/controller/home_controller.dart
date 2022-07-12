@@ -7,6 +7,7 @@ import 'package:satorio/binding/nft_list_binding.dart';
 import 'package:satorio/binding/rss_item_binding.dart';
 import 'package:satorio/binding/rss_list_binding.dart';
 import 'package:satorio/binding/show_detail_with_episodes_binding.dart';
+import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/binding/shows_category_binding.dart';
 import 'package:satorio/controller/main_controller.dart';
 import 'package:satorio/controller/mixin/non_working_feature_mixin.dart';
@@ -15,26 +16,34 @@ import 'package:satorio/controller/nft_item_controller.dart';
 import 'package:satorio/controller/nft_list_controller.dart';
 import 'package:satorio/controller/rss_item_controller.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
+import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/controller/shows_category_controller.dart';
+import 'package:satorio/domain/entities/amount_currency.dart';
+import 'package:satorio/domain/entities/announcement.dart';
+import 'package:satorio/domain/entities/fcm_announcement_type.dart';
 import 'package:satorio/domain/entities/nft_filter_type.dart';
 import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/realm.dart';
 import 'package:satorio/domain/entities/sao_wallet.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
+import 'package:satorio/ui/bottom_sheet_widget/default_bottom_sheet.dart';
 import 'package:satorio/ui/page_widget/challenges_page.dart';
 import 'package:satorio/ui/page_widget/nft_item_page.dart';
 import 'package:satorio/ui/page_widget/nft_list_page.dart';
 import 'package:satorio/ui/page_widget/rss_item_page.dart';
 import 'package:satorio/ui/page_widget/rss_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
+import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
 import 'package:webfeed/webfeed.dart';
+import 'package:satorio/util/getx_extension.dart';
 
-class HomeController extends GetxController
+class HomeController extends SuperController
     with GetTickerProviderStateMixin, NonWorkingFeatureMixin {
   final SatorioRepository _satorioRepository = Get.find();
 
@@ -45,6 +54,8 @@ class HomeController extends GetxController
   final Rx<List<Show>> allShowsRx = Rx([]);
   final Rx<List<ShowCategory>> categoriesRx = Rx([]);
   final Rx<RssItem?> rssItemRx = Rx(null);
+
+  final Rx<Announcement?> announcementRx = Rx(null);
 
   final int _itemsPerPage = 10;
   static const int _initialPage = 1;
@@ -71,8 +82,29 @@ class HomeController extends GetxController
   }
 
   @override
+  void onDetached() {
+    this.onDetached();
+  }
+
+  @override
+  void onPaused() {
+    Get.back();
+  }
+
+  @override
+  void onInactive() {
+    Get.back();
+  }
+
+  @override
+  void onResumed() {
+    _unreadAnnouncement();
+  }
+
+  @override
   void onInit() {
     super.onInit();
+    _unreadAnnouncement();
     _loadAllShows();
     _loadCategories();
     _satorioRepository.updateRssItems();
@@ -116,6 +148,61 @@ class HomeController extends GetxController
 
     _loadCategories();
     _loadAllShows();
+  }
+
+  void _unreadAnnouncement() {
+    _satorioRepository.unreadAnnouncements().then((value) {
+      if (value.isNotEmpty && value[0].announcementData != null) {
+        announcementRx.value = value[0];
+        Get.bottomSheet(
+          DefaultBottomSheet(
+            announcementRx.value!.title.isEmpty
+                ? "Can not get title"
+                : announcementRx.value!.title,
+            announcementRx.value!.description.isEmpty
+                ? "Can not get description"
+                : announcementRx.value!.description,
+            Get.callbackButtonText(announcementRx.value!.type),
+            onPressed: () => _announcementCallback(),
+          ),
+        ).whenComplete(
+          () => _satorioRepository
+              .markAnnouncementAsRead(announcementRx.value!.id),
+        );
+      }
+    });
+  }
+
+  void _announcementCallback() {
+    switch (announcementRx.value!.type) {
+      case AnnouncementType.show:
+        _announcementShow(announcementRx.value!.announcementData!.showId);
+        break;
+      case AnnouncementType.episode:
+        _announcementEpisode(announcementRx.value!.announcementData!.episodeId);
+        break;
+    }
+  }
+
+  void _announcementShow(String showId) {
+    _satorioRepository.show(showId).then((show) {
+      Get.to(
+        () => ShowDetailWithEpisodesPage(),
+        binding: ShowDetailWithEpisodesBinding(),
+        arguments: ShowDetailWithEpisodesArgument(show),
+      );
+    });
+  }
+
+  void _announcementEpisode(String episodeId) {
+    _satorioRepository.episodeById(episodeId).then((Realm realm) {
+      Get.to(
+        () => ShowEpisodesRealmPage(),
+        binding: ShowEpisodesRealmBinding(),
+        arguments: ShowEpisodeRealmArgument(
+            realm.showDetail, realm.showSeason, realm.showEpisode, false),
+      );
+    });
   }
 
   void _loadNfts() {

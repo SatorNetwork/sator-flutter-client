@@ -22,6 +22,7 @@ import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
+import 'package:satorio/domain/entities/announcement.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
@@ -36,6 +37,7 @@ import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
+import 'package:satorio/domain/entities/realm.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/sao_wallet.dart';
@@ -439,6 +441,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<ShowEpisode> showEpisode(String showId, String episodeId) {
     return _apiDataSource
         .showEpisode(showId, episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<Realm> episodeById(String episodeId) {
+    return _apiDataSource
+        .episodeById(episodeId)
         .catchError((value) => _handleException(value));
   }
 
@@ -1079,5 +1088,19 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<bool> isRealmEarnedSaoEnabled() {
     return _firebaseDataSource.isRealmEarnedSaoEnabled();
+  }
+
+  @override
+  Future<List<Announcement>> unreadAnnouncements() {
+    return _apiDataSource
+        .unreadAnnouncements()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> markAnnouncementAsRead(String announcementId) {
+    return _apiDataSource
+        .markAnnouncementAsRead(announcementId)
+        .catchError((value) => _handleException(value));
   }
 }

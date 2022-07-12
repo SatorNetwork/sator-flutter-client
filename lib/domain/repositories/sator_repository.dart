@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';
 import 'package:get/get.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
+import 'package:satorio/domain/entities/announcement.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
@@ -16,6 +17,7 @@ import 'package:satorio/domain/entities/payload/payload_question.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
+import 'package:satorio/domain/entities/realm.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
 import 'package:satorio/domain/entities/show.dart';
@@ -155,6 +157,8 @@ abstract class SatorioRepository {
   Future<ShowSeason> seasonById(String showId, String seasonId);
 
   Future<ShowEpisode> showEpisode(String showId, String episodeId);
+
+  Future<Realm> episodeById(String episodeId);
 
   Future<Show> loadShow(String showId);
 
@@ -332,4 +336,8 @@ abstract class SatorioRepository {
   Future<bool> isHomeBalanceEnabled();
 
   Future<bool> isRealmEarnedSaoEnabled();
+
+  Future<List<Announcement>> unreadAnnouncements();
+
+  Future<bool> markAnnouncementAsRead(String announcementId);
 }
