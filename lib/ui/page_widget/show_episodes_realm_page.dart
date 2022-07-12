@@ -1012,43 +1012,49 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         SizedBox(
                           height: 32,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: InkWell(
-                            onTap: () {
-                              if (controller.nftItemsRx.value.isEmpty)
-                                controller.toNftsMarketplace();
-                              else
-                                controller.toNftList();
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'txt_collect'.tr,
-                                  style: textTheme.headline4!.copyWith(
-                                    color: SatorioColor.textBlack,
-                                    fontSize: 24 * coefficient,
-                                    fontWeight: FontWeight.w700,
+                        controller.nftItemsRx.value.isNotEmpty
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: InkWell(
+                                  onTap: () {
+                                    if (controller.nftItemsRx.value.isEmpty)
+                                      controller.toNftsMarketplace();
+                                    else
+                                      controller.toNftList();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'txt_collect'.tr,
+                                        style: textTheme.headline4!.copyWith(
+                                          color: SatorioColor.textBlack,
+                                          fontSize: 24 * coefficient,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.chevron_right_rounded,
+                                        size: 32 * coefficient,
+                                        color: SatorioColor.textBlack,
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Icon(
-                                  Icons.chevron_right_rounded,
-                                  size: 32 * coefficient,
-                                  color: SatorioColor.textBlack,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                              )
+                            : SizedBox(),
                         SizedBox(
                           height: 16,
                         ),
-                        Obx(
-                          () => controller.nftItemsRx.value.isEmpty
-                              ? _emptyNfts()
-                              : _nftItems(controller.nftItemsRx.value),
-                        ),
+                        controller.nftItemsRx.value.isNotEmpty
+                            ? Obx(
+                                () => controller.nftItemsRx.value.isEmpty
+                                    ? _emptyNfts()
+                                    : _nftItems(controller.nftItemsRx.value),
+                              )
+                            : SizedBox(),
                         SizedBox(
                           height: 32,
                         ),
