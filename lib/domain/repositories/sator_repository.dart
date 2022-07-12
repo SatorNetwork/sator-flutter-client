@@ -266,8 +266,6 @@ abstract class SatorioRepository {
 
   ValueListenable profileListenable();
 
-  ValueListenable walletBalanceListenable();
-
   ValueListenable walletsListenable();
 
   ValueListenable walletDetailsListenable(List<String>? ids);
@@ -275,6 +273,8 @@ abstract class SatorioRepository {
   ValueListenable transactionsListenable();
 
   ValueListenable rssItemsListenable();
+
+  ValueListenable saoWalletsListenable();
 
   //TODO: move to region
   Future<List<NftItem>> nftsFiltered({

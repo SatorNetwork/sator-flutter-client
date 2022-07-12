@@ -8,12 +8,14 @@ import 'package:satorio/data/datasource/local_data_source.dart';
 import 'package:satorio/data/db_adapter/amount_currency_adapter.dart';
 import 'package:satorio/data/db_adapter/profile_adapter.dart';
 import 'package:satorio/data/db_adapter/rss_item_adapter.dart';
+import 'package:satorio/data/db_adapter/sao_wallet_adapter.dart';
 import 'package:satorio/data/db_adapter/transaction_adapter.dart';
 import 'package:satorio/data/db_adapter/wallet_action_adapter.dart';
 import 'package:satorio/data/db_adapter/wallet_adapter.dart';
 import 'package:satorio/data/db_adapter/wallet_detail_adapter.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
 import 'package:satorio/domain/entities/profile.dart';
+import 'package:satorio/domain/entities/sao_wallet.dart';
 import 'package:satorio/domain/entities/transaction.dart';
 import 'package:satorio/domain/entities/wallet.dart';
 import 'package:satorio/domain/entities/wallet_detail.dart';
@@ -26,6 +28,7 @@ class LocalDataSourceImpl implements LocalDataSource {
   static const _walletDetailBox = 'walletDetail';
   static const _transactionBox = 'transaction';
   static const _rssItemBox = 'rssItem';
+  static const _saoWallletBox = 'saoWallet';
 
   static const _isBiometricEnabled = 'isBiometricEnabled';
   static const _isBiometricUserDisabled = 'isBiometricUserDisabled';
@@ -45,10 +48,11 @@ class LocalDataSourceImpl implements LocalDataSource {
     Hive.registerAdapter(WalletDetailAdapter());
     Hive.registerAdapter(TransactionAdapter());
     Hive.registerAdapter(RssItemAdapter());
+    Hive.registerAdapter(SaoWalletAdapter());
 
     try {
       await _open();
-    } catch (HiveError) {
+    } catch (hiveError) {
       await _delete();
       await _open();
     }
@@ -61,6 +65,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     await Hive.openBox<WalletDetail>(_walletDetailBox);
     await Hive.openBox<Transaction>(_transactionBox);
     await Hive.openBox<RssItem>(_rssItemBox);
+    await Hive.openBox<SaoWallet>(_saoWallletBox);
   }
 
   Future<void> _delete() async {
@@ -70,6 +75,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     await Hive.deleteBoxFromDisk(_walletDetailBox);
     await Hive.deleteBoxFromDisk(_transactionBox);
     await Hive.deleteBoxFromDisk(_rssItemBox);
+    await Hive.deleteBoxFromDisk(_saoWallletBox);
   }
 
   @override
@@ -79,6 +85,7 @@ class LocalDataSourceImpl implements LocalDataSource {
     await Hive.box<Wallet>(_walletBox).clear();
     await Hive.box<WalletDetail>(_walletDetailBox).clear();
     await Hive.box<Transaction>(_transactionBox).clear();
+    await Hive.box<SaoWallet>(_saoWallletBox).clear();
   }
 
   @override
@@ -130,23 +137,6 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   ValueListenable profileListenable() {
     return Hive.box<Profile>(_profileBox).listenable();
-  }
-
-  @override
-  Future<void> saveWalletBalance(List<AmountCurrency> wallet) {
-    Box<AmountCurrency> walletBalanceBox =
-        Hive.box<AmountCurrency>(_walletBalanceBox);
-    return walletBalanceBox
-        .clear()
-        .then((value) => walletBalanceBox.addAll(wallet))
-        .then((value) {
-      return;
-    });
-  }
-
-  @override
-  ValueListenable walletBalanceListenable() {
-    return Hive.box<AmountCurrency>(_walletBalanceBox).listenable();
   }
 
   @override
@@ -235,5 +225,14 @@ class LocalDataSourceImpl implements LocalDataSource {
   @override
   ValueListenable rssItemsListenable() {
     return Hive.box<RssItem>(_rssItemBox).listenable();
+  }
+
+  Future<void> saveSaoWallet(SaoWallet saoWallet) {
+    return Hive.box<SaoWallet>(_saoWallletBox).put(0, saoWallet);
+  }
+
+  @override
+  ValueListenable saveSaoWalletsListenable() {
+    return Hive.box<SaoWallet>(_saoWallletBox).listenable();
   }
 }

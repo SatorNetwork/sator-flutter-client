@@ -40,6 +40,7 @@ import 'package:satorio/domain/entities/qr_show.dart';
 import 'package:satorio/domain/entities/realm.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
+import 'package:satorio/domain/entities/sao_wallet.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
@@ -654,13 +655,25 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> updateWalletBalance() {
-    return _apiDataSource
-        .walletBalance()
-        .then(
-          (List<AmountCurrency> amountCurrencies) =>
-              _localDataSource.saveWalletBalance(amountCurrencies),
-        )
-        .catchError((value) => _handleException(value));
+    return _apiDataSource.saoWallet().then(
+      (saoWalletConfig) {
+        return _solanaDataSource
+            .balanceSAO(saoWalletConfig.walletPublicKey)
+            .then(
+          (balance) {
+            _localDataSource.saveSaoWallet(
+              SaoWallet(
+                saoWalletConfig.walletPublicKey,
+                saoWalletConfig.walletPrivateKey,
+                saoWalletConfig.tokenSymbol,
+                saoWalletConfig.tokenMintAddress,
+                balance ?? 0,
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -877,11 +890,6 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  ValueListenable walletBalanceListenable() {
-    return _localDataSource.walletBalanceListenable();
-  }
-
-  @override
   ValueListenable walletsListenable() {
     return _localDataSource.walletsListenable();
   }
@@ -899,6 +907,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable rssItemsListenable() {
     return _localDataSource.rssItemsListenable();
+  }
+
+  @override
+  ValueListenable saoWalletsListenable() {
+    return _localDataSource.saveSaoWalletsListenable();
   }
 
   //TODO:  move to region

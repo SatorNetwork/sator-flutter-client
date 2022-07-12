@@ -26,6 +26,7 @@ import 'package:satorio/data/model/qr_show_model.dart';
 import 'package:satorio/data/model/realm_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
+import 'package:satorio/data/model/sao_wallet_config_model.dart';
 import 'package:satorio/data/model/show_category_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
@@ -412,23 +413,6 @@ class ApiDataSourceImpl implements ApiDataSource {
   // region Wallet
 
   @override
-  Future<List<AmountCurrencyModel>> walletBalance() {
-    return _getConnect
-        .requestGet(
-      'balance',
-    )
-        .then((Response response) {
-      Map jsonData = json.decode(response.bodyString!);
-      if (jsonData['data'] is Iterable)
-        return (jsonData['data'] as Iterable)
-            .map((element) => AmountCurrencyModel.fromJson(element))
-            .toList();
-      else
-        return [];
-    });
-  }
-
-  @override
   Future<List<WalletModel>> wallets() {
     return _getConnect
         .requestGet(
@@ -443,6 +427,16 @@ class ApiDataSourceImpl implements ApiDataSource {
       else
         return [];
     });
+  }
+
+  @override
+  Future<SaoWalletConfigModel> saoWallet() {
+    return _getConnect.requestGet('wallets/sao').then(
+      (Response response) {
+        return SaoWalletConfigModel.fromJson(
+            json.decode(response.bodyString!)['data']);
+      },
+    );
   }
 
   @override

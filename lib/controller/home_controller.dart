@@ -26,6 +26,7 @@ import 'package:satorio/domain/entities/nft_item.dart';
 import 'package:satorio/domain/entities/nft_order_type.dart';
 import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/realm.dart';
+import 'package:satorio/domain/entities/sao_wallet.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/shows_type.dart';
@@ -47,7 +48,7 @@ class HomeController extends SuperController
   final SatorioRepository _satorioRepository = Get.find();
 
   final Rx<Profile?> profileRx = Rx(null);
-  final Rx<List<AmountCurrency>> walletRx = Rx([]);
+  final Rx<List<SaoWallet>> saoWalletRx = Rx([]);
 
   late final Rx<List<NftItem>> nftHomeRx = Rx([]);
   final Rx<List<Show>> allShowsRx = Rx([]);
@@ -64,15 +65,15 @@ class HomeController extends SuperController
   final RxBool isHomeBalanceEnabledRx = false.obs;
 
   late ValueListenable<Box<Profile>> _profileListenable;
-  late ValueListenable<Box<AmountCurrency>> _walletBalanceListenable;
+  late ValueListenable<Box<SaoWallet>> _saoWalletsListenable;
   late ValueListenable<Box<RssItem>> _rssItemsListenable;
 
   HomeController() {
     this._profileListenable =
         _satorioRepository.profileListenable() as ValueListenable<Box<Profile>>;
 
-    this._walletBalanceListenable = _satorioRepository.walletBalanceListenable()
-        as ValueListenable<Box<AmountCurrency>>;
+    this._saoWalletsListenable = _satorioRepository.saoWalletsListenable()
+        as ValueListenable<Box<SaoWallet>>;
 
     _rssItemsListenable = _satorioRepository.rssItemsListenable()
         as ValueListenable<Box<RssItem>>;
@@ -123,8 +124,8 @@ class HomeController extends SuperController
     _profileListener();
     _profileListenable.addListener(_profileListener);
 
-    _walletBalanceListener();
-    _walletBalanceListenable.addListener(_walletBalanceListener);
+    _saoWalletsListener();
+    _saoWalletsListenable.addListener(_saoWalletsListener);
 
     _rssItemsListener();
     _rssItemsListenable.addListener(_rssItemsListener);
@@ -133,7 +134,7 @@ class HomeController extends SuperController
   @override
   void onClose() {
     _profileListenable.removeListener(_profileListener);
-    _walletBalanceListenable.removeListener(_walletBalanceListener);
+    _saoWalletsListenable.removeListener(_saoWalletsListener);
     _rssItemsListenable.removeListener(_rssItemsListener);
     super.onClose();
   }
@@ -351,8 +352,8 @@ class HomeController extends SuperController
       profileRx.value = _profileListenable.value.getAt(0);
   }
 
-  void _walletBalanceListener() {
-    walletRx.value = _walletBalanceListenable.value.values.toList();
+  void _saoWalletsListener() {
+    saoWalletRx.value = _saoWalletsListenable.value.values.toList();
   }
 
   void _rssItemsListener() {
