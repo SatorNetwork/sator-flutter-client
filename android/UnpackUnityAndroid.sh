@@ -24,7 +24,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     updated_gradle=${updated_gradle//\/il2cpp.exe/"/il2cpp"}
 elif [[ "$OSTYPE" == "msys"* ]]; then
   if [[ $updated_gradle != *"/il2cpp.exe"* ]]; then
-    updated_gradle=${updated_gradle//\/il2cpp/"/il2cpp.exe"}
+    updated_gradle=${updated_gradle/\/il2cpp/"/il2cpp.exe"}
   fi
 fi
 
