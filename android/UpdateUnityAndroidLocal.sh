@@ -23,8 +23,10 @@ updated_gradle="${updated_gradle}
 }"
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  string_with_correct_slashes=".replaceAll('\\\\\\"
-  updated_gradle="${updated_gradle//.replaceAll(''\'/$string_with_correct_slashes}"
+  if [[ $updated_gradle != *"\\\\\\\\"* ]]; then
+    string_with_correct_slashes=".replaceAll('\\\\\\"
+    updated_gradle="${updated_gradle//.replaceAll(''\'/$string_with_correct_slashes}"
+  fi
 fi
 
 #Save changes to gradle build script
