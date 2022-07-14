@@ -9,7 +9,7 @@ if [ -d "$unzipFolder" ]; then
 fi
 
 #Put it in desired folder
-unzip -o "${SCRIPT_DIR}/unityLibrary.zip" -d "$SCRIPT_DIR"
+unzip -o "${SCRIPT_DIR}/unityLibrary.zip" -d "$unzipFolder"
 
 unityGradlePath="${unzipFolder}/build.gradle"
 value=`cat "$unityGradlePath"`
