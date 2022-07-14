@@ -318,6 +318,7 @@ const Map<String, String> en = {
   'txt_you_will_get': 'You will get %s sao',
   'txt_steps_left_of_steps': '%d of %d',
   'txt_steps_left': 'Steps Left',
+  'txt_steps': 'Steps',
   'txt_unscramble': 'Unscramble',
   'txt_dont_run_out_steps': 'Don’t run out of steps',
   'txt_reward': 'Reward',

@@ -145,7 +145,8 @@ class PuzzleController extends GetxController with GetTickerProviderStateMixin {
         case PuzzleGameStatus.finished:
           HapticFeedback.vibrate();
           Get.bottomSheet(
-            puzzleGameRx.value!.rewards > 0
+            puzzleGameRx.value!.rewards > 0 &&
+                    puzzleGameRx.value!.isRewardsEnabled
                 ? QuizWinnerBottomSheet(
                     '${puzzleGameRx.value!.rewards.toStringAsFixed(2)} SAO',
                     puzzleGameRx.value!.bonusRewards > 0
