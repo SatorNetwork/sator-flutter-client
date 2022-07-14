@@ -97,7 +97,7 @@ class PuzzlePage extends GetView<PuzzleController> {
                         () => Text(
                           puzzleGame.value == null ||
                                   puzzleGame.value!.prizePool <= 0 ||
-                                  puzzleGame.value!.isRewardsDisabled
+                                  !puzzleGame.value!.isRewardsEnabled
                               ? ''
                               : 'txt_you_will_get'.tr.format(
                                   [
@@ -232,22 +232,22 @@ class PuzzlePage extends GetView<PuzzleController> {
   String _stepsCountText(PuzzleGame? puzzleGame) {
     if (puzzleGame == null) {
       return '';
-    } else if (puzzleGame.isRewardsDisabled) {
-      return puzzleGame.stepsTaken.toString();
-    } else {
+    } else if (puzzleGame.isRewardsEnabled) {
       return 'txt_steps_left_of_steps'
           .tr
           .format([puzzleGame.steps - puzzleGame.stepsTaken, puzzleGame.steps]);
+    } else {
+      return puzzleGame.stepsTaken.toString();
     }
   }
 
   String _steps(PuzzleGame? puzzleGame) {
     if (puzzleGame == null) {
       return '';
-    } else if (puzzleGame.isRewardsDisabled) {
-      return 'txt_steps'.tr;
-    } else {
+    } else if (puzzleGame.isRewardsEnabled) {
       return 'txt_steps_left'.tr;
+    } else {
+      return 'txt_steps'.tr;
     }
   }
 }

@@ -16,7 +16,7 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
     int status,
     String image,
     List<TileModel> tiles,
-    bool isRewardsDisabled,
+    bool isRewardsEnabled,
   ) : super(
           id,
           episodeId,
@@ -29,7 +29,7 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
           status,
           image,
           tiles,
-          isRewardsDisabled,
+          isRewardsEnabled,
         );
 
   factory PuzzleGameModel.fromJson(Map json) => PuzzleGameModel(
@@ -49,7 +49,7 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
                 .map((element) => TileModel.fromJson(element))
                 .toList()
             : [],
-        json.parseValueAsBool('is_rewards_disabled'),
+        json.parseValueAsBool('rewards_enabled'),
       );
 
   @override
@@ -68,6 +68,6 @@ class PuzzleGameModel extends PuzzleGame implements ToJsonInterface {
             .whereType<ToJsonInterface>()
             .map((element) => element.toJson())
             .toList(),
-        'is_rewards_disabled': isRewardsDisabled,
+        'rewards_enabled': isRewardsEnabled,
       };
 }
