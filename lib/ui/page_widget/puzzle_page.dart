@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:satorio/controller/puzzle_controller.dart';
+import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/tile.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
@@ -94,12 +95,13 @@ class PuzzlePage extends GetView<PuzzleController> {
                       ),
                       Obx(
                         () => Text(
-                          controller.puzzleGameRx.value == null ||
-                                  controller.puzzleGameRx.value!.prizePool <= 0
+                          puzzleGame.value == null ||
+                                  puzzleGame.value!.prizePool <= 0 ||
+                                  !puzzleGame.value!.isRewardsEnabled
                               ? ''
                               : 'txt_you_will_get'.tr.format(
                                   [
-                                    controller.puzzleGameRx.value!.prizePool
+                                    puzzleGame.value!.prizePool
                                         .toStringAsFixed(2)
                                   ],
                                 ),
@@ -114,7 +116,7 @@ class PuzzlePage extends GetView<PuzzleController> {
                         height: 46 * coefficient,
                       ),
                       Obx(
-                        () => controller.puzzleGameRx.value == null
+                        () => puzzleGame.value == null
                             ? Container(
                                 width: Get.width - 2 * 20,
                                 height: Get.width - 2 * 20,
@@ -132,13 +134,13 @@ class PuzzlePage extends GetView<PuzzleController> {
                                 dimension: Get.width - 2 * 20,
                                 child: Stack(
                                   key: const Key('puzzle_tiles'),
-                                  children: controller.puzzleGameRx.value!.tiles
+                                  children: puzzleGame.value!.tiles
                                       .map(
                                         (tile) => _tileWidget(
                                           tile,
                                           controller
                                               .imagesRx.value[tile.value - 1],
-                                          controller.puzzleGameRx.value!.xSize,
+                                          puzzleGame.value!.xSize,
                                         ),
                                       )
                                       .toList(),
@@ -153,31 +155,25 @@ class PuzzlePage extends GetView<PuzzleController> {
                             children: [
                               Obx(
                                 () => Text(
-                                  controller.puzzleGameRx.value == null
-                                      ? ''
-                                      : 'txt_steps_left_of_steps'.tr.format([
-                                          controller.puzzleGameRx.value!.steps -
-                                              controller.puzzleGameRx.value!
-                                                  .stepsTaken,
-                                          controller.puzzleGameRx.value!.steps
-                                        ]),
+                                  _stepsCountText(puzzleGame.value),
                                   style: textTheme.bodyText1!.copyWith(
                                     fontSize: 24 * coefficient,
                                     fontWeight: FontWeight.w700,
-                                    color: controller.puzzleGameRx.value
-                                                ?.stepsTaken ==
-                                            controller.puzzleGameRx.value?.steps
+                                    color: puzzleGame.value?.stepsTaken ==
+                                            puzzleGame.value?.steps
                                         ? SatorioColor.error
                                         : SatorioColor.darkAccent,
                                   ),
                                 ),
                               ),
-                              Text(
-                                'txt_steps_left'.tr,
-                                style: textTheme.bodyText1!.copyWith(
-                                  fontSize: 18 * coefficient,
-                                  fontWeight: FontWeight.w400,
-                                  color: SatorioColor.darkAccent,
+                              Obx(
+                                () => Text(
+                                  _steps(puzzleGame.value),
+                                  style: textTheme.bodyText1!.copyWith(
+                                    fontSize: 18 * coefficient,
+                                    fontWeight: FontWeight.w400,
+                                    color: SatorioColor.darkAccent,
+                                  ),
                                 ),
                               ),
                             ],
@@ -229,5 +225,29 @@ class PuzzlePage extends GetView<PuzzleController> {
         ),
       ),
     );
+  }
+
+  Rx<PuzzleGame?> get puzzleGame => controller.puzzleGameRx;
+
+  String _stepsCountText(PuzzleGame? puzzleGame) {
+    if (puzzleGame == null) {
+      return '';
+    } else if (puzzleGame.isRewardsEnabled) {
+      return 'txt_steps_left_of_steps'
+          .tr
+          .format([puzzleGame.steps - puzzleGame.stepsTaken, puzzleGame.steps]);
+    } else {
+      return puzzleGame.stepsTaken.toString();
+    }
+  }
+
+  String _steps(PuzzleGame? puzzleGame) {
+    if (puzzleGame == null) {
+      return '';
+    } else if (puzzleGame.isRewardsEnabled) {
+      return 'txt_steps_left'.tr;
+    } else {
+      return 'txt_steps'.tr;
+    }
   }
 }
