@@ -6,4 +6,5 @@ class FCMType {
 class AnnouncementType {
   static const String show = 'show';
   static const String episode = 'episode';
+  static const String link = 'link';
 }

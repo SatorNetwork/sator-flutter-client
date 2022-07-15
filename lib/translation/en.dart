@@ -337,4 +337,5 @@ const Map<String, String> en = {
   'txt_more': 'More',
   'txt_to_show': 'To show',
   'txt_to_episode': 'To episode',
+  'txt_open_in_browser': 'Open in browser',
 };

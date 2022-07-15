@@ -1048,13 +1048,13 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         SizedBox(
                           height: 16,
                         ),
-                        controller.nftItemsRx.value.isNotEmpty
-                            ? Obx(
-                                () => controller.nftItemsRx.value.isEmpty
-                                    ? _emptyNfts()
-                                    : _nftItems(controller.nftItemsRx.value),
-                              )
-                            : SizedBox(),
+                        Obx(
+                          () => controller.nftItemsRx.value.isNotEmpty
+                              ? controller.nftItemsRx.value.isEmpty
+                                  ? _emptyNfts()
+                                  : _nftItems(controller.nftItemsRx.value)
+                              : SizedBox(),
+                        ),
                         SizedBox(
                           height: 32,
                         ),
