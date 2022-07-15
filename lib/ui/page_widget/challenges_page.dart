@@ -84,7 +84,9 @@ class ChallengesPage extends GetView<ChallengesController> {
                           final ChallengeSimple challenge =
                               controller.challengesRx.value[index];
                           final Color color = _colors[index % _colors.length];
-                          return _challengeItem(challenge, color);
+                          final bool isPaidUnlock =
+                              controller.isPaidUnlockEnabledRx.value;
+                          return _challengeItem(challenge, color, isPaidUnlock);
                         },
                       ),
                     ),
@@ -98,7 +100,8 @@ class ChallengesPage extends GetView<ChallengesController> {
     );
   }
 
-  Widget _challengeItem(ChallengeSimple challenge, Color color) {
+  Widget _challengeItem(
+      ChallengeSimple challenge, Color color, bool isPaidUnlock) {
     final double itemHeight = 74.0 * coefficient;
     final double imageHeight = 52.0 * coefficient;
     final double imageWidth = 52.0 * coefficient;
@@ -171,21 +174,24 @@ class ChallengesPage extends GetView<ChallengesController> {
                           color: SatorioColor.darkAccent,
                         ),
                       ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      SvgPicture.asset('images/prize_icon.svg'),
-                      SizedBox(
-                        width: 6,
-                      ),
-                      Text(
-                        challenge.prizePool,
-                        style: textTheme.bodyText1!.copyWith(
-                          fontSize: 14 * coefficient,
-                          fontWeight: FontWeight.w500,
-                          color: SatorioColor.darkAccent,
+                      if (isPaidUnlock) ...[
+                        SizedBox(
+                          width: 20,
                         ),
-                      ),
+                        // if (challenge.pr)
+                        SvgPicture.asset('images/prize_icon.svg'),
+                        SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          challenge.prizePool,
+                          style: textTheme.bodyText1!.copyWith(
+                            fontSize: 14 * coefficient,
+                            fontWeight: FontWeight.w500,
+                            color: SatorioColor.darkAccent,
+                          ),
+                        ),
+                      ]
                     ],
                   )
                 ],

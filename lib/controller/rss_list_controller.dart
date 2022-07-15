@@ -39,8 +39,16 @@ class RssListController extends GetxController {
   }
 
   void _rssItemsListener() {
-    rssItemsRx.value = _rssItemsListenable.value.values.toList();
-    print(rssItemsRx.value.length.toString());
+    final rssItems = _rssItemsListenable.value.values.toList();
+    rssItems.sort((a, b) {
+      if (a.pubDate == null)
+        return -1;
+      else if (b.pubDate == null)
+        return 1;
+      else
+        return b.pubDate!.compareTo(a.pubDate!);
+    });
+    rssItemsRx.value = rssItems;
   }
 
   void toRssItem(RssItem rssItem) {

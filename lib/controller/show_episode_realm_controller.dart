@@ -97,6 +97,7 @@ class ShowEpisodeRealmController extends GetxController
   final RxString quizHeadMessageRx = ''.obs;
   final RxBool isTipsEnabledRx = true.obs;
   final RxBool isPaidUnlockEnabledRx = true.obs;
+  final RxBool isRealmEarnedSaoEnabledRx = false.obs;
 
   late final RxDouble amountRx = 0.0.obs;
   final RxBool isRequested = false.obs;
@@ -171,17 +172,17 @@ class ShowEpisodeRealmController extends GetxController
         .quizHeadMessageText()
         .then((value) => quizHeadMessageRx.value = value);
 
-    if (GetPlatform.isIOS) {
-      _satorioRepository
-          .isTipsEnabled()
-          .then((value) => isTipsEnabledRx.value = value);
-      _satorioRepository
-          .isPaidUnlockEnabled()
-          .then((value) => isPaidUnlockEnabledRx.value = value);
-    } else {
-      isTipsEnabledRx.value = true;
-      isPaidUnlockEnabledRx.value = true;
-    }
+    _satorioRepository
+        .isTipsEnabled()
+        .then((value) => isTipsEnabledRx.value = value);
+
+    _satorioRepository
+        .isPaidUnlockEnabled()
+        .then((value) => isPaidUnlockEnabledRx.value = value);
+
+    _satorioRepository
+        .isRealmEarnedSaoEnabled()
+        .then((value) => isRealmEarnedSaoEnabledRx.value = value);
 
     lastSeenInit();
   }
@@ -434,7 +435,7 @@ class ShowEpisodeRealmController extends GetxController
     Get.to(
       () => NftListPage(),
       binding: NftListBinding(),
-      arguments: NftListArgument(NftFilterType.Episode, showEpisodeRx.value.id),
+      arguments: NftListArgument(NftFilterType.Show, showDetailRx.value.id),
     );
   }
 
@@ -637,17 +638,21 @@ class ShowEpisodeRealmController extends GetxController
           .then((value) => _satorioRepository.puzzleOptions())
           .then((puzzleOptions) {
             isRequestedForPuzzleOptions.value = false;
-            Get.bottomSheet(
-              PuzzleOptionsBottomSheet(
-                puzzleGameRx.value?.prizePool ?? 0.0,
-                puzzleOptions,
-                (puzzleOption) {
-                  _puzzleUnlock(puzzleOption);
-                },
-              ),
-              isScrollControlled: true,
-              barrierColor: Colors.transparent,
-            );
+            if (puzzleOptions.isEmpty) {
+              _toPuzzle();
+            } else {
+              Get.bottomSheet(
+                PuzzleOptionsBottomSheet(
+                  puzzleGameRx.value?.prizePool ?? 0.0,
+                  puzzleOptions,
+                  (puzzleOption) {
+                    _puzzleUnlock(puzzleOption);
+                  },
+                ),
+                isScrollControlled: true,
+                barrierColor: Colors.transparent,
+              );
+            }
           })
           .catchError(
             (value) {

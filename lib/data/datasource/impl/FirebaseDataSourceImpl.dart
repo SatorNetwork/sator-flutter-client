@@ -9,7 +9,8 @@ import 'package:satorio/binding/show_episodes_realm_binding.dart';
 import 'package:satorio/controller/show_detail_with_episodes_controller.dart';
 import 'package:satorio/controller/show_episode_realm_controller.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
-import 'package:satorio/domain/entities/fcm_type.dart';
+import 'package:satorio/domain/entities/fcm_announcement_type.dart';
+import 'package:satorio/domain/entities/realm.dart';
 import 'package:satorio/domain/entities/show_season.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
@@ -72,24 +73,13 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   void _fcmEpisode(RemoteMessage message) {
     final SatorioRepository _satorioRepository = Get.find();
-    final String showId = message.data["show_id"];
-    final String episodeId = message.data["episode_id"];
-    final String seasonId = message.data["season_id"];
 
-    _satorioRepository.showDetail(showId).then((showDetail) {
-      _satorioRepository.showEpisode(showId, episodeId).then(
-        (showEpisode) {
-          _satorioRepository
-              .seasonById(showId, seasonId)
-              .then((ShowSeason showSeason) {
-            Get.to(
-              () => ShowEpisodesRealmPage(),
-              binding: ShowEpisodesRealmBinding(),
-              arguments: ShowEpisodeRealmArgument(
-                  showDetail, showSeason, showEpisode, false),
-            );
-          });
-        },
+    _satorioRepository.episodeById(message.data["episode_id"]).then((Realm realm) {
+      Get.to(
+            () => ShowEpisodesRealmPage(),
+        binding: ShowEpisodesRealmBinding(),
+        arguments: ShowEpisodeRealmArgument(
+            realm.showDetail, realm.showSeason, realm.showEpisode, false),
       );
     });
   }
@@ -180,19 +170,75 @@ class FirebaseDataSourceImpl implements FirebaseDataSource {
 
   @override
   Future<bool> isTokenLockEnabled() async {
-    return _remoteConfig.getBool(
-        isProduction ? 'enable_token_lock_prod' : 'enable_token_lock_dev');
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(
+          isProduction ? 'enable_token_lock_prod' : 'enable_token_lock_dev');
+    } else {
+      return true;
+    }
   }
 
   @override
   Future<bool> isPaidUnlockEnabled() async {
-    return _remoteConfig.getBool(
-        isProduction ? 'enable_paid_unlock_prod' : 'enable_paid_unlock_dev');
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(
+          isProduction ? 'enable_paid_unlock_prod' : 'enable_paid_unlock_dev');
+    } else {
+      return true;
+    }
   }
 
   @override
   Future<bool> isTipsEnabled() async {
-    return _remoteConfig
-        .getBool(isProduction ? 'enable_tips_prod' : 'enable_tips_dev');
+    if (GetPlatform.isIOS) {
+      return _remoteConfig
+          .getBool(isProduction ? 'enable_tips_prod' : 'enable_tips_dev');
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> isBottomSheetPtsEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_bottom_sheet_pts_prod'
+          : 'enable_bottom_sheet_pts_dev');
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> isWinnerScoresEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_winner_scores_prod'
+          : 'enable_winner_scores_dev');
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> isHomeBalanceEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_home_balance_prod'
+          : 'enable_home_balance_dev');
+    } else {
+      return true;
+    }
+  }
+
+  @override
+  Future<bool> isRealmEarnedSaoEnabled() async {
+    if (GetPlatform.isIOS) {
+      return _remoteConfig.getBool(isProduction
+          ? 'enable_realm_earned_sao_prod'
+          : 'enable_realm_earned_sao_dev');
+    } else {
+      return true;
+    }
   }
 }

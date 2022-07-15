@@ -26,7 +26,8 @@ class ChallengeController extends GetxController {
   late final Rx<Challenge?> challengeRx = Rx(null);
   final RxBool isRequested = false.obs;
 
-  final RxBool isPaidUnlockEnabledRx = true.obs;
+  final RxBool isPaidUnlockEnabledRx = false.obs;
+  final RxBool isRealmEarnedSaoEnabledRx = false.obs;
 
   ChallengeController() {
     ChallengeArgument argument = Get.arguments as ChallengeArgument;
@@ -36,13 +37,13 @@ class ChallengeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (GetPlatform.isIOS) {
-      _satorioRepository
-          .isPaidUnlockEnabled()
-          .then((value) => isPaidUnlockEnabledRx.value = value);
-    } else {
-      isPaidUnlockEnabledRx.value = true;
-    }
+    _satorioRepository
+        .isPaidUnlockEnabled()
+        .then((value) => isPaidUnlockEnabledRx.value = value);
+
+    _satorioRepository
+        .isRealmEarnedSaoEnabled()
+        .then((value) => isRealmEarnedSaoEnabledRx.value = value);
   }
 
   void back() {

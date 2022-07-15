@@ -22,6 +22,7 @@ import 'package:satorio/data/datasource/nfts_data_source.dart';
 import 'package:satorio/data/datasource/solana_data_source.dart';
 import 'package:satorio/domain/entities/activated_realm.dart';
 import 'package:satorio/domain/entities/amount_currency.dart';
+import 'package:satorio/domain/entities/announcement.dart';
 import 'package:satorio/domain/entities/challenge.dart';
 import 'package:satorio/domain/entities/challenge_simple.dart';
 import 'package:satorio/domain/entities/claim_reward.dart';
@@ -36,8 +37,10 @@ import 'package:satorio/domain/entities/profile.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_game.dart';
 import 'package:satorio/domain/entities/puzzle/puzzle_unlock_option.dart';
 import 'package:satorio/domain/entities/qr_show.dart';
+import 'package:satorio/domain/entities/realm.dart';
 import 'package:satorio/domain/entities/referral_code.dart';
 import 'package:satorio/domain/entities/review.dart';
+import 'package:satorio/domain/entities/sao_wallet.dart';
 import 'package:satorio/domain/entities/show.dart';
 import 'package:satorio/domain/entities/show_category.dart';
 import 'package:satorio/domain/entities/show_detail.dart';
@@ -442,6 +445,13 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<Realm> episodeById(String episodeId) {
+    return _apiDataSource
+        .episodeById(episodeId)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<Show> loadShow(String showId) {
     return _apiDataSource
         .loadShow(showId)
@@ -645,13 +655,25 @@ class SatorioRepositoryImpl implements SatorioRepository {
 
   @override
   Future<void> updateWalletBalance() {
-    return _apiDataSource
-        .walletBalance()
-        .then(
-          (List<AmountCurrency> amountCurrencies) =>
-              _localDataSource.saveWalletBalance(amountCurrencies),
-        )
-        .catchError((value) => _handleException(value));
+    return _apiDataSource.saoWallet().then(
+      (saoWalletConfig) {
+        return _solanaDataSource
+            .balanceSAO(saoWalletConfig.walletPublicKey)
+            .then(
+          (balance) {
+            _localDataSource.saveSaoWallet(
+              SaoWallet(
+                saoWalletConfig.walletPublicKey,
+                saoWalletConfig.walletPrivateKey,
+                saoWalletConfig.tokenSymbol,
+                saoWalletConfig.tokenMintAddress,
+                balance ?? 0,
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -868,11 +890,6 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  ValueListenable walletBalanceListenable() {
-    return _localDataSource.walletBalanceListenable();
-  }
-
-  @override
   ValueListenable walletsListenable() {
     return _localDataSource.walletsListenable();
   }
@@ -890,6 +907,11 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   ValueListenable rssItemsListenable() {
     return _localDataSource.rssItemsListenable();
+  }
+
+  @override
+  ValueListenable saoWalletsListenable() {
+    return _localDataSource.saveSaoWalletsListenable();
   }
 
   //TODO:  move to region
@@ -1046,5 +1068,39 @@ class SatorioRepositoryImpl implements SatorioRepository {
   @override
   Future<bool> isTipsEnabled() {
     return _firebaseDataSource.isTipsEnabled();
+  }
+
+  @override
+  Future<bool> isBottomSheetPtsEnabled() {
+    return _firebaseDataSource.isBottomSheetPtsEnabled();
+  }
+
+  @override
+  Future<bool> isWinnerScoresEnabled() {
+    return _firebaseDataSource.isWinnerScoresEnabled();
+  }
+
+  @override
+  Future<bool> isHomeBalanceEnabled() {
+    return _firebaseDataSource.isHomeBalanceEnabled();
+  }
+
+  @override
+  Future<bool> isRealmEarnedSaoEnabled() {
+    return _firebaseDataSource.isRealmEarnedSaoEnabled();
+  }
+
+  @override
+  Future<List<Announcement>> unreadAnnouncements() {
+    return _apiDataSource
+        .unreadAnnouncements()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> markAnnouncementAsRead(String announcementId) {
+    return _apiDataSource
+        .markAnnouncementAsRead(announcementId)
+        .catchError((value) => _handleException(value));
   }
 }

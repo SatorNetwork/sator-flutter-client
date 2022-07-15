@@ -40,7 +40,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        setProperty("archivesBaseName","sator-$versionName($versionCode)")
+//        setProperty("archivesBaseName","sator-$versionName($versionCode)")
     }
 
     signingConfigs {

@@ -64,8 +64,8 @@ const Map<String, String> en = {
   'txt_questions_left': '%d questions left',
   'txt_wait_time_runs_out':
       'Wait until the time runs out or all of the players will vote.',
-  'txt_fastest_answer': '🔥 Fastest answer ',
-  'txt_add_pts': '+%dpts',
+  'txt_fastest_answer': '🔥 Fastest answer',
+  'txt_add_pts': ' +%dpts',
   'txt_quit': 'Quit',
   'txt_next': 'Next',
   'txt_awesome': 'Awesome',
@@ -318,6 +318,7 @@ const Map<String, String> en = {
   'txt_you_will_get': 'You will get %s sao',
   'txt_steps_left_of_steps': '%d of %d',
   'txt_steps_left': 'Steps Left',
+  'txt_steps': 'Steps',
   'txt_unscramble': 'Unscramble',
   'txt_dont_run_out_steps': 'Don’t run out of steps',
   'txt_reward': 'Reward',
@@ -336,4 +337,5 @@ const Map<String, String> en = {
   'txt_more': 'More',
   'txt_to_show': 'To show',
   'txt_to_episode': 'To episode',
+  'txt_open_in_browser': 'Open in browser',
 };

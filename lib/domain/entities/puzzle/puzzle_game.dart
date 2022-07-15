@@ -12,6 +12,7 @@ class PuzzleGame {
   final int status;
   final String image;
   final List<Tile> tiles;
+  final bool isRewardsEnabled;
 
   const PuzzleGame(
     this.id,
@@ -25,6 +26,7 @@ class PuzzleGame {
     this.status,
     this.image,
     this.tiles,
+    this.isRewardsEnabled,
   );
 }
 

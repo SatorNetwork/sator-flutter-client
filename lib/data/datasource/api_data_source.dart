@@ -1,5 +1,6 @@
 import 'package:satorio/data/model/activated_realm_model.dart';
 import 'package:satorio/data/model/amount_currency_model.dart';
+import 'package:satorio/data/model/announcement_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
 import 'package:satorio/data/model/claim_reward_model.dart';
@@ -13,8 +14,10 @@ import 'package:satorio/data/model/profile_model.dart';
 import 'package:satorio/data/model/puzzle/puzzle_game_model.dart';
 import 'package:satorio/data/model/puzzle/puzzle_unlock_option_model.dart';
 import 'package:satorio/data/model/qr_show_model.dart';
+import 'package:satorio/data/model/realm_model.dart';
 import 'package:satorio/data/model/referral_code_model.dart';
 import 'package:satorio/data/model/review_model.dart';
+import 'package:satorio/data/model/sao_wallet_config_model.dart';
 import 'package:satorio/data/model/show_category_model.dart';
 import 'package:satorio/data/model/show_detail_model.dart';
 import 'package:satorio/data/model/show_episode_model.dart';
@@ -23,7 +26,6 @@ import 'package:satorio/data/model/show_season_model.dart';
 import 'package:satorio/data/model/stake_level_model.dart';
 import 'package:satorio/data/model/transaction_model.dart';
 import 'package:satorio/data/model/transfer_model.dart';
-import 'package:satorio/data/model/user_nft_item_model.dart';
 import 'package:satorio/data/model/wallet_detail_model.dart';
 import 'package:satorio/data/model/wallet_model.dart';
 import 'package:satorio/data/model/wallet_staking_model.dart';
@@ -102,9 +104,9 @@ abstract class ApiDataSource {
 
   // region Wallet
 
-  Future<List<AmountCurrencyModel>> walletBalance();
-
   Future<List<WalletModel>> wallets();
+
+  Future<SaoWalletConfigModel> saoWallet();
 
   Future<WalletDetailModel> walletDetail(String detailPath);
 
@@ -155,6 +157,8 @@ abstract class ApiDataSource {
   Future<ShowSeasonModel> seasonById(String showId, String seasonId);
 
   Future<ShowEpisodeModel> showEpisode(String showId, String episodeId);
+
+  Future<RealmModel> episodeById(String episodeId);
 
   Future<ShowModel> loadShow(String showId);
 
@@ -282,5 +286,9 @@ abstract class ApiDataSource {
 // region Firebase
   Future<bool> registerToken(String deviceId, String token);
 // endregion
+
+  Future<List<AnnouncementModel>> unreadAnnouncements();
+
+  Future<bool> markAnnouncementAsRead(String announcementId);
 
 }
