@@ -161,7 +161,7 @@ extension SatorGetInterface on GetInterface {
       case AnnouncementType.episode:
         return "txt_to_episode".tr;
       default:
-        return "To new";
+        return "txt_open_in_browser".tr;
     }
   }
 }

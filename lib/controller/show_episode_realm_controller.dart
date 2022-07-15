@@ -435,7 +435,7 @@ class ShowEpisodeRealmController extends GetxController
     Get.to(
       () => NftListPage(),
       binding: NftListBinding(),
-      arguments: NftListArgument(NftFilterType.Episode, showEpisodeRx.value.id),
+      arguments: NftListArgument(NftFilterType.Show, showDetailRx.value.id),
     );
   }
 

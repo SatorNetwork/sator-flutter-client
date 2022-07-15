@@ -7,19 +7,19 @@ class AnnouncementDataModel extends AnnouncementData
   const AnnouncementDataModel(
     String episodeId,
     String showId,
-  ) : super(
-          episodeId,
-          showId,
-        );
+    String url,
+  ) : super(episodeId, showId, url);
 
   factory AnnouncementDataModel.fromJson(Map json) => AnnouncementDataModel(
         json.parseValueAsString('episode_id'),
         json.parseValueAsString('show_id'),
+        json.parseValueAsString('url'),
       );
 
   @override
   Map toJson() => {
         'episode_id': episodeId,
         'show_id': showId,
+        'url': url,
       };
 }

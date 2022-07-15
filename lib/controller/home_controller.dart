@@ -40,6 +40,7 @@ import 'package:satorio/ui/page_widget/rss_list_page.dart';
 import 'package:satorio/ui/page_widget/show_detail_with_episodes_page.dart';
 import 'package:satorio/ui/page_widget/show_episodes_realm_page.dart';
 import 'package:satorio/ui/page_widget/shows_category_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:webfeed/webfeed.dart';
 import 'package:satorio/util/getx_extension.dart';
 
@@ -181,6 +182,9 @@ class HomeController extends SuperController
       case AnnouncementType.episode:
         _announcementEpisode(announcementRx.value!.announcementData!.episodeId);
         break;
+      case AnnouncementType.link:
+        _launchURL(announcementRx.value!.announcementData!.url);
+        break;
     }
   }
 
@@ -203,6 +207,11 @@ class HomeController extends SuperController
             realm.showDetail, realm.showSeason, realm.showEpisode, false),
       );
     });
+  }
+
+  void _launchURL(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url)) throw 'Could not launch $url';
   }
 
   void _loadNfts() {
