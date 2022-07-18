@@ -30,5 +30,7 @@ You can run UnpackUnityAndroid.sh script from your terminal or just add it to ru
 But please make sure, that you are running it from bash not from zsh!
 
 For iOS you can also use UnpackUnityIos.sh script, or you can just unzip UnityLibrary.zip in the folder, where it is located.
+Using scripts UnpackUnityIos.sh and UnpackUnityAndroid.sh is highly recommended, because they use checksums to make sure you always have
+fresh Unity build.
 Feel free to add unityLibrary folder to ignore list, but be aware of future builds.
 Probably you will need to delete those folders (unityLibrary for Android and UnityLibrary for iOS).
