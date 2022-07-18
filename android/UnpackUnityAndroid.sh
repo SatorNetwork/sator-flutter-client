@@ -11,7 +11,8 @@ oldChecksum=`cat "$checkSumFile"`
 
 #If the same exit
 if [ "$checksum" = "$oldChecksum" ]; then
-    exit
+  echo "Everything is updated"
+  exit
 fi
 
 #If not unzip it
@@ -47,3 +48,6 @@ if [[ "$OSTYPE" == "msys"* ]]; then
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   unzip -o "${SCRIPT_DIR}/netcoreapp3.1_darwin.zip" -d "$il2cpp_path"
 fi
+
+#Update checksum file
+echo "$checksum" > "$checkSumFile"

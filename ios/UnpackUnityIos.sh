@@ -11,7 +11,8 @@ oldChecksum=`cat "$checkSumFile"`
 
 #If the same exit
 if [ "$checksum" = "$oldChecksum" ]; then
-    exit
+  echo "Everything is updated"
+  exit
 fi
 
 #If not unzip it
@@ -21,3 +22,6 @@ fi
 
 #Put it in desired folder
 unzip -o "${SCRIPT_DIR}/UnityLibrary.zip" -d "$unzipFolder"
+
+#Update checksum file
+echo "$checksum" > "$checkSumFile"
