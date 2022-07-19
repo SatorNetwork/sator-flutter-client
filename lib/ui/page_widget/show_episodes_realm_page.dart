@@ -768,8 +768,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                           ),
                         ),
                         Obx(
-                          () => controller.puzzleGameRx.value != null &&
-                                  controller.isPaidUnlockEnabledRx.value
+                          () => controller.puzzleGameRx.value != null
                               ? Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 20),
