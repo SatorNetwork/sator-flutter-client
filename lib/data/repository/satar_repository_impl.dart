@@ -382,6 +382,27 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> resendDeleteAccountCode() {
+    return _apiDataSource
+        .resendDeleteAccountCode()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> validateDeleteAccountCode(String code) {
+    return _apiDataSource
+        .validateDeleteAccountCode(code)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> deleteAccount(String code) {
+    return _apiDataSource
+        .deleteAccount(code)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .shows(hasNfts, page: page, itemsPerPage: itemsPerPage)

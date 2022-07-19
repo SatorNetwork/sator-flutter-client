@@ -103,6 +103,12 @@ abstract class SatorioRepository {
 
   Future<bool> resetPassword(String email, String code, String newPassword);
 
+  Future<bool> resendDeleteAccountCode();
+
+  Future<bool> validateDeleteAccountCode(String code);
+
+  Future<bool> deleteAccount(String code);
+
   Future<void> updateProfile();
 
   Future<void> updateWalletBalance();
