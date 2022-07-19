@@ -45,7 +45,7 @@ class DeleteAccountVerificationController extends GetxController
             DefaultDialog(
               'txt_delete_account'.tr,
               'txt_delete_account_confirm'.tr,
-              'txt_yes'.tr,
+              'txt_confirm'.tr,
               icon: Icons.delete_forever_rounded,
               onButtonPressed: () {
                 _deleteAccount(code);
