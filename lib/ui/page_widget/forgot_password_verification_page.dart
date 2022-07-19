@@ -121,7 +121,7 @@ class ForgotPasswordVerificationPage
 
   Widget _descriptionWidget() {
     final String email = controller.emailController.text;
-    final String textFull = 'txt_password_verification_text'.tr.format([email]);
+    final String textFull = 'txt_verification_code_text'.tr.format([email]);
 
     final int start = textFull.indexOf(email);
     final int end = start + email.length;

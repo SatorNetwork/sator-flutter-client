@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:satorio/binding/delete_account_verification_binding.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
 import 'package:satorio/binding/settings_about_binding.dart';
 import 'package:satorio/binding/settings_change_info_binding.dart';
@@ -11,6 +12,7 @@ import 'package:satorio/domain/entities/change_info_type.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
+import 'package:satorio/ui/page_widget/delete_account_verification_page.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 import 'package:satorio/ui/page_widget/settings_about_page.dart';
 import 'package:satorio/ui/page_widget/settings_change_info_page.dart';
@@ -60,7 +62,10 @@ class SettingsController extends GetxController
   }
 
   void toAbout() {
-    Get.to(() => SettingsAboutPage(), binding: SettingsAboutBinding());
+    Get.to(
+      () => SettingsAboutPage(),
+      binding: SettingsAboutBinding(),
+    );
   }
 
   void back() {
@@ -84,6 +89,30 @@ class SettingsController extends GetxController
         icon: Icons.logout,
         onButtonPressed: () {
           _satorioRepository.logout();
+        },
+        secondaryButtonText: 'txt_no'.tr,
+      ),
+    );
+  }
+
+  void toDeleteAccountDialog() {
+    Get.dialog(
+      DefaultDialog(
+        'txt_delete_account'.tr,
+        'txt_delete_account_message'.tr,
+        'txt_yes'.tr,
+        icon: Icons.delete_forever_rounded,
+        onButtonPressed: () {
+          _satorioRepository.resendDeleteAccountCode().then(
+            (isSuccess) {
+              if (isSuccess) {
+                Get.to(
+                  () => DeleteAccountVerificationPage(),
+                  binding: DeleteAccountVerificationBinding(),
+                );
+              }
+            },
+          );
         },
         secondaryButtonText: 'txt_no'.tr,
       ),

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:satorio/controller/email_verification_controller.dart';
+import 'package:satorio/controller/delete_account_verification_controller.dart';
 import 'package:satorio/ui/theme/light_theme.dart';
 import 'package:satorio/ui/theme/sator_color.dart';
 import 'package:satorio/ui/theme/text_theme.dart';
 import 'package:satorio/util/extension.dart';
 
-class EmailVerificationPage extends GetView<EmailVerificationController> {
+class DeleteAccountVerificationPage
+    extends GetView<DeleteAccountVerificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +16,18 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: IconThemeData(color: SatorioColor.darkAccent),
-        automaticallyImplyLeading: false,
+        leading: Material(
+          color: Colors.transparent,
+          shadowColor: Colors.transparent,
+          child: InkWell(
+            onTap: () => controller.back(),
+            child: Icon(
+              Icons.chevron_left_rounded,
+              color: SatorioColor.darkAccent,
+              size: 32,
+            ),
+          ),
+        ),
       ),
       body: Container(
         width: Get.width,
@@ -71,28 +83,6 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
                     onChanged: (value) {},
                     beforeTextPaste: (text) => true,
                   ),
-                  if (controller.showAnotherAccountLogin)
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          height: 20 * coefficient,
-                        ),
-                        InkWell(
-                          onTap: () => controller.loginViaAnotherAccount(),
-                          child: Center(
-                            child: Text(
-                              'Log in with another account',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: SatorioColor.interactive,
-                                  fontSize: 17 * coefficient,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
                 ],
               ),
               Align(
@@ -129,9 +119,8 @@ class EmailVerificationPage extends GetView<EmailVerificationController> {
   }
 
   Widget _descriptionWidget() {
-    final String email = controller.email;
-    final String textFull =
-        'txt_verification_code_link_text'.tr.format([email]);
+    final String email = 'txt_your_email'.tr;
+    final String textFull = 'txt_verification_code_text'.tr.format([email]);
 
     final int start = textFull.indexOf(email);
     final int end = start + email.length;
