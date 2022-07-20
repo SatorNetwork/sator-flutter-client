@@ -30,7 +30,7 @@ const Map<String, String> en = {
       'Enter an email, connected to your account.\nWe will send you a confirmation code',
   'txt_send_code': 'Send code',
   'txt_verification': 'Verification',
-  'txt_password_verification_text':
+  'txt_verification_code_text':
       'Please enter the verification code we’ve sent to %s',
   'txt_reset_password': 'Reset password',
   'txt_reset_password_text':
@@ -73,7 +73,7 @@ const Map<String, String> en = {
   'txt_claim_rewards': 'Claim rewards',
   'txt_congrats': 'Congratulations',
   'txt_congrats_msg': 'You have successfully claimed your rewards.',
-  'txt_verification_text':
+  'txt_verification_code_link_text':
       'Please enter the verification code we’ve sent to %s or use the link from your inbox',
   'txt_another_account_login': 'Log in with another account',
   'txt_resend_code': 'Resend code',
@@ -267,6 +267,10 @@ const Map<String, String> en = {
   'txt_help': 'Help',
   'txt_about': 'About',
   'txt_delete_account': 'Delete account',
+  'txt_delete_account_message': 'Are you sure you want to delete your account?',
+  'txt_delete_account_confirm': 'Please confirm the account deleting without any possibility to restore it',
+  'txt_delete_account_success': 'Account was successfully deleted',
+  'txt_confirm': 'Confirm',
   'txt_app': 'App',
   'txt_current_price': 'Current Price',
   'txt_buy': 'Buy',

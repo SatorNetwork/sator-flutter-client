@@ -382,6 +382,45 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
+  Future<bool> resendDeleteAccountCode() {
+    return _apiDataSource
+        .resendDeleteAccountCode()
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<bool> validateDeleteAccountCode(String code) {
+    return _apiDataSource
+        .validateDeleteAccountCode(code)
+        .catchError((value) => _handleException(value));
+  }
+
+  @override
+  Future<void> deleteAccount(String code) {
+    return _apiDataSource.deleteAccount(code).then(
+      (isSuccess) {
+        if (isSuccess) {
+          clearDBandAllTokens()
+              .then((value) => markIsBiometricUserDisabled())
+              .then(
+            (value) {
+              Get.offAll(
+                () => LoginPage(),
+                binding: LoginBinding(),
+                arguments: LoginArgument(null),
+              );
+              Get.snackbarMessage(
+                'txt_delete_account'.tr,
+                'txt_delete_account_success'.tr,
+              );
+            },
+          );
+        }
+      },
+    ).catchError((value) => _handleException(value));
+  }
+
+  @override
   Future<List<Show>> shows(bool? hasNfts, {int? page, int? itemsPerPage}) {
     return _apiDataSource
         .shows(hasNfts, page: page, itemsPerPage: itemsPerPage)
@@ -476,9 +515,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<void> logout() {
     return _apiDataSource
         .apiLogout()
-        .then(
-          (value) => clearDBandAllTokens(),
-        )
+        .then((value) => clearDBandAllTokens())
         .then((value) => markIsBiometricUserDisabled())
         .then(
       (value) {

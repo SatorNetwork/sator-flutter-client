@@ -3,14 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:satorio/binding/login_binding.dart';
 import 'package:satorio/binding/select_avatar_binding.dart';
-import 'package:satorio/controller/login_controller.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/controller/select_avatar_controller.dart';
 import 'package:satorio/domain/entities/select_avatar_type.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
-import 'package:satorio/ui/page_widget/login_page.dart';
 import 'package:satorio/ui/page_widget/select_avatar_page.dart';
 
 class EmailVerificationController extends GetxController with ValidationMixin {
@@ -114,13 +111,7 @@ class EmailVerificationController extends GetxController with ValidationMixin {
   }
 
   void loginViaAnotherAccount() {
-    _satorioRepository.logout().then((value) {
-      Get.offAll(
-        () => LoginPage(),
-        binding: LoginBinding(),
-        arguments: LoginArgument(deepLink),
-      );
-    });
+    _satorioRepository.logout();
   }
 
   void _startTimer() {

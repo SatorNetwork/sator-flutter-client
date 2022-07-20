@@ -1,5 +1,4 @@
 import 'package:satorio/data/model/activated_realm_model.dart';
-import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/announcement_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
@@ -87,6 +86,12 @@ abstract class ApiDataSource {
   Future<bool> resetPassword(String email, String code, String newPassword);
 
   Future<bool> publicKey();
+
+  Future<bool> resendDeleteAccountCode();
+
+  Future<bool> validateDeleteAccountCode(String code);
+
+  Future<bool> deleteAccount(String code);
 
   // endregion
 
@@ -285,10 +290,10 @@ abstract class ApiDataSource {
 
 // region Firebase
   Future<bool> registerToken(String deviceId, String token);
+
 // endregion
 
   Future<List<AnnouncementModel>> unreadAnnouncements();
 
   Future<bool> markAnnouncementAsRead(String announcementId);
-
 }

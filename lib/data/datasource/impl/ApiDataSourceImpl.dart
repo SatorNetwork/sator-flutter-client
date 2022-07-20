@@ -8,7 +8,6 @@ import 'package:satorio/data/datasource/device_info_data_source.dart';
 import 'package:satorio/data/datasource/firebase_data_source.dart';
 import 'package:satorio/data/encrypt/ecrypt_manager.dart';
 import 'package:satorio/data/model/activated_realm_model.dart';
-import 'package:satorio/data/model/amount_currency_model.dart';
 import 'package:satorio/data/model/announcement_model.dart';
 import 'package:satorio/data/model/challenge_model.dart';
 import 'package:satorio/data/model/challenge_simple_model.dart';
@@ -59,7 +58,7 @@ import 'package:satorio/data/request/tap_tile_request.dart';
 import 'package:satorio/data/request/update_email_request.dart';
 import 'package:satorio/data/request/update_username_request.dart';
 import 'package:satorio/data/request/validate_reset_password_code_request.dart';
-import 'package:satorio/data/request/verify_account_request.dart';
+import 'package:satorio/data/request/verify_code_request.dart';
 import 'package:satorio/data/request/verify_update_email_request.dart';
 import 'package:satorio/data/request/wallet_stake_request.dart';
 import 'package:satorio/data/request/write_review_request.dart';
@@ -243,7 +242,7 @@ class ApiDataSourceImpl implements ApiDataSource {
     return _getConnect
         .requestPost(
       'auth/verify-account',
-      VerifyAccountRequest(code),
+      VerifyCodeRequest(code),
     )
         .then((Response response) {
       return ResultResponse.fromJson(json.decode(response.bodyString!)).result;
@@ -377,6 +376,51 @@ class ApiDataSourceImpl implements ApiDataSource {
         .then((Response response) {
       return response.isOk;
     });
+  }
+
+  @override
+  Future<bool> resendDeleteAccountCode() {
+    return _getConnect
+        .requestPost(
+      'auth/request-destroy-account',
+      EmptyRequest(),
+    )
+        .then(
+      (Response response) {
+        return ResultResponse.fromJson(json.decode(response.bodyString!))
+            .result;
+      },
+    );
+  }
+
+  @override
+  Future<bool> validateDeleteAccountCode(String code) {
+    return _getConnect
+        .requestPost(
+      'auth/verify-destroy-account-code',
+      VerifyCodeRequest(code),
+    )
+        .then(
+      (Response response) {
+        return ResultResponse.fromJson(json.decode(response.bodyString!))
+            .result;
+      },
+    );
+  }
+
+  @override
+  Future<bool> deleteAccount(String code) {
+    return _getConnect
+        .requestPost(
+      'auth/destroy',
+      VerifyCodeRequest(code),
+    )
+        .then(
+      (Response response) {
+        return ResultResponse.fromJson(json.decode(response.bodyString!))
+            .result;
+      },
+    );
   }
 
   // endregion

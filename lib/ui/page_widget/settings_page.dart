@@ -199,24 +199,18 @@ class SettingsPage extends GetView<SettingsController> {
             controller.toLogoutDialog();
           },
         ),
-        //TODO: uncomment
-        // InkWell(
-        //   onTap: () => controller.toNonWorkingDialog(),
-        //   child: Container(
-        //     height: 48,
-        //     width: Get.width,
-        //     child: Center(
-        //       child: Text(
-        //         'txt_delete_account'.tr,
-        //         style: textTheme.bodyText2!.copyWith(
-        //           color: SatorioColor.brand,
-        //           fontSize: 16.0,
-        //           fontWeight: FontWeight.w600,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        // )
+        SizedBox(
+          height: 16,
+        ),
+        BorderedButton(
+          text: 'txt_delete_account'.tr,
+          textColor: SatorioColor.brand,
+          borderColor: SatorioColor.brand,
+          borderWidth: 2,
+          onPressed: () {
+            controller.toDeleteAccountDialog();
+          },
+        )
       ],
     );
   }
