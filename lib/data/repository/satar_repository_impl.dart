@@ -396,10 +396,28 @@ class SatorioRepositoryImpl implements SatorioRepository {
   }
 
   @override
-  Future<bool> deleteAccount(String code) {
-    return _apiDataSource
-        .deleteAccount(code)
-        .catchError((value) => _handleException(value));
+  Future<void> deleteAccount(String code) {
+    return _apiDataSource.deleteAccount(code).then(
+      (isSuccess) {
+        if (isSuccess) {
+          clearDBandAllTokens()
+              .then((value) => markIsBiometricUserDisabled())
+              .then(
+            (value) {
+              Get.offAll(
+                () => LoginPage(),
+                binding: LoginBinding(),
+                arguments: LoginArgument(null),
+              );
+              Get.snackbarMessage(
+                'txt_delete_account'.tr,
+                'txt_delete_account_success'.tr,
+              );
+            },
+          );
+        }
+      },
+    ).catchError((value) => _handleException(value));
   }
 
   @override
@@ -497,9 +515,7 @@ class SatorioRepositoryImpl implements SatorioRepository {
   Future<void> logout() {
     return _apiDataSource
         .apiLogout()
-        .then(
-          (value) => clearDBandAllTokens(),
-        )
+        .then((value) => clearDBandAllTokens())
         .then((value) => markIsBiometricUserDisabled())
         .then(
       (value) {

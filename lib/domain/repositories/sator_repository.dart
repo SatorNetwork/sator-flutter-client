@@ -107,7 +107,7 @@ abstract class SatorioRepository {
 
   Future<bool> validateDeleteAccountCode(String code);
 
-  Future<bool> deleteAccount(String code);
+  Future<void> deleteAccount(String code);
 
   Future<void> updateProfile();
 

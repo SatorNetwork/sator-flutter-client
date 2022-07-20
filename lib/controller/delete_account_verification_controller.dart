@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:satorio/controller/mixin/validation_mixin.dart';
 import 'package:satorio/domain/repositories/sator_repository.dart';
 import 'package:satorio/ui/dialog_widget/default_dialog.dart';
-import 'package:satorio/util/getx_extension.dart';
 
 class DeleteAccountVerificationController extends GetxController
     with ValidationMixin {
@@ -88,18 +87,6 @@ class DeleteAccountVerificationController extends GetxController
   }
 
   void _deleteAccount(String code) {
-    _satorioRepository.deleteAccount(code).then(
-      (isSuccess) {
-        if (isSuccess) {
-          _satorioRepository.logout();
-          Get.snackbarMessage(
-            'txt_delete_account'.tr,
-            'txt_delete_account_success'.tr,
-          );
-        } else {
-          back();
-        }
-      },
-    );
+    _satorioRepository.deleteAccount(code);
   }
 }
