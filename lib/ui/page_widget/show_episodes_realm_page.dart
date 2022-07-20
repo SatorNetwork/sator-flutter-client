@@ -761,8 +761,7 @@ class ShowEpisodesRealmPage extends GetView<ShowEpisodeRealmController> {
                         ),
                         Obx(
                           () => SizedBox(
-                            height: controller.puzzleGameRx.value != null &&
-                                    controller.isPaidUnlockEnabledRx.value
+                            height: controller.puzzleGameRx.value != null
                                 ? 32
                                 : 0,
                           ),
